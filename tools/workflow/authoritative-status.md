@@ -1,0 +1,132 @@
+# Configure HQ Authoritative Status
+
+This file is the human-facing source of truth for active development.
+Agents update it during planning, QA review, coding, and increment closeout so
+stakeholders can read one document instead of reconstructing state from chats,
+tests, or stash history.
+
+## Current Snapshot
+
+- Current focus: `iscsi tool planning`
+- Overall status: `active`
+- Last reviewed: `2026-04-03`
+- Active branch: `dev`
+- Structured backing store: `workflow/stash-memory.yaml`
+
+## Current Increment
+
+### increment-5
+
+- Status: `complete`
+- Owner: `powershell-pair-coder`
+- Goal: publish the managed HQ role folders through SMB after ACL and identity setup
+
+## Hotfix Track
+
+### bugfix
+
+- Status: `merged`
+- Head checkpoint: `3758619`
+- Base checkpoint: `daf202d`
+- Goal: harden HQ-local identity restore when `LocalAccounts` cmdlets cannot see or manage existing local SAM principals on the guest
+
+### Current Progress
+
+- Active development lives under `app/`
+- Increment 3 is complete and tagged as `configure-hq-increment-3`
+- Increment 4 now has real code and tests for:
+  - managed role ACL definitions and NTFS ACL orchestration helpers
+  - required HQ principal definitions for mirrored users, ACL groups, and `HQ\\svc_lab`
+  - guest-side principal state export and wrapper entrypoint via `-ExportSecurityPrincipalState`
+  - create-or-detect handling for missing required HQ users and groups
+  - required group membership handling for existing HQ users
+  - optional identity restore during activation via `-RunIdentityRestore`
+  - ACL application inside activation after the final workflow rows are built
+  - saved-state cleanup planning for added group links and principals
+  - explicit identity cleanup via `-RunIdentityCleanup`, including link removal, planned-removal review, and confirmed user and group deletion in one pass
+  - comment-first cleanup so intent comments sit on the exact code and tests they describe
+- The Hyper-V host `P50` is not joined to `HQ`, so ACL and SMB policy must be
+  authored in terms of HQ-local principals rather than `P50\...` identities
+- WSL2 access from `P50` is expected to arrive through an SMB session
+  authenticated with HQ-local credentials
+- Latest increment-4 checkpoint is commit `daf202d` tagged as `configure-hq-increment-4`
+- The merged bugfix track on `dev` includes refreshed post-activation drive-letter discovery, stricter stale-ADSI cleanup planning, tolerant duplicate-create handling for hidden existing principals, and restore-time hidden-local-SAM verification
+- Guest reruns now show:
+  - `.\configure_hq.ps1 -RunIdentityCleanup` completes cleanly with no repeated phantom principal removals
+  - `.\configure_hq.ps1 -RunActivation -RunIdentityRestore` gets past the prior cleanup and dedup-drive failures that blocked the hotfix track
+- Increment 5 has now resumed on `dev` at the SMB publishing boundary
+- The first increment-5 slice adds SMB share provisioning for the managed role folders after ACL setup
+- A new design-only iSCSI note now defines how an optional block publication mode would work for a writable child VHDX while keeping the parent VHDX read-only
+- Historical increment-2 stashes remain available for lineage and rollback analysis
+
+### QA Reading
+
+- Tags: `ready-for-merge`
+- Commentary: increment 4 remains green at checkpoint `daf202d`, the local-SAM identity hotfix is merged into `dev`, and increment 5 now has a completed SMB publication slice at commit `5e6fb94` with successful guest-side verification. The current tool closes out at the SMB boundary. The iSCSI path remains intentionally separate as a new upcoming tool and should not reopen the finished SMB acceptance scope.
+- Next steps:
+  - save and preserve the SMB closeout state
+  - start a separate iSCSI tool at the Lab VHDX discovery boundary
+  - validate the Windows support boundary for publishing the writable child disk through iSCSI before any target-provisioning code begins
+- Quality risks:
+  - the VHDX parent/differencing chain over SMB is still an accepted lab risk
+  - the Windows iSCSI target support boundary for publishing a differencing child disk is still unverified
+  - guest-local identity mirroring is convenient but remains less robust than a shared domain/trust model
+  - the identity revert path still depends on an operator confirmation flow and is not a one-shot automatic revert
+  - SMB behavior is now in code for share creation and access grants, but guest verification is still pending for this first increment-5 slice
+
+### Blockers
+
+- no active blockers remain for the completed SMB closeout
+- the iSCSI publication path is intentionally split into a separate upcoming tool and still needs its own implementation plan
+
+### Open Questions
+
+- Resolved: use `V:\VHDs\disks\sharedisk.vhdx` as the `ShareDrive` VHD path.
+- Resolved: guest activation consumes a host-generated metadata module instead of relying only on guest-visible heuristics.
+- Resolved: manual VM selection replaces auto-detection as the preferred host workflow.
+- Resolved: increment 3 ends at dedup execution, missing-feature handling, and execution-mode guarding.
+- Resolved: increment 4 will use HQ-local groups plus `HQ\svc_lab` instead of abstract domain groups or `Everyone`.
+- Resolved: WSL2 access from `P50` will be modeled through HQ-authenticated SMB sessions rather than direct `P50\...` principals.
+
+## Increment Ledger
+
+| Increment | Status | Summary | Owner | Release Tag |
+| --- | --- | --- | --- | --- |
+| `increment-1` | `complete` | Disk discovery and activation implemented, tested, tagged, and merged. | `product-owner` | `configure-hq-increment-1` |
+| `increment-2` | `complete` | Host can export VM inventory or selected-VM metadata; guest activation imports the selected metadata module and reports validation status. | `powershell-pair-coder` | `configure-hq-increment-2` |
+| `increment-3` | `complete` | Dedup execution is wired into the guest workflow with feature checks, optional installation, and clear operator feedback. | `powershell-pair-coder` | `configure-hq-increment-3` |
+| `increment-4` | `complete` | ACL helpers, HQ principal-state backup, standalone and optional identity restore, and the full `-RunIdentityCleanup` confirmation flow are implemented and tested. | `powershell-pair-coder` | `configure-hq-increment-4` |
+| `increment-5` | `complete` | SMB share provisioning is complete from the managed-folder contract and has been verified on the guest after ACL setup. | `powershell-pair-coder` | |
+
+## Stakeholder Feedback
+
+- Latest feedback: when the user says `save here` or equivalent, the agent suite must record the real progress state and create a stash before ending the session.
+- Latest feedback: comment-first drift should be corrected before widening the next slice.
+- Latest feedback: `AGENTS.md` should bootstrap the repo workflow automatically for non-trivial work so the user does not need to keep restating it.
+- Latest progress report: increment 4 now includes ACL helper code, HQ principal-state backup/export, required identity restore, and green lab-aligned tests.
+- Latest progress report: identity restore now runs only when `-RunIdentityRestore` is set, and ACL application now runs inside activation after the storage work is finished.
+- Latest progress report: saved principal state now produces a cleanup plan for principals that were absent before restore work ran.
+- Latest progress report: saved principal state now produces a cleanup plan for both added group links and added principals.
+- Latest progress report: `-RunIdentityCleanup` now executes planned group-link cleanup through the guest wrapper.
+- Latest progress report: `-RunIdentityRestore` now works as a standalone guest action and prints live restore and cleanup status output.
+- Latest progress report: `-RunIdentityCleanup` now keeps the whole flow in one command by showing planned removals and asking for confirmed user and group deletion after link cleanup.
+- Latest progress report: increment 4 is closed out at commit `daf202d` and tagged as `configure-hq-increment-4`.
+- Latest progress report: branch `bugfix` now carries commit `94316ef` to harden local HQ identity restore against hidden local SAM principals that `LocalAccounts` cmdlets do not surface reliably.
+- Latest progress report: the current `bugfix` working slice hardens `-RunIdentityCleanup` so already-missing local users and groups are treated as already removed when Windows returns a direct `...was not found` delete error.
+- Latest progress report: guest reruns confirmed that `-RunIdentityCleanup` no longer repeats phantom group removals, and the current working slice adds the remaining restore fixes for refreshed drive letters, hidden-principal duplicate creates, and restore-time hidden-local-SAM verification.
+- Latest progress report: `bugfix` has been merged into `dev` through merge commit `b2b64d1`.
+- Latest progress report: increment 5 has resumed with SMB share provisioning after ACL setup, and `app/tests/configure_hq.Tests.ps1` is green with 79 passing tests.
+- Latest progress report: commit `5e6fb94` saves the legacy SMB publication alignment, the repo-bootstrap move into `AGENTS.md`, and the `configure_hq` doc move into `app/docs`.
+- Latest progress report: `app/docs/configure_hq.iscsi-design.md` now captures a design-only alternate publication mode where the child VHDX is published through iSCSI and the parent remains read-only.
+- Latest progress report: the SMB publication path has now been verified on the guest and is being closed out as a finished tool boundary.
+- Latest progress report: iSCSI will continue as a separate tool starting at Lab VHDX discovery rather than widening the finished SMB workflow.
+
+## Update Rules
+
+- `qa-state-analyst` updates QA tags, commentary, risks, and next steps.
+- `scrum-stash-master` updates session state, blockers, and stash-related notes.
+- `powershell-pair-coder` updates progress after tests, patches, and verification.
+- `scrum-product-owner` updates increment intent, acceptance direction, and stakeholder feedback.
+
+Keep this file readable for humans. Keep `workflow/stash-memory.yaml` aligned so
+agents still have a structured artifact to query.

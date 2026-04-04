@@ -1,0 +1,216 @@
+schema_version: 1
+project: configure-hq
+human_status_file: "workflow/authoritative-status.md"
+global:
+  current_focus: "iscsi-tool-lab-vhdx-discovery"
+  overall_status: "active"
+  last_reviewed: "2026-04-03"
+  active_branch: "dev"
+  active_checkpoint: "5e6fb94"
+  stakeholder_feedback:
+    - "When the user says save here or equivalent, record the real progress state and create a stash before ending the session."
+    - "Comment-first drift should be corrected before widening the next slice."
+    - "Workflow artifacts should reflect live bugfix work before the next feature slice starts."
+    - "AGENTS.md should bootstrap the repo workflow automatically for non-trivial work."
+  resume_strategy: "time-series recomposition"
+  resume_policy:
+    - "Treat stash history as an experiment timeline, not just a restore stack."
+    - "On resume, decide between single-stash resume and recomposed resume."
+    - "Prefer the strongest next code state, even if it combines lessons from multiple stashes."
+    - "Keep useful historical stashes until they are clearly superseded."
+qa_state_catalog:
+  exploring:
+    commentary: "Understanding is still forming."
+    next_steps: "Inspect more code, tests, or real behavior."
+  needs-criteria:
+    commentary: "Acceptance criteria are not yet strong enough."
+    next_steps: "Define measurable expected behavior before coding further."
+  needs-observation:
+    commentary: "Real system behavior has not been observed yet."
+    next_steps: "Run the relevant command or inspect the environment."
+  hypothesis:
+    commentary: "The current approach depends on an unverified assumption."
+    next_steps: "Create the cheapest validation step."
+  risk-identified:
+    commentary: "A concrete delivery or behavior risk is present."
+    next_steps: "Mitigate or explicitly accept the risk."
+  regression-risk:
+    commentary: "Current changes may break working behavior."
+    next_steps: "Add or strengthen tests around the affected path."
+  test-gap:
+    commentary: "Important behavior is not covered by tests."
+    next_steps: "Add a failing test before more implementation."
+  stakeholder-review:
+    commentary: "The code direction needs stakeholder confirmation."
+    next_steps: "Ask the narrowest question that resolves direction."
+  ready-for-red:
+    commentary: "The next behavior slice is clear enough to test."
+    next_steps: "Write the next failing test."
+  ready-for-green:
+    commentary: "The failing test and implementation boundary are clear."
+    next_steps: "Apply the minimal code change."
+  ready-for-merge:
+    commentary: "The increment appears coherent and reviewable."
+    next_steps: "Do final verification and integrate."
+  risk-accepted:
+    commentary: "A known risk remains and is being carried intentionally."
+    next_steps: "Record the risk and revisit later."
+increments:
+  - id: "increment-1"
+    status: "complete"
+    summary: "Disk discovery and activation implemented, tested, tagged, and merged."
+    owner: "product-owner"
+    tag: "configure-hq-increment-1"
+    qa_tags: ["ready-for-merge"]
+    qa_commentary: "Increment 1 is stable, tested, and already integrated."
+    qa_next_steps: ["Use increment 1 behavior as the baseline for increment 2."]
+    quality_risks: []
+    blockers: []
+    open_questions: []
+  - id: "increment-2"
+    status: "complete"
+    summary: "Host can export VM inventory or selected-VM metadata; guest activation imports the selected metadata module and reports validation status."
+    owner: "powershell-pair-coder"
+    tag: "configure-hq-increment-2"
+    stash_ref: ""
+    qa_tags: ["ready-for-merge"]
+    qa_commentary: "Increment 2 is green through the manual VM-selection, metadata import, operator status, and guest-validation boundary. It is ready to close and hand off to increment 3."
+    qa_next_steps:
+      - "Tag and preserve increment 2."
+      - "Start increment 3 at the dedup execution boundary."
+    quality_risks:
+      - "Dedup behavior is still represented only as metadata, not as executed configuration."
+      - "Host execution now depends on the operator selecting the correct Hyper-V VM when writing role metadata."
+    blockers: []
+    open_questions:
+      - "Resolved: use V:\\VHDs\\disks\\sharedisk.vhdx for ShareDrive."
+      - "Resolved: guest activation now consumes a host-generated metadata module instead of relying only on guest-visible heuristics."
+      - "Resolved: manual VM selection replaces auto-detection as the preferred host workflow."
+      - "Resolved: increment 2 ends at metadata import, activation orchestration, and validation reporting."
+  - id: "increment-3"
+    status: "complete"
+    summary: "Dedup execution is wired into the guest workflow with feature checks, optional installation, and clear operator feedback."
+    owner: "powershell-pair-coder"
+    tag: "configure-hq-increment-3"
+    stash_ref: ""
+    qa_tags: ["ready-for-merge"]
+    qa_commentary: "Increment 3 is green through dedup target selection, dedup execution wiring, missing-feature handling, and host/guest execution guarding. It is ready to close and hand off to increment 4."
+    qa_next_steps:
+      - "Tag and preserve increment 3."
+      - "Start increment 4 at the ACL application boundary."
+    quality_risks:
+      - "Dedup feature installation may still require reboot or manual verification on some guests."
+      - "ACL and SMB behavior are still not implemented."
+    blockers: []
+    open_questions:
+      - "Resolved: increment 3 ends at dedup execution, missing-feature handling, and execution-mode guarding."
+  - id: "increment-4"
+    status: "complete"
+    summary: "ACL helpers, HQ principal-state backup, standalone and optional identity restore, and the full RunIdentityCleanup confirmation flow are implemented and tested."
+    owner: "powershell-pair-coder"
+    tag: "configure-hq-increment-4"
+    stash_ref: "stash@{0}"
+    checkpoint_ref: "daf202d"
+    qa_tags: ["ready-for-merge", "risk-accepted"]
+    qa_commentary: "Increment 4 is green on the ACL helpers, principal-state export, standalone and optional identity restore, ACL application inside activation, saved-state cleanup planning, and the full RunIdentityCleanup confirmation flow. The direction matches the lab topology: HQ-local principals, group-based human access, and HQ-authenticated SMB sessions for P50 and WSL2. The increment is closed out in commit daf202d and tagged as configure-hq-increment-4."
+    qa_next_steps:
+      - "Start increment 5 at the SMB publishing boundary."
+      - "Keep the increment-4 stash entries only as historical lineage."
+    quality_risks:
+      - "The VHDX parent/differencing chain over SMB is still an accepted lab risk."
+      - "Guest-local identity mirroring is convenient but remains less robust than a shared domain or trust model."
+      - "The identity revert path still depends on an operator confirmation flow and is not a one-shot automatic revert."
+      - "SMB behavior remains out of scope and unimplemented in code."
+    blockers: []
+    open_questions:
+      - "Resolved: increment 4 will use HQ-local groups plus HQ\\svc_lab instead of abstract domain groups or Everyone."
+      - "Resolved: WSL2 access from P50 will be modeled through HQ-authenticated SMB sessions rather than direct P50 principals."
+  - id: "increment-5"
+    status: "complete"
+    summary: "SMB share provisioning has resumed from the managed-folder contract and now creates or verifies shares after ACL setup."
+    owner: "powershell-pair-coder"
+    tag: ""
+    stash_ref: ""
+    checkpoint_ref: "5e6fb94"
+    qa_tags: ["ready-for-merge"]
+    qa_commentary: "Increment 5 is complete on dev for the SMB publication boundary. Commit 5e6fb94 saves the first SMB publication slice plus the repo-bootstrap cleanup, and the SMB path has now been verified on the guest. The iSCSI design note remains a separate upcoming tool boundary rather than part of the finished SMB acceptance scope."
+    qa_next_steps:
+      - "Save and preserve the SMB closeout state."
+      - "Start a separate iSCSI tool at the Lab VHDX discovery boundary."
+      - "Validate the Windows support boundary for publishing the writable child disk through iSCSI before any target-provisioning code begins."    
+    quality_risks:
+      - "SMB cmdlet behavior can vary across guest editions and installed feature sets."
+      - "The VHDX parent/differencing chain over SMB remains an accepted lab risk."
+      - "Windows iSCSI target support for publishing the differencing child disk is not yet verified."
+    blockers: []
+    open_questions:
+      - "Resolved for SMB closeout: the current tool stops at the verified SMB publication boundary."
+      - "Open for the new iSCSI tool: which Lab-backed child VHDX is the safe publication candidate?"
+hotfix_tracks:
+  - id: "bugfix-local-sam-identity-fallback"
+    status: "merged"
+    branch: "bugfix"
+    checkpoint_ref: "3758619"
+    base_checkpoint_ref: "daf202d"
+    summary: "Harden HQ-local identity restore against hidden local SAM principals that LocalAccounts cmdlets fail to discover or manage reliably."
+    qa_tags: ["ready-for-merge"]
+    qa_commentary: "The bugfix track was completed and merged into dev. It covers ADSI-backed local SAM principal discovery, collision detection, membership enumeration, membership add/remove fallbacks, metadata-import guarding for identity-only guest flows, tolerant cleanup handling when local principal deletion reports `was not found`, refreshed drive-letter discovery after online transitions, duplicate-create tolerance for hidden existing principals, and restore-time hidden-local-SAM verification."
+    qa_next_steps:
+      - "Use dev as the continuation branch."
+      - "Resume increment 5 at the SMB publishing boundary."
+    quality_risks:
+      - "Hidden local SAM membership behavior may still vary across guest environments."
+      - "The VHDX parent/differencing chain over SMB remains an accepted lab risk outside this hotfix."
+    blockers: []
+    open_questions:
+      - "Resolved in guest reruns: cleanup no longer repeats phantom local group removals after deletion."
+      - "Resolved in guest reruns and the current working slice: post-activation drive-letter refresh and restore verification now address the latest hidden-principal restore failures."
+stash_entries:
+  - timestamp: "2026-03-25T00:00:00+00:00"
+    increment: "increment-4"
+    status: "wip"
+    stash_ref: "stash@{0}"
+    message: "Checkpointed cleanup confirmation flow inside RunIdentityCleanup"
+    notes: "Includes planned-removal table output, per-principal confirmation for users and groups, workflow updates, and guide updates for increment-4 closeout."
+  - timestamp: "2026-03-24T14:44:02+00:00"
+    increment: "increment-4"
+    status: "wip"
+    stash_ref: "stash@{1}"
+    message: "Checkpointed principal-state backup slice with comment alignment"
+    notes: "Includes ACL helpers, HQ principal-state export entrypoint, lab-aligned tests, comment-first cleanup, and temp-file cleanup in the export test."
+  - timestamp: "2026-03-23T19:03:30+00:00"
+    increment: "increment-2"
+    status: "wip"
+    stash_ref: "stash@{2}"
+    message: "Manual VM selection and app host module flow"
+    notes: "Checkpoint after adding host VM inventory export, selected-VM metadata export, and guest consumption of the selected module. Resume by applying stash@{0}."
+  - timestamp: "2026-03-23T14:30:21+00:00"
+    increment: "increment-2"
+    status: "wip"
+    stash_ref: "stash@{3}"
+    message: "Host metadata module flow under app"
+    notes: "Earlier checkpoint before the manual VM-selection workflow replaced auto-detection."
+  - timestamp: "2026-03-23T00:00:00"
+    increment: "increment-2"
+    status: "wip"
+    stash_ref: "stash@{2}"
+    message: "Orchestration wired with role metadata"
+    notes: "Resume by applying stash@{2}. This checkpoint includes role mapping merged into Invoke-HqDiskActivation output."
+  - timestamp: "2026-03-23T00:00:00"
+    increment: "increment-2"
+    status: "wip"
+    stash_ref: "stash@{3}"
+    message: "Completed role-mapping contract slice"
+    notes: "Resume by applying stash@{3}. This checkpoint includes ShareDrive, ExpectedDriveLetter, DedupEnabled, and unknown-path failure coverage."
+  - timestamp: "2026-03-18T00:00:00"
+    increment: "increment-2"
+    status: "blocked"
+    stash_ref: "stash@{4}"
+    message: "Blocked by sharedisk decryption/file-use issue during metadata expansion"
+    notes: "Historical blocker checkpoint. ShareDrive path is V:\\VHDs\\disks\\sharedisk.vhdx."
+  - timestamp: "2026-03-16T14:36:42"
+    increment: "increment-2"
+    status: "wip"
+    stash_ref: "stash@{5}"
+    message: "Paused after first green role-mapping slice"
+    notes: "Earliest green increment-2 slice before metadata export and orchestration wiring."
