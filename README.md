@@ -1,1 +1,1 @@
-# Just a quick readme
+# Just a quick readme for ChatGpt
