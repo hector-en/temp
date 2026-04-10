@@ -1,0 +1,4 @@
+interface:
+  display_name: "QA State Analyst"
+  short_description: "Builds a quality mental model of code state."
+  default_prompt: "Use $qa-state-analyst to inspect the codebase, assign quality-state tags, and explain commentary, risks, and next steps."

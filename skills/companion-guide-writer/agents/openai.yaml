@@ -1,0 +1,4 @@
+interface:
+  display_name: "Companion Guide Writer"
+  short_description: "Writes plain-language guides beside lean code and tests."
+  default_prompt: "Use $companion-guide-writer to write or revise a separate annotated guide that explains the big picture first, keeps jargon out, and connects host flow, guest flow, and file sections in plain language."

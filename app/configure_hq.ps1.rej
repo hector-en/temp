@@ -1,0 +1,22 @@
+--- configure_hq.ps1	2026-04-10 00:00:00.000000000 +0100
++++ configure_hq.ps1	2026-04-10 00:00:00.000000000 +0100
+@@ -3122,8 +3122,7 @@
+ 
+     # Add every existing child VHDX under the frontend share.
+     $childChoices += @(
+-        Get-ChildItem -Path $ChildRootPath -Recurse -File -Filter '*.vhdx' -ErrorAction SilentlyContinue |
+-            Sort-Object FullName |
++        Get-ChildItem -Path $ChildRootPath -Recurse -File -Filter '*.vhdx' -ErrorAction SilentlyContinue |
+             ForEach-Object {
+                 [pscustomobject]@{
+                     Action        = 'UseExisting'
+@@ -3145,8 +3144,7 @@
+ 
+     # Add every existing parent VHDX under the base-image share.
+     $parentChoices += @(
+-        Get-ChildItem -Path $ParentRootPath -Recurse -File -Filter '*.vhdx' -ErrorAction SilentlyContinue |
+-            Sort-Object FullName |
++        Get-ChildItem -Path $ParentRootPath -Recurse -File -Filter '*.vhdx' -ErrorAction SilentlyContinue |
+             ForEach-Object {
+                 [pscustomobject]@{
+                     Action        = 'UseExisting'

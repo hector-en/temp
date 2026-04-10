@@ -3124,6 +3124,7 @@ function Get-HqLabVhdDiscoveryChoices {
     # Add every existing child VHDX under the frontend share.
     $childChoices += @(
         Get-ChildItem -Path $ChildRootPath -Recurse -File -Filter '*.vhdx' -ErrorAction SilentlyContinue |
+            Sort-Object FullName |
             ForEach-Object {
                 [pscustomobject]@{
                     Action        = 'UseExisting'
@@ -3149,6 +3150,7 @@ function Get-HqLabVhdDiscoveryChoices {
     # Add every existing parent VHDX under the base-image share.
     $parentChoices += @(
         Get-ChildItem -Path $ParentRootPath -Recurse -File -Filter '*.vhdx' -ErrorAction SilentlyContinue |
+            Sort-Object FullName |
             ForEach-Object {
                 [pscustomobject]@{
                     Action        = 'UseExisting'

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SCRUM Product Owner"
+  short_description: "Builds sprint stories and testable acceptance criteria."
+  default_prompt: "Use $scrum-product-owner to turn a goal into sprint stories and acceptance criteria."

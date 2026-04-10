@@ -1,0 +1,4 @@
+interface:
+  display_name: "SCRUM PowerShell TDD Engineer"
+  short_description: "Delivers PowerShell slices with strict red-green-refactor."
+  default_prompt: "Use $scrum-powershell-tdd to implement the next PowerShell increment with red-green-refactor."

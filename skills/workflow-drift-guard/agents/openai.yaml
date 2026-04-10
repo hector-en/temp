@@ -1,0 +1,4 @@
+interface:
+  display_name: "Workflow Drift Guard"
+  short_description: "Checks mode, init, and comment-first compliance."
+  default_prompt: "Use $workflow-drift-guard to assess workflow drift, score its severity, and recommend the smallest correction before coding continues."

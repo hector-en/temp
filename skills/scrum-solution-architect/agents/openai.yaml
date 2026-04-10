@@ -1,0 +1,4 @@
+interface:
+  display_name: "SCRUM Solution Architect"
+  short_description: "Designs DDD boundaries for infra automation delivery."
+  default_prompt: "Use $scrum-solution-architect to define domain language, boundaries, and design constraints."

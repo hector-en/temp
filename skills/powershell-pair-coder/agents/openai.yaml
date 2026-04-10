@@ -1,0 +1,4 @@
+interface:
+  display_name: "PowerShell Pair Coder"
+  short_description: "Guides novice-friendly PowerShell pair programming."
+  default_prompt: "Use $powershell-pair-coder in comments-first mode to co-create a PowerShell change by first writing intent comments into the real files, then embedding those comments into the local code/test scaffold after developer feedback without copying example formatting 1:1."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SCRUM Stash Master"
+  short_description: "Tracks stash-based increment state and blockers."
+  default_prompt: "Use $scrum-stash-master to track increment status, blockers, and git stash state for this codebase."
