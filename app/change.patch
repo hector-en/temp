@@ -1,0 +1,6 @@
+--- fileA.txt
++++ fileA.txt
+@@ -1,2 +1,2 @@
+-This is line A
++This is SPARTA:
+ This is line B, or otherwise #2.

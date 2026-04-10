@@ -1,0 +1,61 @@
+--- authoritative-status.md
++++ authoritative-status.md
+@@ -10,13 +10,13 @@
+-- Current focus: `iscsi tool planning`
++- Current focus: `iscsi-tool-lab-vhdx-discovery`
+ - Overall status: `active`
+-- Last reviewed: `2026-04-03`
+-- Active branch: `dev`
++- Last reviewed: `2026-04-08`
++- Active branch: `feat/iscsi`
+ - Structured backing store: `workflow/stash-memory.yaml`
+ 
+ ## Current Increment
+ 
+-### increment-5
++### iscsi-tool-lab-vhdx-discovery
+ 
+-- Status: `complete`
++- Status: `active`
+ - Owner: `powershell-pair-coder`
+-- Goal: publish the managed HQ role folders through SMB after ACL and identity setup
++- Goal: discover safe Lab child and parent VHDX choices before any creation or iSCSI target publication work
+@@ -54,7 +54,10 @@
+-- Guest reruns now show:
+-  - `.\configure_hq.ps1 -RunIdentityCleanup` completes cleanly with no repeated phantom principal removals
+-  - `.\configure_hq.ps1 -RunActivation -RunIdentityRestore` gets past the prior cleanup and dedup-drive failures that blocked the hotfix track
+-- Increment 5 has now resumed on `dev` at the SMB publishing boundary
+-- The first increment-5 slice adds SMB share provisioning for the managed role folders after ACL setup
++- Guest reruns and the finished SMB closeout established a clean handoff into a separate iSCSI tool boundary
+ - A new design-only iSCSI note now defines how an optional block publication mode would work for a writable child VHDX while keeping the parent VHDX read-only
+-- Historical increment-2 stashes remain available for lineage and rollback analysis
++- A dedicated iSCSI test file now exists at `app/tests/configure_hq.iscsi.Tests.ps1`
++- The current red boundary is confirmed by a failing Pester run because `Get-HqLabVhdDiscoveryChoices` does not exist yet
++- The current discovery slice expects:
++  - existing child VHDX candidates under `\\10.100.0.10\lab\virtual hdds frontends`
++  - existing parent VHDX candidates under `\\10.100.0.10\lab\virtual hdds`
++  - a default create-new option for both child and parent choice sets
++- This slice does not yet create folders, create VHDX files, or publish iSCSI targets
++- Historical SMB and increment-2 checkpoints remain available for lineage and rollback analysis
+@@ -62,15 +62,12 @@
+ ### QA Reading
+ 
+-- Tags: `ready-for-merge`
+-- Commentary: increment 4 remains green at checkpoint `daf202d`, the local-SAM identity hotfix is merged into `dev`, and increment 5 now has a completed SMB publication slice at commit `5e6fb94` with successful guest-side verification. The current tool closes out at the SMB boundary. The iSCSI path remains intentionally separate as a new upcoming tool and should not reopen the finished SMB acceptance scope.
++- Tags: `ready-for-green`, `hypothesis`, `risk-identified`
++- Commentary: the first iSCSI discovery test is in place and failing at the intended missing-function boundary. The finished SMB tool remains closed. The next safe move is the minimal green helper that only enumerates child and parent VHDX choices and returns create-new defaults.
+ - Next steps:
+-  - save and preserve the SMB closeout state
+-  - start a separate iSCSI tool at the Lab VHDX discovery boundary
+-  - validate the Windows support boundary for publishing the writable child disk through iSCSI before any target-provisioning code begins
++  - implement `Get-HqLabVhdDiscoveryChoices`
++  - keep the green slice at discovery only
++  - add a dedicated execution switch after the helper boundary is stable
+ - Quality risks:
+-  - the VHDX parent/differencing chain over SMB is still an accepted lab risk
++  - real share enumeration may expose folder-layout or naming variations beyond the first discovery test
+   - the Windows iSCSI target support boundary for publishing a differencing child disk is still unverified
+-  - guest-local identity mirroring is convenient but remains less robust than a shared domain/trust model
+-  - the identity revert path still depends on an operator confirmation flow and is not a one-shot automatic revert
+-  - SMB behavior is now in code for share creation and access grants, but guest verification is still pending for this first increment-5 slice
++  - operator selection is not yet implemented, only discovery output is defined
