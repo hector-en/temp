@@ -4,6 +4,7 @@ param(
     [switch]$RunIdentityCleanup,
     [switch]$ExportSecurityPrincipalState,
     [switch]$InstallMissingFeatures,
+    [switch]$DiscoverLabVhdChoices,
     [int[]]$TargetDiskNumbers,
     [string]$VmName,
     [string]$MetadataModulePath = (Join-Path $PSScriptRoot 'HqDiskMetadata.psm1'),
@@ -12,6 +13,34 @@ param(
 
 Set-StrictMode -Version Latest
 
+# ---------------------------------------------------------------------
+# Section: run the Lab VHDX discovery helper for the iSCSI workflow
+# ---------------------------------------------------------------------
+
+# Main function: show existing child and parent VHDX choices without creating anything yet.
+if ($DiscoverLabVhdChoices) {
+    $choices = Get-HqLabVhdDiscoveryChoices
+
+    # Explain when the child discovery returned no existing VHDX files.
+    if ($choices.ChildChoices.Count -eq 1) {
+        Write-HqStatus -Phase 'iSCSI' -Message 'No existing child VHDX files were found under the Lab frontend share.' -Level Warning
+    }
+
+    # Show the child VHDX choices for the operator.
+    Write-HqStatus -Phase 'iSCSI' -Message 'Discovered child VHDX choices:' -Level Success
+    $choices.ChildChoices | Format-Table -AutoSize | Out-Host
+
+    # Explain when the parent discovery returned no existing VHDX files.
+    if ($choices.ParentChoices.Count -eq 1) {
+        Write-HqStatus -Phase 'iSCSI' -Message 'No existing parent VHDX files were found under the Lab base-image share.' -Level Warning
+    }
+
+    # Show the parent VHDX choices for the operator.
+    Write-HqStatus -Phase 'iSCSI' -Message 'Discovered parent VHDX choices:' -Level Success
+    $choices.ParentChoices | Format-Table -AutoSize | Out-Host
+
+    return $choices
+}
 # ---------------------------------------------------------------------
 # Section: disk discovery, activation, and the main entrypoint
 # ---------------------------------------------------------------------
