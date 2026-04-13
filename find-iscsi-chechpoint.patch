@@ -1,0 +1,110 @@
+--- workflow/authoritative-status.md	2026-04-10 04:22:48.979310468 +0100
++++ workflow/authoritative-status.md	2026-04-10 08:41:18.879342402 +0100
+@@ -9,7 +9,7 @@
+ 
+ - Current focus: `iscsi-tool-lab-vhdx-discovery`
+ - Overall status: `active`
+-- Last reviewed: `2026-04-08`
++- Last reviewed: `2026-04-10`
+ - Active branch: `feat/iscsi`
+ - Structured backing store: `workflow/stash-memory.yaml`
+ 
+@@ -36,7 +36,7 @@
+ - Increment 3 is complete and tagged as `configure-hq-increment-3`
+ - Increment 4 now has real code and tests for:
+   - managed role ACL definitions and NTFS ACL orchestration helpers
+-  - required HQ principal definitions for mirrored users, ACL groups, and `HQ\\svc_lab`
++  - required HQ principal definitions for mirrored users, ACL groups, and `HQ\svc_lab`
+   - guest-side principal state export and wrapper entrypoint via `-ExportSecurityPrincipalState`
+   - create-or-detect handling for missing required HQ users and groups
+   - required group membership handling for existing HQ users
+@@ -45,39 +45,41 @@
+   - saved-state cleanup planning for added group links and principals
+   - explicit identity cleanup via `-RunIdentityCleanup`, including link removal, planned-removal review, and confirmed user and group deletion in one pass
+   - comment-first cleanup so intent comments sit on the exact code and tests they describe
+-- The Hyper-V host `P50` is not joined to `HQ`, so ACL and SMB policy must be
+-  authored in terms of HQ-local principals rather than `P50\...` identities
+-- WSL2 access from `P50` is expected to arrive through an SMB session
+-  authenticated with HQ-local credentials
++- The Hyper-V host `P50` is not joined to `HQ`, so ACL and SMB policy must be authored in terms of HQ-local principals rather than `P50\...` identities
++- WSL2 access from `P50` is expected to arrive through an SMB session authenticated with HQ-local credentials
+ - Latest increment-4 checkpoint is commit `daf202d` tagged as `configure-hq-increment-4`
+ - The merged bugfix track on `dev` includes refreshed post-activation drive-letter discovery, stricter stale-ADSI cleanup planning, tolerant duplicate-create handling for hidden existing principals, and restore-time hidden-local-SAM verification
+ - Guest reruns and the finished SMB closeout established a clean handoff into a separate iSCSI tool boundary
+ - A new design-only iSCSI note now defines how an optional block publication mode would work for a writable child VHDX while keeping the parent VHDX read-only
+ - A dedicated iSCSI test file now exists at `app/tests/configure_hq.iscsi.Tests.ps1`
+-- The current red boundary is confirmed by a failing Pester run because `Get-HqLabVhdDiscoveryChoices` does not exist yet
+-- The current discovery slice expects:
++- `code_full_summary.txt` now shows `Get-HqLabVhdDiscoveryChoices` implemented and returning both child and parent choice sets with `CreateNew` defaults plus discovered `UseExisting` VHDX entries
++- A follow-up fix is captured in `patches/iscsi-discovery-fix.patch` to preserve choice object creation while removing the premature sort stage
++- The current safe checkpoint is therefore no longer the original missing-function red boundary; it is an implementation-present, verification-pending boundary
++- The current discovery slice remains limited to:
+   - existing child VHDX candidates under `\\10.100.0.10\lab\virtual hdds frontends`
+   - existing parent VHDX candidates under `\\10.100.0.10\lab\virtual hdds`
+   - a default create-new option for both child and parent choice sets
+-- This slice does not yet create folders, create VHDX files, or publish iSCSI targets
++- This slice still does not create folders, create VHDX files, or publish iSCSI targets
+ - Historical SMB and increment-2 checkpoints remain available for lineage and rollback analysis
+ 
+ ### QA Reading
+ 
+-- Tags: `ready-for-green`, `hypothesis`, `risk-identified`
+-- Commentary: the first iSCSI discovery test is in place and failing at the intended missing-function boundary. The finished SMB tool remains closed. The next safe move is the minimal green helper that only enumerates child and parent VHDX choices and returns create-new defaults.
++- Tags: `needs-observation`, `hypothesis`, `risk-identified`
++- Commentary: the discovery helper is present in the summarized codebase, and a small follow-up patch already adjusts its enumeration pipeline. The remaining uncertainty is no longer missing implementation; it is whether the latest helper and test file are green together on the real tree.
+ - Next steps:
+-  - implement `Get-HqLabVhdDiscoveryChoices`
+-  - keep the green slice at discovery only
+-  - add a dedicated execution switch after the helper boundary is stable
++  - run the dedicated iSCSI Pester file against the current branch state
++  - confirm `Get-HqLabVhdDiscoveryChoices` still returns the expected create-new defaults and discovered VHDX entries after the fix patch
++  - keep the next green slice limited to discovery validation or a dedicated execution switch, not target publication
+ - Quality risks:
+   - real share enumeration may expose folder-layout or naming variations beyond the first discovery test
+   - the Windows iSCSI target support boundary for publishing a differencing child disk is still unverified
++  - operator selection is not yet implemented; only discovery output is defined
+ 
+ ### Blockers
+ 
+-- no active blockers remain for the completed SMB closeout
++- no blocker prevents the discovery helper itself
+ - the iSCSI publication path is intentionally split into a separate upcoming tool and still needs its own implementation plan
++- the later iSCSI publication path still depends on validating the Windows differencing-disk support boundary
+ 
+ ### Open Questions
+ 
+@@ -87,6 +89,7 @@
+ - Resolved: increment 3 ends at dedup execution, missing-feature handling, and execution-mode guarding.
+ - Resolved: increment 4 will use HQ-local groups plus `HQ\svc_lab` instead of abstract domain groups or `Everyone`.
+ - Resolved: WSL2 access from `P50` will be modeled through HQ-authenticated SMB sessions rather than direct `P50\...` principals.
++- Open: should the next slice stop at validation of the discovery helper, or immediately add the separate execution switch once the dedicated iSCSI test file is green?
+ 
+ ## Increment Ledger
+ 
+@@ -97,6 +100,7 @@
+ | `increment-3` | `complete` | Dedup execution is wired into the guest workflow with feature checks, optional installation, and clear operator feedback. | `powershell-pair-coder` | `configure-hq-increment-3` |
+ | `increment-4` | `complete` | ACL helpers, HQ principal-state backup, standalone and optional identity restore, and the full `-RunIdentityCleanup` confirmation flow are implemented and tested. | `powershell-pair-coder` | `configure-hq-increment-4` |
+ | `increment-5` | `complete` | SMB share provisioning is complete from the managed-folder contract and has been verified on the guest after ACL setup. | `powershell-pair-coder` | |
++| `iscsi-tool-lab-vhdx-discovery` | `active` | Discovery helper and dedicated test both exist in the summarized codebase; the current checkpoint is verification of the implemented helper before widening the tool. | `powershell-pair-coder` | |
+ 
+ ## Stakeholder Feedback
+ 
+@@ -117,16 +121,4 @@
+ - Latest progress report: `bugfix` has been merged into `dev` through merge commit `b2b64d1`.
+ - Latest progress report: increment 5 has resumed with SMB share provisioning after ACL setup, and `app/tests/configure_hq.Tests.ps1` is green with 79 passing tests.
+ - Latest progress report: commit `5e6fb94` saves the legacy SMB publication alignment, the repo-bootstrap move into `AGENTS.md`, and the `configure_hq` doc move into `app/docs`.
+-- Latest progress report: `app/docs/configure_hq.iscsi-design.md` now captures a design-only alternate publication mode where the child VHDX is published through iSCSI and the parent remains read-only.
+-- Latest progress report: a dedicated red iSCSI discovery test now exists for `Get-HqLabVhdDiscoveryChoices`.
+-- Latest progress report: the current iSCSI slice is ready for green at the missing-function boundary.
+-
+-## Update Rules
+-
+-- `qa-state-analyst` updates QA tags, commentary, risks, and next steps.
+-- `scrum-stash-master` updates session state, blockers, and stash-related notes.
+-- `powershell-pair-coder` updates progress after tests, patches, and verification.
+-- `scrum-product-owner` updates increment intent, acceptance direction, and stakeholder feedback.
+-
+-Keep this file readable for humans. Keep `workflow/stash-memory.yaml` aligned so
+-agents still have a structured artifact to query.
+\ No newline at end of file
++- Latest progress report: the code summary now shows the iSCSI discovery helper implemented, with a follow-up helper fix recorded in `patches/iscsi-discovery-fix.patch`; the remaining work is live verification on the current tree.
