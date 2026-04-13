@@ -7,19 +7,19 @@ tests, or stash history.
 
 ## Current Snapshot
 
-- Current focus: `iscsi-tool-lab-vhdx-discovery`
+- Current focus: `iscsi-tool-lab-vhdx-operator-selection`
 - Overall status: `active`
-- Last reviewed: `2026-04-10`
+- Last reviewed: `2026-04-13`
 - Active branch: `feat/iscsi`
 - Structured backing store: `workflow/stash-memory.yaml`
 
 ## Current Increment
 
-### iscsi-tool-lab-vhdx-discovery
+### iscsi-tool-lab-vhdx-operator-selection
 
 - Status: `active`
 - Owner: `powershell-pair-coder`
-- Goal: discover safe Lab child and parent VHDX choices before any creation or iSCSI target publication work
+- Goal: let the operator choose a discovered Lab child and parent VHDX entry, while keeping creation and iSCSI publication out of scope
 
 ## Hotfix Track
 
@@ -52,32 +52,33 @@ tests, or stash history.
 - Guest reruns and the finished SMB closeout established a clean handoff into a separate iSCSI tool boundary
 - A new design-only iSCSI note now defines how an optional block publication mode would work for a writable child VHDX while keeping the parent VHDX read-only
 - A dedicated iSCSI test file now exists at `app/tests/configure_hq.iscsi.Tests.ps1`
-- `code_full_summary.txt` now shows `Get-HqLabVhdDiscoveryChoices` implemented and returning both child and parent choice sets with `CreateNew` defaults plus discovered `UseExisting` VHDX entries
-- A follow-up fix is captured in `patches/iscsi-discovery-fix.patch` to preserve choice object creation while removing the premature sort stage
-- The current safe checkpoint is therefore no longer the original missing-function red boundary; it is an implementation-present, verification-pending boundary
-- The current discovery slice remains limited to:
-  - existing child VHDX candidates under `\\10.100.0.10\lab\virtual hdds frontends`
-  - existing parent VHDX candidates under `\\10.100.0.10\lab\virtual hdds`
-  - a default create-new option for both child and parent choice sets
-- This slice still does not create folders, create VHDX files, or publish iSCSI targets
+- `Get-HqLabVhdDiscoveryChoices` is implemented and returns both child and parent choice sets with `CreateNew` defaults plus discovered `UseExisting` VHDX entries
+- `configure_hq.ps1` already exposes the standalone discovery entrypoint through `[switch]$DiscoverLabVhdChoices`
+- The dedicated iSCSI Pester file has been run against the current tree and is green with `Passed: 1 Failed: 0`
+- The discovery increment is therefore complete at the verified helper-and-switch boundary
+- The next active slice is now limited to:
+  - mapping discovered child and parent choice rows into an operator-facing selection flow
+  - preserving the existing create-new placeholders without creating folders or VHDX files yet
+  - returning the selected choice objects cleanly for a later execution or publication step
+- This next slice still does not create folders, create VHDX files, or publish iSCSI targets
 - Historical SMB and increment-2 checkpoints remain available for lineage and rollback analysis
 
 ### QA Reading
 
-- Tags: `needs-observation`, `hypothesis`, `risk-identified`
-- Commentary: the discovery helper is present in the summarized codebase, and a small follow-up patch already adjusts its enumeration pipeline. The remaining uncertainty is no longer missing implementation; it is whether the latest helper and test file are green together on the real tree.
+- Tags: `ready-for-red`, `risk-identified`, `needs-criteria`
+- Commentary: the discovery helper and standalone discovery switch are already present and verified green. The next smallest slice is no longer another execution switch; it is the operator-selection boundary that consumes the discovered child and parent choice rows without widening into create or publish behavior.
 - Next steps:
-  - run the dedicated iSCSI Pester file against the current branch state
-  - confirm `Get-HqLabVhdDiscoveryChoices` still returns the expected create-new defaults and discovered VHDX entries after the fix patch
-  - keep the next green slice limited to discovery validation or a dedicated execution switch, not target publication
+  - write the next failing test for operator selection over discovered child and parent choices
+  - keep the selection contract narrow and return structured selected rows rather than performing creation or publication
+  - preserve `-DiscoverLabVhdChoices` as the non-destructive inspection path
 - Quality risks:
   - real share enumeration may expose folder-layout or naming variations beyond the first discovery test
   - the Windows iSCSI target support boundary for publishing a differencing child disk is still unverified
-  - operator selection is not yet implemented; only discovery output is defined
+  - selection UX may drift into creation or publication logic unless the slice boundary stays explicit
 
 ### Blockers
 
-- no blocker prevents the discovery helper itself
+- no blocker prevents the operator-selection slice itself
 - the iSCSI publication path is intentionally split into a separate upcoming tool and still needs its own implementation plan
 - the later iSCSI publication path still depends on validating the Windows differencing-disk support boundary
 
@@ -89,7 +90,8 @@ tests, or stash history.
 - Resolved: increment 3 ends at dedup execution, missing-feature handling, and execution-mode guarding.
 - Resolved: increment 4 will use HQ-local groups plus `HQ\svc_lab` instead of abstract domain groups or `Everyone`.
 - Resolved: WSL2 access from `P50` will be modeled through HQ-authenticated SMB sessions rather than direct `P50\...` principals.
-- Open: should the next slice stop at validation of the discovery helper, or immediately add the separate execution switch once the dedicated iSCSI test file is green?
+- Resolved: the standalone discovery switch already exists as `-DiscoverLabVhdChoices`.
+- Open: should operator selection use index-based choice input, path-based choice input, or support both in the first slice?
 
 ## Increment Ledger
 
@@ -100,7 +102,8 @@ tests, or stash history.
 | `increment-3` | `complete` | Dedup execution is wired into the guest workflow with feature checks, optional installation, and clear operator feedback. | `powershell-pair-coder` | `configure-hq-increment-3` |
 | `increment-4` | `complete` | ACL helpers, HQ principal-state backup, standalone and optional identity restore, and the full `-RunIdentityCleanup` confirmation flow are implemented and tested. | `powershell-pair-coder` | `configure-hq-increment-4` |
 | `increment-5` | `complete` | SMB share provisioning is complete from the managed-folder contract and has been verified on the guest after ACL setup. | `powershell-pair-coder` | |
-| `iscsi-tool-lab-vhdx-discovery` | `active` | Discovery helper and dedicated test both exist in the summarized codebase; the current checkpoint is verification of the implemented helper before widening the tool. | `powershell-pair-coder` | |
+| `iscsi-tool-lab-vhdx-discovery` | `complete` | Discovery helper is implemented, the standalone discovery switch exists, and the dedicated iSCSI test is green on the current tree. | `powershell-pair-coder` | |
+| `iscsi-tool-lab-vhdx-operator-selection` | `active` | Next slice starts at selecting discovered child and parent VHDX choices without widening into create or publication behavior. | `powershell-pair-coder` | |
 
 ## Stakeholder Feedback
 
@@ -121,4 +124,6 @@ tests, or stash history.
 - Latest progress report: `bugfix` has been merged into `dev` through merge commit `b2b64d1`.
 - Latest progress report: increment 5 has resumed with SMB share provisioning after ACL setup, and `app/tests/configure_hq.Tests.ps1` is green with 79 passing tests.
 - Latest progress report: commit `5e6fb94` saves the legacy SMB publication alignment, the repo-bootstrap move into `AGENTS.md`, and the `configure_hq` doc move into `app/docs`.
-- Latest progress report: the code summary now shows the iSCSI discovery helper implemented, with a follow-up helper fix recorded in `patches/iscsi-discovery-fix.patch`; the remaining work is live verification on the current tree.
+- Latest progress report: the code summary shows the iSCSI discovery helper implemented, with a follow-up helper fix recorded in `patches/iscsi-discovery-fix.patch`.
+- Latest progress report: `Invoke-Pester .\app\tests\configure_hq.iscsi.Tests.ps1` is green with `Passed: 1 Failed: 0`, so the discovery increment is complete at the verified helper boundary.
+- Latest progress report: the standalone discovery entrypoint already exists as `[switch]$DiscoverLabVhdChoices`, so the next slice has shifted to operator selection.

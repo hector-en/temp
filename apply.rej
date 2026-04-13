@@ -1,0 +1,19 @@
+--- authoritative-status.md
++++ authoritative-status.md
+@@ -6,14 +6,14 @@
+ ## Current Snapshot
+ 
+ - Current focus: `iscsi-tool-lab-vhdx-discovery`
+ - Overall status: `active`
+-- Last reviewed: `2026-04-10`
++- Last reviewed: `2026-04-13`
+ - Active branch: `feat/iscsi`
+ - Structured backing store: `workflow/stash-memory.yaml`
+ 
+ ## Current Increment
+ 
+ ### iscsi-tool-lab-vhdx-discovery
+ 
+-- Status: `active`
++- Status: `complete`
+ - Owner: `powershell-pair-coder`

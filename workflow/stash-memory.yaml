@@ -2,9 +2,9 @@ schema_version: 1
 project: configure-hq
 human_status_file: "workflow/authoritative-status.md"
 global:
-  current_focus: "iscsi-tool-lab-vhdx-discovery"
+  current_focus: "iscsi-tool-lab-vhdx-operator-selection"
   overall_status: "active"
-  last_reviewed: 2026-04-08"
+  last_reviewed: "2026-04-13"
   active_branch: "feat/iscsi"
   active_checkpoint: "5e6fb94"
   stakeholder_feedback:
@@ -83,7 +83,7 @@ increments:
       - "Host execution now depends on the operator selecting the correct Hyper-V VM when writing role metadata."
     blockers: []
     open_questions:
-      - "Resolved: use V:\\VHDs\\disks\\sharedisk.vhdx for ShareDrive."
+      - "Resolved: use V:\VHDs\disks\sharedisk.vhdx for ShareDrive."
       - "Resolved: guest activation now consumes a host-generated metadata module instead of relying only on guest-visible heuristics."
       - "Resolved: manual VM selection replaces auto-detection as the preferred host workflow."
       - "Resolved: increment 2 ends at metadata import, activation orchestration, and validation reporting."
@@ -123,7 +123,7 @@ increments:
       - "SMB behavior remains out of scope and unimplemented in code."
     blockers: []
     open_questions:
-      - "Resolved: increment 4 will use HQ-local groups plus HQ\\svc_lab instead of abstract domain groups or Everyone."
+      - "Resolved: increment 4 will use HQ-local groups plus HQ\svc_lab instead of abstract domain groups or Everyone."
       - "Resolved: WSL2 access from P50 will be modeled through HQ-authenticated SMB sessions rather than direct P50 principals."
   - id: "increment-5"
     status: "complete"
@@ -137,7 +137,7 @@ increments:
     qa_next_steps:
       - "Save and preserve the SMB closeout state."
       - "Start a separate iSCSI tool at the Lab VHDX discovery boundary."
-      - "Validate the Windows support boundary for publishing the writable child disk through iSCSI before any target-provisioning code begins."    
+      - "Validate the Windows support boundary for publishing the writable child disk through iSCSI before any target-provisioning code begins."
     quality_risks:
       - "SMB cmdlet behavior can vary across guest editions and installed feature sets."
       - "The VHDX parent/differencing chain over SMB remains an accepted lab risk."
@@ -146,28 +146,49 @@ increments:
     open_questions:
       - "Resolved for SMB closeout: the current tool stops at the verified SMB publication boundary."
       - "Open for the new iSCSI tool: which Lab-backed child VHDX is the safe publication candidate?"
-  - id: iscsi-tool-lab-vhdx-discovery"
-    status: "active"
-    summary: "A dedicated red iSCSI discovery test now defines child and parent VHDX choice enumeration plus create-new defaults."
+  - id: "iscsi-tool-lab-vhdx-discovery"
+    status: "complete"
+    summary: "Get-HqLabVhdDiscoveryChoices returns child and parent VHDX choice sets with create-new defaults, and the standalone discovery switch is already present and verified."
     owner: "powershell-pair-coder"
     tag: ""
     stash_ref: "stash@{0}"
     checkpoint_ref: "5e6fb94"
-    qa_tags: ["ready-for-green", "hypothesis", "risk-identified"]
-    qa_commentary: "The iSCSI slice is at a clean red boundary. The new test fails because Get-HqLabVhdDiscoveryChoices does not exist yet, which is the intended green entrypoint."
+    qa_tags: ["ready-for-merge", "risk-identified"]
+    qa_commentary: "The discovery-only iSCSI slice is green. Get-HqLabVhdDiscoveryChoices is implemented, the dedicated Pester file passes on the current tree, and -DiscoverLabVhdChoices already exposes the standalone non-destructive execution path."
     qa_next_steps:
-      - "Implement the minimal Get-HqLabVhdDiscoveryChoices function."
-      - "Return existing child and parent VHDX candidates plus create-new defaults."
-      - "Keep creation and iSCSI publication out of this green slice."    
+      - "Preserve the verified discovery checkpoint."
+      - "Start the next iSCSI slice at operator selection."
+      - "Keep creation and iSCSI publication out of scope until the Windows support boundary is validated."
     quality_risks:
       - "Real share enumeration may expose folder-layout differences beyond the first red test."
       - "Windows iSCSI target support for publishing the differencing child disk is still not verified."
-      - "Interactive operator selection is still out of scope for the current slice."
+      - "Interactive operator selection is still out of scope for the completed discovery slice."
     blockers: []
     open_questions:
       - "Which Lab-backed child VHDX should become the safe publication candidate after discovery?"
       - "What naming rules should the create-new defaults use?"
-      - "Should the standalone discovery switch land in the same slice or the next one?"
+      - "The standalone discovery switch is resolved and already present."
+  - id: "iscsi-tool-lab-vhdx-operator-selection"
+    status: "active"
+    summary: "Next slice starts at selecting discovered child and parent VHDX choices without widening into create or publication behavior."
+    owner: "powershell-pair-coder"
+    tag: ""
+    stash_ref: "stash@{0}"
+    checkpoint_ref: "5e6fb94"
+    qa_tags: ["ready-for-red", "needs-criteria", "risk-identified"]
+    qa_commentary: "Discovery and the standalone discovery switch are already done. The next smallest safe slice is the operator-selection boundary that consumes discovered child and parent choice rows and returns selected rows for later steps."
+    qa_next_steps:
+      - "Write the failing operator-selection test."
+      - "Define the narrowest selection contract for child and parent choice inputs."
+      - "Keep creation and iSCSI publication explicitly out of scope."
+    quality_risks:
+      - "Selection UX may accidentally widen into creation or publication logic."
+      - "Real share layouts may create ambiguous choice labels that need stable display formatting."
+      - "Windows iSCSI target support remains unverified and must not be folded into this slice."
+    blockers: []
+    open_questions:
+      - "Should operator selection use index-based choice input, path-based choice input, or support both in the first slice?"
+      - "Should invalid selection handling stop at validation errors, or offer re-prompt behavior only in a later slice?"
 hotfix_tracks:
   - id: "bugfix-local-sam-identity-fallback"
     status: "merged"
@@ -229,7 +250,7 @@ stash_entries:
     status: "blocked"
     stash_ref: "stash@{4}"
     message: "Blocked by sharedisk decryption/file-use issue during metadata expansion"
-    notes: "Historical blocker checkpoint. ShareDrive path is V:\\VHDs\\disks\\sharedisk.vhdx."
+    notes: "Historical blocker checkpoint. ShareDrive path is V:\VHDs\disks\sharedisk.vhdx."
   - timestamp: "2026-03-16T14:36:42"
     increment: "increment-2"
     status: "wip"
@@ -254,3 +275,15 @@ stash_entries:
     stash_ref: "stash@{2}"
     message: "iscsi-tool-lab-vhdx-discovery:red-test-child-vhdx"
     notes: "Historical first red child-VHDX discovery checkpoint kept for lineage."
+  - timestamp: "2026-04-13T00:00:00+01:00"
+    increment: "iscsi-tool-lab-vhdx-discovery"
+    status: "green"
+    stash_ref: "stash@{0}"
+    message: "green: discovery helper implemented and dedicated Pester file passing"
+    notes: "Get-HqLabVhdDiscoveryChoices is present on the current tree and Invoke-Pester .\\app\\tests\\configure_hq.iscsi.Tests.ps1 returns Passed: 1 Failed: 0."
+  - timestamp: "2026-04-13T00:00:00+01:00"
+    increment: "iscsi-tool-lab-vhdx-operator-selection"
+    status: "wip"
+    stash_ref: "stash@{0}"
+    message: "next: operator selection after verified discovery and existing standalone switch"
+    notes: "Workflow recalibrated after confirming that [switch]$DiscoverLabVhdChoices already exists in configure_hq.ps1, so the next slice starts at operator selection rather than another execution switch."
