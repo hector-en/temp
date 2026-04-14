@@ -175,11 +175,11 @@ increments:
     tag: ""
     stash_ref: "stash@{0}"
     checkpoint_ref: "5e6fb94"
-    qa_tags: ["ready-for-red", "needs-criteria", "risk-identified"]
-    qa_commentary: "Discovery and the standalone discovery switch are already done. The next smallest safe slice is the operator-selection boundary that consumes discovered child and parent choice rows and returns selected rows for later steps."
+    qa_tags: ["ready-for-green", "needs-observation", "risk-identified"]
+    qa_commentary: "Discovery and the standalone discovery switch are already done and now observed on the real tree. The Windows-local script successfully enumerates the Lab shares as P50\\labuser once the discovery entrypoint runs after the function definitions, and the remaining green fix is the missing ParentChoice property on the returned selection object."
     qa_next_steps:
-      - "Write the failing operator-selection test."
-      - "Define the narrowest selection contract for child and parent choice inputs."
+      - "Add the missing ParentChoice property to Resolve-HqLabVhdOperatorSelection."
+      - "Preserve the reordered script entry flow so discovery runs after function definitions are loaded."
       - "Keep creation and iSCSI publication explicitly out of scope."
     quality_risks:
       - "Selection UX may accidentally widen into creation or publication logic."

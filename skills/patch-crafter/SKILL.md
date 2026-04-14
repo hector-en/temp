@@ -35,6 +35,23 @@ Prefer one of these:
 nl -ba path/to/file | sed -n 'START,ENDp'
 nl -ba path/to/file | tail -n 80
 ```
+or output all commands into a log file like in this template:
+```bash
+mkdir -p patches/logs
+{
+  echo "=== authoritative-status head ==="
+  nl -ba workflow/authoritative-status.md | sed -n '1,220p'
+  echo
+  echo "=== authoritative-status tail ==="
+  nl -ba workflow/authoritative-status.md | tail -n 120
+  echo
+  echo "=== stash-memory head ==="
+  nl -ba workflow/stash-memory.yaml | sed -n '1,260p'
+  echo
+  echo "=== stash-memory tail ==="
+  nl -ba workflow/stash-memory.yaml | tail -n 180
+} > patches/logs/workflow-line-anchors.log
+```
 
 If the local repo output is not available, inspect the GitHub file and then ask the user for the numbered local snippet before finalizing the patch.
 

@@ -54,22 +54,23 @@ tests, or stash history.
 - A dedicated iSCSI test file now exists at `app/tests/configure_hq.iscsi.Tests.ps1`
 - `Get-HqLabVhdDiscoveryChoices` is implemented and returns both child and parent choice sets with `CreateNew` defaults plus discovered `UseExisting` VHDX entries
 - `configure_hq.ps1` already exposes the standalone discovery entrypoint through `[switch]$DiscoverLabVhdChoices`
-- The dedicated iSCSI Pester file has been run against the current tree and is green with `Passed: 1 Failed: 0`
+- The dedicated iSCSI Pester file now has discovery green and operator selection red, with the remaining failure being the missing `ParentChoice` property on the returned selection object
 - The discovery increment is therefore complete at the verified helper-and-switch boundary
 - The next active slice is now limited to:
   - mapping discovered child and parent choice rows into an operator-facing selection flow
   - preserving the existing create-new placeholders without creating folders or VHDX files yet
   - returning the selected choice objects cleanly for a later execution or publication step
+- Running the Windows-local script as `P50\labuser` now successfully enumerates the Lab child and parent VHDX shares after moving the discovery entry block below the function definitions and main invocation block
 - This next slice still does not create folders, create VHDX files, or publish iSCSI targets
 - Historical SMB and increment-2 checkpoints remain available for lineage and rollback analysis
 
 ### QA Reading
 
-- Tags: `ready-for-red`, `risk-identified`, `needs-criteria`
-- Commentary: the discovery helper and standalone discovery switch are already present and verified green. The next smallest slice is no longer another execution switch; it is the operator-selection boundary that consumes the discovered child and parent choice rows without widening into create or publish behavior.
+- Tags: `ready-for-green`, `needs-observation`, `risk-identified`
+- Commentary: the discovery helper and standalone discovery switch are verified on the real tree, and the Windows-local script now works as `P50\labuser` once the discovery entrypoint runs after the function definitions. The remaining green fix is to return the missing `ParentChoice` property from `Resolve-HqLabVhdOperatorSelection`.
 - Next steps:
-  - write the next failing test for operator selection over discovered child and parent choices
-  - keep the selection contract narrow and return structured selected rows rather than performing creation or publication
+  - add the missing `ParentChoice` property to `Resolve-HqLabVhdOperatorSelection`
+  - preserve the reordered script entry flow so discovery runs after function definitions are loaded
   - preserve `-DiscoverLabVhdChoices` as the non-destructive inspection path
 - Quality risks:
   - real share enumeration may expose folder-layout or naming variations beyond the first discovery test
@@ -127,3 +128,5 @@ tests, or stash history.
 - Latest progress report: the code summary shows the iSCSI discovery helper implemented, with a follow-up helper fix recorded in `patches/iscsi-discovery-fix.patch`.
 - Latest progress report: `Invoke-Pester .\app\tests\configure_hq.iscsi.Tests.ps1` is green with `Passed: 1 Failed: 0`, so the discovery increment is complete at the verified helper boundary.
 - Latest progress report: the standalone discovery entrypoint already exists as `[switch]$DiscoverLabVhdChoices`, so the next slice has shifted to operator selection.
+- Latest progress report: running the Windows-local script as `P50\labuser` now enumerates both Lab child and parent VHDX shares successfully after moving the discovery entry block below the function definitions and main invocation block.
+- Latest progress report: the current operator-selection red-to-green boundary is the missing `ParentChoice` property on the object returned by `Resolve-HqLabVhdOperatorSelection`.

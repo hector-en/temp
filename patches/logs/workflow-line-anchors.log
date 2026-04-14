@@ -1,0 +1,696 @@
+=== authoritative-status head ===
+     1	# Configure HQ Authoritative Status
+     2	
+     3	This file is the human-facing source of truth for active development.
+     4	Agents update it during planning, QA review, coding, and increment closeout so
+     5	stakeholders can read one document instead of reconstructing state from chats,
+     6	tests, or stash history.
+     7	
+     8	## Current Snapshot
+     9	
+    10	- Current focus: `iscsi-tool-lab-vhdx-operator-selection`
+    11	- Overall status: `active`
+    12	- Last reviewed: `2026-04-13`
+    13	- Active branch: `feat/iscsi`
+    14	- Structured backing store: `workflow/stash-memory.yaml`
+    15	
+    16	## Current Increment
+    17	
+    18	### iscsi-tool-lab-vhdx-operator-selection
+    19	
+    20	- Status: `active`
+    21	- Owner: `powershell-pair-coder`
+    22	- Goal: let the operator choose a discovered Lab child and parent VHDX entry, while keeping creation and iSCSI publication out of scope
+    23	
+    24	## Hotfix Track
+    25	
+    26	### bugfix
+    27	
+    28	- Status: `merged`
+    29	- Head checkpoint: `3758619`
+    30	- Base checkpoint: `daf202d`
+    31	- Goal: harden HQ-local identity restore when `LocalAccounts` cmdlets cannot see or manage existing local SAM principals on the guest
+    32	
+    33	### Current Progress
+    34	
+    35	- Active development lives under `app/`
+    36	- Increment 3 is complete and tagged as `configure-hq-increment-3`
+    37	- Increment 4 now has real code and tests for:
+    38	  - managed role ACL definitions and NTFS ACL orchestration helpers
+    39	  - required HQ principal definitions for mirrored users, ACL groups, and `HQ\svc_lab`
+    40	  - guest-side principal state export and wrapper entrypoint via `-ExportSecurityPrincipalState`
+    41	  - create-or-detect handling for missing required HQ users and groups
+    42	  - required group membership handling for existing HQ users
+    43	  - optional identity restore during activation via `-RunIdentityRestore`
+    44	  - ACL application inside activation after the final workflow rows are built
+    45	  - saved-state cleanup planning for added group links and principals
+    46	  - explicit identity cleanup via `-RunIdentityCleanup`, including link removal, planned-removal review, and confirmed user and group deletion in one pass
+    47	  - comment-first cleanup so intent comments sit on the exact code and tests they describe
+    48	- The Hyper-V host `P50` is not joined to `HQ`, so ACL and SMB policy must be authored in terms of HQ-local principals rather than `P50\...` identities
+    49	- WSL2 access from `P50` is expected to arrive through an SMB session authenticated with HQ-local credentials
+    50	- Latest increment-4 checkpoint is commit `daf202d` tagged as `configure-hq-increment-4`
+    51	- The merged bugfix track on `dev` includes refreshed post-activation drive-letter discovery, stricter stale-ADSI cleanup planning, tolerant duplicate-create handling for hidden existing principals, and restore-time hidden-local-SAM verification
+    52	- Guest reruns and the finished SMB closeout established a clean handoff into a separate iSCSI tool boundary
+    53	- A new design-only iSCSI note now defines how an optional block publication mode would work for a writable child VHDX while keeping the parent VHDX read-only
+    54	- A dedicated iSCSI test file now exists at `app/tests/configure_hq.iscsi.Tests.ps1`
+    55	- `Get-HqLabVhdDiscoveryChoices` is implemented and returns both child and parent choice sets with `CreateNew` defaults plus discovered `UseExisting` VHDX entries
+    56	- `configure_hq.ps1` already exposes the standalone discovery entrypoint through `[switch]$DiscoverLabVhdChoices`
+    57	- The dedicated iSCSI Pester file has been run against the current tree and is green with `Passed: 1 Failed: 0`
+    58	- The discovery increment is therefore complete at the verified helper-and-switch boundary
+    59	- The next active slice is now limited to:
+    60	  - mapping discovered child and parent choice rows into an operator-facing selection flow
+    61	  - preserving the existing create-new placeholders without creating folders or VHDX files yet
+    62	  - returning the selected choice objects cleanly for a later execution or publication step
+    63	- This next slice still does not create folders, create VHDX files, or publish iSCSI targets
+    64	- Historical SMB and increment-2 checkpoints remain available for lineage and rollback analysis
+    65	
+    66	### QA Reading
+    67	
+    68	- Tags: `ready-for-red`, `risk-identified`, `needs-criteria`
+    69	- Commentary: the discovery helper and standalone discovery switch are already present and verified green. The next smallest slice is no longer another execution switch; it is the operator-selection boundary that consumes the discovered child and parent choice rows without widening into create or publish behavior.
+    70	- Next steps:
+    71	  - write the next failing test for operator selection over discovered child and parent choices
+    72	  - keep the selection contract narrow and return structured selected rows rather than performing creation or publication
+    73	  - preserve `-DiscoverLabVhdChoices` as the non-destructive inspection path
+    74	- Quality risks:
+    75	  - real share enumeration may expose folder-layout or naming variations beyond the first discovery test
+    76	  - the Windows iSCSI target support boundary for publishing a differencing child disk is still unverified
+    77	  - selection UX may drift into creation or publication logic unless the slice boundary stays explicit
+    78	
+    79	### Blockers
+    80	
+    81	- no blocker prevents the operator-selection slice itself
+    82	- the iSCSI publication path is intentionally split into a separate upcoming tool and still needs its own implementation plan
+    83	- the later iSCSI publication path still depends on validating the Windows differencing-disk support boundary
+    84	
+    85	### Open Questions
+    86	
+    87	- Resolved: use `V:\VHDs\disks\sharedisk.vhdx` as the `ShareDrive` VHD path.
+    88	- Resolved: guest activation consumes a host-generated metadata module instead of relying only on guest-visible heuristics.
+    89	- Resolved: manual VM selection replaces auto-detection as the preferred host workflow.
+    90	- Resolved: increment 3 ends at dedup execution, missing-feature handling, and execution-mode guarding.
+    91	- Resolved: increment 4 will use HQ-local groups plus `HQ\svc_lab` instead of abstract domain groups or `Everyone`.
+    92	- Resolved: WSL2 access from `P50` will be modeled through HQ-authenticated SMB sessions rather than direct `P50\...` principals.
+    93	- Resolved: the standalone discovery switch already exists as `-DiscoverLabVhdChoices`.
+    94	- Open: should operator selection use index-based choice input, path-based choice input, or support both in the first slice?
+    95	
+    96	## Increment Ledger
+    97	
+    98	| Increment | Status | Summary | Owner | Release Tag |
+    99	| --- | --- | --- | --- | --- |
+   100	| `increment-1` | `complete` | Disk discovery and activation implemented, tested, tagged, and merged. | `product-owner` | `configure-hq-increment-1` |
+   101	| `increment-2` | `complete` | Host can export VM inventory or selected-VM metadata; guest activation imports the selected metadata module and reports validation status. | `powershell-pair-coder` | `configure-hq-increment-2` |
+   102	| `increment-3` | `complete` | Dedup execution is wired into the guest workflow with feature checks, optional installation, and clear operator feedback. | `powershell-pair-coder` | `configure-hq-increment-3` |
+   103	| `increment-4` | `complete` | ACL helpers, HQ principal-state backup, standalone and optional identity restore, and the full `-RunIdentityCleanup` confirmation flow are implemented and tested. | `powershell-pair-coder` | `configure-hq-increment-4` |
+   104	| `increment-5` | `complete` | SMB share provisioning is complete from the managed-folder contract and has been verified on the guest after ACL setup. | `powershell-pair-coder` | |
+   105	| `iscsi-tool-lab-vhdx-discovery` | `complete` | Discovery helper is implemented, the standalone discovery switch exists, and the dedicated iSCSI test is green on the current tree. | `powershell-pair-coder` | |
+   106	| `iscsi-tool-lab-vhdx-operator-selection` | `active` | Next slice starts at selecting discovered child and parent VHDX choices without widening into create or publication behavior. | `powershell-pair-coder` | |
+   107	
+   108	## Stakeholder Feedback
+   109	
+   110	- Latest feedback: when the user says `save here` or equivalent, the agent suite must record the real progress state and create a stash before ending the session.
+   111	- Latest feedback: comment-first drift should be corrected before widening the next slice.
+   112	- Latest feedback: `AGENTS.md` should bootstrap the repo workflow automatically for non-trivial work so the user does not need to keep restating it.
+   113	- Latest progress report: increment 4 now includes ACL helper code, HQ principal-state backup/export, required identity restore, and green lab-aligned tests.
+   114	- Latest progress report: identity restore now runs only when `-RunIdentityRestore` is set, and ACL application now runs inside activation after the storage work is finished.
+   115	- Latest progress report: saved principal state now produces a cleanup plan for principals that were absent before restore work ran.
+   116	- Latest progress report: saved principal state now produces a cleanup plan for both added group links and added principals.
+   117	- Latest progress report: `-RunIdentityCleanup` now executes planned group-link cleanup through the guest wrapper.
+   118	- Latest progress report: `-RunIdentityRestore` now works as a standalone guest action and prints live restore and cleanup status output.
+   119	- Latest progress report: `-RunIdentityCleanup` now keeps the whole flow in one command by showing planned removals and asking for confirmed user and group deletion after link cleanup.
+   120	- Latest progress report: increment 4 is closed out at commit `daf202d` and tagged as `configure-hq-increment-4`.
+   121	- Latest progress report: branch `bugfix` now carries commit `94316ef` to harden local HQ identity restore against hidden local SAM principals that `LocalAccounts` cmdlets do not surface reliably.
+   122	- Latest progress report: the current `bugfix` working slice hardens `-RunIdentityCleanup` so already-missing local users and groups are treated as already removed when Windows returns a direct `...was not found` delete error.
+   123	- Latest progress report: guest reruns confirmed that `-RunIdentityCleanup` no longer repeats phantom group removals, and the current working slice adds the remaining restore fixes for refreshed drive letters, hidden-principal duplicate creates, and restore-time hidden-local-SAM verification.
+   124	- Latest progress report: `bugfix` has been merged into `dev` through merge commit `b2b64d1`.
+   125	- Latest progress report: increment 5 has resumed with SMB share provisioning after ACL setup, and `app/tests/configure_hq.Tests.ps1` is green with 79 passing tests.
+   126	- Latest progress report: commit `5e6fb94` saves the legacy SMB publication alignment, the repo-bootstrap move into `AGENTS.md`, and the `configure_hq` doc move into `app/docs`.
+   127	- Latest progress report: the code summary shows the iSCSI discovery helper implemented, with a follow-up helper fix recorded in `patches/iscsi-discovery-fix.patch`.
+   128	- Latest progress report: `Invoke-Pester .\app\tests\configure_hq.iscsi.Tests.ps1` is green with `Passed: 1 Failed: 0`, so the discovery increment is complete at the verified helper boundary.
+   129	- Latest progress report: the standalone discovery entrypoint already exists as `[switch]$DiscoverLabVhdChoices`, so the next slice has shifted to operator selection.
+
+=== authoritative-status tail ===
+    10	- Current focus: `iscsi-tool-lab-vhdx-operator-selection`
+    11	- Overall status: `active`
+    12	- Last reviewed: `2026-04-13`
+    13	- Active branch: `feat/iscsi`
+    14	- Structured backing store: `workflow/stash-memory.yaml`
+    15	
+    16	## Current Increment
+    17	
+    18	### iscsi-tool-lab-vhdx-operator-selection
+    19	
+    20	- Status: `active`
+    21	- Owner: `powershell-pair-coder`
+    22	- Goal: let the operator choose a discovered Lab child and parent VHDX entry, while keeping creation and iSCSI publication out of scope
+    23	
+    24	## Hotfix Track
+    25	
+    26	### bugfix
+    27	
+    28	- Status: `merged`
+    29	- Head checkpoint: `3758619`
+    30	- Base checkpoint: `daf202d`
+    31	- Goal: harden HQ-local identity restore when `LocalAccounts` cmdlets cannot see or manage existing local SAM principals on the guest
+    32	
+    33	### Current Progress
+    34	
+    35	- Active development lives under `app/`
+    36	- Increment 3 is complete and tagged as `configure-hq-increment-3`
+    37	- Increment 4 now has real code and tests for:
+    38	  - managed role ACL definitions and NTFS ACL orchestration helpers
+    39	  - required HQ principal definitions for mirrored users, ACL groups, and `HQ\svc_lab`
+    40	  - guest-side principal state export and wrapper entrypoint via `-ExportSecurityPrincipalState`
+    41	  - create-or-detect handling for missing required HQ users and groups
+    42	  - required group membership handling for existing HQ users
+    43	  - optional identity restore during activation via `-RunIdentityRestore`
+    44	  - ACL application inside activation after the final workflow rows are built
+    45	  - saved-state cleanup planning for added group links and principals
+    46	  - explicit identity cleanup via `-RunIdentityCleanup`, including link removal, planned-removal review, and confirmed user and group deletion in one pass
+    47	  - comment-first cleanup so intent comments sit on the exact code and tests they describe
+    48	- The Hyper-V host `P50` is not joined to `HQ`, so ACL and SMB policy must be authored in terms of HQ-local principals rather than `P50\...` identities
+    49	- WSL2 access from `P50` is expected to arrive through an SMB session authenticated with HQ-local credentials
+    50	- Latest increment-4 checkpoint is commit `daf202d` tagged as `configure-hq-increment-4`
+    51	- The merged bugfix track on `dev` includes refreshed post-activation drive-letter discovery, stricter stale-ADSI cleanup planning, tolerant duplicate-create handling for hidden existing principals, and restore-time hidden-local-SAM verification
+    52	- Guest reruns and the finished SMB closeout established a clean handoff into a separate iSCSI tool boundary
+    53	- A new design-only iSCSI note now defines how an optional block publication mode would work for a writable child VHDX while keeping the parent VHDX read-only
+    54	- A dedicated iSCSI test file now exists at `app/tests/configure_hq.iscsi.Tests.ps1`
+    55	- `Get-HqLabVhdDiscoveryChoices` is implemented and returns both child and parent choice sets with `CreateNew` defaults plus discovered `UseExisting` VHDX entries
+    56	- `configure_hq.ps1` already exposes the standalone discovery entrypoint through `[switch]$DiscoverLabVhdChoices`
+    57	- The dedicated iSCSI Pester file has been run against the current tree and is green with `Passed: 1 Failed: 0`
+    58	- The discovery increment is therefore complete at the verified helper-and-switch boundary
+    59	- The next active slice is now limited to:
+    60	  - mapping discovered child and parent choice rows into an operator-facing selection flow
+    61	  - preserving the existing create-new placeholders without creating folders or VHDX files yet
+    62	  - returning the selected choice objects cleanly for a later execution or publication step
+    63	- This next slice still does not create folders, create VHDX files, or publish iSCSI targets
+    64	- Historical SMB and increment-2 checkpoints remain available for lineage and rollback analysis
+    65	
+    66	### QA Reading
+    67	
+    68	- Tags: `ready-for-red`, `risk-identified`, `needs-criteria`
+    69	- Commentary: the discovery helper and standalone discovery switch are already present and verified green. The next smallest slice is no longer another execution switch; it is the operator-selection boundary that consumes the discovered child and parent choice rows without widening into create or publish behavior.
+    70	- Next steps:
+    71	  - write the next failing test for operator selection over discovered child and parent choices
+    72	  - keep the selection contract narrow and return structured selected rows rather than performing creation or publication
+    73	  - preserve `-DiscoverLabVhdChoices` as the non-destructive inspection path
+    74	- Quality risks:
+    75	  - real share enumeration may expose folder-layout or naming variations beyond the first discovery test
+    76	  - the Windows iSCSI target support boundary for publishing a differencing child disk is still unverified
+    77	  - selection UX may drift into creation or publication logic unless the slice boundary stays explicit
+    78	
+    79	### Blockers
+    80	
+    81	- no blocker prevents the operator-selection slice itself
+    82	- the iSCSI publication path is intentionally split into a separate upcoming tool and still needs its own implementation plan
+    83	- the later iSCSI publication path still depends on validating the Windows differencing-disk support boundary
+    84	
+    85	### Open Questions
+    86	
+    87	- Resolved: use `V:\VHDs\disks\sharedisk.vhdx` as the `ShareDrive` VHD path.
+    88	- Resolved: guest activation consumes a host-generated metadata module instead of relying only on guest-visible heuristics.
+    89	- Resolved: manual VM selection replaces auto-detection as the preferred host workflow.
+    90	- Resolved: increment 3 ends at dedup execution, missing-feature handling, and execution-mode guarding.
+    91	- Resolved: increment 4 will use HQ-local groups plus `HQ\svc_lab` instead of abstract domain groups or `Everyone`.
+    92	- Resolved: WSL2 access from `P50` will be modeled through HQ-authenticated SMB sessions rather than direct `P50\...` principals.
+    93	- Resolved: the standalone discovery switch already exists as `-DiscoverLabVhdChoices`.
+    94	- Open: should operator selection use index-based choice input, path-based choice input, or support both in the first slice?
+    95	
+    96	## Increment Ledger
+    97	
+    98	| Increment | Status | Summary | Owner | Release Tag |
+    99	| --- | --- | --- | --- | --- |
+   100	| `increment-1` | `complete` | Disk discovery and activation implemented, tested, tagged, and merged. | `product-owner` | `configure-hq-increment-1` |
+   101	| `increment-2` | `complete` | Host can export VM inventory or selected-VM metadata; guest activation imports the selected metadata module and reports validation status. | `powershell-pair-coder` | `configure-hq-increment-2` |
+   102	| `increment-3` | `complete` | Dedup execution is wired into the guest workflow with feature checks, optional installation, and clear operator feedback. | `powershell-pair-coder` | `configure-hq-increment-3` |
+   103	| `increment-4` | `complete` | ACL helpers, HQ principal-state backup, standalone and optional identity restore, and the full `-RunIdentityCleanup` confirmation flow are implemented and tested. | `powershell-pair-coder` | `configure-hq-increment-4` |
+   104	| `increment-5` | `complete` | SMB share provisioning is complete from the managed-folder contract and has been verified on the guest after ACL setup. | `powershell-pair-coder` | |
+   105	| `iscsi-tool-lab-vhdx-discovery` | `complete` | Discovery helper is implemented, the standalone discovery switch exists, and the dedicated iSCSI test is green on the current tree. | `powershell-pair-coder` | |
+   106	| `iscsi-tool-lab-vhdx-operator-selection` | `active` | Next slice starts at selecting discovered child and parent VHDX choices without widening into create or publication behavior. | `powershell-pair-coder` | |
+   107	
+   108	## Stakeholder Feedback
+   109	
+   110	- Latest feedback: when the user says `save here` or equivalent, the agent suite must record the real progress state and create a stash before ending the session.
+   111	- Latest feedback: comment-first drift should be corrected before widening the next slice.
+   112	- Latest feedback: `AGENTS.md` should bootstrap the repo workflow automatically for non-trivial work so the user does not need to keep restating it.
+   113	- Latest progress report: increment 4 now includes ACL helper code, HQ principal-state backup/export, required identity restore, and green lab-aligned tests.
+   114	- Latest progress report: identity restore now runs only when `-RunIdentityRestore` is set, and ACL application now runs inside activation after the storage work is finished.
+   115	- Latest progress report: saved principal state now produces a cleanup plan for principals that were absent before restore work ran.
+   116	- Latest progress report: saved principal state now produces a cleanup plan for both added group links and added principals.
+   117	- Latest progress report: `-RunIdentityCleanup` now executes planned group-link cleanup through the guest wrapper.
+   118	- Latest progress report: `-RunIdentityRestore` now works as a standalone guest action and prints live restore and cleanup status output.
+   119	- Latest progress report: `-RunIdentityCleanup` now keeps the whole flow in one command by showing planned removals and asking for confirmed user and group deletion after link cleanup.
+   120	- Latest progress report: increment 4 is closed out at commit `daf202d` and tagged as `configure-hq-increment-4`.
+   121	- Latest progress report: branch `bugfix` now carries commit `94316ef` to harden local HQ identity restore against hidden local SAM principals that `LocalAccounts` cmdlets do not surface reliably.
+   122	- Latest progress report: the current `bugfix` working slice hardens `-RunIdentityCleanup` so already-missing local users and groups are treated as already removed when Windows returns a direct `...was not found` delete error.
+   123	- Latest progress report: guest reruns confirmed that `-RunIdentityCleanup` no longer repeats phantom group removals, and the current working slice adds the remaining restore fixes for refreshed drive letters, hidden-principal duplicate creates, and restore-time hidden-local-SAM verification.
+   124	- Latest progress report: `bugfix` has been merged into `dev` through merge commit `b2b64d1`.
+   125	- Latest progress report: increment 5 has resumed with SMB share provisioning after ACL setup, and `app/tests/configure_hq.Tests.ps1` is green with 79 passing tests.
+   126	- Latest progress report: commit `5e6fb94` saves the legacy SMB publication alignment, the repo-bootstrap move into `AGENTS.md`, and the `configure_hq` doc move into `app/docs`.
+   127	- Latest progress report: the code summary shows the iSCSI discovery helper implemented, with a follow-up helper fix recorded in `patches/iscsi-discovery-fix.patch`.
+   128	- Latest progress report: `Invoke-Pester .\app\tests\configure_hq.iscsi.Tests.ps1` is green with `Passed: 1 Failed: 0`, so the discovery increment is complete at the verified helper boundary.
+   129	- Latest progress report: the standalone discovery entrypoint already exists as `[switch]$DiscoverLabVhdChoices`, so the next slice has shifted to operator selection.
+
+=== stash-memory head ===
+     1	schema_version: 1
+     2	project: configure-hq
+     3	human_status_file: "workflow/authoritative-status.md"
+     4	global:
+     5	  current_focus: "iscsi-tool-lab-vhdx-operator-selection"
+     6	  overall_status: "active"
+     7	  last_reviewed: "2026-04-13"
+     8	  active_branch: "feat/iscsi"
+     9	  active_checkpoint: "5e6fb94"
+    10	  stakeholder_feedback:
+    11	    - "When the user says save here or equivalent, record the real progress state and create a stash before ending the session."
+    12	    - "Comment-first drift should be corrected before widening the next slice."
+    13	    - "Workflow artifacts should reflect live bugfix work before the next feature slice starts."
+    14	    - "AGENTS.md should bootstrap the repo workflow automatically for non-trivial work."
+    15	  resume_strategy: "time-series recomposition"
+    16	  resume_policy:
+    17	    - "Treat stash history as an experiment timeline, not just a restore stack."
+    18	    - "On resume, decide between single-stash resume and recomposed resume."
+    19	    - "Prefer the strongest next code state, even if it combines lessons from multiple stashes."
+    20	    - "Keep useful historical stashes until they are clearly superseded."
+    21	qa_state_catalog:
+    22	  exploring:
+    23	    commentary: "Understanding is still forming."
+    24	    next_steps: "Inspect more code, tests, or real behavior."
+    25	  needs-criteria:
+    26	    commentary: "Acceptance criteria are not yet strong enough."
+    27	    next_steps: "Define measurable expected behavior before coding further."
+    28	  needs-observation:
+    29	    commentary: "Real system behavior has not been observed yet."
+    30	    next_steps: "Run the relevant command or inspect the environment."
+    31	  hypothesis:
+    32	    commentary: "The current approach depends on an unverified assumption."
+    33	    next_steps: "Create the cheapest validation step."
+    34	  risk-identified:
+    35	    commentary: "A concrete delivery or behavior risk is present."
+    36	    next_steps: "Mitigate or explicitly accept the risk."
+    37	  regression-risk:
+    38	    commentary: "Current changes may break working behavior."
+    39	    next_steps: "Add or strengthen tests around the affected path."
+    40	  test-gap:
+    41	    commentary: "Important behavior is not covered by tests."
+    42	    next_steps: "Add a failing test before more implementation."
+    43	  stakeholder-review:
+    44	    commentary: "The code direction needs stakeholder confirmation."
+    45	    next_steps: "Ask the narrowest question that resolves direction."
+    46	  ready-for-red:
+    47	    commentary: "The next behavior slice is clear enough to test."
+    48	    next_steps: "Write the next failing test."
+    49	  ready-for-green:
+    50	    commentary: "The failing test and implementation boundary are clear."
+    51	    next_steps: "Apply the minimal code change."
+    52	  ready-for-merge:
+    53	    commentary: "The increment appears coherent and reviewable."
+    54	    next_steps: "Do final verification and integrate."
+    55	  risk-accepted:
+    56	    commentary: "A known risk remains and is being carried intentionally."
+    57	    next_steps: "Record the risk and revisit later."
+    58	increments:
+    59	  - id: "increment-1"
+    60	    status: "complete"
+    61	    summary: "Disk discovery and activation implemented, tested, tagged, and merged."
+    62	    owner: "product-owner"
+    63	    tag: "configure-hq-increment-1"
+    64	    qa_tags: ["ready-for-merge"]
+    65	    qa_commentary: "Increment 1 is stable, tested, and already integrated."
+    66	    qa_next_steps: ["Use increment 1 behavior as the baseline for increment 2."]
+    67	    quality_risks: []
+    68	    blockers: []
+    69	    open_questions: []
+    70	  - id: "increment-2"
+    71	    status: "complete"
+    72	    summary: "Host can export VM inventory or selected-VM metadata; guest activation imports the selected metadata module and reports validation status."
+    73	    owner: "powershell-pair-coder"
+    74	    tag: "configure-hq-increment-2"
+    75	    stash_ref: ""
+    76	    qa_tags: ["ready-for-merge"]
+    77	    qa_commentary: "Increment 2 is green through the manual VM-selection, metadata import, operator status, and guest-validation boundary. It is ready to close and hand off to increment 3."
+    78	    qa_next_steps:
+    79	      - "Tag and preserve increment 2."
+    80	      - "Start increment 3 at the dedup execution boundary."
+    81	    quality_risks:
+    82	      - "Dedup behavior is still represented only as metadata, not as executed configuration."
+    83	      - "Host execution now depends on the operator selecting the correct Hyper-V VM when writing role metadata."
+    84	    blockers: []
+    85	    open_questions:
+    86	      - "Resolved: use V:\VHDs\disks\sharedisk.vhdx for ShareDrive."
+    87	      - "Resolved: guest activation now consumes a host-generated metadata module instead of relying only on guest-visible heuristics."
+    88	      - "Resolved: manual VM selection replaces auto-detection as the preferred host workflow."
+    89	      - "Resolved: increment 2 ends at metadata import, activation orchestration, and validation reporting."
+    90	  - id: "increment-3"
+    91	    status: "complete"
+    92	    summary: "Dedup execution is wired into the guest workflow with feature checks, optional installation, and clear operator feedback."
+    93	    owner: "powershell-pair-coder"
+    94	    tag: "configure-hq-increment-3"
+    95	    stash_ref: ""
+    96	    qa_tags: ["ready-for-merge"]
+    97	    qa_commentary: "Increment 3 is green through dedup target selection, dedup execution wiring, missing-feature handling, and host/guest execution guarding. It is ready to close and hand off to increment 4."
+    98	    qa_next_steps:
+    99	      - "Tag and preserve increment 3."
+   100	      - "Start increment 4 at the ACL application boundary."
+   101	    quality_risks:
+   102	      - "Dedup feature installation may still require reboot or manual verification on some guests."
+   103	      - "ACL and SMB behavior are still not implemented."
+   104	    blockers: []
+   105	    open_questions:
+   106	      - "Resolved: increment 3 ends at dedup execution, missing-feature handling, and execution-mode guarding."
+   107	  - id: "increment-4"
+   108	    status: "complete"
+   109	    summary: "ACL helpers, HQ principal-state backup, standalone and optional identity restore, and the full RunIdentityCleanup confirmation flow are implemented and tested."
+   110	    owner: "powershell-pair-coder"
+   111	    tag: "configure-hq-increment-4"
+   112	    stash_ref: "stash@{0}"
+   113	    checkpoint_ref: "daf202d"
+   114	    qa_tags: ["ready-for-merge", "risk-accepted"]
+   115	    qa_commentary: "Increment 4 is green on the ACL helpers, principal-state export, standalone and optional identity restore, ACL application inside activation, saved-state cleanup planning, and the full RunIdentityCleanup confirmation flow. The direction matches the lab topology: HQ-local principals, group-based human access, and HQ-authenticated SMB sessions for P50 and WSL2. The increment is closed out in commit daf202d and tagged as configure-hq-increment-4."
+   116	    qa_next_steps:
+   117	      - "Start increment 5 at the SMB publishing boundary."
+   118	      - "Keep the increment-4 stash entries only as historical lineage."
+   119	    quality_risks:
+   120	      - "The VHDX parent/differencing chain over SMB is still an accepted lab risk."
+   121	      - "Guest-local identity mirroring is convenient but remains less robust than a shared domain or trust model."
+   122	      - "The identity revert path still depends on an operator confirmation flow and is not a one-shot automatic revert."
+   123	      - "SMB behavior remains out of scope and unimplemented in code."
+   124	    blockers: []
+   125	    open_questions:
+   126	      - "Resolved: increment 4 will use HQ-local groups plus HQ\svc_lab instead of abstract domain groups or Everyone."
+   127	      - "Resolved: WSL2 access from P50 will be modeled through HQ-authenticated SMB sessions rather than direct P50 principals."
+   128	  - id: "increment-5"
+   129	    status: "complete"
+   130	    summary: "SMB share provisioning has resumed from the managed-folder contract and now creates or verifies shares after ACL setup."
+   131	    owner: "powershell-pair-coder"
+   132	    tag: ""
+   133	    stash_ref: ""
+   134	    checkpoint_ref: "5e6fb94"
+   135	    qa_tags: ["ready-for-merge"]
+   136	    qa_commentary: "Increment 5 is complete on dev for the SMB publication boundary. Commit 5e6fb94 saves the first SMB publication slice plus the repo-bootstrap cleanup, and the SMB path has now been verified on the guest. The iSCSI design note remains a separate upcoming tool boundary rather than part of the finished SMB acceptance scope."
+   137	    qa_next_steps:
+   138	      - "Save and preserve the SMB closeout state."
+   139	      - "Start a separate iSCSI tool at the Lab VHDX discovery boundary."
+   140	      - "Validate the Windows support boundary for publishing the writable child disk through iSCSI before any target-provisioning code begins."
+   141	    quality_risks:
+   142	      - "SMB cmdlet behavior can vary across guest editions and installed feature sets."
+   143	      - "The VHDX parent/differencing chain over SMB remains an accepted lab risk."
+   144	      - "Windows iSCSI target support for publishing the differencing child disk is not yet verified."
+   145	    blockers: []
+   146	    open_questions:
+   147	      - "Resolved for SMB closeout: the current tool stops at the verified SMB publication boundary."
+   148	      - "Open for the new iSCSI tool: which Lab-backed child VHDX is the safe publication candidate?"
+   149	  - id: "iscsi-tool-lab-vhdx-discovery"
+   150	    status: "complete"
+   151	    summary: "Get-HqLabVhdDiscoveryChoices returns child and parent VHDX choice sets with create-new defaults, and the standalone discovery switch is already present and verified."
+   152	    owner: "powershell-pair-coder"
+   153	    tag: ""
+   154	    stash_ref: "stash@{0}"
+   155	    checkpoint_ref: "5e6fb94"
+   156	    qa_tags: ["ready-for-merge", "risk-identified"]
+   157	    qa_commentary: "The discovery-only iSCSI slice is green. Get-HqLabVhdDiscoveryChoices is implemented, the dedicated Pester file passes on the current tree, and -DiscoverLabVhdChoices already exposes the standalone non-destructive execution path."
+   158	    qa_next_steps:
+   159	      - "Preserve the verified discovery checkpoint."
+   160	      - "Start the next iSCSI slice at operator selection."
+   161	      - "Keep creation and iSCSI publication out of scope until the Windows support boundary is validated."
+   162	    quality_risks:
+   163	      - "Real share enumeration may expose folder-layout differences beyond the first red test."
+   164	      - "Windows iSCSI target support for publishing the differencing child disk is still not verified."
+   165	      - "Interactive operator selection is still out of scope for the completed discovery slice."
+   166	    blockers: []
+   167	    open_questions:
+   168	      - "Which Lab-backed child VHDX should become the safe publication candidate after discovery?"
+   169	      - "What naming rules should the create-new defaults use?"
+   170	      - "The standalone discovery switch is resolved and already present."
+   171	  - id: "iscsi-tool-lab-vhdx-operator-selection"
+   172	    status: "active"
+   173	    summary: "Next slice starts at selecting discovered child and parent VHDX choices without widening into create or publication behavior."
+   174	    owner: "powershell-pair-coder"
+   175	    tag: ""
+   176	    stash_ref: "stash@{0}"
+   177	    checkpoint_ref: "5e6fb94"
+   178	    qa_tags: ["ready-for-red", "needs-criteria", "risk-identified"]
+   179	    qa_commentary: "Discovery and the standalone discovery switch are already done. The next smallest safe slice is the operator-selection boundary that consumes discovered child and parent choice rows and returns selected rows for later steps."
+   180	    qa_next_steps:
+   181	      - "Write the failing operator-selection test."
+   182	      - "Define the narrowest selection contract for child and parent choice inputs."
+   183	      - "Keep creation and iSCSI publication explicitly out of scope."
+   184	    quality_risks:
+   185	      - "Selection UX may accidentally widen into creation or publication logic."
+   186	      - "Real share layouts may create ambiguous choice labels that need stable display formatting."
+   187	      - "Windows iSCSI target support remains unverified and must not be folded into this slice."
+   188	    blockers: []
+   189	    open_questions:
+   190	      - "Should operator selection use index-based choice input, path-based choice input, or support both in the first slice?"
+   191	      - "Should invalid selection handling stop at validation errors, or offer re-prompt behavior only in a later slice?"
+   192	hotfix_tracks:
+   193	  - id: "bugfix-local-sam-identity-fallback"
+   194	    status: "merged"
+   195	    branch: "bugfix"
+   196	    checkpoint_ref: "3758619"
+   197	    base_checkpoint_ref: "daf202d"
+   198	    summary: "Harden HQ-local identity restore against hidden local SAM principals that LocalAccounts cmdlets fail to discover or manage reliably."
+   199	    qa_tags: ["ready-for-merge"]
+   200	    qa_commentary: "The bugfix track was completed and merged into dev. It covers ADSI-backed local SAM principal discovery, collision detection, membership enumeration, membership add/remove fallbacks, metadata-import guarding for identity-only guest flows, tolerant cleanup handling when local principal deletion reports `was not found`, refreshed drive-letter discovery after online transitions, duplicate-create tolerance for hidden existing principals, and restore-time hidden-local-SAM verification."
+   201	    qa_next_steps:
+   202	      - "Use dev as the continuation branch."
+   203	      - "Resume increment 5 at the SMB publishing boundary."
+   204	    quality_risks:
+   205	      - "Hidden local SAM membership behavior may still vary across guest environments."
+   206	      - "The VHDX parent/differencing chain over SMB remains an accepted lab risk outside this hotfix."
+   207	    blockers: []
+   208	    open_questions:
+   209	      - "Resolved in guest reruns: cleanup no longer repeats phantom local group removals after deletion."
+   210	      - "Resolved in guest reruns and the current working slice: post-activation drive-letter refresh and restore verification now address the latest hidden-principal restore failures."
+   211	stash_entries:
+   212	  - timestamp: "2026-03-25T00:00:00+00:00"
+   213	    increment: "increment-4"
+   214	    status: "wip"
+   215	    stash_ref: "stash@{0}"
+   216	    message: "Checkpointed cleanup confirmation flow inside RunIdentityCleanup"
+   217	    notes: "Includes planned-removal table output, per-principal confirmation for users and groups, workflow updates, and guide updates for increment-4 closeout."
+   218	  - timestamp: "2026-03-24T14:44:02+00:00"
+   219	    increment: "increment-4"
+   220	    status: "wip"
+   221	    stash_ref: "stash@{1}"
+   222	    message: "Checkpointed principal-state backup slice with comment alignment"
+   223	    notes: "Includes ACL helpers, HQ principal-state export entrypoint, lab-aligned tests, comment-first cleanup, and temp-file cleanup in the export test."
+   224	  - timestamp: "2026-03-23T19:03:30+00:00"
+   225	    increment: "increment-2"
+   226	    status: "wip"
+   227	    stash_ref: "stash@{2}"
+   228	    message: "Manual VM selection and app host module flow"
+   229	    notes: "Checkpoint after adding host VM inventory export, selected-VM metadata export, and guest consumption of the selected module. Resume by applying stash@{0}."
+   230	  - timestamp: "2026-03-23T14:30:21+00:00"
+   231	    increment: "increment-2"
+   232	    status: "wip"
+   233	    stash_ref: "stash@{3}"
+   234	    message: "Host metadata module flow under app"
+   235	    notes: "Earlier checkpoint before the manual VM-selection workflow replaced auto-detection."
+   236	  - timestamp: "2026-03-23T00:00:00"
+   237	    increment: "increment-2"
+   238	    status: "wip"
+   239	    stash_ref: "stash@{2}"
+   240	    message: "Orchestration wired with role metadata"
+   241	    notes: "Resume by applying stash@{2}. This checkpoint includes role mapping merged into Invoke-HqDiskActivation output."
+   242	  - timestamp: "2026-03-23T00:00:00"
+   243	    increment: "increment-2"
+   244	    status: "wip"
+   245	    stash_ref: "stash@{3}"
+   246	    message: "Completed role-mapping contract slice"
+   247	    notes: "Resume by applying stash@{3}. This checkpoint includes ShareDrive, ExpectedDriveLetter, DedupEnabled, and unknown-path failure coverage."
+   248	  - timestamp: "2026-03-18T00:00:00"
+   249	    increment: "increment-2"
+   250	    status: "blocked"
+   251	    stash_ref: "stash@{4}"
+   252	    message: "Blocked by sharedisk decryption/file-use issue during metadata expansion"
+   253	    notes: "Historical blocker checkpoint. ShareDrive path is V:\VHDs\disks\sharedisk.vhdx."
+   254	  - timestamp: "2026-03-16T14:36:42"
+   255	    increment: "increment-2"
+   256	    status: "wip"
+   257	    stash_ref: "stash@{5}"
+   258	    message: "Paused after first green role-mapping slice"
+   259	    notes: "Earliest green increment-2 slice before metadata export and orchestration wiring."
+   260	  - timestamp: "2026-04-08T00:00:00+01:00"
+
+=== stash-memory tail ===
+   110	    owner: "powershell-pair-coder"
+   111	    tag: "configure-hq-increment-4"
+   112	    stash_ref: "stash@{0}"
+   113	    checkpoint_ref: "daf202d"
+   114	    qa_tags: ["ready-for-merge", "risk-accepted"]
+   115	    qa_commentary: "Increment 4 is green on the ACL helpers, principal-state export, standalone and optional identity restore, ACL application inside activation, saved-state cleanup planning, and the full RunIdentityCleanup confirmation flow. The direction matches the lab topology: HQ-local principals, group-based human access, and HQ-authenticated SMB sessions for P50 and WSL2. The increment is closed out in commit daf202d and tagged as configure-hq-increment-4."
+   116	    qa_next_steps:
+   117	      - "Start increment 5 at the SMB publishing boundary."
+   118	      - "Keep the increment-4 stash entries only as historical lineage."
+   119	    quality_risks:
+   120	      - "The VHDX parent/differencing chain over SMB is still an accepted lab risk."
+   121	      - "Guest-local identity mirroring is convenient but remains less robust than a shared domain or trust model."
+   122	      - "The identity revert path still depends on an operator confirmation flow and is not a one-shot automatic revert."
+   123	      - "SMB behavior remains out of scope and unimplemented in code."
+   124	    blockers: []
+   125	    open_questions:
+   126	      - "Resolved: increment 4 will use HQ-local groups plus HQ\svc_lab instead of abstract domain groups or Everyone."
+   127	      - "Resolved: WSL2 access from P50 will be modeled through HQ-authenticated SMB sessions rather than direct P50 principals."
+   128	  - id: "increment-5"
+   129	    status: "complete"
+   130	    summary: "SMB share provisioning has resumed from the managed-folder contract and now creates or verifies shares after ACL setup."
+   131	    owner: "powershell-pair-coder"
+   132	    tag: ""
+   133	    stash_ref: ""
+   134	    checkpoint_ref: "5e6fb94"
+   135	    qa_tags: ["ready-for-merge"]
+   136	    qa_commentary: "Increment 5 is complete on dev for the SMB publication boundary. Commit 5e6fb94 saves the first SMB publication slice plus the repo-bootstrap cleanup, and the SMB path has now been verified on the guest. The iSCSI design note remains a separate upcoming tool boundary rather than part of the finished SMB acceptance scope."
+   137	    qa_next_steps:
+   138	      - "Save and preserve the SMB closeout state."
+   139	      - "Start a separate iSCSI tool at the Lab VHDX discovery boundary."
+   140	      - "Validate the Windows support boundary for publishing the writable child disk through iSCSI before any target-provisioning code begins."
+   141	    quality_risks:
+   142	      - "SMB cmdlet behavior can vary across guest editions and installed feature sets."
+   143	      - "The VHDX parent/differencing chain over SMB remains an accepted lab risk."
+   144	      - "Windows iSCSI target support for publishing the differencing child disk is not yet verified."
+   145	    blockers: []
+   146	    open_questions:
+   147	      - "Resolved for SMB closeout: the current tool stops at the verified SMB publication boundary."
+   148	      - "Open for the new iSCSI tool: which Lab-backed child VHDX is the safe publication candidate?"
+   149	  - id: "iscsi-tool-lab-vhdx-discovery"
+   150	    status: "complete"
+   151	    summary: "Get-HqLabVhdDiscoveryChoices returns child and parent VHDX choice sets with create-new defaults, and the standalone discovery switch is already present and verified."
+   152	    owner: "powershell-pair-coder"
+   153	    tag: ""
+   154	    stash_ref: "stash@{0}"
+   155	    checkpoint_ref: "5e6fb94"
+   156	    qa_tags: ["ready-for-merge", "risk-identified"]
+   157	    qa_commentary: "The discovery-only iSCSI slice is green. Get-HqLabVhdDiscoveryChoices is implemented, the dedicated Pester file passes on the current tree, and -DiscoverLabVhdChoices already exposes the standalone non-destructive execution path."
+   158	    qa_next_steps:
+   159	      - "Preserve the verified discovery checkpoint."
+   160	      - "Start the next iSCSI slice at operator selection."
+   161	      - "Keep creation and iSCSI publication out of scope until the Windows support boundary is validated."
+   162	    quality_risks:
+   163	      - "Real share enumeration may expose folder-layout differences beyond the first red test."
+   164	      - "Windows iSCSI target support for publishing the differencing child disk is still not verified."
+   165	      - "Interactive operator selection is still out of scope for the completed discovery slice."
+   166	    blockers: []
+   167	    open_questions:
+   168	      - "Which Lab-backed child VHDX should become the safe publication candidate after discovery?"
+   169	      - "What naming rules should the create-new defaults use?"
+   170	      - "The standalone discovery switch is resolved and already present."
+   171	  - id: "iscsi-tool-lab-vhdx-operator-selection"
+   172	    status: "active"
+   173	    summary: "Next slice starts at selecting discovered child and parent VHDX choices without widening into create or publication behavior."
+   174	    owner: "powershell-pair-coder"
+   175	    tag: ""
+   176	    stash_ref: "stash@{0}"
+   177	    checkpoint_ref: "5e6fb94"
+   178	    qa_tags: ["ready-for-red", "needs-criteria", "risk-identified"]
+   179	    qa_commentary: "Discovery and the standalone discovery switch are already done. The next smallest safe slice is the operator-selection boundary that consumes discovered child and parent choice rows and returns selected rows for later steps."
+   180	    qa_next_steps:
+   181	      - "Write the failing operator-selection test."
+   182	      - "Define the narrowest selection contract for child and parent choice inputs."
+   183	      - "Keep creation and iSCSI publication explicitly out of scope."
+   184	    quality_risks:
+   185	      - "Selection UX may accidentally widen into creation or publication logic."
+   186	      - "Real share layouts may create ambiguous choice labels that need stable display formatting."
+   187	      - "Windows iSCSI target support remains unverified and must not be folded into this slice."
+   188	    blockers: []
+   189	    open_questions:
+   190	      - "Should operator selection use index-based choice input, path-based choice input, or support both in the first slice?"
+   191	      - "Should invalid selection handling stop at validation errors, or offer re-prompt behavior only in a later slice?"
+   192	hotfix_tracks:
+   193	  - id: "bugfix-local-sam-identity-fallback"
+   194	    status: "merged"
+   195	    branch: "bugfix"
+   196	    checkpoint_ref: "3758619"
+   197	    base_checkpoint_ref: "daf202d"
+   198	    summary: "Harden HQ-local identity restore against hidden local SAM principals that LocalAccounts cmdlets fail to discover or manage reliably."
+   199	    qa_tags: ["ready-for-merge"]
+   200	    qa_commentary: "The bugfix track was completed and merged into dev. It covers ADSI-backed local SAM principal discovery, collision detection, membership enumeration, membership add/remove fallbacks, metadata-import guarding for identity-only guest flows, tolerant cleanup handling when local principal deletion reports `was not found`, refreshed drive-letter discovery after online transitions, duplicate-create tolerance for hidden existing principals, and restore-time hidden-local-SAM verification."
+   201	    qa_next_steps:
+   202	      - "Use dev as the continuation branch."
+   203	      - "Resume increment 5 at the SMB publishing boundary."
+   204	    quality_risks:
+   205	      - "Hidden local SAM membership behavior may still vary across guest environments."
+   206	      - "The VHDX parent/differencing chain over SMB remains an accepted lab risk outside this hotfix."
+   207	    blockers: []
+   208	    open_questions:
+   209	      - "Resolved in guest reruns: cleanup no longer repeats phantom local group removals after deletion."
+   210	      - "Resolved in guest reruns and the current working slice: post-activation drive-letter refresh and restore verification now address the latest hidden-principal restore failures."
+   211	stash_entries:
+   212	  - timestamp: "2026-03-25T00:00:00+00:00"
+   213	    increment: "increment-4"
+   214	    status: "wip"
+   215	    stash_ref: "stash@{0}"
+   216	    message: "Checkpointed cleanup confirmation flow inside RunIdentityCleanup"
+   217	    notes: "Includes planned-removal table output, per-principal confirmation for users and groups, workflow updates, and guide updates for increment-4 closeout."
+   218	  - timestamp: "2026-03-24T14:44:02+00:00"
+   219	    increment: "increment-4"
+   220	    status: "wip"
+   221	    stash_ref: "stash@{1}"
+   222	    message: "Checkpointed principal-state backup slice with comment alignment"
+   223	    notes: "Includes ACL helpers, HQ principal-state export entrypoint, lab-aligned tests, comment-first cleanup, and temp-file cleanup in the export test."
+   224	  - timestamp: "2026-03-23T19:03:30+00:00"
+   225	    increment: "increment-2"
+   226	    status: "wip"
+   227	    stash_ref: "stash@{2}"
+   228	    message: "Manual VM selection and app host module flow"
+   229	    notes: "Checkpoint after adding host VM inventory export, selected-VM metadata export, and guest consumption of the selected module. Resume by applying stash@{0}."
+   230	  - timestamp: "2026-03-23T14:30:21+00:00"
+   231	    increment: "increment-2"
+   232	    status: "wip"
+   233	    stash_ref: "stash@{3}"
+   234	    message: "Host metadata module flow under app"
+   235	    notes: "Earlier checkpoint before the manual VM-selection workflow replaced auto-detection."
+   236	  - timestamp: "2026-03-23T00:00:00"
+   237	    increment: "increment-2"
+   238	    status: "wip"
+   239	    stash_ref: "stash@{2}"
+   240	    message: "Orchestration wired with role metadata"
+   241	    notes: "Resume by applying stash@{2}. This checkpoint includes role mapping merged into Invoke-HqDiskActivation output."
+   242	  - timestamp: "2026-03-23T00:00:00"
+   243	    increment: "increment-2"
+   244	    status: "wip"
+   245	    stash_ref: "stash@{3}"
+   246	    message: "Completed role-mapping contract slice"
+   247	    notes: "Resume by applying stash@{3}. This checkpoint includes ShareDrive, ExpectedDriveLetter, DedupEnabled, and unknown-path failure coverage."
+   248	  - timestamp: "2026-03-18T00:00:00"
+   249	    increment: "increment-2"
+   250	    status: "blocked"
+   251	    stash_ref: "stash@{4}"
+   252	    message: "Blocked by sharedisk decryption/file-use issue during metadata expansion"
+   253	    notes: "Historical blocker checkpoint. ShareDrive path is V:\VHDs\disks\sharedisk.vhdx."
+   254	  - timestamp: "2026-03-16T14:36:42"
+   255	    increment: "increment-2"
+   256	    status: "wip"
+   257	    stash_ref: "stash@{5}"
+   258	    message: "Paused after first green role-mapping slice"
+   259	    notes: "Earliest green increment-2 slice before metadata export and orchestration wiring."
+   260	  - timestamp: "2026-04-08T00:00:00+01:00"
+   261	    increment: "iscsi-tool-lab-vhdx-discovery"
+   262	    status: "wip"
+   263	    stash_ref: "stash@{0}"
+   264	    message: "red: completed for Get-HqLabVhdDiscoveryChoices"
+   265	    notes: "Latest red checkpoint. Dedicated iSCSI discovery test is in place and failing at the missing-function boundary."
+   266	  - timestamp: "2026-04-08T00:00:00+01:00"
+   267	    increment: "iscsi-tool-lab-vhdx-discovery"
+   268	    status: "wip"
+   269	    stash_ref: "stash@{1}"
+   270	    message: "red:iscsi lab vhdx discovery."
+   271	    notes: "Earlier iSCSI discovery checkpoint before the current red boundary was finalized."
+   272	  - timestamp: "2026-04-08T00:00:00+01:00"
+   273	    increment: "iscsi-tool-lab-vhdx-discovery"
+   274	    status: "wip"
+   275	    stash_ref: "stash@{2}"
+   276	    message: "iscsi-tool-lab-vhdx-discovery:red-test-child-vhdx"
+   277	    notes: "Historical first red child-VHDX discovery checkpoint kept for lineage."
+   278	  - timestamp: "2026-04-13T00:00:00+01:00"
+   279	    increment: "iscsi-tool-lab-vhdx-discovery"
+   280	    status: "green"
+   281	    stash_ref: "stash@{0}"
+   282	    message: "green: discovery helper implemented and dedicated Pester file passing"
+   283	    notes: "Get-HqLabVhdDiscoveryChoices is present on the current tree and Invoke-Pester .\\app\\tests\\configure_hq.iscsi.Tests.ps1 returns Passed: 1 Failed: 0."
+   284	  - timestamp: "2026-04-13T00:00:00+01:00"
+   285	    increment: "iscsi-tool-lab-vhdx-operator-selection"
+   286	    status: "wip"
+   287	    stash_ref: "stash@{0}"
+   288	    message: "next: operator selection after verified discovery and existing standalone switch"
+   289	    notes: "Workflow recalibrated after confirming that [switch]$DiscoverLabVhdChoices already exists in configure_hq.ps1, so the next slice starts at operator selection rather than another execution switch."
