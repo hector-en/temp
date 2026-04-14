@@ -18,8 +18,9 @@ For any non-trivial task in this repo, start here before making code changes.
 
 1. Read `workflow/authoritative-status.md`.
 2. Read `workflow/stash-memory.yaml`.
-3. Inspect `git status`.
-4. Inspect `git stash list`.
+3. Read `app/change.patch, if exist, to understand the latest changes.
+3. Inspect `git status`, if applicable.
+4. Inspect `git stash list`, if applicable.
 5. Identify:
    - active increment
    - current blockers
@@ -79,6 +80,10 @@ Use the installed skills from `skills/` when they match the task.
 - `scrum-powershell-tdd`  
   Use when the current slice should be driven or checked through PowerShell tests.
 
+- `unified-patch-crafter`
+  Use whenever the task is to create or revise repo patch files, red/green patch pairs, or minimal unified diffs. Use it before writing patch headers or hunk ranges for code changes.
+
+
 ### Support skills
 
 - `skill-creator`
@@ -102,6 +107,21 @@ For non-trivial repo work, prefer this order when it fits the task:
 9. `scrum-stash-master` for save, resume, or handoff points
 
 Use the minimal set of skills that covers the task.
+
+## Patch Creation Contract
+
+When the requested code update will be delivered as a patch file, or when the user asks for red/green patch pairs, use `unified-patch-crafter` before emitting the patch.
+
+Patch work in this repo must follow these rules:
+
+1. Confirm the exact current anchor lines before writing any unified diff header or hunk.
+2. Prefer local numbered file output over GitHub snippets when available.
+3. Use commands such as `nl -ba <file> | sed -n '<start>,<end>p'` or `tail -n <N>` to confirm the real lines.
+4. Keep hunks minimal. Add only the lines that actually change.
+5. Do not rewrite full-file content when a local additive or surgical diff is enough.
+6. Preserve original surrounding lines exactly as they exist in the target file.
+7. When the current lines are uncertain, stop and ask for the numbered snippet before writing the patch.
+
 
 ## When to Use Direct Patch Instead of Involved Mode
 
@@ -166,8 +186,8 @@ depends on it, and where to look in the live file.
 
 When the user says `save here`, `record progress`, `continue later`, or similar:
 
-1. Update the workflow artifacts.
-2. Record the QA reading.
+1. Update the workflow artifacts by creating patches for each.
+2. Record the QA reading by creating patches for it.
 3. Create a stash unless the user explicitly says not to.
 4. Write the stash message in plain language and name the main function being
    worked on when there is one.
