@@ -2,16 +2,18 @@ schema_version: 1
 project: configure-hq
 human_status_file: "workflow/authoritative-status.md"
 global:
-  current_focus: "iscsi-tool-lab-vhdx-operator-selection"
+  current_focus: "iscsi-parent-chain-discovery"
   overall_status: "active"
-  last_reviewed: "2026-04-13"
-  active_branch: "feat/iscsi"
+  last_reviewed: "2026-04-15"
+  active_branch: "fix/iscsi-parent-chain-discovery"
   active_checkpoint: "5e6fb94"
   stakeholder_feedback:
     - "When the user says save here or equivalent, record the real progress state and create a stash before ending the session."
     - "Comment-first drift should be corrected before widening the next slice."
     - "Workflow artifacts should reflect live bugfix work before the next feature slice starts."
     - "AGENTS.md should bootstrap the repo workflow automatically for non-trivial work."
+    - "Lab VHDX discovery should follow each existing child disk's real parent chain instead of treating all parent VHDX files as flat candidates."
+    - "The current iSCSI disk-selection step should select only an existing child VHDX or CreateNew; parent selection belongs to the later new-child creation flow."
   resume_strategy: "time-series recomposition"
   resume_policy:
     - "Treat stash history as an experiment timeline, not just a restore stack."
@@ -83,7 +85,7 @@ increments:
       - "Host execution now depends on the operator selecting the correct Hyper-V VM when writing role metadata."
     blockers: []
     open_questions:
-      - "Resolved: use V:\VHDs\disks\sharedisk.vhdx for ShareDrive."
+      - "Resolved: use V:\\VHDs\\disks\\sharedisk.vhdx for ShareDrive."
       - "Resolved: guest activation now consumes a host-generated metadata module instead of relying only on guest-visible heuristics."
       - "Resolved: manual VM selection replaces auto-detection as the preferred host workflow."
       - "Resolved: increment 2 ends at metadata import, activation orchestration, and validation reporting."
@@ -123,7 +125,7 @@ increments:
       - "SMB behavior remains out of scope and unimplemented in code."
     blockers: []
     open_questions:
-      - "Resolved: increment 4 will use HQ-local groups plus HQ\svc_lab instead of abstract domain groups or Everyone."
+      - "Resolved: increment 4 will use HQ-local groups plus HQ\\svc_lab instead of abstract domain groups or Everyone."
       - "Resolved: WSL2 access from P50 will be modeled through HQ-authenticated SMB sessions rather than direct P50 principals."
   - id: "increment-5"
     status: "complete"
@@ -169,26 +171,44 @@ increments:
       - "What naming rules should the create-new defaults use?"
       - "The standalone discovery switch is resolved and already present."
   - id: "iscsi-tool-lab-vhdx-operator-selection"
-    status: "active"
-    summary: "Next slice starts at selecting discovered child and parent VHDX choices without widening into create or publication behavior."
+    status: "superseded"
+    summary: "Flat discovery and early operator selection work exposed that current iSCSI publication should stay child-first while parent discovery must follow each child disk's actual lineage before any later create-new parent selection flow is finalized."
     owner: "powershell-pair-coder"
     tag: ""
     stash_ref: "stash@{0}"
     checkpoint_ref: "5e6fb94"
-    qa_tags: ["ready-for-green", "needs-observation", "risk-identified"]
-    qa_commentary: "Discovery and the standalone discovery switch are already done and now observed on the real tree. The Windows-local script successfully enumerates the Lab shares as P50\\labuser once the discovery entrypoint runs after the function definitions, and the remaining green fix is the missing ParentChoice property on the returned selection object."
+    qa_tags: ["risk-identified", "test-gap"]
+    qa_commentary: "Selection work should pause until discovery returns child-first lineage-aware information and parent selection is deferred to the later new-child creation flow."
     qa_next_steps:
-      - "Add the missing ParentChoice property to Resolve-HqLabVhdOperatorSelection."
-      - "Preserve the reordered script entry flow so discovery runs after function definitions are loaded."
-      - "Keep creation and iSCSI publication explicitly out of scope."
+      - "Introduce a failing test for child-first discovery with per-child parent-chain context."
+      - "Refactor discovery before widening selection UX."
     quality_risks:
-      - "Selection UX may accidentally widen into creation or publication logic."
-      - "Real share layouts may create ambiguous choice labels that need stable display formatting."
-      - "Windows iSCSI target support remains unverified and must not be folded into this slice."
+      - "Flat parent enumeration may surface unrelated VHDX files that are not the child disk's true parent chain."
     blockers: []
     open_questions:
-      - "Should operator selection use index-based choice input, path-based choice input, or support both in the first slice?"
-      - "Should invalid selection handling stop at validation errors, or offer re-prompt behavior only in a later slice?"
+      - "Which Windows-local metadata path should read the parent link when Hyper-V cmdlets are limited or unavailable?"
+      - "Parent selection should stay out of the current iSCSI publication slice until the later new-child creation flow."
+  - id: "iscsi-parent-chain-discovery"
+    status: "active"
+    summary: "Discover child VHDX candidates first, then attach each existing child disk to its linked parent chain until the final base parent is reached."
+    owner: "powershell-pair-coder"
+    tag: ""
+    stash_ref: "stash@{0}"
+    checkpoint_ref: "5e6fb94"
+    qa_tags: ["ready-for-red", "risk-identified", "test-gap"]
+    qa_commentary: "The real bug is in the discovery model, not just the selection layer, and the current iSCSI publication step should remain child-first."
+    qa_next_steps:
+      - "Write the first failing test for child-first discovery with per-child parent-chain context."
+      - "Decide the minimal return shape for child choices that carry resolved lineage data."
+      - "Keep creation and iSCSI publication out of scope."
+    quality_risks:
+      - "The parent link may need VHD metadata inspection instead of path heuristics."
+      - "Real share trees may contain unrelated parent candidates that should not appear in a child disk's lineage."
+      - "The console output may become noisy unless parent-chain context stays attached to child choices rather than reviving a flat parent-choice list."
+    blockers: []
+    open_questions:
+      - "Should the child-first output show the full parent-chain path list inline on each choice row, or summarize it there and print the detailed chain below?"
+      - "Which host-side command or API is the most reliable source of parent-link metadata?"
 hotfix_tracks:
   - id: "bugfix-local-sam-identity-fallback"
     status: "merged"
@@ -287,3 +307,9 @@ stash_entries:
     stash_ref: "stash@{0}"
     message: "next: operator selection after verified discovery and existing standalone switch"
     notes: "Workflow recalibrated after confirming that [switch]$DiscoverLabVhdChoices already exists in configure_hq.ps1, so the next slice starts at operator selection rather than another execution switch."
+  - timestamp: "2026-04-15T00:00:00+01:00"
+    increment: "iscsi-parent-chain-discovery"
+    status: "wip"
+    stash_ref: "stash@{0}"
+    message: "recalibrated from flat operator selection to child-first parent-chain discovery"
+    notes: "Workflow updated to supersede flat parent enumeration and start the next red slice at child-first lineage-aware discovery with per-child parent-chain context."

@@ -7,19 +7,19 @@ tests, or stash history.
 
 ## Current Snapshot
 
-- Current focus: `iscsi-tool-lab-vhdx-operator-selection`
+- Current focus: `iscsi-parent-chain-discovery`
 - Overall status: `active`
-- Last reviewed: `2026-04-13`
-- Active branch: `feat/iscsi`
+- Last reviewed: `2026-04-15`
+- Active branch: `fix/iscsi-parent-chain-discovery`
 - Structured backing store: `workflow/stash-memory.yaml`
 
 ## Current Increment
 
-### iscsi-tool-lab-vhdx-operator-selection
+### iscsi-parent-chain-discovery
 
 - Status: `active`
 - Owner: `powershell-pair-coder`
-- Goal: let the operator choose a discovered Lab child and parent VHDX entry, while keeping creation and iSCSI publication out of scope
+- Goal: discover Lab child VHDX entries first and show each existing child's Hyper-V-style parent chain, while deferring parent selection until the later new-child creation slice
 
 ## Hotfix Track
 
@@ -54,34 +54,34 @@ tests, or stash history.
 - A dedicated iSCSI test file now exists at `app/tests/configure_hq.iscsi.Tests.ps1`
 - `Get-HqLabVhdDiscoveryChoices` is implemented and returns both child and parent choice sets with `CreateNew` defaults plus discovered `UseExisting` VHDX entries
 - `configure_hq.ps1` already exposes the standalone discovery entrypoint through `[switch]$DiscoverLabVhdChoices`
-- The dedicated iSCSI Pester file now has discovery green and operator selection red, with the remaining failure being the missing `ParentChoice` property on the returned selection object
-- The discovery increment is therefore complete at the verified helper-and-switch boundary
-- The next active slice is now limited to:
-  - mapping discovered child and parent choice rows into an operator-facing selection flow
-  - preserving the existing create-new placeholders without creating folders or VHDX files yet
-  - returning the selected choice objects cleanly for a later execution or publication step
-- Running the Windows-local script as `P50\labuser` now successfully enumerates the Lab child and parent VHDX shares after moving the discovery entry block below the function definitions and main invocation block
-- This next slice still does not create folders, create VHDX files, or publish iSCSI targets
+- The previous operator-selection direction is now superseded because the current iSCSI publication step should select only an existing child VHDX or create a new child, while flat parent enumeration also does not match Hyper-V differencing-disk lineage
+- The next active bugfix slice is now limited to:
+  - discovering child VHDX candidates first
+  - following each existing child disk's linked parent path step by step
+  - continuing each walk until the final main parent is reached
+  - showing the resolved parent chain as context for each child choice
+  - keeping parent selection out of this slice unless a later new-child creation flow needs it
+  - returning lineage-aware child-first discovery data without creating folders, creating VHDX files, or publishing iSCSI targets yet
 - Historical SMB and increment-2 checkpoints remain available for lineage and rollback analysis
 
 ### QA Reading
 
-- Tags: `ready-for-green`, `needs-observation`, `risk-identified`
-- Commentary: the discovery helper and standalone discovery switch are verified on the real tree, and the Windows-local script now works as `P50\labuser` once the discovery entrypoint runs after the function definitions. The remaining green fix is to return the missing `ParentChoice` property from `Resolve-HqLabVhdOperatorSelection`.
+- Tags: `ready-for-red`, `risk-identified`, `test-gap`
+- Commentary: the current discovery helper is good enough to enumerate VHDX files on the Lab shares, but it does not yet model the actual parent linkage behavior expected from Hyper-V differencing disks. The next slice should correct the discovery contract by making discovery child-first and lineage-aware before any later create-new parent selection is introduced.
 - Next steps:
-  - add the missing `ParentChoice` property to `Resolve-HqLabVhdOperatorSelection`
-  - preserve the reordered script entry flow so discovery runs after function definitions are loaded
-  - preserve `-DiscoverLabVhdChoices` as the non-destructive inspection path
+  - add a failing test for child-first discovery that attaches a resolved parent chain to each existing child choice
+  - record the expected child-first return shape and console display
+  - keep creation and iSCSI publication out of scope while the discovery contract is corrected
 - Quality risks:
-  - real share enumeration may expose folder-layout or naming variations beyond the first discovery test
-  - the Windows iSCSI target support boundary for publishing a differencing child disk is still unverified
-  - selection UX may drift into creation or publication logic unless the slice boundary stays explicit
+  - share enumeration alone may confuse unrelated parent VHDX files with the true parent lineage of a selected child
+  - parent lookup may require reading VHD metadata rather than inferring lineage from folder layout alone
+  - the discovery output may become noisy unless parent-chain context stays attached to child choices rather than reviving a flat parent-choice list
 
 ### Blockers
 
-- no blocker prevents the operator-selection slice itself
+- no blocker prevents the parent-chain discovery bugfix itself
 - the iSCSI publication path is intentionally split into a separate upcoming tool and still needs its own implementation plan
-- the later iSCSI publication path still depends on validating the Windows differencing-disk support boundary
+- the exact metadata source for reading a child VHDX parent link still needs validation in the Windows host environment
 
 ### Open Questions
 
@@ -92,7 +92,8 @@ tests, or stash history.
 - Resolved: increment 4 will use HQ-local groups plus `HQ\svc_lab` instead of abstract domain groups or `Everyone`.
 - Resolved: WSL2 access from `P50` will be modeled through HQ-authenticated SMB sessions rather than direct `P50\...` principals.
 - Resolved: the standalone discovery switch already exists as `-DiscoverLabVhdChoices`.
-- Open: should operator selection use index-based choice input, path-based choice input, or support both in the first slice?
+- Open: should parent-chain discovery read the parent link through Hyper-V/VHD metadata commands directly, or through another local inspection method when Hyper-V cmdlets are unavailable?
+- Open: should the child-first output show the full parent-chain path list inline on each choice row, or summarize it there and print the detailed chain below?
 
 ## Increment Ledger
 
@@ -104,13 +105,16 @@ tests, or stash history.
 | `increment-4` | `complete` | ACL helpers, HQ principal-state backup, standalone and optional identity restore, and the full `-RunIdentityCleanup` confirmation flow are implemented and tested. | `powershell-pair-coder` | `configure-hq-increment-4` |
 | `increment-5` | `complete` | SMB share provisioning is complete from the managed-folder contract and has been verified on the guest after ACL setup. | `powershell-pair-coder` | |
 | `iscsi-tool-lab-vhdx-discovery` | `complete` | Discovery helper is implemented, the standalone discovery switch exists, and the dedicated iSCSI test is green on the current tree. | `powershell-pair-coder` | |
-| `iscsi-tool-lab-vhdx-operator-selection` | `active` | Next slice starts at selecting discovered child and parent VHDX choices without widening into create or publication behavior. | `powershell-pair-coder` | |
+| `iscsi-tool-lab-vhdx-operator-selection` | `superseded` | Flat discovery and early operator-selection work exposed that parent discovery must follow the selected child disk's actual lineage before selection flow can be finalized. | `powershell-pair-coder` | |
+| `iscsi-parent-chain-discovery` | `active` | Child-first discovery should attach each existing child VHDX to its resolved parent chain and defer parent selection until the later new-child creation flow. | `powershell-pair-coder` | |
 
 ## Stakeholder Feedback
 
 - Latest feedback: when the user says `save here` or equivalent, the agent suite must record the real progress state and create a stash before ending the session.
 - Latest feedback: comment-first drift should be corrected before widening the next slice.
 - Latest feedback: `AGENTS.md` should bootstrap the repo workflow automatically for non-trivial work so the user does not need to keep restating it.
+- Latest feedback: Lab VHDX discovery should follow each existing child disk's real parent chain instead of treating all parent VHDX files as flat candidates.
+- Latest feedback: the current iSCSI disk-selection step should select only an existing child VHDX or create a new child; parent selection belongs to the later new-child creation flow.
 - Latest progress report: increment 4 now includes ACL helper code, HQ principal-state backup/export, required identity restore, and green lab-aligned tests.
 - Latest progress report: identity restore now runs only when `-RunIdentityRestore` is set, and ACL application now runs inside activation after the storage work is finished.
 - Latest progress report: saved principal state now produces a cleanup plan for principals that were absent before restore work ran.
@@ -127,6 +131,5 @@ tests, or stash history.
 - Latest progress report: commit `5e6fb94` saves the legacy SMB publication alignment, the repo-bootstrap move into `AGENTS.md`, and the `configure_hq` doc move into `app/docs`.
 - Latest progress report: the code summary shows the iSCSI discovery helper implemented, with a follow-up helper fix recorded in `patches/iscsi-discovery-fix.patch`.
 - Latest progress report: `Invoke-Pester .\app\tests\configure_hq.iscsi.Tests.ps1` is green with `Passed: 1 Failed: 0`, so the discovery increment is complete at the verified helper boundary.
-- Latest progress report: the standalone discovery entrypoint already exists as `[switch]$DiscoverLabVhdChoices`, so the next slice has shifted to operator selection.
-- Latest progress report: running the Windows-local script as `P50\labuser` now enumerates both Lab child and parent VHDX shares successfully after moving the discovery entry block below the function definitions and main invocation block.
-- Latest progress report: the current operator-selection red-to-green boundary is the missing `ParentChoice` property on the object returned by `Resolve-HqLabVhdOperatorSelection`.
+- Latest progress report: the standalone discovery entrypoint already exists as `[switch]$DiscoverLabVhdChoices`.
+- Latest progress report: the previous operator-selection direction is now superseded until child-first lineage-aware discovery is corrected first and parent selection is deferred to the later new-child creation flow.
