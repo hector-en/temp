@@ -14,34 +14,6 @@ param(
 Set-StrictMode -Version Latest
 
 # ---------------------------------------------------------------------
-# Section: run the Lab VHDX discovery helper for the iSCSI workflow
-# ---------------------------------------------------------------------
-
-# Main function: show existing child and parent VHDX choices without creating anything yet.
-if ($DiscoverLabVhdChoices) {
-    $choices = Get-HqLabVhdDiscoveryChoices
-
-    # Explain when the child discovery returned no existing VHDX files.
-    if ($choices.ChildChoices.Count -eq 1) {
-        Write-HqStatus -Phase 'iSCSI' -Message 'No existing child VHDX files were found under the Lab frontend share.' -Level Warning
-    }
-
-    # Show the child VHDX choices for the operator.
-    Write-HqStatus -Phase 'iSCSI' -Message 'Discovered child VHDX choices:' -Level Success
-    $choices.ChildChoices | Format-Table -AutoSize | Out-Host
-
-    # Explain when the parent discovery returned no existing VHDX files.
-    if ($choices.ParentChoices.Count -eq 1) {
-        Write-HqStatus -Phase 'iSCSI' -Message 'No existing parent VHDX files were found under the Lab base-image share.' -Level Warning
-    }
-
-    # Show the parent VHDX choices for the operator.
-    Write-HqStatus -Phase 'iSCSI' -Message 'Discovered parent VHDX choices:' -Level Success
-    $choices.ParentChoices | Format-Table -AutoSize | Out-Host
-
-    return $choices
-}
-# ---------------------------------------------------------------------
 # Section: disk discovery, activation, and the main entrypoint
 # ---------------------------------------------------------------------
 
@@ -3102,31 +3074,6 @@ function Test-HqRequiredSecurityPrincipalsPresent {
     return $true
 }
 
-if ($MyInvocation.InvocationName -ne '.') {
-    try {
-        if ($ExportSecurityPrincipalState) {
-            $path = Invoke-HqSecurityPrincipalStateBackup -Path $SecurityStatePath -MetadataModulePath $MetadataModulePath
-            Write-HqStatus -Phase "Identity" -Message ("Security principal state backup complete: {0}" -f ([System.IO.Path]::GetFullPath($path))) -Level Success
-        } elseif ($RunIdentityCleanup) {
-            $results = @(Invoke-HqSecurityPrincipalStateCleanup -Path $SecurityStatePath -MetadataModulePath $MetadataModulePath)
-            Write-HqStatus -Phase "Identity" -Message ("Identity cleanup step complete. Processed {0} cleanup row(s)." -f $results.Count) -Level Success
-        } elseif ($RunActivation) {
-            $results = Start-HqConfiguration -InstallMissingFeatures:$InstallMissingFeatures -RunIdentityRestore:$RunIdentityRestore -DiskNumbers $TargetDiskNumbers -MetadataModulePath $MetadataModulePath
-            Show-HqRunSummary -Results $results
-        } elseif ($RunIdentityRestore) {
-            $results = @(Invoke-HqSecurityPrincipalStateRestore -MetadataModulePath $MetadataModulePath)
-            Write-HqStatus -Phase "Identity" -Message ("Identity restore step complete. Processed {0} principal row(s)." -f $results.Count) -Level Success
-        } else {
-            Update-HqDiskMetadataModule -VmName $VmName -Path $MetadataModulePath
-        }
-    }
-    catch {
-        $message = if ($_.Exception -and $_.Exception.Message) { $_.Exception.Message } else { [string]$_ }
-        Write-HqStatus -Phase "Workflow" -Message $message -Level Error
-        exit 1
-    }
-}
-
 # ---------------------------------------------------------------------
 # Section: discover safe Lab child and parent VHDX choices for iSCSI work
 # ---------------------------------------------------------------------
@@ -3234,5 +3181,61 @@ function Resolve-HqLabVhdOperatorSelection {
         ChildChoiceIndex  = $ChildChoiceIndex
         ParentChoiceIndex = $ParentChoiceIndex
         ChildChoice       = $selectedChildChoice
+        ParentChoice      = $selectedParentChoice
     }
 }
+
+# ---------------------------------------------------------------------
+# Section: run the Lab VHDX discovery helper for the iSCSI workflow
+# ---------------------------------------------------------------------
+
+# Main function: show existing child and parent VHDX choices without creating anything yet.
+if ($DiscoverLabVhdChoices) {
+    $choices = Get-HqLabVhdDiscoveryChoices
+
+    # Explain when the child discovery returned no existing VHDX files.
+    if ($choices.ChildChoices.Count -eq 1) {
+        Write-HqStatus -Phase 'iSCSI' -Message 'No existing child VHDX files were found under the Lab frontend share.' -Level Warning
+    }
+
+    # Show the child VHDX choices for the operator.
+    Write-HqStatus -Phase 'iSCSI' -Message 'Discovered child VHDX choices:' -Level Success
+    $choices.ChildChoices | Format-Table -AutoSize | Out-Host
+
+    # Explain when the parent discovery returned no existing VHDX files.
+    if ($choices.ParentChoices.Count -eq 1) {
+        Write-HqStatus -Phase 'iSCSI' -Message 'No existing parent VHDX files were found under the Lab base-image share.' -Level Warning
+    }
+
+    # Show the parent VHDX choices for the operator.
+    Write-HqStatus -Phase 'iSCSI' -Message 'Discovered parent VHDX choices:' -Level Success
+    $choices.ParentChoices | Format-Table -AutoSize | Out-Host
+
+    return $choices
+}
+
+if ($MyInvocation.InvocationName -ne '.') {
+    try {
+        if ($ExportSecurityPrincipalState) {
+            $path = Invoke-HqSecurityPrincipalStateBackup -Path $SecurityStatePath -MetadataModulePath $MetadataModulePath
+            Write-HqStatus -Phase "Identity" -Message ("Security principal state backup complete: {0}" -f ([System.IO.Path]::GetFullPath($path))) -Level Success
+        } elseif ($RunIdentityCleanup) {
+            $results = @(Invoke-HqSecurityPrincipalStateCleanup -Path $SecurityStatePath -MetadataModulePath $MetadataModulePath)
+            Write-HqStatus -Phase "Identity" -Message ("Identity cleanup step complete. Processed {0} cleanup row(s)." -f $results.Count) -Level Success
+        } elseif ($RunActivation) {
+            $results = Start-HqConfiguration -InstallMissingFeatures:$InstallMissingFeatures -RunIdentityRestore:$RunIdentityRestore -DiskNumbers $TargetDiskNumbers -MetadataModulePath $MetadataModulePath
+            Show-HqRunSummary -Results $results
+        } elseif ($RunIdentityRestore) {
+            $results = @(Invoke-HqSecurityPrincipalStateRestore -MetadataModulePath $MetadataModulePath)
+            Write-HqStatus -Phase "Identity" -Message ("Identity restore step complete. Processed {0} principal row(s)." -f $results.Count) -Level Success
+        } else {
+            Update-HqDiskMetadataModule -VmName $VmName -Path $MetadataModulePath
+        }
+    }
+    catch {
+        $message = if ($_.Exception -and $_.Exception.Message) { $_.Exception.Message } else { [string]$_ }
+        Write-HqStatus -Phase "Workflow" -Message $message -Level Error
+        exit 1
+    }
+}
+

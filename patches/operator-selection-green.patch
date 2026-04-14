@@ -1,0 +1,12 @@
+--- a/app/configure_hq.ps1
++++ b/app/configure_hq.ps1
+@@ -3231,7 +3231,8 @@
+     $selectedParentChoice = $parentChoices[$ParentChoiceIndex]
+ 
+     [pscustomobject]@{
+         ChildChoiceIndex  = $ChildChoiceIndex
+         ParentChoiceIndex = $ParentChoiceIndex
+         ChildChoice       = $selectedChildChoice
++        ParentChoice      = $selectedParentChoice
+     }
+ }

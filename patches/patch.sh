@@ -1,14 +1,7 @@
-set -euo pipefail
+et -euo pipefail
 
 SRC_DIR="/c/Users/hector/documents/scripting/tools/app"
 DST_DIR="$HOME/chatgpt_temp/tools/patches"
-
-APPLY_PATCHES=0
-
-if [ "${1-}" = "--apply" ]; then
-	    APPLY_PATCHES=1
-	        shift
-fi
 
 mkdir -p "$DST_DIR"
 
@@ -52,33 +45,7 @@ sudo chown vmuser:vmuser "${MOVED_PATCHES[@]}"
 chmod +x "${MOVED_PATCHES[@]}"
 
 for patch_file in "${MOVED_PATCHES[@]}"; do
-	    mapfile -t TARGET_FILES < <(
-	            awk '
-		                /^--- / || /^\+\+\+ / {
-				                path = substr($0, 5)
-						                sub(/^[ab]\//, "", path)
-								                if (path != "/dev/null") print path
-											            }
-												            ' "$patch_file" | sort -u
-													        )
-
-														    NORMALIZE_PATHS=()
-														        for rel_path in "${TARGET_FILES[@]}"; do
-																        if [ -f "$rel_path" ]; then
-																		            NORMALIZE_PATHS+=("$rel_path")
-																			            fi
-																				        done
-																					    NORMALIZE_PATHS+=("$patch_file")
-
-																					        perl -0pi -e 's/\r\n/\n/g; s/\n?\z/\n/' "${NORMALIZE_PATHS[@]}"
-
-																						    if [ "$APPLY_PATCHES" -eq 1 ]; then
-																							            echo "=== Apply: $patch_file ==="
-																								            patch -p1 < "$patch_file"
-																									        else
-																											        echo "=== Dry run: $patch_file ==="
-																												        patch --dry-run -p1 < "$patch_file"
-																													    fi
-
-																													        echo
-																													done
+	    echo "=== Dry run: $patch_file ==="
+	        patch --dry-run -p1 < "$patch_file"
+		    echo
+	    done
