@@ -52,11 +52,22 @@ should sit above the specific code segment it introduces.
 Assume the repo bootstrap from AGENTS.md is already active when this skill is being used for normal repo work.
 
 Only reread or restate the AGENTS.md contract when one of these is true:
-- the user explicitly asks to init, ecalibrate, esume cleanly, or start the agent system`r
+- the user explicitly asks to init, 
+ecalibrate, 
+esume cleanly, or start the agent system`r
 - the session has resumed after an interruption or restart
 - the workflow mode or current continuation point has become unclear
 
 Do not propose new code until that recalibration summary has been given when a recalibration is actually required.
+
+## Patch handoff rule
+When the requested deliverable is a patch file, a red/green patch pair, or a minimal unified diff, coordinate with `unified-patch-crafter` before emitting the patch.
+
+For patch work:
+- confirm the real current anchor lines first
+- prefer numbered local file output over GitHub when available
+- keep hunks minimal and preserve unchanged surrounding lines exactly
+- do not emit guessed hunk headers
 
 ## Pairing Workflow
 

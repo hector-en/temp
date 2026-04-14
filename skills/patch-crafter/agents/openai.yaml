@@ -1,0 +1,5 @@
+version: 1
+interface:
+  display_name: Patch Crafter
+  short_description: Minimal diff and patch-file creation for this repo.
+  default_prompt: Create a minimal unified diff after confirming the exact current file lines.
