@@ -1,0 +1,34 @@
+--- a/app/tests/configure_hq.iscsi.Tests.ps1
++++ b/app/tests/configure_hq.iscsi.Tests.ps1
+@@ -91,3 +91,30 @@
+         }
+     }
+ }
++
++Describe "Increment 4 iSCSI Lab VHDX Operator Selection" {
++    . "$PSScriptRoot\..\configure_hq.ps1"
++
++    Context "Resolve-HqLabVhdOperatorSelection" {
++        It "returns the requested child and parent choice rows by index" {
++            $discovery = [pscustomobject]@{
++                ChildChoices = @(
++                    [pscustomobject]@{ Action = 'CreateNew'; ChoiceType = 'ChildVhdx'; Path = $null; Name = $null; DirectoryPath = '\\10.100.0.10\lab\virtual hdds frontends' }
++                    [pscustomobject]@{ Action = 'UseExisting'; ChoiceType = 'ChildVhdx'; Path = '\\10.100.0.10\lab\virtual hdds frontends\Frontend-01\frontend-01-child.vhdx'; Name = 'frontend-01-child.vhdx'; DirectoryPath = '\\10.100.0.10\lab\virtual hdds frontends\Frontend-01' }
++                    [pscustomobject]@{ Action = 'UseExisting'; ChoiceType = 'ChildVhdx'; Path = '\\10.100.0.10\lab\virtual hdds frontends\Frontend-02\frontend-02-child.vhdx'; Name = 'frontend-02-child.vhdx'; DirectoryPath = '\\10.100.0.10\lab\virtual hdds frontends\Frontend-02' }
++                )
++                ParentChoices = @(
++                    [pscustomobject]@{ Action = 'CreateNew'; ChoiceType = 'ParentVhdx'; Path = $null; Name = $null; DirectoryPath = '\\10.100.0.10\lab\virtual hdds' }
++                    [pscustomobject]@{ Action = 'UseExisting'; ChoiceType = 'ParentVhdx'; Path = '\\10.100.0.10\lab\virtual hdds\Base-Frontend\Base-Frontend.vhdx'; Name = 'Base-Frontend.vhdx'; DirectoryPath = '\\10.100.0.10\lab\virtual hdds\Base-Frontend' }
++                )
++            }
++
++            $selection = Resolve-HqLabVhdOperatorSelection -DiscoveryChoices $discovery -ChildChoiceIndex 2 -ParentChoiceIndex 1
++            $selection.ChildChoiceIndex | Should Be 2
++            $selection.ParentChoiceIndex | Should Be 1
++            $selection.ChildChoice.Action | Should Be 'UseExisting'
++            $selection.ChildChoice.Path | Should Be '\\10.100.0.10\lab\virtual hdds frontends\Frontend-02\frontend-02-child.vhdx'
++            $selection.ParentChoice.Action | Should Be 'UseExisting'
++            $selection.ParentChoice.Path | Should Be '\\10.100.0.10\lab\virtual hdds\Base-Frontend\Base-Frontend.vhdx'
++        }
++    }
++}

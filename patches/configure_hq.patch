@@ -1,0 +1,46 @@
+--- a/app/configure_hq.ps1
++++ b/app/configure_hq.ps1
+@@ -3197,3 +3197,40 @@
+         ParentChoices  = @($parentChoices)
+     }
+ }
++
++# ---------------------------------------------------------------------
++# Section: resolve the operator's selected Lab child and parent VHDX rows
++# ---------------------------------------------------------------------
++
++# Main function: map operator-provided indexes onto the discovered choice sets.
++function Resolve-HqLabVhdOperatorSelection {
++    [CmdletBinding()]
++    param(
++        [Parameter(Mandatory = $true)]
++        [pscustomobject]$DiscoveryChoices,
++
++        [Parameter(Mandatory = $true)]
++        [int]$ChildChoiceIndex,
++
++        [Parameter(Mandatory = $true)]
++        [int]$ParentChoiceIndex
++    )
++
++    if (-not $DiscoveryChoices.PSObject.Properties['ChildChoices']) {
++        throw 'DiscoveryChoices does not contain ChildChoices.'
++    }
++
++    if (-not $DiscoveryChoices.PSObject.Properties['ParentChoices']) {
++        throw 'DiscoveryChoices does not contain ParentChoices.'
++    }
++
++    $childChoices = @($DiscoveryChoices.ChildChoices)
++    $parentChoices = @($DiscoveryChoices.ParentChoices)
++
++    $selectedChildChoice = $childChoices[$ChildChoiceIndex]
++    $selectedParentChoice = $parentChoices[$ParentChoiceIndex]
++
++    [pscustomobject]@{
++        ChildChoiceIndex  = $ChildChoiceIndex
++        ParentChoiceIndex = $ParentChoiceIndex
++        ChildChoice       = $selectedChildChoice
++        ParentChoice      = $selectedParentChoice
++    }
++}
