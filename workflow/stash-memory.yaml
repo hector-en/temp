@@ -5,7 +5,7 @@ global:
   current_focus: "iscsi-parent-chain-discovery"
   overall_status: "active"
   last_reviewed: "2026-04-15"
-  active_branch: "fix/iscsi-parent-chain-discovery"
+  active_branch: "fix/child-parent-chain-dicovery"
   active_checkpoint: "5e6fb94"
   stakeholder_feedback:
     - "When the user says save here or equivalent, record the real progress state and create a stash before ending the session."
@@ -195,11 +195,11 @@ increments:
     tag: ""
     stash_ref: "stash@{0}"
     checkpoint_ref: "5e6fb94"
-    qa_tags: ["ready-for-red", "risk-identified", "test-gap"]
-    qa_commentary: "The real bug is in the discovery model, not just the selection layer, and the current iSCSI publication step should remain child-first."
+    qa_tags: ["needs-observation", "risk-identified", "test-gap"]
+    qa_commentary: "The real bug is in the discovery model, not just the selection layer, and the current iSCSI publication step should remain child-first. Live output now confirms child-only discovery, but parent-chain lookup is still blocked for P50\\labuser and currently falls back to ParentChainStatus = Unavailable."
     qa_next_steps:
-      - "Write the first failing test for child-first discovery with per-child parent-chain context."
-      - "Decide the minimal return shape for child choices that carry resolved lineage data."
+      - "Record the blocked lineage-inspection behavior in tests and workflow state."
+      - "Capture or surface the actual per-child inspection error when parent-chain lookup is unavailable."
       - "Keep creation and iSCSI publication out of scope."
     quality_risks:
       - "The parent link may need VHD metadata inspection instead of path heuristics."
@@ -313,3 +313,9 @@ stash_entries:
     stash_ref: "stash@{0}"
     message: "recalibrated from flat operator selection to child-first parent-chain discovery"
     notes: "Workflow updated to supersede flat parent enumeration and start the next red slice at child-first lineage-aware discovery with per-child parent-chain context."
+  - timestamp: "2026-04-15T00:00:00+01:00"
+    increment: "iscsi-parent-chain-discovery"
+    status: "wip"
+    stash_ref: "stash@{0}"
+    message: "child-only discovery output working while lineage inspection is blocked for labuser"
+    notes: "Live execution now shows child-only discovery output correctly, but Get-VHD lineage inspection currently falls back to ParentChainStatus = Unavailable for P50\\labuser under the present permissions."

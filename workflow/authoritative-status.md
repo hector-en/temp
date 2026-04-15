@@ -10,7 +10,7 @@ tests, or stash history.
 - Current focus: `iscsi-parent-chain-discovery`
 - Overall status: `active`
 - Last reviewed: `2026-04-15`
-- Active branch: `fix/iscsi-parent-chain-discovery`
+- Active branch: `fix/child-parent-chain-dicovery`
 - Structured backing store: `workflow/stash-memory.yaml`
 
 ## Current Increment
@@ -52,7 +52,7 @@ tests, or stash history.
 - Guest reruns and the finished SMB closeout established a clean handoff into a separate iSCSI tool boundary
 - A new design-only iSCSI note now defines how an optional block publication mode would work for a writable child VHDX while keeping the parent VHDX read-only
 - A dedicated iSCSI test file now exists at `app/tests/configure_hq.iscsi.Tests.ps1`
-- `Get-HqLabVhdDiscoveryChoices` is implemented and returns both child and parent choice sets with `CreateNew` defaults plus discovered `UseExisting` VHDX entries
+- `Get-HqLabVhdDiscoveryChoices` is implemented and now returns child choices with `CreateNew` plus discovered `UseExisting` VHDX entries, while attaching best-effort parent-chain context per existing child row
 - `configure_hq.ps1` already exposes the standalone discovery entrypoint through `[switch]$DiscoverLabVhdChoices`
 - The previous operator-selection direction is now superseded because the current iSCSI publication step should select only an existing child VHDX or create a new child, while flat parent enumeration also does not match Hyper-V differencing-disk lineage
 - The next active bugfix slice is now limited to:
@@ -62,15 +62,16 @@ tests, or stash history.
   - showing the resolved parent chain as context for each child choice
   - keeping parent selection out of this slice unless a later new-child creation flow needs it
   - returning lineage-aware child-first discovery data without creating folders, creating VHDX files, or publishing iSCSI targets yet
+- Live execution now shows child-only discovery output correctly, while parent-chain inspection currently falls back to `ParentChainStatus = Unavailable` for `P50\labuser` when `Get-VHD` cannot inspect lineage under the current permissions
 - Historical SMB and increment-2 checkpoints remain available for lineage and rollback analysis
 
 ### QA Reading
 
-- Tags: `ready-for-red`, `risk-identified`, `test-gap`
-- Commentary: the current discovery helper is good enough to enumerate VHDX files on the Lab shares, but it does not yet model the actual parent linkage behavior expected from Hyper-V differencing disks. The next slice should correct the discovery contract by making discovery child-first and lineage-aware before any later create-new parent selection is introduced.
+- Tags: `needs-observation`, `risk-identified`, `test-gap`
+- Commentary: the current discovery helper now exposes child-first output and attaches best-effort parent-chain state per child row, but real parent linkage is still not observable under `P50\labuser` because `Get-VHD` inspection currently falls back to `ParentChainStatus = Unavailable`. The next slice should preserve the child-first contract while making the blocked lineage inspection state explicit and testable.
 - Next steps:
-  - add a failing test for child-first discovery that attaches a resolved parent chain to each existing child choice
-  - record the expected child-first return shape and console display
+  - record the current blocked lineage-inspection behavior in tests and workflow state
+  - capture or surface the actual per-child inspection error when parent-chain lookup is unavailable
   - keep creation and iSCSI publication out of scope while the discovery contract is corrected
 - Quality risks:
   - share enumeration alone may confuse unrelated parent VHDX files with the true parent lineage of a selected child
@@ -132,4 +133,5 @@ tests, or stash history.
 - Latest progress report: the code summary shows the iSCSI discovery helper implemented, with a follow-up helper fix recorded in `patches/iscsi-discovery-fix.patch`.
 - Latest progress report: `Invoke-Pester .\app\tests\configure_hq.iscsi.Tests.ps1` is green with `Passed: 1 Failed: 0`, so the discovery increment is complete at the verified helper boundary.
 - Latest progress report: the standalone discovery entrypoint already exists as `[switch]$DiscoverLabVhdChoices`.
+- Latest progress report: live child-only discovery output now works, but `Get-VHD` lineage inspection currently returns `ParentChainStatus = Unavailable` for `P50\labuser` under the present permissions.
 - Latest progress report: the previous operator-selection direction is now superseded until child-first lineage-aware discovery is corrected first and parent selection is deferred to the later new-child creation flow.

@@ -5,6 +5,7 @@ param(
     [switch]$ExportSecurityPrincipalState,
     [switch]$InstallMissingFeatures,
     [switch]$DiscoverLabVhdChoices,
+    [string]$SelectedChildPath,
     [int[]]$TargetDiskNumbers,
     [string]$VmName,
     [string]$MetadataModulePath = (Join-Path $PSScriptRoot 'HqDiskMetadata.psm1'),
@@ -1325,7 +1326,7 @@ function Get-HqDefaultSecurityPrincipalDefinitions {
 
     $results = @{}
     $expectedMemberships = Get-HqExpectedSecurityPrincipalMemberships
-    $passwordPromptPrincipals = @('HQ\hector', 'HQ\Researcher', 'HQ\svc_lab')
+    $passwordPromptPrincipals = @('HQ\hector', 'HQ\Researcher', 'HQ\labuser')
 
     foreach ($definition in @(Get-HqDefaultRoleAclDefinitions)) {
         $results[[string]$definition.Principal] = [pscustomobject]@{
@@ -1389,11 +1390,12 @@ function Get-HqExpectedSecurityPrincipalMemberships {
             'HQ\Lab_RW'
             'HQ\ShareDrive_R'
         )
-        'HQ\svc_lab' = @(
+        'HQ\labuser' = @(
             'HQ\Lab_RW'
             'HQ\Repository_R'
             'HQ\Backups_RW'
             'HQ\ShareDrive_R'
+            'HQ\Hyper-V'
         )
     }
 }
@@ -3075,73 +3077,93 @@ function Test-HqRequiredSecurityPrincipalsPresent {
 }
 
 # ---------------------------------------------------------------------
-# Section: discover safe Lab child and parent VHDX choices for iSCSI work
+# Section: discover Lab child VHDX choices and resolve parent chain context
 # ---------------------------------------------------------------------
-
-# Main function: gather existing child and parent VHDX choices plus create-new defaults.
 function Get-HqLabVhdDiscoveryChoices {
     [CmdletBinding()]
-    param(
-        [string]$ChildRootPath = '\\10.100.0.10\lab\virtual hdds frontends',
-        [string]$ParentRootPath = '\\10.100.0.10\lab\virtual hdds'
-    )
+    param()
 
-    # Start each choice list with the create-new option.
+    # Setup: enumerate child-VHDX candidates from the Lab frontend share so the
+    # workflow can surface existing differencing disks alongside the create-new
+    # placeholder row.
+    $childRoot = '\\10.100.0.10\lab\virtual hdds frontends'
+    $childFiles = @(Get-ChildItem -Path $childRoot -Recurse -File -Filter '*.vhdx')
+
     $childChoices = @(
         [pscustomobject]@{
-            Action        = 'CreateNew'
-            ChoiceType    = 'ChildVhdx'
-            Path          = $null
-            Name          = $null
-            DirectoryPath = $ChildRootPath
+            Action = 'CreateNew'
+            ChoiceType = 'ChildVhdx'
+            Path = $null
+            Name = $null
+            DirectoryPath = $childRoot
+            ParentChain = @()
+            FinalParent = $null
+            ParentChainStatus = 'NotApplicable'
         }
     )
 
-    # Add every existing child VHDX under the frontend share.
-    $childChoices += @(
-        Get-ChildItem -Path $ChildRootPath -Recurse -File -Filter '*.vhdx' -ErrorAction SilentlyContinue |
-            ForEach-Object {
-                [pscustomobject]@{
-                    Action        = 'UseExisting'
-                    ChoiceType    = 'ChildVhdx'
-                    Path          = [string]$_.FullName
-                    Name          = [string]$_.Name
-                    DirectoryPath = [string]$_.DirectoryName
-                }
-            }
-    )
+    foreach ($childFile in $childFiles) {
+        # Step: follow the Hyper-V parent linkage for each discovered child VHDX
+        # so the operator can inspect the real lineage directly on the child row.
+        $parentChain = @()
+        $finalParent = $null
+        $parentChainStatus = 'Resolved'
 
-    # Start the parent choice list with the create-new option.
-    $parentChoices = @(
-        [pscustomobject]@{
-            Action        = 'CreateNew'
-            ChoiceType    = 'ParentVhdx'
-            Path          = $null
-            Name          = $null
-            DirectoryPath = $ParentRootPath
+        try {
+            $currentPath = $childFile.FullName
+            $depth = 0
+
+            while ($true) {
+                $currentVhd = Get-VHD -Path $currentPath -ErrorAction Stop
+
+                if (-not ($currentVhd.PSObject.Properties.Name -contains 'ParentPath')) {
+                    throw "Get-VHD result for '$currentPath' did not include ParentPath."
+                }
+
+                if ([string]::IsNullOrWhiteSpace($currentVhd.ParentPath)) {
+                    break
+                }
+
+                $depth++
+                $parentPath = $currentVhd.ParentPath
+
+                $parentChain += [pscustomobject]@{
+                    Depth = $depth
+                    Path = $parentPath
+                    Name = [System.IO.Path]::GetFileName($parentPath)
+                    DirectoryPath = Split-Path -Path $parentPath -Parent
+                }
+
+                $currentPath = $parentPath
+            }
+
+            if ($parentChain.Count -gt 0) {
+                $finalParent = $parentChain[-1]
+            }
         }
-    )
+        catch {
+            $parentChainStatus = 'Unavailable'
+            $parentChain = @()
+            $finalParent = $null
+        }
 
-    # Add every existing parent VHDX under the base-image share.
-    $parentChoices += @(
-        Get-ChildItem -Path $ParentRootPath -Recurse -File -Filter '*.vhdx' -ErrorAction SilentlyContinue |
-            ForEach-Object {
-                [pscustomobject]@{
-                    Action        = 'UseExisting'
-                    ChoiceType    = 'ParentVhdx'
-                    Path          = [string]$_.FullName
-                    Name          = [string]$_.Name
-                    DirectoryPath = [string]$_.DirectoryName
-                }
-            }
-    )
+        $childChoices += [pscustomobject]@{
+            Action = 'UseExisting'
+            ChoiceType = 'ChildVhdx'
+            Path = $childFile.FullName
+            Name = $childFile.Name
+            DirectoryPath = $childFile.DirectoryName
+            ParentChain = $parentChain
+            FinalParent = $finalParent
+            ParentChainStatus = $parentChainStatus
+        }
+    }
 
-    # Return only the discovery data for this slice.
+    # Check: keep this slice limited to child selection context. Parent lineage
+    # is shown per child row, and flat parent-choice selection is deferred to a
+    # later create-new-child workflow.
     [pscustomobject]@{
-        ChildRootPath  = $ChildRootPath
-        ParentRootPath = $ParentRootPath
-        ChildChoices   = @($childChoices)
-        ParentChoices  = @($parentChoices)
+        ChildChoices = $childChoices
     }
 }
 
@@ -3186,10 +3208,310 @@ function Resolve-HqLabVhdOperatorSelection {
 }
 
 # ---------------------------------------------------------------------
-# Section: run the Lab VHDX discovery helper for the iSCSI workflow
+# Section: inspect a VHD parent chain locally or through an elevated helper
 # ---------------------------------------------------------------------
+function Resolve-HqVhdParentChainLocal {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
 
-# Main function: show existing child and parent VHDX choices without creating anything yet.
+    $parentChain = @()
+    $currentPath = $Path
+    $depth = 0
+
+    while ($true) {
+        $currentVhd = Get-VHD -Path $currentPath -ErrorAction Stop
+
+        if (-not ($currentVhd.PSObject.Properties.Name -contains 'ParentPath')) {
+            throw "Get-VHD result for '$currentPath' did not include ParentPath."
+        }
+
+        if ([string]::IsNullOrWhiteSpace($currentVhd.ParentPath)) {
+            break
+        }
+
+        $depth++
+        $parentPath = $currentVhd.ParentPath
+
+        $parentChain += [pscustomobject]@{
+            Depth = $depth
+            Path = $parentPath
+            Name = [System.IO.Path]::GetFileName($parentPath)
+            DirectoryPath = Split-Path -Path $parentPath -Parent
+        }
+
+        $currentPath = $parentPath
+    }
+
+    $finalParent = $null
+    if ($parentChain.Count -gt 0) {
+        $finalParent = $parentChain[-1]
+    }
+
+    [pscustomobject]@{
+        ParentChain = $parentChain
+        FinalParent = $finalParent
+        ParentChainStatus = 'Resolved'
+        ErrorMessage = $null
+    }
+}
+
+function Invoke-HqVhdParentChainHelper {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+
+        [Parameter(Mandatory = $true)]
+        [pscredential]$Credential
+    )
+
+    $tempRoot = Join-Path $env:TEMP ("hq-vhd-helper-" + [guid]::NewGuid().ToString('N'))
+    $null = New-Item -Path $tempRoot -ItemType Directory -Force
+
+    $scriptPath = Join-Path $tempRoot 'inspect-parent-chain.ps1'
+    $outputPath = Join-Path $tempRoot 'inspect-parent-chain.json'
+
+    @'
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$TargetPath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$OutputPath
+)
+
+$parentChain = @()
+$finalParent = $null
+$status = 'Resolved'
+$errorMessage = $null
+
+try {
+    Import-Module Hyper-V -ErrorAction SilentlyContinue
+
+    $currentPath = $TargetPath
+    $depth = 0
+
+    while ($true) {
+        $currentVhd = Get-VHD -Path $currentPath -ErrorAction Stop
+
+        if (-not ($currentVhd.PSObject.Properties.Name -contains 'ParentPath')) {
+            throw "Get-VHD result for '$currentPath' did not include ParentPath."
+        }
+
+        if ([string]::IsNullOrWhiteSpace($currentVhd.ParentPath)) {
+            break
+        }
+
+        $depth++
+        $parentPath = $currentVhd.ParentPath
+
+        $parentChain += [pscustomobject]@{
+            Depth = $depth
+            Path = $parentPath
+            Name = [System.IO.Path]::GetFileName($parentPath)
+            DirectoryPath = Split-Path -Path $parentPath -Parent
+        }
+
+        $currentPath = $parentPath
+    }
+
+    if ($parentChain.Count -gt 0) {
+        $finalParent = $parentChain[-1]
+    }
+}
+catch {
+    $status = 'Unavailable'
+    $errorMessage = $_.Exception.Message
+    $parentChain = @()
+    $finalParent = $null
+}
+
+$result = [pscustomobject]@{
+    ParentChain = $parentChain
+    FinalParent = $finalParent
+    ParentChainStatus = $status
+    ErrorMessage = $errorMessage
+}
+
+$result | ConvertTo-Json -Depth 8 | Set-Content -Path $OutputPath -Encoding UTF8
+'@ | Set-Content -Path $scriptPath -Encoding UTF8
+
+    try {
+        $process = Start-Process `
+            -FilePath 'powershell.exe' `
+            -Credential $Credential `
+            -ArgumentList @(
+                '-NoProfile'
+                '-ExecutionPolicy', 'Bypass'
+                '-File', ('"{0}"' -f $scriptPath)
+                '-TargetPath', ('"{0}"' -f $Path)
+                '-OutputPath', ('"{0}"' -f $outputPath)
+            ) `
+            -Wait `
+            -PassThru
+
+        if (-not (Test-Path -Path $outputPath)) {
+            throw "The elevated helper did not produce an output file for '$Path'. ExitCode: $($process.ExitCode)"
+        }
+
+        $result = Get-Content -Path $outputPath -Raw | ConvertFrom-Json
+
+        $parentChain = @()
+        if ($null -ne $result.ParentChain) {
+            $parentChain = @($result.ParentChain)
+        }
+
+        $finalParent = $null
+        if ($null -ne $result.FinalParent) {
+            $finalParent = $result.FinalParent
+        }
+
+        [pscustomobject]@{
+            ParentChain = $parentChain
+            FinalParent = $finalParent
+            ParentChainStatus = $result.ParentChainStatus
+            ErrorMessage = $result.ErrorMessage
+        }
+    }
+    finally {
+        Remove-Item -Path $tempRoot -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
+function Get-HqVhdParentChain {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+
+        [pscredential]$Credential
+    )
+
+    try {
+        return Resolve-HqVhdParentChainLocal -Path $Path
+    }
+    catch {
+        if ($null -eq $Credential) {
+            return [pscustomobject]@{
+                ParentChain = @()
+                FinalParent = $null
+                ParentChainStatus = 'Unavailable'
+                ErrorMessage = $_.Exception.Message
+            }
+        }
+
+        try {
+            return Invoke-HqVhdParentChainHelper -Path $Path -Credential $Credential
+        }
+        catch {
+            return [pscustomobject]@{
+                ParentChain = @()
+                FinalParent = $null
+                ParentChainStatus = 'Unavailable'
+                ErrorMessage = $_.Exception.Message
+            }
+        }
+    }
+}
+
+# ---------------------------------------------------------------------
+# Section: discover Lab child VHDX choices and resolve parent chain context
+# ---------------------------------------------------------------------
+function Get-HqLabVhdDiscoveryChoices {
+    [CmdletBinding()]
+    param()
+
+    # Setup: enumerate child-VHDX candidates from the Lab frontend share so the
+    # workflow can surface existing differencing disks alongside the create-new
+    # placeholder row.
+    $childRoot = '\\10.100.0.10\lab\virtual hdds frontends'
+    $childFiles = @(Get-ChildItem -Path $childRoot -Recurse -File -Filter '*.vhdx')
+
+    $childChoices = @(
+        [pscustomobject]@{
+            Action = 'CreateNew'
+            ChoiceType = 'ChildVhdx'
+            Path = $null
+            Name = $null
+            DirectoryPath = $childRoot
+            ParentChain = @()
+            FinalParent = $null
+            ParentChainStatus = 'NotApplicable'
+        }
+    )
+
+    foreach ($childFile in $childFiles) {
+        # Step: follow the Hyper-V parent linkage for each discovered child VHDX
+        # so the operator can inspect the real lineage directly on the child row.
+        $parentChain = @()
+        $finalParent = $null
+        $parentChainStatus = 'Resolved'
+
+        try {
+            $currentPath = $childFile.FullName
+            $depth = 0
+
+            while ($true) {
+                $currentVhd = Get-VHD -Path $currentPath -ErrorAction Stop
+
+                if (-not ($currentVhd.PSObject.Properties.Name -contains 'ParentPath')) {
+                    throw "Get-VHD result for '$currentPath' did not include ParentPath."
+                }
+
+                if ([string]::IsNullOrWhiteSpace($currentVhd.ParentPath)) {
+                    break
+                }
+
+                $depth++
+                $parentPath = $currentVhd.ParentPath
+
+                $parentChain += [pscustomobject]@{
+                    Depth = $depth
+                    Path = $parentPath
+                    Name = [System.IO.Path]::GetFileName($parentPath)
+                    DirectoryPath = Split-Path -Path $parentPath -Parent
+                }
+
+                $currentPath = $parentPath
+            }
+
+            if ($parentChain.Count -gt 0) {
+                $finalParent = $parentChain[-1]
+            }
+        }
+        catch {
+            $parentChainStatus = 'Unavailable'
+            $parentChain = @()
+            $finalParent = $null
+            $parentChainError = $_.Exception.Message
+        }
+
+        $childChoices += [pscustomobject]@{
+            Action = 'UseExisting'
+            ChoiceType = 'ChildVhdx'
+            Path = $childFile.FullName
+            Name = $childFile.Name
+            DirectoryPath = $childFile.DirectoryName
+            ParentChain = $parentChain
+            FinalParent = $finalParent
+            ParentChainStatus = $parentChainStatus
+            parentChainError = $parentChainError
+        }
+    }
+
+    # Check: keep this slice limited to child selection context. Parent lineage
+    # is shown per child row, and flat parent-choice selection is deferred to a
+    # later create-new-child workflow.
+    [pscustomobject]@{
+        ChildChoices = $childChoices
+    }
+}
+
+# Main function: show existing child VHDX choices and their parent-chain context
+# without creating anything yet.
 if ($DiscoverLabVhdChoices) {
     $choices = Get-HqLabVhdDiscoveryChoices
 
@@ -3202,18 +3524,8 @@ if ($DiscoverLabVhdChoices) {
     Write-HqStatus -Phase 'iSCSI' -Message 'Discovered child VHDX choices:' -Level Success
     $choices.ChildChoices | Format-Table -AutoSize | Out-Host
 
-    # Explain when the parent discovery returned no existing VHDX files.
-    if ($choices.ParentChoices.Count -eq 1) {
-        Write-HqStatus -Phase 'iSCSI' -Message 'No existing parent VHDX files were found under the Lab base-image share.' -Level Warning
-    }
-
-    # Show the parent VHDX choices for the operator.
-    Write-HqStatus -Phase 'iSCSI' -Message 'Discovered parent VHDX choices:' -Level Success
-    $choices.ParentChoices | Format-Table -AutoSize | Out-Host
-
     return $choices
 }
-
 if ($MyInvocation.InvocationName -ne '.') {
     try {
         if ($ExportSecurityPrincipalState) {
