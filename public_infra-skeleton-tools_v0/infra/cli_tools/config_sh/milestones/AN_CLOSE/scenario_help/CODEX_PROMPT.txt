@@ -1,0 +1,16 @@
+Use this pack to add compact scenario and workflow help to the config CLI.
+
+Read order:
+1. PROJECT_CACHE.md
+2. SPEC.md
+3. SCENARIOS.md
+4. WORKFLOWS.md
+
+Rules:
+- Use PROJECT_CACHE.md as the repo cache. Do not scan the whole repo.
+- Edit only files needed by SPEC.md, preferably config.sh plus one postcheck log.
+- Add CLI help only. Do not create guides, articles, HTML, manuals, or external docs.
+- Do not implement real-world setup steps yet.
+- Do not run installs, mounts, pull, push, credentials, account mutations, Docker builds, Kubernetes applies, Runpod jobs, OpenClaw agents, or training/inference jobs.
+- Printed help may include future step names only as commented placeholders.
+- Keep CLI output readable: short context, what it does for the work, command blocks.

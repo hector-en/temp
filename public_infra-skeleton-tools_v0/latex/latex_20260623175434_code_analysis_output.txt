@@ -1,0 +1,4685 @@
+Table of Contents (TOC):
+1. 20260623175434_code_analysis_output/converted_files/GENETICSturquoise.txt
+2. ACB-Exam-prep.tex
+3. IBA-protocol.tex
+4. README.md
+5. SLRP_submissionB.tex
+6. bib/acb_nucleosomes.bib
+7. bib/acb_nucleus.bib
+8. bib/acb_transcription.bib
+9. bib/iba.bib
+10. bib/labreport.bst
+11. build/build_latex_dvips_ps2pdf.sh
+12. build/build_lualatex.sh
+13. build/build_pdflatex.sh
+14. build/build_xelatex.sh
+15. cls/labreport.cls
+16. files/acb/01transcription.tex
+17. files/acb/headings2.tex
+18. files/acb/headings3.tex
+19. files/acb/headings4.tex
+20. files/acb/headings5.tex
+21. files/acb/results.tex
+22. files/acb/revisionQs.tex
+23. files/iba/abstract.tex
+24. files/iba/definitions.tex
+25. files/iba/introduction.tex
+26. files/iba/materials.tex
+27. files/iba/results.tex
+28. files/iba/riskassesment.tex
+29. files/slrp/bioinformatics.tex
+30. files/slrp/concentrations.tex
+31. files/slrp/enzymeassay.tex
+32. files/slrp/results.tex
+33. files/slrp/thermoflour.tex
+34. files/slrp/titlepage.tex
+35. install/cleanup-latex.sh
+36. install/install-latex.sh
+37. install/install-packages.sh
+38. styles/acb.sty
+39. styles/gos.sty
+40. styles/gs.sty
+41. styles/iba.sty
+42. styles/inv.sty
+43. styles/mp.sty
+44. styles/name.tex
+45. styles/slrp.sty
+46. templates/example-bibliography.bib
+47. templates/gsajnl.cls
+48. templates/journal-template.tex
+
+===================================
+
+No .ipynb files found for conversion.
+No .pptx files found for conversion.
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/20260623175434_code_analysis_output/converted_files/GENETICSturquoise.txt ===
+#########################################
+Overview for /home/vmuser/tmp/latex/20260623175434_code_analysis_output/converted_files/GENETICSturquoise.txt:
+This file is a ASCII text with a size of 81 bytes.
+---
+Full content for /home/vmuser/tmp/latex/20260623175434_code_analysis_output/converted_files/GENETICSturquoise.txt:
+Converted from /home/vmuser/tmp/latex/templates/GENETICSturquoise.pdf
+
+Page 1:
+
+
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/20260623175434_code_analysis_output/converted_files/GENETICSturquoise.txt ===
+#########################################
+Overview for /home/vmuser/tmp/latex/20260623175434_code_analysis_output/converted_files/GENETICSturquoise.txt:
+This file is a ASCII text with a size of 81 bytes.
+---
+Full content for /home/vmuser/tmp/latex/20260623175434_code_analysis_output/converted_files/GENETICSturquoise.txt:
+Converted from /home/vmuser/tmp/latex/templates/GENETICSturquoise.pdf
+
+Page 1:
+
+
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/ACB-Exam-prep.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/ACB-Exam-prep.tex:
+This file is a LaTeX 2e document, ASCII text, with very long lines (451) with a size of 4032 bytes.
+---
+Full content for /home/vmuser/tmp/latex/ACB-Exam-prep.tex:
+\documentclass[10pt]{cls/labreport}
+%------------------------------------------------------------------------------------------------
+% Use the documentclass option 'lineno' to view line numbers
+%  COMMANDS:
+% \articletype{styles} ==>>  will load  "geos, gs, iba, inv, mp" style files
+% \inputfile{table,figures,...} in document ==> to load tables and figures from helper files ..
+% \fullref{tab:table1 or fig:figure1} etc   ==>  to reference tables, figures, etc
+% \cite(alt(p))[p.32]{Tewabe2021} ==>  (Jones et al., 1990, P32)
+% \table1{\textwidth}{Caption}              ==>  insert tables
+% \figure{0.34}{Caption}                    ==>  insert figures
+% \twocolstart                              ==>  switch to two column mode 
+% \twocolstop                               ==>  switch to one column mode 
+%-------------------------------------------------------------------------------------------------
+
+\usepackage{epstopdf, longtable}
+\usepackage{multicol}
+\usepackage[backend=biber,style=apa]{biblatex} % Use APA style
+\addbibresource{bib/acb_transcription.bib}  % Add the correct bibliography file
+
+\setlength{\columnsep}{3em}
+\articletype{acb} % article type
+% {inv} Investigation
+% {gs} Genomic Selection
+% {iba} Birkbeck, Infectious Bacteria and Antibiotics
+% {gos} Genetics of Sex
+% {mp} Multiparental Populations
+\runningtitle{Advance Cell Biology - Exam Notes} % For use in the footer
+\runningauthor{Student Id \textit{13703089}}
+
+\title{\vspace*{2cm}\textcolor{black}{Advance Cell Biology - Exam Notes}\\
+{\Large The Nucleus}}
+
+\author[1]{Author: 13703089}
+%\author[1]{Author Two}
+%\author[2]{Author Three}
+%\author[2,3]{Author Four}
+%\author[4,$\ast$]{Author Five}
+
+\affil[1]{BSc Biomedicine$^{\ast}$}
+%\affil[2]{Author two affiliation}
+%\affil[3]{Author three affiliation}
+%\affil[4]{Author four affiliation}
+%\affil[$\dagger$]{These authors contributed equally to this work.}
+
+% Use the \equalcontrib command to mark authors with equal
+% contributions, using the relevant superscript numbers
+%\equalcontrib{1}
+%\equalcontrib{2}
+
+\correspondingauthoraffiliation[$\ast$]{Correspondence Address: Birkbeck University of London, Department of Biological Sciences, 14 Malet St, London WC1E 7HX. Email: \href{mailto:biosciences@bbk.ac.uk}{biosciences@bbk.ac.uk}}
+
+\begin{abstract}
+  \textcolor{color3}{\revRanGTP}
+%   \textcolor{color3}{\revHistones}
+%  \textcolor{color3}{\revNucleosome}
+%  \textcolor{color3}{\revPolymerase}
+
+\end{abstract}
+
+\dates{\rec{xx xx, xxxx} \acc{xx xx, xxxx}}
+\keywords{RanGTP; Keyword2; Keyword3}
+%\keywords{Histones; Keyword2; Keyword3}
+%\keywords{RNA Polymerase II; Keyword2; Keyword3}
+%\keywords{Nucleosome; Keyword2; Keyword3}
+%\keywords{RNA Polymerase II; Keyword2; Keyword3}
+
+
+
+\begin{document}
+
+% Use \inputfile{table,figures,...} in document to import tables and figures ..
+\inputfile{revisionQs}
+\inputfile{01transcription}
+\inputfile{headings2}
+\inputfile{headings3}
+\inputfile{headings4}
+\inputfile{headings5}
+\inputfile{results}
+\maketitle
+\thispagestyle{firststyle}
+%\slugnote
+%\firstpagefootnote
+\vspace{-13pt}% Only used for adjusting extra space in the left column of the first page
+
+% Include  here Content 
+%\topicTranscription
+%\topicRegulation
+%
+\twocolstart
+\section{Pictures}
+The results and discussion should not be repetitive and give a factual presentation of the data with all tables and figures referenced. The discussion should not summarize the results but provide an interpretation of the results, and should clearly delineate between the findings of the particular study and the possible impact of those findings in a larger context. Authors are encouraged to cite recent work relevant to their interpretations.\\[1em]
+\twocolend
+%\figure1{0.34}{Caption}\\[1em]
+
+
+Present and discuss results only once, not in both the Results and Discussion sections. It is acceptable to combine results and discussion in order  to be succinct.\\[4em]
+
+%\vspace*{1em}
+%\table1{\textwidth}{Student Grades per rank}
+
+% Create the bibliography
+\printbibliography
+
+
+\end{document} 
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/IBA-protocol.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/IBA-protocol.tex:
+This file is a LaTeX 2e document, ASCII text, with very long lines (1273) with a size of 6055 bytes.
+---
+Full content for /home/vmuser/tmp/latex/IBA-protocol.tex:
+\documentclass[11pt]{cls/labreport}
+%------------------------------------------------------------------------------------------------
+% Use the documentclass option 'lineno' to view line numbers
+%  COMMANDS:
+% \articletype{styles} ==>>  will load  "geos, gs, iba, inv, mp" style files
+% \inputfile{table,figures,...} in document ==> to load tables and figures from helper files ..
+% \fullref{tab:table1 or fig:figure1} etc   ==>  to reference tables, figures, etc
+% \cite(alt(p))[p.32]{Tewabe2021} ==>  (Jones et al., 1990, P32)
+% \table1{\textwidth}{Caption}              ==>  insert tables
+% \figure{0.34}{Caption}                    ==>  insert figures
+% \twocolstart                              ==>  switch to two column mode 
+% \twocolstop                               ==>  switch to one column mode 
+%-------------------------------------------------------------------------------------------------
+
+\usepackage{epstopdf}
+\usepackage{multicol}
+\usepackage[backend=biber,style=apa]{biblatex} % Use APA style
+\addbibresource{bib/iba.bib}  % Add the correct bibliography file
+
+\setlength{\columnsep}{1.4em}
+\articletype{iba} % article type
+% {inv} Investigation
+% {gs} Genomic Selection
+% {iba} Birkbeck, Infectious Bacteria and Antibiotics
+% {gos} Genetics of Sex
+% {mp} Multiparental Populations
+\runningtitle{LIFE70039  (S1b) - Coursework} % For use in the footer
+\runningauthor{CID \textit{13703089}}
+
+\title{\vspace*{2cm} Mycobacterium smegmatis: Evaluation of isoniazid, ethionamide and a novel chemical entity using a modified Ziehl-Neelsen staining}
+
+\author[1]{Author: 13703089}
+%\author[1]{Author Two}
+%\author[2]{Author Three}
+%\author[2,3]{Author Four}
+%\author[4,$\ast$]{Author Five}
+
+\affil[1]{BSc Biomedicine$^{\ast}$}
+%\affil[2]{Author two affiliation}
+%\affil[3]{Author three affiliation}
+%\affil[4]{Author four affiliation}
+%\affil[$\dagger$]{These authors contributed equally to this work.}
+
+% Use the \equalcontrib command to mark authors with equal
+% contributions, using the relevant superscript numbers
+%\equalcontrib{1}
+%\equalcontrib{2}
+
+\correspondingauthoraffiliation[$\ast$]{Correspondence Address: Birkbeck University of London, Department of Biological Sciences, 14 Malet St, London WC1E 7HX. Email: \href{mailto:biosciences@bbk.ac.uk}{biosciences@bbk.ac.uk}}
+\keywords{Cold ZN-Staining; Acid-Fast Bacteria; Cell wall inhibitor; Mycolic acid synthesis }
+
+%\begin{abstract}
+%    \abstract
+%\end{abstract}
+
+
+\dates{\rec{xx xx, xxxx} \acc{xx xx, xxxx}}
+
+
+\begin{document}
+
+% Use \inputfile{table,figures,...} in document to import tables and figures ..
+\inputfile{abstract}
+\inputfile{introduction}
+\inputfile{materials}
+\inputfile{results}
+\inputfile{definitions}
+\inputfile{riskassesment}
+\maketitle
+\thispagestyle{firststyle}
+%\slugnote
+%\firstpagefootnote
+\vspace{-13pt}% Only used for adjusting extra space in the left column of the first page
+
+\begin{multicols}{2}
+\begin{abstract}
+    \abstract
+\end{abstract}
+\section{Introduction}
+    \introduction
+    
+\section{Risk assesment and waste disposal}
+    \riskassesment
+    
+\section{Materials and methods}
+\label{sec:materials:methods}
+    \materials
+
+\section{Results}
+    \results
+
+
+\section{Discussion}
+After the ZN-staining and decolorization procedure the untreated sample appeared pink (\fullref{fig:figure6}), while the treated samples appeared green (\fullref{fig:figure7}, \fullref{fig:figure8}). This suggests the formation of a mycolate-fuchsin complex in the cell wall of the \textit{M. smegmatis} wild type and a lack thereof in the groups treated with INH, ETH, and the NCE. Isoniazid and Ethionamide are known narrow spectrum, bactericidal, anti-TB drugs which affect the bacterial viability by inhibiting a correct mycolic acid synthesis in the cell wall \cite{Banerjee1994,York2008}. This leads to our hypothesis, that the treated samples could not retain the pink stain, because they lost the protective effect from the hydrophobic, tightly packed, and rigid mycolic acid outer layer leading to the cells being susceptible for treatment with acids or alcohols as contained in the decolorising solution. The morphology showed a reduction in clumping and number of bacilli, which could be verified by an OD reduction of 63.3\% on average for INH, ETH and the NCE.  This suggests a potential bactericidal mode of action of the NCE, because it showed similar morphology to INH and ETH and the difference in OD was not significant between the three treatment groups.
+
+\section{Conclusion}
+Cold ZN-Staining  could successfully identify \textit{M. smegmatis} as an acid-fast bacterium (ACB). The unknown drug (NCE) could significantly reduce the number of viable \textit{M. smegmatis} bacilli and is therefore a promising new candidate for the treatment of TB caused by \textit{M. tuberculosis}. 
+We can conclude this from our findings because\textit{ M. smegmatis} could be successfully decolorised after treatment with all three drugs. This result can be attributed to the inhibition of the cell wall formation by  the treated group. The morphology showed a reduction in clumping for all drugs. Mycolic acids stitch together and form clumps during normal growth, as seen in the untreated sample. The reduction in the bacilli numbers, which was verified by an average significant OD reduction of 63.3\%. The antibiotic treatment rank between the groups showed no significance, indicating that all three drugs have a similar mode of action. Considering  INH and ETH being bactericidal, we assume a bactericidal mode of action of the NCE.
+
+\section{Acknowledgments}
+The author acknowledges the PhD students and laboratory staff involved in organizing the laboratory session for cryo-preservation of\textit{ M. smegmatis} cultures, the preparation of the starter cultures and the treatment of the culture with INH, ETH, and Unknown Drug (NCE). The author also acknowledges Dr. Sanjib Bhakta, and the laboratory groups for supplying the figures and OD data used in this article. 
+
+% Create the bibliography
+\printbibliography
+
+\end{multicols}
+\end{document} 
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/README.md ===
+#########################################
+Overview for /home/vmuser/tmp/latex/README.md:
+This file is a ASCII text with a size of 3452 bytes.
+---
+Full content for /home/vmuser/tmp/latex/README.md:
+# Scientific Report Template
+
+This repository provides a comprehensive LaTeX-based template designed for generating well-structured, professional scientific reports. It can be adapted to various fields, ensuring consistency in formatting, citation, and documentation.
+
+## Features
+
+- **Structured LaTeX Templates**: Predefined sections such as abstract, introduction, methodology, results, and discussion are provided to help streamline the writing of scientific reports.
+- **Customizable Document Class**: The repository includes a custom `labreport.cls` file to ensure that reports adhere to a specific format, with options for including tables, figures, and mathematical content.
+- **Reference Management**: Integrated BibTeX support for managing citations, with a predefined bibliography format.
+- **Automated Package Management**: Scripts to install and remove necessary LaTeX packages for compiling the reports.
+
+## Project Structure
+
+The project is organized into the following key directories:
+
+- **`cls/`**: Contains the custom LaTeX class (`labreport.cls`) that defines the structure and formatting for the scientific reports.
+- **`styles/`**: Holds additional style files for customizing the appearance of tables, figures, and references.
+- **`figures/`**: Placeholder directory for images, graphs, and figures used in the reports.
+- **`files/`**: Contains example content files like `abstract.tex`, `introduction.tex`, and `results.tex`, which demonstrate how to structure different sections of a scientific report.
+- **`install/`**: Shell scripts for installing LaTeX dependencies (`install-latex.sh`), removing installed packages (`cleanup-latex.sh`), and project-specific setup scripts (`install-packages.sh`).
+
+## Installation and Setup
+
+To set up the LaTeX environment for compiling reports, follow these steps:
+
+1. **Install LaTeX Packages**:
+   Run the installation script to install all the necessary LaTeX packages:
+   ```bash
+   sudo ./install/install-latex.sh
+   ```
+
+2. **Cleanup LaTeX Packages**:
+   If you want to remove all installed LaTeX packages, run the cleanup script:
+   ```bash
+   sudo ./install/cleanup-latex.sh
+   ```
+
+3. **Project-Specific Packages**:
+   The project also comes with additional LaTeX packages tailored for specific scientific report requirements:
+   ```bash
+   sudo ./install/install-packages.sh
+   ```
+
+## How to Use
+
+1. **Clone the Repository**:
+   ```bash
+   git clone git@github.com:username/repository-name.git
+   ```
+
+2. **Write Your Report**:
+   Modify the `.tex` files in the `files/` directory to include your report content. Use the predefined structure for consistency:
+   - `abstract.tex`
+   - `introduction.tex`
+   - `results.tex`
+   - `discussion.tex`
+
+3. **Compile the Report**:
+   You can use a LaTeX editor like Gummi or VSCode with LaTeX Workshop extension. To compile manually:
+   ```bash
+   pdflatex your-report.tex
+   ```
+
+## Contribution Guidelines
+
+- **Branching**: Create a new branch for each new feature or report adaptation.
+- **Commits**: Write meaningful commit messages that explain your changes.
+- **Pull Requests**: Ensure all LaTeX files compile successfully before submitting a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Developed by Hector Edu Nseng. This template is designed to be adaptable for various scientific disciplines and customizable to suit individual project needs.
+
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/SLRP_submissionB.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/SLRP_submissionB.tex:
+This file is a LaTeX 2e document, ASCII text with a size of 2366 bytes.
+---
+Full content for /home/vmuser/tmp/latex/SLRP_submissionB.tex:
+\documentclass[11pt]{cls/labreport}
+%------------------------------------------------------------------------------------------------
+% Use the documentclass option 'lineno' to view line numbers
+%  COMMANDS:
+% \articletype{styles} ==>>  will load  "geos, gs, iba, inv, mp" style files
+% \inputfile{table,figures,...} in document ==> to load tables and figures from helper files ..
+% \fullref{tab:table1 or fig:figure1} etc   ==>  to reference tables, figures, etc
+% \cite(alt(p))[p.32]{Tewabe2021} ==>  (Jones et al., 1990, P32)
+% \table1{\textwidth}{Caption}              ==>  insert tables
+% \figure{0.34}{Caption}                    ==>  insert figures
+% \twocolstart                              ==>  switch to two column mode 
+% \twocolstop                               ==>  switch to one column mode 
+%-------------------------------------------------------------------------------------------------
+
+\usepackage{epstopdf}
+\usepackage{multicol}
+\setlength{\columnsep}{3em}
+\articletype{slrp} % article type
+% {inv} Investigation
+% {gs} Genomic Selection
+% {iba} Birkbeck, Infectious Bacteria and Antibiotics
+% {gos} Genetics of Sex
+% {mp} Multiparental Populations
+\runningtitle{SCBS036D6 (SLRP) - Coursework} % For use in the footer
+\runningauthor{Student Id \textit{13703089}}
+\title{\LARGE Cryptic DNA-dependent ATPase activity of UvrB Mutant Protein L482D}		
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+    
+
+%%%%%%%%%%%%% part definition
+\titleclass{\part}{top} % make part like a chapter
+\titleformat{\part}
+[display]
+{\centering\normalfont\Large\bfseries}
+{\titlerule[5pt]\vspace{-3pt}\titlerule[2pt]\vspace{3pt}\MakeUppercase{\partname} \thepart}
+{0pt}
+{\titlerule[2pt]\vspace{1pc}\large\MakeUppercase}
+%
+\titlespacing*{\part}{0pt}{0pt}{20pt}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Use \inputfile{table,figures,...} in document to import tables and figures ..
+\inputfile{enzymeassay}
+\inputfile{concentrations}
+\inputfile{bioinformatics}
+\inputfile{thermoflour}
+\inputfile{results}
+\inputfile{titlepage}
+%\slugnote
+%\firstpagefootnote
+    \SLRPtitlepage
+
+\vspace{-13pt}% Only used for adjusting extra space in the left column of the first page
+   \Bioinformatics
+   %\Concentrations
+   %\ThermoflorA
+   %\EnzymeAssay
+\end{document} 
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/bib/acb_nucleosomes.bib ===
+#########################################
+Overview for /home/vmuser/tmp/latex/bib/acb_nucleosomes.bib:
+This file is a CSV text with a size of 1781 bytes.
+---
+Full content for /home/vmuser/tmp/latex/bib/acb_nucleosomes.bib:
+@article{nuceosome_structure,
+   author = {Robert K. McGinty and Song Tan},
+   doi = {10.1021/CR500373H},
+   issn = {15206890},
+   issue = {6},
+   journal = {Chemical Reviews},
+   month = {3},
+   pages = {2255},
+   pmid = {25495456},
+   publisher = {American Chemical Society},
+   title = {Nucleosome
+Structure and Function},
+   volume = {115},
+   url = {/pmc/articles/PMC4378457/ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4378457/},
+   year = {2015},
+}
+@article{nucleosome_positioning,
+   abstract = {Knowing the precise locations of nucleosomes in a genome is key to understanding how genes are regulated. Recent 'next generation' ChIP-chip and ChIP-Seq technologies have accelerated our understanding of the basic principles of chromatin organization. Here we discuss what high-resolution genome-wide maps of nucleosome positions have taught us about how nucleosome positioning demarcates promoter regions and transcriptional start sites, and how the composition and structure of promoter nucleosomes facilitate or inhibit transcription. A detailed picture is starting to emerge of how diverse factors, including underlying DNA sequences and chromatin remodelling complexes, influence nucleosome positioning. © 2009 Macmillan Publishers Limited. All rights reserved.},
+   author = {Cizhong Jiang and B. Franklin Pugh},
+   doi = {10.1038/NRG2522},
+   issn = {14710056},
+   issue = {3},
+   journal = {Nature reviews. Genetics},
+   month = {3},
+   pages = {161},
+   pmid = {19204718},
+   publisher = {NIH Public Access},
+   title = {Nucleosome positioning and gene regulation: advances through genomics},
+   volume = {10},
+   url = {/pmc/articles/PMC4860946/ /pmc/articles/PMC4860946/?report=abstract https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4860946/},
+   year = {2009},
+}
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/bib/acb_nucleus.bib ===
+#########################################
+Overview for /home/vmuser/tmp/latex/bib/acb_nucleus.bib:
+This file is a BibTeX text file, Unicode text, UTF-8 text, with very long lines (1293) with a size of 4190 bytes.
+---
+Full content for /home/vmuser/tmp/latex/bib/acb_nucleus.bib:
+@article{nups_unfolded,
+   abstract = {The nuclear pore complex (NPC) acts as a selective gate that mediates the bidirectional transport of macromolecules between the cytoplasm and the nucleus of eukaryotic cells. 'Natively unfolded' nucleoporins (Nups) with domains rich in phenylalanine-glycine (FG) repeats form the selective permeability barrier and provide binding sites for mobile transport receptors in the NPC. Understanding the structure and function of the FG-Nups barrier under real-time trafficking conditions is still a formidable challenge due to the dynamic nature of a channeled membranous environment. Recently, we have shown that three-dimensional (3D) density maps of transient interactions between the FG-Nups barrier and a cargo-free or a cargo-bound transport receptor in native NPCs can be obtained by an advanced single-molecule fluorescence microscopy approach. Moreover, we found that these interaction sites are spatially clustered into distinct groups in the periphery around a central axial channel with a diameter of approximately 10-20 nm in the NPC. The 3D distribution of interaction sites may indicate some native properties of the FG-Nups barrier. Here we speculate that the selective permeability barrier in the NPC could be formed by clustered FG-Nups. © 2011 Landes Bioscience.},
+   author = {Weidong Yang},
+   doi = {10.4161/NUCL.2.1.13818},
+   issn = {19491042},
+   issue = {1},
+   journal = {Nucleus},
+   keywords = {Nucleocytoplasmic transport,Real-time trafficking,Single-molecule fluorescence,Single-molecule tracking,Super-resolution microscopy,Three-dimensional distribution},
+   pages = {10},
+   pmid = {21647294},
+   publisher = {Taylor & Francis},
+   title = {‘Natively unfolded’ nucleoporins in nucleocytoplasmic transport: Clustered or evenly distributed?},
+   volume = {2},
+   url = {/pmc/articles/PMC3104804/ /pmc/articles/PMC3104804/?report=abstract https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3104804/},
+   year = {2011},
+}
+@article{npc_transport,
+   abstract = {Internal membrane bound structures sequester all genetic material in eukaryotic cells. The most prominent of these structures is the nucleus, which is bounded by a double membrane termed the nuclear envelope (NE). Though this NE separates the nucleoplasm and genetic material within the nucleus from the surrounding cytoplasm, it is studded throughout with portals called nuclear pore complexes (NPCs). The NPC is a highly selective, bidirectional transporter for a tremendous range of protein and ribonucleoprotein cargoes. All the while the NPC must prevent the passage of nonspecific macromolecules, yet allow the free diffusion of water, sugars, and ions. These many types of nuclear transport are regulated at multiple stages, and the NPC carries binding sites for many of the proteins that modulate and modify the cargoes as they pass across the NE. Assembly, maintenance, and repair of the NPC must somehow occur while maintaining the integrity of the NE. Finally, the NPC appears to be an anchor for localization of many nuclear processes, including gene activation and cell cycle regulation. All these requirements demonstrate the complex design of the NPC and the integral role it plays in key cellular processes.},
+   author = {Susan R. Wente and Michael P. Rout},
+   doi = {10.1101/CSHPERSPECT.A000562},
+   issn = {1943-0264},
+   issue = {10},
+   journal = {Cold Spring Harbor perspectives in biology},
+   keywords = {Active,Biological Transport,Cell Nucleus / metabolism*,Cell Nucleus / ultrastructure,Eukaryotic Cells / metabolism*,Extramural,MEDLINE,Michael P Rout,N.I.H.,NCBI,NIH,NLM,National Center for Biotechnology Information,National Institutes of Health,National Library of Medicine,Nuclear Pore Complex Proteins / metabolism*,PMC2944363,PubMed Abstract,Research Support,Review,Saccharomyces cerevisiae / metabolism*,Saccharomyces cerevisiae / ultrastructure,Susan R Wente,doi:10.1101/cshperspect.a000562,pmid:20630994},
+   pmid = {20630994},
+   publisher = {Cold Spring Harb Perspect Biol},
+   title = {The nuclear pore complex and nuclear transport},
+   volume = {2},
+   url = {https://pubmed.ncbi.nlm.nih.gov/20630994/},
+   year = {2010},
+}
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/bib/acb_transcription.bib ===
+#########################################
+Overview for /home/vmuser/tmp/latex/bib/acb_transcription.bib:
+This file is a BibTeX text file, Unicode text, UTF-8 text, with very long lines (1139) with a size of 5324 bytes.
+---
+Full content for /home/vmuser/tmp/latex/bib/acb_transcription.bib:
+@misc{Wk4video3,
+	author = {Jerome Gougel},
+	title = {Lecture: Transcription and gene regulation},
+	year = {October 2020},
+	howpublished = {Video [accessed on \today]. \url{https://birkbeck.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=055e196e-0e96-4bda-a890-ac55010a0fb8&start=0}}
+}
+@article{picfunction,
+   abstract = {Transcription is a highly regulated process that supplies living cells with coding and non-coding RNA molecules. Failure to properly regulate transcription is associated with human pathologies, including cancers. RNA polymerase II is the enzyme complex that synthesizes messenger RNAs that are then translated into proteins. In spite of its complexity, RNA polymerase requires a plethora of general transcription factors to be recruited to the transcription start site as part of a large transcription pre-initiation complex, and to help it gain access to the transcribed strand of the DNA. This chapter reviews the structure and function of these eukaryotic transcription pre-initiation complexes, with a particular emphasis on two of its constituents, the multisubunit complexes TFIID and TFIIH. We also compare the overall architecture of the RNA polymerase II pre-initiation complex with those of RNA polymerases I and III, involved in transcription of ribosomal RNA and non-coding RNAs such as tRNAs and snRNAs, and discuss the general, conserved features that are applicable to all eukaryotic RNA polymerase systems.},
+   author = {Basil J. Greber and Eva Nogales},
+   doi = {10.1007/978-3-030-28151-9_5},
+   issn = {0306-0225},
+   journal = {Sub-cellular biochemistry},
+   keywords = {Basil J Greber,Eukaryota / chemistry*,Eukaryotic Cells / chemistry*,Eva Nogales,Genetic*,Humans,MEDLINE,Multiprotein Complexes / chemistry*,Multiprotein Complexes / metabolism*,NCBI,NIH,NLM,National Center for Biotechnology Information,National Institutes of Health,National Library of Medicine,PMC7025760,PubMed Abstract,RNA Polymerase II / metabolism,Review,Transcription Factor TFIID / metabolism*,Transcription Factor TFIIH / metabolism*,Transcription Initiation,doi:10.1007/978-3-030-28151-9_5,pmid:31939151},
+   pages = {143-192},
+   pmid = {31939151},
+   publisher = {Subcell Biochem},
+   title = {The Structures of Eukaryotic Transcription Pre-initiation Complexes and Their Functional Implications},
+   volume = {93},
+   url = {https://pubmed.ncbi.nlm.nih.gov/31939151/},
+   year = {2019},
+}
+@article{gtfs,
+title = {The role of general initiation factors in transcription by RNA polymerase II},
+journal = {Trends in Biochemical Sciences},
+volume = {21},
+number = {9},
+pages = {327-335},
+year = {1996},
+issn = {0968-0004},
+doi = {https://doi.org/10.1016/S0968-0004(96)10050-5},
+url = {https://www.sciencedirect.com/science/article/pii/S0968000496100505},
+author = {Robert G. Roeder},
+abstract = {Transcription initiation on protein-encoding genes represents a major control point for gene expression in eukaryotes, and is mediated by RNA polymerase II and a surprisingly complex array of general initiation factors (TFIIA, -B, -D, E, -F and -H) that are highly conserved from yeast to man. Elucidation of structural and functional features of these factors on model promoters has revealed insights into biochemical mechanisms and provides a basis for understanding their regulation on diverse promoters by gene- and cell-specific activators.}
+}
+@article{pol2,
+   abstract = {RNA polymerase II (Pol II) transcribes all protein-coding genes and many noncoding RNAs in eukaryotic genomes. Although Pol II is a complex, 12-subunit enzyme, it lacks the ability to initiate transcription and cannot consistently transcribe through long DNA sequences. To execute these essential functions, an array of proteins and protein complexes interact with Pol II to regulate its activity. In this review, we detail the structure and mechanism of over a dozen factors that govern Pol II initiation (e.g., TFIID, TFIIH, and Mediator), pausing, and elongation (e.g., DSIF, NELF, PAF, and P-TEFb). The structural basis for Pol II transcription regulation has advanced rapidly in the past decade, largely due to technological innovations in cryoelectron microscopy. Here, we summarize a wealth of structural and functional data that have enabled a deeper understanding of Pol II transcription mechanisms; we also highlight mechanistic questions that remain unanswered or controversial.},
+   author = {Allison C. Schier and Dylan J. Taatjes},
+   doi = {10.1101/GAD.335679.119},
+   issn = {1549-5477},
+   issue = {7-8},
+   journal = {Genes & development},
+   keywords = {Allison C Schier,Animals,Dylan J Taatjes,Enzyme Activation,Extramural,Genetic / genetics*,Humans,MEDLINE,N.I.H.,NCBI,NIH,NLM,National Center for Biotechnology Information,National Institutes of Health,National Library of Medicine,Non-P.H.S.,PMC7111264,Protein Binding,Protein Structure,PubMed Abstract,Quaternary,RNA Polymerase II / chemistry*,RNA Polymerase II / metabolism*,Research / trends,Research Support,Review,Transcription,U.S. Gov't,doi:10.1101/gad.335679.119,pmid:32238450},
+   month = {4},
+   pages = {465-488},
+   pmid = {32238450},
+   publisher = {Genes Dev},
+   title = {Structure and mechanism of the RNA polymerase II transcription machinery},
+   volume = {34},
+   url = {https://pubmed.ncbi.nlm.nih.gov/32238450/},
+   year = {2020},
+}
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/bib/iba.bib ===
+#########################################
+Overview for /home/vmuser/tmp/latex/bib/iba.bib:
+This file is a Unicode text, UTF-8 text, with very long lines (2747) with a size of 9383 bytes.
+---
+Full content for /home/vmuser/tmp/latex/bib/iba.bib:
+
+@misc{BirkbeckHS,
+   author = {Birkbeck},
+   journal = {School of Science.  Birkbeck, University of London. Biological Sciences},
+   publisher = {Health and Safety Services},
+   title = {Health and Safety Information},
+   howpublished = {[accessed on \today]. \url{http://www.bbk.ac.uk/so/ http://www.bbk.ac.uk/bcs/students/h_s}},
+   url = {http://www.bbk.ac.uk/so/ http://www.bbk.ac.uk/bcs/students/h_s},
+   year = {2004}
+}
+@misc{Birkbeck2011,
+   author = {Birkbeck},
+   journal = {Birkbeck, University of London. Health and Safety Service},
+   month = {5},
+   title = {COSHH/Lab-work Risk Assessment Form},
+   url = {http://www.bbk.ac.uk/so/forms/COSHH},
+   year = {2011},
+   howpublished = {[accessed on \today]. \url{http://www.bbk.ac.uk/so/forms/COSHH}}
+}
+@article{Singh2009,
+   author = {Anil Kumar Singh and Jean‐Marc Reyrat},
+   doi = {10.1002/9780471729259.mc10c01s14},
+   issn = {1934-8525},
+   issue = {1},
+   journal = {Current Protocols in Microbiology},
+   month = {8},
+   title = {Laboratory Maintenance of Mycobacterium smegmatis},
+   volume = {14},
+   year = {2009}
+}
+
+@article{Birkbeck2012,
+   author = {Birkbeck},
+   journal = {School of Science.  Birkbeck, University of London. Biological Sciences},
+   month = {7},
+   title = {A Code of Practice for Safe Working in the 3rd & 6th floor Laboratories of Malet Street Main Building},
+   year = {2012},
+   howpublished = {[accessed on \today]. \url{https://view.officeapps.live.com/op/view.aspx?src=http\%3A\%2F\%2Fwww5.bbk.ac.uk\%2Fso\%2Fpolicies\%2FBIOCHEMS&wdOrigin=BROWSELINK www5.bbk.ac.uk.doc}}
+}
+
+@book{Bayot2022,
+   abstract = {Acid-fast bacteria, also known as acid-fast bacilli or simply AFB, are a group of bacteria sharing the characteristic of acid fastness. Acid fastness is a physical property that gives a bacterium the ability to resist decolorization by acids during staining procedures. This means that once the bacterium is stained, it cannot be decolorized using acids routinely used in the process. This important and unique feature of certain bacteria gives the ability to classify and detect them using relatively easy laboratory procedures such as microscopy. Bacteria displaying acid fastness include: 1. Genus Mycobacterium – M. leprae, M. tuberculosis, M. smegmatis, M. Avium complex, M. kansasii. 2. Genus Nocardia – N. brasiliensis, N. cyriacigeorgica, N. farcinica, and N. nova. Acid fastness can also be attributed to other structures not classified as bacteria. These include: 1. Bacterial endospores. 2. Head of sperm. 3. Cryptosporidium parvum. 4. Isospora belli. 5. Cyclospora cayetanensis. 6. Taenia saginata eggs. 7. Hydatid cysts. 8. Sarcocystis. 9. Nuclear inclusion bodies in lead poisoning. Even though acid fastness can be attributed to many different bacteria, correlation with history makes it a fairly unique characteristic of M. tuberculosis in clinical practice. This makes acid-fast staining sensitive and specific, provided clinical correlation is part of the equation. This writing will focus on the acid-fast bacteria M. tuberculosis. The diagnosis of M. tuberculosis using this characteristic is referred to as TB microscopy, acid-fast smear microscopy, and direct sputum near microscopy. Even though the use of highly advanced molecular diagnostic tests has come into play, the value of this staining technique cannot be overstated, especially for low and middle-income countries.},
+   author = {Marlon L. Bayot and Taaha M. Mirza and Sandeep Sharma},
+   pmid = {30725806},
+   title = {Acid Fast Bacteria},
+   year = {2022}
+}
+
+@article{York2008,
+   author = {New York and San Diego and St Louis},
+   isbn = {1865843830},
+   pages = {85-170},
+   title = {Tuberculosis Handbook of Anti-Tuberculosis Agents Global Alliance for TB Drug Development},
+   volume = {88},
+   url = {http://intl.elsevierhealth.com/journals/tube},
+   year = {2008}
+}
+
+@article{Banerjee1994,
+   author = {Asesh Banerjee, Eugenie Dubnau, Annaik Quemard and V. Balasubramanian and Kyung Sun Um and Theresa Wilson and Des Collins and Geoffrey de Lisle and William R. Jacobs},
+   doi = {10.1126/science.8284673},
+   issn = {0036-8075},
+   issue = {5144},
+   journal = {Science},
+   month = {1},
+   pages = {227-230},
+   title = {inhA , a Gene Encoding a Target for Isoniazid and Ethionamide in Mycobacterium tuberculosis},
+   volume = {263},
+   year = {1994}
+}
+
+@article{Sparks2023,
+   abstract = {},
+   author = {Ian L. Sparks and Keith M. Derbyshire and William R. Jacobs and Yasu S. Morita},
+   doi = {10.1128/jb.00337-22},
+   issn = {0021-9193},
+   journal = {Journal of Bacteriology},
+   month = {1},
+   title = {Mycobacterium smegmatis: The Vanguard of Mycobacterial Research},
+   year = {2023}
+}
+
+@article{Jarlier1994,
+   author = {Vincent Jarlier and Hiroshi Nikaido},
+   doi = {10.1111/j.1574-6968.1994.tb07194.x},
+   issn = {03781097},
+   issue = {1-2},
+   journal = {FEMS Microbiology Letters},
+   month = {10},
+   pages = {11-18},
+   title = {Mycobacterial cell wall: Structure and role in natural resistance to antibiotics},
+   volume = {123},
+   year = {1994}
+}
+
+@article{Clifton2007,
+   author = {Clifton E. Barry and Dean C. Crick and Michael R. McNeil},
+   doi = {10.2174/187152607781001808},
+   issn = {18715265},
+   issue = {2},
+   journal = {Infectious Disorders - Drug Targets},
+   month = {6},
+   pages = {182-202},
+   title = {Targeting the Formation of the Cell Wall Core of M. tuberculosis},
+   volume = {7},
+   year = {2007}
+}
+
+@article{Azadi2018,
+   abstract = {© 2018 Azadi et al. Background: Tuberculosis is one of the most important infectious diseases that has claimed its victims throughout much of known human history. With Koch's discovery of the tubercle bacillus as the etiologic agent of the disease, his sanitary and hygienic measures, which were based on his discovery and the development of a vaccine against tuberculosis by Albert Calmette and Camille Guérin in 1921, an attenuated Mycobacterium bovis strain, bacilli Calmette-Guérin (BCG), and the discovery of the first antibiotic against tuberculosis, streptomycin by Selman Waksman in 1943, soon led to the opinion that appropriate control measures had become available for tuberculosis and it had been assumed that the disease could ultimately be eradicated. The emergence of resistant strains of this bacteria and widespread distribution of the disease in the world, and the emergence of the AIDS epidemic destroyed any possibility of global control of tuberculosis in the foreseeable future. Objectives: The purpose of this review is to highlight the current scientific literature on mycobacterial infections and provide an overview on the laboratory diagnosis of tuberculosis and non-tuberculosis infections based on conventional phenotypic and modern molecular assays. Method: In this study, a number of 65 papers comprising 20 reviews, 9 case reports, and 36 original research in association with mycobacteriosis and the laboratory diagnosis of mycobacterial infections, were reviewed. Results: Based on our analysis on the published documents methods applied for the laboratory diagnosis of tuberculosis are continually assessed and developed in order to achieve more rapid, less expensive, and accurate results. Acid-fast staining and culture for mycobacteria remain at the core of any diagnostic algorithm with the sensitivity of 20-70\% and specificity of 95-98\% for AFB microscopy and the sensitivity of 95\% and the specificity of 98\% for culture based diagnosis. Following growth in culture, molecular tests such as nucleic acid hybridization probes and DNA sequencing may be used for definitive species identification. Nucleic acid amplification methods provide the means for direct detection of Mycobacterium tuberculosis in respiratory specimens without the prerequisite to isolate or culture the organism, leading to more rapid diagnosis and better patient care. Conclusion: As the researchers in a developing country, we strongly believe that despite significant advances in laboratory capacity, in many countries reliable confirmation of suspected mycobacterial diseases is hindered by a lack of knowledge on proper standardized methods, sufficient funds, suitably trained staff and laboratory supplies.},
+   author = {Davood Azadi and Tahereh Motallebirad and Kazem Ghaffari and Hasan Shojaei},
+   doi = {10.2174/1874285801812010041},
+   issn = {1874-2858},
+   issue = {1},
+   journal = {The Open Microbiology Journal},
+   month = {4},
+   pages = {41-58},
+   publisher = {Bentham Science Publishers Ltd.},
+   title = {Mycobacteriosis and Tuberculosis: Laboratory Diagnosis},
+   volume = {12},
+   year = {2018}
+}
+
+@article{Reyrat2001,
+   author = {Jean Marc Reyrat and Daniel Kahn},
+   doi = {10.1016/s0966-842x(01)02168-0},
+   issn = {0966842X},
+   issue = {10},
+   journal = {Trends in Microbiology},
+   keywords = {Microbiology,Molecular Medicine,Mycobacteria,Mycobacterium smegmatis,Techniques & Methods,genome,model,tuberculosis},
+   month = {10},
+   pages = {472-473},
+   pmid = {11597444},
+   publisher = {Elsevier Ltd},
+   title = {Mycobacterium smegmatis: An absurd model for tuberculosis? [2] (multiple letters)},
+   volume = {9},
+   url = {http://www.cell.com/article/S0966842X01021680/fulltext http://www.cell.com/article/S0966842X01021680/abstract https://www.cell.com/trends/microbiology/abstract/S0966-842X(01)02168-0},
+   year = {2001}
+}
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/bib/labreport.bst ===
+#########################################
+Overview for /home/vmuser/tmp/latex/bib/labreport.bst:
+This file is a ASCII text with a size of 28791 bytes.
+---
+Full content for /home/vmuser/tmp/latex/bib/labreport.bst:
+%% Updated 28 March, 2017 by Overleaf --
+%%   Truncates >5 authors to et al. in references list.
+%%
+%% This is file `genetics.bst', generated
+%% on <1996/3/21> with the docstrip utility (2.2i).
+%%
+%% The original source files were:
+%%
+%% merlin.mbs  (with options: `,ay,nat,nm-rev1,nmft-sc,nmand-rm,dt-beg,yrp-x,note-yr,jttl-rm,vol-bf,vnum-x,volp-sp,jnm-x,edby,blk-tit,pp,lab-sc,and-rm,etal-it')
+%% ----------------------------------------
+%% *** Bibliography style for Genetics (J.T. 8/3/96) ***
+%%
+ %-------------------------------------------------------------------
+ % The original source file contains the following version information:
+ % \ProvidesFile{merlin.mbs}[1996/02/05 3.7 (PWD)]
+ %
+ % NOTICE:
+ % This file may be used for non-profit purposes.
+ % It may not be distributed in exchange for money,
+ %   other than distribution costs.
+ %
+ % The author provides it `as is' and does not guarantee it in any way.
+ %
+ % Copyright (C) 1994, 1995, 1996 Patrick W. Daly
+ %-------------------------------------------------------------------
+ %   For use with BibTeX version 0.99a or later
+ %-------------------------------------------------------------------
+ % This bibliography style file is intended for texts in ENGLISH
+ % This is an author-year citation style bibliography. As such, it is
+ % non-standard LaTeX, and requires a special package file to function properly.
+ % Such a package is    natbib.sty   by Patrick W. Daly
+ % The form of the \bibitem entries is
+ %   \bibitem[Jones et al.(1990)]{key}...
+ %   \bibitem[Jones et al.(1990)Jones, Baker, and Smith]{key}...
+ % The essential feature is that the label (the part in brackets) consists
+ % of the author names, as they should appear in the citation, with the year
+ % in parentheses following. There must be no space before the opening
+ % parenthesis!
+ % With natbib v5.3, a full list of authors may also follow the year.
+ % In natbib.sty, it is possible to define the type of enclosures that is
+ % really wanted (brackets or parentheses), but in either case, there must
+ % be parentheses in the label.
+ % The \cite command functions as follows:
+ %   \cite{key} ==>>                Jones et al. (1990)
+ %   \cite[]{key} ==>>              (Jones et al., 1990)
+ %   \cite[chap. 2]{key} ==>>       (Jones et al., 1990, chap. 2)
+ %   \cite[e.g.][]{key} ==>>        (e.g. Jones et al., 1990)
+ %   \cite[e.g.][p. 32]{key} ==>>   (e.g. Jones et al., p. 32)
+ %   \citeauthor{key}               Jones et al.
+ %   \citefullauthor{key}           Jones, Baker, and Smith
+ %   \citeyear{key}                 1990
+ %---------------------------------------------------------------------
+
+ENTRY
+  { address
+    author
+    booktitle
+    chapter
+    edition
+    editor
+    howpublished
+    institution
+    journal
+    key
+    month
+    note
+    number
+    organization
+    pages
+    publisher
+    school
+    series
+    title
+    type
+    volume
+    year
+  }
+  {}
+  { label extra.label sort.label short.list }
+
+INTEGERS { output.state before.all mid.sentence after.sentence after.block }
+
+FUNCTION {init.state.consts}
+{ #0 'before.all :=
+  #1 'mid.sentence :=
+  #2 'after.sentence :=
+  #3 'after.block :=
+}
+
+STRINGS { s t }
+
+FUNCTION {output.nonnull}
+{ 's :=
+  output.state mid.sentence =
+    { ". " * write$  }
+    { output.state after.block =
+        { add.period$ write$
+%        { ", " * write$
+          newline$
+          "\newblock " write$
+        }
+        { output.state before.all =
+            'write$
+            { add.period$ " " * write$ }
+          if$
+        }
+      if$
+      mid.sentence 'output.state :=
+    }
+  if$
+  s
+}
+
+FUNCTION {output.comnull}
+{ 's :=
+  output.state mid.sentence =
+    { ", " * write$  }
+    { output.state after.block =
+%        { add.period$ write$
+        { ", " * write$
+          newline$
+          "\newblock " write$
+        }
+        { output.state before.all =
+            'write$
+            { ", " * write$ }
+          if$
+        }
+      if$
+      mid.sentence 'output.state :=
+    }
+  if$
+  s
+}
+
+FUNCTION {output}
+{ duplicate$ empty$
+    'pop$
+    'output.nonnull
+  if$
+}
+
+FUNCTION {output.check}
+{ 't :=
+  duplicate$ empty$
+    { pop$ "empty " t * " in " * cite$ * warning$ }
+    'output.nonnull
+  if$
+}
+
+FUNCTION {output.comma}
+{ 't :=
+  duplicate$ empty$
+    { pop$ "empty " t * " in " * cite$ * warning$ }
+    'output.comnull
+  if$
+}
+
+
+FUNCTION {fin.entry}
+{ add.period$
+  write$
+  newline$
+}
+
+FUNCTION {new.block}
+{ output.state before.all =
+    'skip$
+    { after.block 'output.state := }
+  if$
+}
+
+FUNCTION {new.sentence}
+{ output.state after.block =
+    'skip$
+    { output.state before.all =
+        'skip$
+        { after.sentence 'output.state := }
+      if$
+    }
+  if$
+}
+
+FUNCTION {add.blank}
+{  ". " * before.all 'output.state :=
+}
+
+FUNCTION {date.block}
+{
+  add.blank
+}
+
+FUNCTION {not}
+{   { #0 }
+    { #1 }
+  if$
+}
+
+FUNCTION {and}
+{   'skip$
+    { pop$ #0 }
+  if$
+}
+
+FUNCTION {or}
+{   { pop$ #1 }
+    'skip$
+  if$
+}
+
+FUNCTION {non.stop}
+{ duplicate$
+   "}" * add.period$
+   #-1 #1 substring$ "." =
+}
+
+FUNCTION {new.block.checkb}
+{ empty$
+  swap$ empty$
+  and
+    'skip$
+    'new.block
+  if$
+}
+
+FUNCTION {field.or.null}
+{ duplicate$ empty$
+    { pop$ "" }
+    'skip$
+  if$
+}
+
+FUNCTION {emphasize}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "{\em " swap$ * "\/}" * }
+  if$
+}
+
+FUNCTION {bolden}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "{\bf " swap$ * "}" * }
+  if$
+}
+
+% scaps function adapted to remove caps (2015/03/11)
+FUNCTION {scaps}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "{" swap$ * "}" * }
+  if$
+}
+
+FUNCTION {roman}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "{\rm " swap$ * "}" * }
+  if$
+}
+
+FUNCTION {capitalize}
+{ "u" change.case$ "t" change.case$ }
+
+FUNCTION {space.word}
+{ " " swap$ * " " * }
+
+ % Here are the language-specific definitions for explicit words.
+ % Each function has a name bbl.xxx where xxx is the English word.
+ % The language selected here is ENGLISH
+FUNCTION {bbl.and}
+{ "and"}
+
+FUNCTION {bbl.editors}
+{ "editors" }
+
+FUNCTION {bbl.editor}
+{ "editor" }
+
+FUNCTION {bbl.edby}
+{ "edited by" }
+
+FUNCTION {bbl.edition}
+{ "edition" }
+
+FUNCTION {bbl.volume}
+{ "volume" }
+
+FUNCTION {bbl.of}
+{ "of" }
+
+FUNCTION {bbl.number}
+{ "number" }
+
+FUNCTION {bbl.nr}
+{ "no." }
+
+FUNCTION {bbl.in}
+{ "in" }
+
+FUNCTION {bbl.pages}
+{ "pp." }
+
+FUNCTION {bbl.page}
+{ "p." }
+
+FUNCTION {bbl.chapter}
+{ "chapter" }
+
+FUNCTION {bbl.techrep}
+{ "Technical Report" }
+
+FUNCTION {bbl.mthesis}
+{ "Master's thesis" }
+
+FUNCTION {bbl.phdthesis}
+{ "Ph.D. thesis" }
+
+FUNCTION {bbl.first}
+{ "First" }
+
+FUNCTION {bbl.second}
+{ "Second" }
+
+FUNCTION {bbl.third}
+{ "Third" }
+
+FUNCTION {bbl.fourth}
+{ "Fourth" }
+
+FUNCTION {bbl.fifth}
+{ "Fifth" }
+
+FUNCTION {bbl.st}
+{ "st" }
+
+FUNCTION {bbl.nd}
+{ "nd" }
+
+FUNCTION {bbl.rd}
+{ "rd" }
+
+FUNCTION {bbl.th}
+{ "th" }
+
+MACRO {jan} {"January"}
+
+MACRO {feb} {"February"}
+
+MACRO {mar} {"March"}
+
+MACRO {apr} {"April"}
+
+MACRO {may} {"May"}
+
+MACRO {jun} {"June"}
+
+MACRO {jul} {"July"}
+
+MACRO {aug} {"August"}
+
+MACRO {sep} {"September"}
+
+MACRO {oct} {"October"}
+
+MACRO {nov} {"November"}
+
+MACRO {dec} {"December"}
+
+FUNCTION {eng.ord}
+{ duplicate$ "1" swap$ *
+  #-2 #1 substring$ "1" =
+     { bbl.th * }
+     { duplicate$ #-1 #1 substring$
+       duplicate$ "1" =
+         { pop$ bbl.st * }
+         { duplicate$ "2" =
+             { pop$ bbl.nd * }
+             { "3" =
+                 { bbl.rd * }
+                 { bbl.th * }
+               if$
+             }
+           if$
+          }
+       if$
+     }
+   if$
+}
+
+MACRO {acmcs} {"ACM Computing Surveys"}
+
+MACRO {acta} {"Acta Informatica"}
+
+MACRO {cacm} {"Communications of the ACM"}
+
+MACRO {ibmjrd} {"IBM Journal of Research and Development"}
+
+MACRO {ibmsj} {"IBM Systems Journal"}
+
+MACRO {ieeese} {"IEEE Transactions on Software Engineering"}
+
+MACRO {ieeetc} {"IEEE Transactions on Computers"}
+
+MACRO {ieeetcad}
+ {"IEEE Transactions on Computer-Aided Design of Integrated Circuits"}
+
+MACRO {ipl} {"Information Processing Letters"}
+
+MACRO {jacm} {"Journal of the ACM"}
+
+MACRO {jcss} {"Journal of Computer and System Sciences"}
+
+MACRO {scp} {"Science of Computer Programming"}
+
+MACRO {sicomp} {"SIAM Journal on Computing"}
+
+MACRO {tocs} {"ACM Transactions on Computer Systems"}
+
+MACRO {tods} {"ACM Transactions on Database Systems"}
+
+MACRO {tog} {"ACM Transactions on Graphics"}
+
+MACRO {toms} {"ACM Transactions on Mathematical Software"}
+
+MACRO {toois} {"ACM Transactions on Office Information Systems"}
+
+MACRO {toplas} {"ACM Transactions on Programming Languages and Systems"}
+
+MACRO {tcs} {"Theoretical Computer Science"}
+
+INTEGERS { nameptr namesleft numnames }
+
+FUNCTION {format.names}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { nameptr #1 >
+        { s nameptr "{vv~}{ll}{, jj}{ f{}}" format.name$ 't := }
+        { s nameptr "{vv~}{ll}{, jj}{ f{}}" format.name$ 't := }
+      if$
+      nameptr #1 >
+        {
+        %% Added 28 March 2017: truncate >5 authors
+          nameptr #10
+          #1 + =
+          numnames #10
+          > and
+            { "others" 't :=
+              #1 'namesleft := }
+            'skip$
+          if$
+          %%% End addition
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >
+                { "" * }
+                'skip$
+              if$
+              t "others" =
+                { " " * "et~al" emphasize * }
+                { ", " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {format.names.ed}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      "{vv~}{ll}{, jj}{ f{}}"
+      format.name$ 't :=
+      nameptr #1 >
+        {
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >
+                { "" * }
+                'skip$
+              if$
+              t "others" =
+                { " " * "et~al" emphasize * }
+                { ", " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {format.key}
+{ empty$
+    { key field.or.null }
+    { "" }
+  if$
+}
+
+FUNCTION {format.authors}
+{ author empty$
+    { "" }
+    {
+      author format.names scaps
+    }
+  if$
+}
+
+FUNCTION {format.editors}
+{ editor empty$
+    { "" }
+    {
+      editor format.names scaps
+      editor num.names$ #1 >
+        { ", " * bbl.editors * }
+        { ", " * bbl.editor * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.in.editors}
+{ editor empty$
+    { "" }
+    { editor format.names.ed
+    }
+  if$
+}
+
+FUNCTION {format.title}
+{ title empty$
+    { "" }
+    { title "t" change.case$
+    }
+  if$
+}
+
+FUNCTION {format.publisher}
+{ title empty$
+    { "" }
+    { publisher }
+  if$
+}
+
+FUNCTION {format.full.names}
+{'s :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      "{vv~}{ll}" format.name$ 't :=
+      nameptr #1 >
+        {
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >
+                { "," * }
+                'skip$
+              if$
+              t "others" =
+                { " " * "et~al" emphasize * }
+                { bbl.and roman space.word * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {author.editor.key.full}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            'key
+          if$
+        }
+        { editor format.full.names }
+      if$
+    }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {author.key.full}
+{ author empty$
+    { key empty$
+         { cite$ #1 #3 substring$ }
+          'key
+      if$
+    }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {editor.key.full}
+{ editor empty$
+    { key empty$
+         { cite$ #1 #3 substring$ }
+          'key
+      if$
+    }
+    { editor format.full.names }
+  if$
+}
+
+FUNCTION {make.full.names}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.key.full
+    { type$ "proceedings" =
+        'editor.key.full
+        'author.key.full
+      if$
+    }
+  if$
+  scaps
+}
+
+FUNCTION {output.bibitem}
+{ newline$
+  "\bibitem[" write$
+  label write$
+  ")" make.full.names duplicate$ short.list =
+     { pop$ }
+     { * }
+   if$
+  "]{" * write$
+  cite$ write$
+  "}" write$
+  newline$
+  ""
+  before.all 'output.state :=
+}
+
+FUNCTION {n.dashify}
+{ 't :=
+  ""
+    { t empty$ not }
+    { t #1 #1 substring$ "-" =
+        { t #1 #2 substring$ "--" = not
+            { "--" *
+              t #2 global.max$ substring$ 't :=
+            }
+            {   { t #1 #1 substring$ "-" = }
+                { "-" *
+                  t #2 global.max$ substring$ 't :=
+                }
+              while$
+            }
+          if$
+        }
+        { t #1 #1 substring$ *
+          t #2 global.max$ substring$ 't :=
+        }
+      if$
+    }
+  while$
+}
+
+FUNCTION {word.in}
+{ bbl.in capitalize
+  ": " * }
+
+FUNCTION {format.date}
+{ year duplicate$ empty$
+    { "empty year in " cite$ * "; set to ????" * warning$
+       pop$ "????" }
+    'skip$
+  if$
+  "" * extra.label *
+}
+
+FUNCTION {format.btitle}
+{ title emphasize
+}
+
+FUNCTION {tie.or.space.connect}
+{ duplicate$ text.length$ #3 <
+    { "~" }
+    { " " }
+  if$
+  swap$ * *
+}
+
+FUNCTION {either.or.check}
+{ empty$
+    'pop$
+    { "can't use both " swap$ * " fields in " * cite$ * warning$ }
+  if$
+}
+
+FUNCTION {format.bvolume}
+{ volume empty$
+    { "" }
+    { bbl.volume volume tie.or.space.connect
+      series empty$
+        'skip$
+        { bbl.of space.word * series emphasize * }
+      if$
+      "volume and number" number either.or.check
+    }
+  if$
+}
+
+FUNCTION {format.number.series}
+{ volume empty$
+    { number empty$
+        { series field.or.null }
+        { output.state mid.sentence =
+            { bbl.number }
+            { bbl.number capitalize }
+          if$
+          number tie.or.space.connect
+          series empty$
+            { "there's a number but no series in " cite$ * warning$ }
+            { bbl.in space.word * series * }
+          if$
+        }
+      if$
+    }
+    { "" }
+  if$
+}
+
+FUNCTION {is.num}
+{ chr.to.int$
+  duplicate$ "0" chr.to.int$ < not
+  swap$ "9" chr.to.int$ > not and
+}
+
+FUNCTION {extract.num}
+{ duplicate$ 't :=
+  "" 's :=
+  { t empty$ not }
+  { t #1 #1 substring$
+    t #2 global.max$ substring$ 't :=
+    duplicate$ is.num
+      { s swap$ * 's := }
+      { pop$ "" 't := }
+    if$
+  }
+  while$
+  s empty$
+    'skip$
+    { pop$ s }
+  if$
+}
+
+FUNCTION {convert.edition}
+{ edition extract.num "l" change.case$ 's :=
+  s "first" = s "1" = or
+    { bbl.first 't := }
+    { s "second" = s "2" = or
+        { bbl.second 't := }
+        { s "third" = s "3" = or
+            { bbl.third 't := }
+            { s "fourth" = s "4" = or
+                { bbl.fourth 't := }
+                { s "fifth" = s "5" = or
+                    { bbl.fifth 't := }
+                    { s #1 #1 substring$ is.num
+                        { s eng.ord 't := }
+                        { edition 't := }
+                      if$
+                    }
+                  if$
+                }
+              if$
+            }
+          if$
+        }
+      if$
+    }
+  if$
+  t
+}
+
+FUNCTION {format.edition}
+{ edition empty$
+    { "" }
+    { output.state mid.sentence =
+        { convert.edition "l" change.case$ " " * bbl.edition * }
+        { convert.edition "t" change.case$ " " * bbl.edition * }
+      if$
+    }
+  if$
+}
+
+INTEGERS { multiresult }
+
+FUNCTION {multi.page.check}
+{ 't :=
+  #0 'multiresult :=
+    { multiresult not
+      t empty$ not
+      and
+    }
+    { t #1 #1 substring$
+      duplicate$ "-" =
+      swap$ duplicate$ "," =
+      swap$ "+" =
+      or or
+        { #1 'multiresult := }
+        { t #2 global.max$ substring$ 't := }
+      if$
+    }
+  while$
+  multiresult
+}
+
+FUNCTION {format.pages}
+{ pages empty$
+    { "" }
+    { pages multi.page.check
+        { bbl.pages pages n.dashify tie.or.space.connect }
+        { bbl.page pages tie.or.space.connect }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.vol.num.pages}
+{ volume field.or.null
+  pages empty$
+    'skip$
+    { duplicate$ empty$
+        { pop$ format.pages }
+        { ":" * pages n.dashify * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.chapter.pages}
+{ chapter empty$
+    'format.pages
+    { type empty$
+        { bbl.chapter }
+        { type "l" change.case$ }
+      if$
+      chapter tie.or.space.connect
+      pages empty$
+        'skip$
+        { ", " * format.pages * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.in.ed.booktitle}
+{ booktitle empty$
+    { "" }
+    { editor empty$
+        { word.in format.in.editors * }
+        { word.in format.in.editors *
+          ", " *
+      editor num.names$ #1 >
+         { bbl.editors }
+         { bbl.editor }
+       if$
+        * ", " *
+          booktitle emphasize *
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {bibinfo.check}
+{ swap$
+  duplicate$ missing$
+    {
+      pop$ pop$
+      ""
+    }
+    { duplicate$ empty$
+        {
+          swap$ pop$
+        }
+        { swap$
+          pop$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.thesis.type}
+{ type empty$
+    'skip$
+    { pop$
+      type "t" change.case$
+    }
+  if$
+}
+
+FUNCTION {format.tr.number}
+{ type empty$
+    { bbl.techrep }
+    'type
+  if$
+  number empty$
+    { "t" change.case$ }
+    { number tie.or.space.connect }
+  if$
+}
+
+FUNCTION {format.article.crossref}
+{
+  word.in
+  " \cite{" * crossref * "}" *
+}
+
+FUNCTION {format.book.crossref}
+{ volume empty$
+    { "empty volume in " cite$ * "'s crossref of " * crossref * warning$
+      word.in
+    }
+    { bbl.volume volume tie.or.space.connect
+      bbl.of space.word *
+    }
+  if$
+  " \cite{" * crossref * "}" *
+}
+
+FUNCTION {format.incoll.inproc.crossref}
+{
+  word.in
+  " \cite{" * crossref * "}" *
+}
+
+FUNCTION {article}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.title "title" output.check
+  new.sentence
+  crossref missing$
+    { journal
+      "journal" output.check
+      add.blank
+      format.vol.num.pages output
+    }
+    { format.article.crossref output.nonnull
+      format.pages output
+    }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {book}
+{ output.bibitem
+  author empty$
+    { format.editors "author and editor" output.check
+      editor format.key output
+    }
+    { format.authors output.nonnull
+      crossref missing$
+        { "author and editor" editor either.or.check }
+        'skip$
+      if$
+    }
+  if$
+  format.date "year" output.check
+  date.block
+  format.btitle "title" output.check
+  crossref missing$
+    { format.bvolume output
+  new.sentence
+      format.number.series output
+      publisher "publisher" output.check
+      address output
+    }
+    {
+  new.sentence
+      format.book.crossref output.nonnull
+    }
+  if$
+  format.edition output
+  note output
+  fin.entry
+}
+
+FUNCTION {booklet}
+{ output.bibitem
+  format.authors output
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.title "title" output.check
+  new.sentence
+  howpublished output
+  address output
+  note output
+  fin.entry
+}
+
+%
+
+
+FUNCTION {format.editors.inbook}
+{
+editor empty$
+   { "" }
+   {
+     bbl.edby
+     " " *
+     editor format.names scaps *
+   }
+ if$
+}
+
+FUNCTION {format.btitle.inbook}
+{
+ " in " *
+ format.btitle *
+}
+
+FUNCTION {inbook}
+{ output.bibitem
+ author empty$
+   { format.editors "author and editor" output.check
+     editor format.key output
+   }
+   { format.authors output.nonnull
+     crossref missing$
+       { "author and editor" editor either.or.check }
+       'skip$
+     if$
+   }
+ if$
+ format.date "year" output.check
+ date.block
+
+%% inbook must be :
+%% Authors, year, chapter, pp, "in" title, "edited by" editors, publisher.
+
+%  format.btitle "title" output.check
+%  crossref missing$
+%    { format.bvolume output
+%      format.chapter.pages "chapter and pages" output.check
+%  new.sentence
+%      format.number.series output
+%      publisher "publisher" output.check
+%      address output
+%    }
+%    {
+%      format.chapter.pages "chapter and pages" output.check
+%  new.sentence
+%      format.book.crossref output.nonnull
+%    }
+%  if$
+%  format.edition output
+%  note output
+%  fin.entry
+
+
+ chapter "chapter" output.check
+ format.pages "pages" output.check
+ format.btitle.inbook "title" output.check
+ format.editors.inbook "editors" output.check
+ publisher "publisher" output.check
+ note output
+ fin.entry
+}
+
+
+
+FUNCTION {incollection}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.title "title" output.check
+  new.sentence
+  crossref missing$
+    { format.in.ed.booktitle "booktitle" output.comma
+      format.publisher "publisher" output.comma
+      address output
+      format.edition output
+      format.bvolume output
+      format.number.series output
+      format.chapter.pages output
+    }
+    { format.incoll.inproc.crossref output.nonnull
+      format.chapter.pages output
+    }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {inproceedings}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.title "title" output.check
+  new.sentence
+  crossref missing$
+    { format.in.ed.booktitle "booktitle" output.check
+      format.bvolume output
+      format.number.series output
+      format.pages output
+      address output
+      organization output
+      publisher output
+    }
+    { format.incoll.inproc.crossref output.nonnull
+      format.pages output
+    }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {conference} { inproceedings }
+
+FUNCTION {manual}
+{ output.bibitem
+  format.authors output
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.btitle "title" output.check
+  new.sentence
+  organization output
+  address output
+  format.edition output
+  note output
+  fin.entry
+}
+
+FUNCTION {mastersthesis}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.btitle "title" output.check
+  new.sentence
+  bbl.mthesis format.thesis.type output.nonnull
+  school "school" output.check
+  address output
+  note output
+  fin.entry
+}
+
+FUNCTION {misc}
+{ output.bibitem
+  format.authors output
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.title output
+  new.sentence
+  howpublished output
+  note output
+  fin.entry
+}
+
+FUNCTION {phdthesis}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.btitle "title" output.check
+  new.sentence
+  bbl.phdthesis format.thesis.type output.nonnull
+  school "school" output.check
+  address output
+  note output
+  fin.entry
+}
+
+FUNCTION {proceedings}
+{ output.bibitem
+  format.editors output
+  editor format.key output
+  format.date "year" output.check
+  date.block
+  format.btitle "title" output.check
+  format.bvolume output
+  format.number.series output
+  address output
+  organization output
+  publisher output
+  note output
+  fin.entry
+}
+
+FUNCTION {techreport}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.title "title" output.check
+  new.sentence
+  format.tr.number output.nonnull
+  institution "institution" output.check
+  address output
+  note output
+  fin.entry
+}
+
+FUNCTION {unpublished}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  format.date "year" output.check
+  date.block
+  format.title "title" output.check
+  new.sentence
+  note "note" output.check
+  fin.entry
+}
+
+FUNCTION {default.type} { misc }
+
+READ
+
+FUNCTION {sortify}
+{ purify$
+  "l" change.case$
+}
+
+INTEGERS { len }
+
+FUNCTION {chop.word}
+{ 's :=
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
+  if$
+}
+
+FUNCTION {format.lab.names}
+{ 's :=
+  s #1 "{vv~}{ll}" format.name$
+  s num.names$ duplicate$
+  #2 >
+    { pop$ " " * "et~al." emphasize * }
+    { #2 <
+        'skip$
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+            { " " * "et~al." emphasize * }
+            { bbl.and
+              roman
+              space.word * s #2 "{vv~}{ll}" format.name$ * }
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {author.key.label}
+{ author empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.editor.key.label}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            'key
+          if$
+        }
+        { editor format.lab.names }
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {editor.key.label}
+{ editor empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+    { editor format.lab.names }
+  if$
+}
+
+FUNCTION {calc.short.authors}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.key.label
+    { type$ "proceedings" =
+        'editor.key.label
+        'author.key.label
+      if$
+    }
+  if$
+  scaps
+  'short.list :=
+}
+
+FUNCTION {calc.label}
+{ calc.short.authors
+  short.list
+  "("
+  *
+  year duplicate$ empty$
+     { pop$ "????" }
+     'skip$
+  if$
+  *
+  'label :=
+}
+
+FUNCTION {sort.format.names}
+{ 's :=
+  #1 'nameptr :=
+  ""
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      "{vv{ } }{ll{ }}{  f{ }}{  jj{ }}"
+      format.name$ 't :=
+      nameptr #1 >
+        {
+          "   "  *
+          namesleft #1 = t "others" = and
+            { "aaaaa" * }
+            { t sortify * }
+          if$
+        }
+        { t sortify * }
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {sort.format.title}
+{ 't :=
+  "A " #2
+    "An " #3
+      "The " #4 t chop.word
+    chop.word
+  chop.word
+  sortify
+  #1 global.max$ substring$
+}
+
+FUNCTION {author.sort}
+{ author empty$
+    { key empty$
+        { "to sort, need author or key in " cite$ * warning$
+          ""
+        }
+        { key sortify }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {author.editor.sort}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { "to sort, need author, editor, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { editor sort.format.names }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {editor.sort}
+{ editor empty$
+    { key empty$
+        { "to sort, need editor or key in " cite$ * warning$
+          ""
+        }
+        { key sortify }
+      if$
+    }
+    { editor sort.format.names }
+  if$
+}
+
+FUNCTION {presort}
+{ calc.label
+  label sortify
+  "    "
+  *
+  type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.sort
+    { type$ "proceedings" =
+        'editor.sort
+        'author.sort
+      if$
+    }
+  if$
+  #1 entry.max$ substring$
+  'sort.label :=
+  sort.label
+  *
+  "    "
+  *
+  title field.or.null
+  sort.format.title
+  *
+  #1 entry.max$ substring$
+  'sort.key$ :=
+}
+
+ITERATE {presort}
+
+SORT
+
+STRINGS { last.label next.extra }
+
+INTEGERS { last.extra.num number.label }
+
+FUNCTION {initialize.extra.label.stuff}
+{ #0 int.to.chr$ 'last.label :=
+  "" 'next.extra :=
+  #0 'last.extra.num :=
+  #0 'number.label :=
+}
+
+FUNCTION {forward.pass}
+{ last.label label =
+    { last.extra.num #1 + 'last.extra.num :=
+      last.extra.num int.to.chr$ 'extra.label :=
+    }
+    { "a" chr.to.int$ 'last.extra.num :=
+      "" 'extra.label :=
+      label 'last.label :=
+    }
+  if$
+  number.label #1 + 'number.label :=
+}
+
+FUNCTION {reverse.pass}
+{ next.extra "b" =
+    { "a" 'extra.label := }
+    'skip$
+  if$
+  extra.label 'next.extra :=
+  extra.label
+  duplicate$ empty$
+    'skip$
+    { "{" swap$ * "}" * }
+  if$
+  'extra.label :=
+  label extra.label * 'label :=
+}
+
+EXECUTE {initialize.extra.label.stuff}
+
+ITERATE {forward.pass}
+
+REVERSE {reverse.pass}
+
+FUNCTION {bib.sort.order}
+{ sort.label
+  "    "
+  *
+  year field.or.null sortify
+  *
+  "    "
+  *
+  title field.or.null
+  sort.format.title
+  *
+  #1 entry.max$ substring$
+  'sort.key$ :=
+}
+
+ITERATE {bib.sort.order}
+
+SORT
+
+FUNCTION {begin.bib}
+{ preamble$ empty$
+    'skip$
+    { preamble$ write$ newline$ }
+  if$
+  "\begin{thebibliography}{" number.label int.to.str$ * "}" *
+  write$ newline$
+}
+
+EXECUTE {begin.bib}
+
+EXECUTE {init.state.consts}
+
+ITERATE {call.type$}
+
+FUNCTION {end.bib}
+{ newline$
+  "\end{thebibliography}" write$ newline$
+}
+
+EXECUTE {end.bib}
+%% End of customized bst file
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/build/build_latex_dvips_ps2pdf.sh ===
+#########################################
+Overview for /home/vmuser/tmp/latex/build/build_latex_dvips_ps2pdf.sh:
+This file is a Bourne-Again shell script, ASCII text executable with a size of 1210 bytes.
+---
+Full content for /home/vmuser/tmp/latex/build/build_latex_dvips_ps2pdf.sh:
+#!/bin/bash
+
+# Set file name without extension
+FILE="${1%.*}"
+OUT_DIR="./out"
+
+# Check if the output directory exists; if not, create it with appropriate permissions
+if [ ! -d "$OUT_DIR" ]; then
+    mkdir -p "$OUT_DIR"
+    chmod 755 "$OUT_DIR"
+    echo "Output directory $OUT_DIR created with correct permissions."
+fi
+
+# Step 1: Compile LaTeX to DVI
+latex -interaction=nonstopmode -output-directory="$OUT_DIR" "$FILE.tex"
+
+# Step 2: Run Biber (or BibTeX, depending on the system)
+if [ -f "$OUT_DIR/$FILE.bcf" ]; then
+    biber "$OUT_DIR/$FILE"
+elif [ -f "$OUT_DIR/$FILE.aux" ]; then
+    bibtex "$OUT_DIR/$FILE"
+fi
+
+# Step 3: Compile LaTeX to DVI again to update references
+latex -interaction=nonstopmode -output-directory="$OUT_DIR" "$FILE.tex"
+
+# Step 4: Convert DVI to PS
+dvips "$OUT_DIR/$FILE.dvi" -o "$OUT_DIR/$FILE.ps"
+
+# Step 5: Convert PS to PDF
+ps2pdf "$OUT_DIR/$FILE.ps" "$OUT_DIR/$FILE.pdf"
+
+# Ensure correct permissions for all files in the output directory
+chmod -R 644 "$OUT_DIR"/*
+chmod 755 "$OUT_DIR"
+
+# Confirm completion
+if [ -f "$OUT_DIR/$FILE.pdf" ]; then
+    echo "PDF successfully generated at $OUT_DIR/$FILE.pdf with correct permissions."
+else
+    echo "Error: PDF was not generated."
+fi
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/build/build_lualatex.sh ===
+#########################################
+Overview for /home/vmuser/tmp/latex/build/build_lualatex.sh:
+This file is a Bourne-Again shell script, ASCII text executable with a size of 540 bytes.
+---
+Full content for /home/vmuser/tmp/latex/build/build_lualatex.sh:
+#!/bin/bash
+
+# Check if the output directory exists, if not, create it and set permissions
+if [ ! -d "./out" ]; then
+  mkdir -p ./out
+  chmod u+w ./out
+  echo "Output directory ./out created and permissions set."
+fi
+
+# Step 1: Run lualatex
+lualatex -interaction=nonstopmode -synctex=1 -output-directory=./out "$1"
+
+# Step 2: Run biber (without file extension)
+biber "./out/$(basename "$1" .tex)"
+
+# Step 3: Run lualatex again
+lualatex -interaction=nonstopmode -synctex=1 -output-directory=./out "$1"
+
+echo "Build completed with lualatex."
+
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/build/build_pdflatex.sh ===
+#########################################
+Overview for /home/vmuser/tmp/latex/build/build_pdflatex.sh:
+This file is a Bourne-Again shell script, ASCII text executable with a size of 535 bytes.
+---
+Full content for /home/vmuser/tmp/latex/build/build_pdflatex.sh:
+#!/bin/bash
+
+# Check if the output directory exists, if not, create it and set permissions
+if [ ! -d "./out" ]; then
+  mkdir -p ./out
+  chmod u+w ./out
+  echo "Output directory ./out created and permissions set."
+fi
+
+# Step 1: Run xelatex
+xelatex -interaction=nonstopmode -synctex=1 -output-directory=./out "$1"
+
+# Step 2: Run biber (without file extension)
+biber "./out/$(basename "$1" .tex)"
+
+# Step 3: Run xelatex again
+xelatex -interaction=nonstopmode -synctex=1 -output-directory=./out "$1"
+
+echo "Build completed with xelatex."
+
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/build/build_xelatex.sh ===
+#########################################
+Overview for /home/vmuser/tmp/latex/build/build_xelatex.sh:
+This file is a Bourne-Again shell script, ASCII text executable with a size of 275 bytes.
+---
+Full content for /home/vmuser/tmp/latex/build/build_xelatex.sh:
+#!/bin/bash
+# Compile with xelatex and biber for bibliography
+
+if [ -z "$1" ]; then
+  echo "No file provided."
+  exit 1
+fi
+
+filename="$1"
+
+xelatex -interaction=nonstopmode -synctex=1 "$filename"
+biber "${filename%.*}"
+xelatex -interaction=nonstopmode -synctex=1 "$filename"
+
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/cls/labreport.cls ===
+#########################################
+Overview for /home/vmuser/tmp/latex/cls/labreport.cls:
+This file is a LaTeX document, Unicode text, UTF-8 text with a size of 11743 bytes.
+---
+Full content for /home/vmuser/tmp/latex/cls/labreport.cls:
+% This class file is provided for authors submitting to the
+% Genetics Society of America's GENETICS Journal
+%
+% Version: 1.11, 2022/04/01
+%
+% Produced by GSA and Overleaf (www.overleaf.com)
+%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{labreport}[2022/04/01, v1.11]
+\AtEndOfClass{\RequirePackage{microtype}}
+
+% Options for element switching
+\RequirePackage{xifthen}
+\newboolean{displaycopyright}
+\newboolean{displaylineno}
+\setboolean{displaylineno}{false}
+
+\DeclareOption{lineno}{\setboolean{displaylineno}{true}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{extarticle}}
+\ProcessOptions*
+\LoadClass{extarticle}
+
+% April 16, 2016:
+% Line numbers
+% v1.8 April 12, 2018: make sure line numbers are
+% displayed in outer margins of columns; so
+% remove "running" option somehow gets it right
+\RequirePackage[switch,pagewise]{lineno}
+%v1.11 April 1, 2022: re-add line numbers that were accidentally removed in 1.10
+\ifthenelse{\boolean{displaylineno}}{\linenumbers}{}
+
+% Fonts and language
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[english]{babel}
+\RequirePackage{amsmath,amsfonts,amssymb}
+\RequirePackage{mathpazo}
+\RequirePackage[scaled]{helvet}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{url}
+\RequirePackage[colorlinks=true, allcolors=blue]{hyperref}
+\RequirePackage{lettrine}
+
+\newcommand{\watermarkfont}{\color{black50}\normalfont\fontsize{10}{12}\selectfont}
+\newcommand{\headerfont}{\normalfont\fontsize{8}{10}\selectfont}
+\newcommand{\headerifont}{\normalfont\fontsize{7}{9}\selectfont}
+\newcommand{\titlefont}{\color{color3}\normalfont\sffamily\bfseries\fontsize{18}{22}\selectfont}
+\newcommand\corresfont{\fontsize{9}{11}\selectfont}
+\newcommand{\datesfont}{\normalfont\sffamily\itshape\fontsize{8}{10}\selectfont}
+\renewcommand\UrlFont{\color{color1}\sffamily}
+\newcommand{\absfont}{\normalfont\sffamily\linespread{1}\fontsize{8.9}{11}\selectfont}
+\newcommand{\absheadfont}{\color{color3}\normalfont\sffamily\fontsize{9.4}{11}\selectfont}
+\newcommand{\keywordsfont}{\normalfont\sffamily\linespread{1}\fontsize{8.9}{11}\selectfont}
+\newcommand{\keywordheadfont}{\normalfont\sffamily\fontsize{7.8}{9}\selectfont\bfseries}
+\newcommand{\copyrightfont}{\normalfont\sffamily\fontsize{7}{9}\selectfont}
+
+
+\RequirePackage{datetime}
+
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH] \THEYEAR}
+
+\RequirePackage{enumitem}
+\setlist[itemize]{noitemsep}
+
+
+% Author and affiliation
+\RequirePackage{authblk}
+\setlength{\affilsep}{9pt}
+\renewcommand\Authfont{\color{color0}\fontsize{9.5}{11}\sffamily\selectfont}
+\renewcommand\Affilfont{\color{color0}\fontsize{6.5}{9}\selectfont}
+% \makeatletter
+\renewcommand\AB@affilsep{\reset@font\protect\Affilfont}
+\renewcommand\AB@affilsepx{\reset@font\protect\\\protect\Affilfont}
+%\renewcommand\AB@affilsepx{, \protect\Affilfont}
+% \makeatother
+\renewcommand\Authands{ and }
+
+% Choose article type
+\newcommand*{\articletype}[1]{%
+  \RequirePackage{styles/#1}}
+
+% Copyright statement
+\RequirePackage{textcomp} % For copyright symbol styling
+\newcommand{\copyrightstatement}{Copyright \, \textcopyright\, \the\year{} by the Genetics Society of America}
+
+% v1.6: Remove copyright statement from PDF
+\AtBeginDocument{\setboolean{displaycopyright}{false}}
+
+% Graphics, tables and other formatting
+\RequirePackage{graphicx,xcolor}
+\RequirePackage{colortbl}
+\RequirePackage{booktabs}
+\RequirePackage{tikz}
+\RequirePackage{algorithm}
+\RequirePackage[noend]{algpseudocode}
+\RequirePackage{changepage}
+\RequirePackage[left=48pt,%
+                right=42pt,%
+                top=48pt,%
+                bottom=60pt,%
+                headheight=15pt,%
+                headsep=10pt,%
+                topmargin=10pt,%
+                a4paper,twoside]{geometry}%
+\RequirePackage[labelfont={bf,sf},%
+                list=no,%
+                labelsep=space,%
+                figurename=Figure,%
+                singlelinecheck=off,%
+                justification=RaggedRight]{caption}
+\setlength{\columnsep}{24pt} % Distance between the two columns of text
+\setlength{\parindent}{12pt} % Paragraph indent
+
+% Set document color scheme
+\definecolor{black50}{gray}{0.5} % 50% black for hrules
+\definecolor{color0}{RGB}{0,0,0} % Base color
+\definecolor{color1}{RGB}{59,90,198} % unused
+% color2&3 defined by the specific article type style file
+
+% Bibliography
+\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
+\bibliographystyle{bib/labreport}
+\addto{\captionsenglish}{\renewcommand{\refname}{Literature cited}}
+\setlength{\bibsep}{0.0pt}
+
+% Table style
+\arrayrulecolor{color0} % Set the color of the horizontal rules
+\renewcommand{\arraystretch}{1.5} % Increased line spacing
+\captionsetup[table]{position=below} % Reduce spacing below caption
+
+% Algorithm style
+% \makeatletter
+\newcommand\fs@coloruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@coloruled
+  \def\@fs@pre{\kern2pt}%
+  \def\@fs@post{\kern2pt{\color{color2}\hrule}\relax}%
+  \def\@fs@mid{\kern2pt{\color{color2}\hrule}\kern2pt}%
+  \let\@fs@iftopcapt\iftrue}
+% \makeatother
+
+\floatstyle{coloruled}
+\restylefloat{algorithm}
+
+% Headers and footers
+\RequirePackage{fancyhdr}  % custom headers/footers
+\RequirePackage{lastpage}  % Number of pages in the document
+\pagestyle{fancy}          % Enables the custom headers/footers
+
+\newif\ifslugprint\global\slugprintfalse
+
+\def\ouplogo{{\fboxsep0pt\fcolorbox{black50}{black50}{\textcolor{white}{\vbox to 62pt{\vfil\hbox to 85pt{\hfil\fontsize{16}{16}\selectfont Birckbeck\hfil}\vspace*{10pt}}}}}\hspace*{12pt}}
+
+\def\slugnote{\global\slugprinttrue}
+
+\def\slugline{\vbox to 0pt{\vspace*{9.5pt}{\headerfont GENETICS, \the\year, XX(X), XXX\vskip-6pt}%
+\rule{121pt}{2pt}\par%
+{\headerifont\color{color2} DOI: 10.1534/genetics.XXX.XXXXXX\vskip1pt}%
+{\headerifont Advance Access Publication Date: XX XX XXXX\par}%
+{\headerfont \articletypename}}}
+
+\fancypagestyle{firststyle}{
+   \fancyhead[LO,RE,LE,RO]{}
+   \ifslugprint\fancyhead[R]{\slugline}\else\fi%
+   \fancyhead[L]{\firstpageimage}
+   % v1.6: Remove volume and month information
+%    \fancyfoot[R]{\footnotesize Genetics, Vol. XXX, XXXX–XXXX \hspace{1em} \monthyeardate\today \hspace{2em} \thepage\ }
+}
+
+% Headers
+\fancyhead[LO,RE,LE,RO]{} % Blank headers for non-title pages.
+% Footers
+\lfoot{}
+\cfoot{}
+\rfoot{}
+% \makeatletter
+\fancyhead[RO]{\@runningauthor\hspace{2em}\thepage}
+\fancyhead[LE]{\thepage\hspace{2em}\@runningtitle}
+% \makeatother
+\fancyfoot[LO,RE]{}
+\renewcommand{\headrulewidth}{0pt}% % No header rule
+\renewcommand{\footrulewidth}{0pt}% % No footer rule
+
+%% 13 July 2016: make sure sections are unnumbered
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{0}
+
+% Section/subsection/paragraph set-up
+\RequirePackage[explicit]{titlesec}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\titleformat{\section}
+  {\large\sffamily\bfseries\color{color3}}
+  {\thesection.}
+  {0.5em}
+  {#1}
+  []
+\titleformat{name=\section,numberless}
+  {\large\sffamily\bfseries\color{color3}}
+  {}
+  {0em}
+  {#1}
+  []
+\titleformat{\subsection}
+  {\bfseries\fontsize{10}{12}\selectfont}
+  {\thesubsection.}
+  {0.5em}
+  {#1}
+  []
+\titleformat{\subsubsection}[runin]
+  {\sffamily\bfseries\itshape}
+  {\thesubsubsection.}
+  {0.5em}
+  {#1}
+  []
+\titleformat{\paragraph}[runin]
+  {\sffamily\small\bfseries}
+  {}
+  {0em}
+  {#1}
+\titlespacing*{\section}{0pc}{3ex \@plus4pt \@minus3pt}{5pt}
+\titlespacing*{\subsection}{0pc}{2.5ex \@plus3pt \@minus2pt}{2pt}
+\titlespacing*{\subsubsection}{0pc}{2ex \@plus2.5pt \@minus1.5pt}{2pt}
+\titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{12pt}
+
+% Article meta data additional fields
+\newcommand{\runningauthor}[1]{\def\@runningauthor{#1}}
+%% Backward compatibility
+\newcommand{\correspondingauthor}[1]{\runningauthor{#1}}
+\newcommand{\keywords}[1]{\def\@keywords{#1}}
+\newcommand{\runningtitle}[1]{\def\@runningtitle{#1}}
+
+\newcommand{\keywordname}{{\keywordheadfont Keywords:}} % Defines the keywords heading name
+
+% Colored margin box
+%\newcommand{\marginmark}{
+%\begin{textblock}{2}(200,9.5)
+%\begin{tikzpicture}
+%\fill[color=color2] (0,0) rectangle (1.2,0.25);
+%\end{tikzpicture}
+%\end{textblock}
+%}
+
+\newcommand{\marginmark}{
+\begin{textblock}{2}(200,9.5)
+\begin{tikzpicture}
+\fill[color=color2] (0,0) rectangle (1.2,0.25);
+\end{tikzpicture}
+\end{textblock}
+}
+
+
+\def\xabstract{abstract}
+\long\def\abstract#1\end#2{\def\two{#2}\ifx\two\xabstract
+\long\gdef\theabstract{\ignorespaces#1}
+\def\go{\end{abstract}}\else
+\typeout{^^J^^J PLEASE DO NOT USE ANY \string\begin\space \string\end^^J
+COMMANDS WITHIN ABSTRACT^^J^^J}#1\end{#2}
+\gdef\theabstract{\vskip12pt BADLY FORMED ABSTRACT: PLEASE DO
+NOT USE {\tt\string\begin...\string\end} COMMANDS WITHIN
+THE ABSTRACT\vskip12pt}\let\go\relax\fi
+\go}
+
+% Set environment for abstract content and styling
+\newcommand{\abscontent}{
+\noindent
+{%
+%\parbox{\dimexpr\linewidth}{%
+%    %% v1.8: turn on line numbers
+%	\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+%   {\absheadfont\bfseries Abstract}\vskip3.5pt \absfont \theabstract
+}%
+\vskip15.5pt%
+\noindent
+\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+ %% v1.8: turn on line numbers
+\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+{\keywordsfont\keywordname}\hspace*{0.1em} \keywordsfont \@keywords%
+}%
+}%
+}%
+
+% Custom title page
+\renewcommand{\@maketitle}{\bgroup\setlength{\parindent}{0pt}
+{%
+\vskip67pt%
+{\raggedright \titlefont \@title\vskip13pt}%
+{\raggedright \@author\vskip9.5pt}
+\ifx\@corres\undefined\vskip6.5pt\else\@corres\vskip11.5pt\fi%
+}\egroup%
+{%
+\vskip12pt%
+\abscontent
+}%
+\vskip25pt%
+}%
+
+% Other packages
+\RequirePackage{enumitem} % For reducing bullet list item separation
+
+\RequirePackage{tabularx}
+
+\RequirePackage[flushmargin,ragged]{footmisc}
+
+\newlength{\myFootnoteWidth}%
+\newlength{\myFootnoteLabel}%
+\setlength{\myFootnoteLabel}{0.5em}
+\renewcommand{\@makefntext}[1]{%
+  \setlength{\myFootnoteWidth}{\columnwidth}%
+  \addtolength{\myFootnoteWidth}{-\myFootnoteLabel}%
+  \noindent\makebox[\myFootnoteLabel][r]{\@makefnmark\ }%
+  \parbox[t]{\myFootnoteWidth}{#1}
+  }
+
+\newdimen\footrulechange
+\footrulechange\columnwidth
+% Commands to set the footnote for the front page.
+\renewcommand{\footnoterule}{%
+  \kern -3pt
+  {\color{black50} \hrule width \footrulechange height 0.5pt}
+  \kern 2.5pt
+}
+
+\newcommand{\@authfootnote}[2]{%
+  \begingroup
+  \setlength{\myFootnoteLabel}{0em}
+  \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{#1}#2}%
+   \endgroup%
+}
+
+\newcommand\blfootnote[1]{%
+  \@authfootnote{}{#1}%
+%   \begingroup
+%   \setlength{\myFootnoteLabel}{0em}
+%   \renewcommand\thefootnote{}\footnote{#1}%
+%   \addtocounter{footnote}{-1}%
+%   \addtocounter{Hfootnote}{-1}%
+%   \endgroup%
+}
+\newcommand\correspondingauthoraffiliation[2][]{%
+  \gdef\@corres{\corresfont\textsuperscript{#1}#2}%
+}
+
+\def\dates#1{\gdef\@dates{#1}}
+
+\def\rec#1{\textbf{Recevied:} #1.}
+\def\rev#1{\textbf{Revised:} #1}
+\def\acc#1{\textbf{Accepted:} #1}
+
+\newcommand{\equalcontrib}[1]{\@authfootnote{#1}{These authors contributed equally to this work.}}
+
+\newcommand{\firstpagefootnote}{\footrulechange\textwidth%
+\blfootnote{\hsize\textwidth%doi: 10.1534/genetics.XXX.XXXXXX \\%
+\ifx\@dates\undefined\vskip0pt\else\@dates\vskip0pt\fi%
+Published by Oxford University Press on behalf of Genetics Society of America \the\year. This work is written by US Government employees and is in the public
+domain in the US.
+}}
+
+\newenvironment{tableminipage}[1]{\begin{minipage}{#1}\renewcommand\footnoterule{ \kern -1ex}%
+\setlength{\myFootnoteLabel}{0.5em}%
+}{\end{minipage}}
+
+\def\firstpagebreak{\break\newpage\noindent}
+
+% Package to enable absolute positioning of figures
+\RequirePackage[absolute,overlay]{textpos}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+\textblockorigin{0mm}{0mm} % start everything near the top-left corner
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/acb/01transcription.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/acb/01transcription.tex:
+This file is a LaTeX document, ASCII text, with very long lines (656) with a size of 5949 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/acb/01transcription.tex:
+\def\topicTranscription {
+\section{RNA Polymerase Transcription}
+% --------------------------------------------------------------------------------------------------------------------------------------------
+%                                                      Transcription & Regulation (General)
+% --------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{\underline{Transcription \& Regulation (General)}}
+% Set the width of each column
+ %
+\begin{longtable}{p{1in}p{4.8in}}
+\textbf{Transcription}(Fg1) & 
+    Polymerases transcribes DNA in 6 steps and in the presents of four building blocks, which need to be present: \textbf{RNA} Polymerase, NTP's, DNA, GTFs (inititators) and \textcolor{blue}{in \textbf{Pol II}Activators and Co-activators}. Moreover, RNA Polymerase transcriptioin can not transcribe the DNA without the GTFs. Therefore activity is regulated by the TF and co-activators~\citep{Wk4video3}.\\
+    
+\textbf{Subunits}~(Fig2).& 
+    RNA Polymerases have between \textbf{12 - 17 subunits} (Pol I: 14; Pol II: 12; Pol III: 17).\\
+
+\textbf{GFTs}~(Fig2). & 
+    GTF are responsable for stabilising the initiation and open complex are integral in RNA Plo I and III structure but recruited by co-activators in Pol II (TfI/II$_{\alpha,\beta}$). While GTF responsible  for the DNA binding are shared accross the three Polymerases, DNA opening and start site selection are specific to RNA Polymerases~\citep{Wk4video3}.\\
+\end{longtable}\\[2em]
+ % --------------------------------------------------- Regulation (General) ------------------------------------------------------------------
+\begin{longtable}{p{1in}p{4.8in}}
+\textbf{\textcolor{blue}{Regulation (General)}} &
+    - Regulation of Polymerase transcription is achived by
+    \begin{itemize}
+        \item Any catabolic signaling pathway (growth and stress- signaling)
+        \item Epigenetic control through DNA compaction in nucleosomes. 
+    \end{itemize}. 
+    - The human genome has non-coding genes that regulate transcription by splicing mechanisms.
+    - Diseases, that can occur because of failed regulation include: Cancer, diabetis,...~\citep{Wk4video3}
+    
+\end{longtable}
+% --------------------------------------------------------------------------------------------------------------------------------------------
+%                                                      Transcription & regulation Pol I/III
+% --------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsection{\underline{Recruitment \& Regulation (Pol I/III} }
+\begin{longtable}{p{1in}p{4.8in}}
+\textbf{Pol I}~(Fig3) & 
+    After TF signaling, the Upstream Binding Factor \textbf{(UBF)} bind to the core Promoter \textbf{(CP)} and Upstream Control Element\\ 
+
+\textbf{Pol III}~(Fig4) &  
+    RNA Polymerase III transcribes untranslated RNA (tRNA, 5S rRNA, U6 snRNA,...) and RNAs shorter than 350nt through two highly distinct features: \textbf{facilitated reinitiation}(binds repeatably to the same gene without disassembling steps) and \textbf{termination with Polu-U} (termination only requires a strech of Poly-T on the template strand). Theses properties allow Pol III to achieve a very high levels of RNA transcription. Recruitement of Pol III is only possible with the nucleosome -1 upstream the promoter region~\citep{Wk4video3}.\\
+%
+% --------------------------------------------Regulation (Pol I/III) -------------------------------------------------------------------------
+\textbf{\textcolor{blue}{Regulation (Pol I/III)}}( Fig4) &
+    Pol I and III are involved in ribosaomal RNA biogenesis (houskeeping in Pol III) and are therefore part of anabolic pathways. Any catabolic signaling pathway will therefore also regulate transcription. In Pol I transcription is affected especially by MAPK,PI3K, mTOR abd c-Jun in Pol III mTOR and Maf1(inhibitor) are the major growth factors and c-Myc and CK2 the main tumour suppressors~\citep{Wk4video3}.TBP (TATA binding TF) is a major interaction site in the  PIC for TF that inhibit TBP binding to DNA and TFII-B\citep[p.466]{pol2}
+\\
+\end{longtable}
+% --------------------------------------------------------------------------------------------------------------------------------------------
+%                                                      Transcription & regulation Pol II
+% --------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{\underline{Recruitment \& Regulation (Pol II)} }
+
+\begin{longtable}{p{1in}p{4.8in}}
+\textbf{Pre-initiation}(Fig5) & \\
+& The preinitiation complex (PIC) is composed of 
+\begin{itemize}
+    \item an upstream DNA (uDNA) part: TBP (TATA binding protein), TFII-A,B,F Bound to uDNA (Promoter sequence [TSS;250bp])
+    \item and a Downstream DNA (dDNA) Region:   TFII-H,D Bound to dDNA (promoter sequence [50bp;TSS])
+\end{itemize}\\
+& Transcription can only proceed when all Transcription factors TFII-B,E,F  are bound to RNA Pol II  and the full  promoter ssDNA template sequence of TSS[50;250]bp is been pulled into the Pol II cleft. For this, the preinitiation complex (PIC) needs to be assembled, since it is the main site for RNA Pol II regulation via TFs. Transcription starts when TBP receives a signal to initiate the assembly of the PIC by binding to the TATA sequence. Factors, which could inhibit binding of the TBP to the TATA box aoud be TAF11/13 and TAF1 or TAND. They would prevent TFII-A,B binding to TBP and inhibit therefore inhibit PIC assembly \citep[p.466]{pol2}.   \\
+\textbf{Pol II} & \\ 
+%
+% ----------------------------------------------- Regulation (Pol II) -------------------------------------------------------------------------
+\textbf{\textcolor{blue}{Regulation}} &
+%
+\\
+\end{longtable}
+
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/acb/headings2.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/acb/headings2.tex:
+This file is a ASCII text with a size of 36 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/acb/headings2.tex:
+\def\topicRegulation {
+
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/acb/headings3.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/acb/headings3.tex:
+This file is a ASCII text with a size of 26 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/acb/headings3.tex:
+\def\topicC {
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/acb/headings4.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/acb/headings4.tex:
+This file is a ASCII text with a size of 26 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/acb/headings4.tex:
+\def\topicD {
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/acb/headings5.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/acb/headings5.tex:
+This file is a ASCII text with a size of 26 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/acb/headings5.tex:
+\def\topicE {
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/acb/results.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/acb/results.tex:
+This file is a LaTeX document, ASCII text, with very long lines (307) with a size of 729 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/acb/results.tex:
+
+
+% Table 1. use \table1{\textwidth}{caption 
+% reference with \fullref{tab:table1}}
+\def\table1#1#2{
+\begin{tableminipage}{#1}
+\customlabel{tab:table1}{\textbf{Table 1}}~{#2}\\[1em]
+\begin{tabularx}{\textwidth}{@{}XXXX@{}}
+\hline
+{\bf Student} & {\bf Grade}\footnote{This is an example of a footnote in a table. Lowercase, superscript italic letters (a, b, c, etc.) are used by default. You can also use *, **, and *** to indicate conventional levels of statistical significance, explained below the table.} & {\bf Rank} & {\bf Notes} \\
+\hline
+John & 82\% & 1 & Performed very well.\\
+Bob & 65\% & 3 & Not up to his usual standard.\\
+Charlie & 73\% & 2 & A good attempt.\\
+\hline
+\end{tabularx}
+\end{tableminipage}
+}
+
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/acb/revisionQs.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/acb/revisionQs.tex:
+This file is a LaTeX document, ASCII text with a size of 1533 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/acb/revisionQs.tex:
+\def\revRanGTP {
+\textbf{The Nucleus and Nuclear Transport}\\[1em]
+Describe the \textbf{changes in the structure of importin-$\beta$} upon binding RanGTP and how this supports \textbf{directional nuclear transport}.\\
+\begin{itemize}
+    \item Outline the \textbf{major functions and structures of the cell nucleus} with respect to the \textbf{Nuclear Pore Complex}  
+    \item Outline the \textbf{principal processes} involving nucleic acid (DNA, RNA) that occur inside the nucleus (NPC transport).
+    \item give specific examples of \textbf{experiments, where gene expression is regulated.}
+\end{itemize}
+}
+
+\def\revHistones {
+\textbf{Genome \& Nuclear Architecture}
+\begin{itemize}
+    \item Chromatin organisation
+    \item Histones are post translationally \textbf{(PTMs)}modified. What type of modifications occur, and what are their functions? 
+    \item Chromatin remodeling ...
+    \item Order by major classes of \textbf{molecular chaperones})
+
+\end{itemize}
+}
+\def\revNucleosome {
+\textbf{Genome \& Nuclear Architecture}\\[1em]
+Describe the structure and composition of the nucleosome. Identify and explain the changes that occur to nucleosomes via the action of co-activators and how these changes stimulate transcription?
+}
+\def\revPolymerase {
+\textbf{Transcription / gene regulation}\\[1em]
+On its own, RNA Polymerase II cannot produce an RNA. Why not?
+\begin{itemize}
+    \item RNA Polymerases
+    \item give specific examples of \textbf{experiments, where Transcription is regulation.}
+
+\end{itemize}
+}
+
+\endinput
+
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/iba/abstract.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/iba/abstract.tex:
+This file is a ASCII text with a size of 47 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/iba/abstract.tex:
+\def\abstract {
+
+blablabla \lorem
+}
+\endinput
+
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/iba/definitions.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/iba/definitions.tex:
+This file is a LaTeX document, ASCII text with a size of 2765 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/iba/definitions.tex:
+% Tables . use \table1{\textwidth}{caption 
+% reference with \fullref{tab:table1}}
+\def\ANOVA#1#2{
+\begin{tableminipage}{#1}
+\customlabel{tab:table1}{\textbf{Table 1}}~{#2}\\[1em]
+\begin{tabularx}{\textwidth}{@{}lrrXXX@{}}
+\hline
+ & {\bf \centering \begin{minipage}[t]{3.5em}Sum of Sqares\end{minipage}} & {\bf df} & {\bf Mean Square} & {\bf F} & {\bf Sig.} \\
+\hline
+Between Groups & 37.609 & 3  & 12.536 & 45.385 & {\bf <.001}\\
+Within Groups & 18.783 & 68 & 276 &  & \\
+Total         & 56.392 & 71 &  &  & \\
+\hline
+\end{tabularx}
+\end{tableminipage}
+}
+
+\def\WALLIS#1#2{
+\begin{tableminipage}{#1}
+\customlabel{tab:table2}{\textbf{Table 2}}~{#2}\\[1em]
+\begin{tabularx}{\textwidth}{@{}XXrX@{}}
+\hline
+ {\bf \begin{minipage}{7.5em}Null Hypothesis\end{minipage}} & {\bf Test} & {\bf Sig.\footnote{The Significance level is .050}\footnote{Asymptotic significance is displayed}} & {\bf Decision}\\
+\hline
+ The distribution of the optical density at 595 nm is the same for INH, ETH, NCE and WT.& Independent-Samples Kruskal-Wallis Test & < .001 & Reject null hypothesis\\
+\hline
+\end{tabularx}
+\end{tableminipage}
+}
+
+
+% Figures . use \figure1{0.35}{caption}
+% reference with \fullref{fig:figure1}}
+\def\mycoliclayer#1#2{
+\customlabel{fig:figure1}
+\mbox{\includegraphics[scale = #1]{fig/iba/mycoliclayer.jpg}}\\[0.3em]
+\parbox[t]{0.48\textwidth}{\customlabel{fig:figure1}{\textbf{Figure 1.}} #2}\\[1em]
+}
+\def\synthesis#1#2{
+\customlabel{fig:figure2}
+\hfill\mbox{\includegraphics[scale = #1]{fig/iba/synthesis.jpg}}\\[0.3em]
+\parbox[t]{\textwidth}{\customlabel{fig:figure2}{\textbf{Figure 2.}} #2}\\[1em]
+}
+\def\histograms#1#2{
+\customlabel{fig:figure3}
+\mbox{\includegraphics[scale = #1]{fig/iba/histograms.png}}\\[0.3em]
+\parbox[t]{\textwidth}{\customlabel{fig:figure3}{\textbf{Figure 3.}} #2}\\[1em]
+}
+\def\boxplot#1#2{
+\customlabel{fig:figure4}
+\mbox{\includegraphics[scale = #1]{fig/iba/boxplot.jpg}}\\[0.3em]
+\parbox[t]{\textwidth}{\customlabel{fig:figure4}{\textbf{Figure 4.}} #2}\\[1em]
+}
+\def\comparison#1#2{
+\customlabel{fig:figure5}
+\mbox{\includegraphics[scale = #1]{fig/iba/comparison.jpg}}\\[0.3em]
+\parbox[t]{\textwidth}{\customlabel{fig:figure5}{\textbf{Figure 5.}} #2}\\[1em]
+}
+\def\UNTREATED#1#2{
+\customlabel{fig:figure6}
+\mbox{\includegraphics[scale = #1]{fig/iba/Untreated.jpg}}\\[0.3em]
+\parbox[t]{\textwidth}{\customlabel{fig:figure6}{\textbf{Figure 6.}} #2}\\[1em]
+}
+
+\def\INH#1#2{
+\customlabel{fig:figure7}
+\mbox{\includegraphics[scale = #1]{fig/iba/INH.jpg}}\\[0.3em]
+\parbox[t]{\textwidth}{\customlabel{fig:figure7}{\textbf{Figure 7.}} #2}\\[1em]
+}
+
+\def\NCE#1#2{
+\customlabel{fig:figure8}
+\mbox{\includegraphics[scale = #1]{fig/iba/X.jpg}}\\[0.3em]
+\parbox[t]{\textwidth}{\customlabel{fig:figure8}{\textbf{Figure 8.}} #2}\\[1em]
+}
+
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/iba/introduction.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/iba/introduction.tex:
+This file is a Unicode text, UTF-8 text, with very long lines (1273) with a size of 4167 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/iba/introduction.tex:
+\def\introduction {
+\lettrine[lines=2]{\color{color2}M}ycobacteria{}\textit{} 
+ have a characteristic highly impermeable cell wall composed of around 80 mycolic acids forming a first carbon layer, which is covalently linked to the inner peptidoglycan layer. The linker consists of an arabinogalactan polysaccharide middle layer of three arabinan chains attached to the linear galactan polymer at position 5 (\fullref{fig:figure1}). Mycolic acids are synthesized in an anabolic bacterial fatty acid pathway (\fullref{fig:figure2}), that elongates fatty acyl chains in an enzyme-catalyzed post-translational process. It involves the production of short-chain primers by the FAS I (Rv2524c) protein which are attached to the mycolic acid-specific carrier protein AcpM by the ß-ketoacyl ACP synthase III and FanH enzymes. These primers are then transported to the repetitive FAS II enzyme system which then extends the carbons. Extension is completed by the 2-trans enoyl ACP reductase InhA (Rv1484) \cite{Clifton2007}. This rigid structure and the high amount of long fatty acid chains in the cell wall cause a low cell membrane permeability. High resistance to antibiotic molecules is therefore a consequence of a rigid cell wall, an active efflux of antibiotic molecules and chemical modification i.e., hydrolysis in ß-lactams \cite{Jarlier1994}.\\[1em]
+
+{\footnotesize\mycoliclayer{0.9}{\small Cell wall structure of \textit{M. smegmatis} mc$^2$155. Long chain mycolic acids (red), 3 chains of arabinofuran (blue), a galactofuran layer (purple)  covalently linked to the peptidoglycan layer (green). Figure was adopted from \cite{Clifton2007} }}\\[1em]
+\twocolend
+    {\footnotesize \synthesis{0.8}{\small Bacterial fatty acid synthesis type II (FAS II). Isoniazid and Ethionamide target the InhA(Rv1484) and KatA(Rv2245) enzymes (red). Inhibiting the completion of the Fas II cycle. Figure was adopted from \cite{Clifton2007} }}
+\twocolstart
+
+\textit{M. smegmatis}  mutant mc$^2$155,  is a non-pathogenic, fast growing model for the study of mycobacteria. It is a saprophytic mycobacterium (does not enter the epithelial cells or remains inside phagocytes) \cite{Reyrat2001}. It therefore does not present the pathogenicity of \textit{M. tuberculosis}. However, it is a good model to study antibacterial agents targeting the cell wall of \textit{M. tuberculosis}, since both have the same architecture and physiology. This property also makes it a good model for genetic modification and cellular studies in mycobacteria in general \cite{Sparks2023}. Ultimately, it is considered evolutionary too distant from the TB causing  \textit{M. tuberculosis} and is generally not a good model for virulence or pathogenicity studies on TB \cite{Reyrat2001}. 
+Isoniazid (INH) and the related Ethionamide (ETH) target the same enzymes in the FAS II system of the mycolic acid synthesis: InhA (\fullref{fig:figure2}Rv1484) and ß-ketoacyl-ACP synthase KasA (\fullref{fig:figure2}Rv2245/46). Both are prodrugs and require intra-cellular activation by katG (INH) or ethA (ETH) in the presence of NAD. Activation of ETH can additionally be regulated by ethR.
+Both exhibit a narrow spectrum bactericidal effect on fast-growing mycobacteria by disrupting the type II mycolic acid synthesis in the cell wall synthesis \cite{Banerjee1994,York2008}.
+\textit{M.tuberculosis} and \textit{M. smegmatis} are acid-fast bacilli (AFB). Their thick, hydrophobic cell wall confers the ability to resist decolorisation by acids during staining. A common technique is the carbol-fuchsin method also referred as the Ziehl-Neelsen staining (ZN-staining), to form a mycolate-fuchsin complex in the cell wall resulting in AFB appearing red under the microscope, while the rest of the stain loses the fuchsin component due to the missing protective mycolic acid cell wall and can be counter stained for an effective visual contrast \cite{Bayot2022}. We investigate the effect of INH, ETH and a novel chemical entity (NCE) on the the growth and morphology of \textit{M.smegmatis} by verifying acid fastness using a cold ZN-staining method followed by bright-field microscopic examination.
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/iba/materials.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/iba/materials.tex:
+This file is a Unicode text, UTF-8 text, with very long lines (747) with a size of 3888 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/iba/materials.tex:
+\def\materials {
+\subsection{Cryo-preservstion of Mycobacterial cultures}
+A culture of actively replicating \textit{M. Smegmatis} was preserved in 25\% (v/v) glycerol and cryo-preserved in the freezer at -80°C, for about 6-12 months. 
+\subsection{Starter culture }
+1\% (v/v) of the cryo-preserved M.Smegmatis mc2155 culture was added to the Middlebrook liquid medium (7H9) and enriched with Albumine Dextrose Catalyst (ADC). It was then grown until an Optical Density (OD) reading of OD600 = 1. One (1) mL was then transferred to a fresh 7H9 Middlebrook broth containing the ADC supplement and the process was repeated at least three times. Followed by inoculating a 1\% (v/v) of the culture into 100 mL 7H9 Middlebrook broth containing 10\% (v/v) of the ADC (Difco) supplement and 0.05\% (v/v) Tween 80 (Sigma). The starting culture was then left to incubate in a 50 mL falcon tube at 37°C and constantly shaken at 180 rpm in a shaker to avoid floating biofilm formation.
+
+\subsection{Treatment of the Culture with INH, ETH and NCE}
+Optical density (OD) readings were taken using an Eppendorf Bio Photometer at 600 nm. At an OD600 of 0.4, the starting culture was allocated into 4 separate falcon tubes and treated with 250 µg/mL INH, 500µg/mL ETH and 500µg/mL NCE and then returned to the shaker for 6 hours.
+
+\subsection{Determination of Growth}
+A four (4) – fold dilution of the culture was performed prior to the readings. After zeroing against the liquid broth media only, individual readings for the three treated samples with INH, ETH and NCE and the untreated wildtype (WT) were taken for $\lambda$ = 595 nm. Thereby loading a 1 mL sample from every culture into the Eppendorf Bio Photometer using 12.5 mm$^2$ cuvettes and paying attention to mix the culture thoroughly using a pipette to avoid false readings due to the bacillus tending to sediment towards the bottom of the culture.
+
+\subsection{Preparation for ZN-staining}
+Four (4) slides were labeled U (untreated), X (unknown), H (isoniazid) and E (ethionamide) and 50 µL of the respective bacterial culture was pipetted onto the slides to create a thin smear and allowed to fully air dry. Each smear was then inserted into the Genlab oven and heat-fixed at 80°C for 20 minutes.
+
+\subsection{Ziel-Neelsen cold Staining from Culture}
+The heat-fixed smears were then individually stained by covering every smear in carbol-fuchsin for 5 minutes using the TB-COLOUR Cold Staining Kit from the Bund Deutscher Hebammen Laboratory (BDH). Tap water was then used to carefully rinse the slides  for about 5 seconds until all excess dye is removed. The slides were then treated with a few drops of TB-COLOUR de-staining solution to completely remove all excess carbol-fuchsin dye. This step is then followed by another careful washing step using tap water. The stained slides are then counterstained with malachite green and leftto stain for aout 5 seconds before carefully rinsing again with tap water for another 5 seconds. The washed counterstained slides are then left to fully air dry.
+
+\subsection{Mounting slides for microscopic observations}
+To prevent contamination with the immersion oil of the 100x lens, one drop of Eukitt medium containing 45\% acrylic resin and 55\% xylenes is placed in the middle of the slide. The specimen is then covered with a cover slip using a needle to avoid bubble formation. The prepared slides are then left to solidify for 5 minutes.
+
+\subsection{Examination under the microscope}
+The slides are the individually placed under the bright-field microscope and observations made for x20, x40 and x100 (immersion oil) lenses, x10 ocular lens and the magnification caused by the refractive index of glass and Eukitt medium (~ 1.510) resulting in a maximal magnification of ~ x1000. All slides were observed using the immersion oil lens (x100) and recorded by a photograph. 
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/iba/results.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/iba/results.tex:
+This file is a LaTeX document, Unicode text, UTF-8 text, with very long lines (649) with a size of 5859 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/iba/results.tex:
+\def\results {
+\subsection{Data Analysis}
+All four treatment groups follow a normal distribution (\fullref{fig:figure3}) Homoscedasticity criteria (variance is approximately equal) is only fulfilled between INH, NCE and ETH. There is no overlap between the untreated sample and the antibiotic treatment group, suggesting different population means (\fullref{fig:figure4}). 
+\noindent   
+\twocolend
+\noindent
+\begin{minipage}{\textwidth}
+   {\footnotesize \histograms{1.2}{Histogram showing normal distribution for a) Untreated sample (UT), b) Isoniazid (INH), c) Unknown sample (NCE) and d) Ethionamide (ETH). Analysis was performed in SPSS.}}
+\end{minipage}\\[1em]
+\twocolstart
+\twocolend
+\noindent   
+\begin{minipage}{\textwidth}
+    {\footnotesize \boxplot{2}{Boxplot of antibiotic agents, showing difference in variance between the means of samples treated with antibiotics and untreated samples. The dotted line shows the average OD595 between the antibiotics. Analysis was performed in SPSS.}}
+\end{minipage}\\[1em]
+\twocolstart
+Our null hypothesis (H0) is therefore µ1 = µ2 = µ3 and our \textbf{alternative hypothesis} \textbf{(H1)} can be stated as:$$
+\begin{minipage}{20em}  \textit{One or more of the four treatments leads to unequal mean OD600 values and therefore influences the growth of M. Smegmatis.}\end{minipage}
+$$\\[1em]
+\fullref{tab:table1} shows, that there is a high variance between the untreated and the treated groups and low variance within the treated groups, which confirms our observation of the non-homoscedasticity. Our P value is given with P $<$ 0.001. With P $<< \alpha$ (0.05). We therefore have a significant result and reject H0. We accept H1.\\[1em]
+\noindent   
+\begin{minipage}{22em}
+    \footnotesize \ANOVA{\textwidth}{Analysis of Variance (ANOVA) for optical density at 595 nm values. Analysis for INH, ETH, NCE and WT showing high variance between treated and untreated culture and low variance within the treated cultures. Analysis was performed in SPSS.}
+\end{minipage}\\[1em]
+
+To investigate further which pairs of means contributed to the significant F-value, we perform the Kruskal-Wallis test to identify overall significance and examine each pair for significance in the post hoc study \fullref{tab:table2}. Looking at Table 2, the Null hypothesis is rejected and the pairwise comparison \fullref{fig:figure5} shows, that all antibiotic agents, including the unknown drug had a significant result (p << 0.001) when compared to the untreated sample. Figure 5 also shows, that all antibiotics when compared between each other had an insignificant result. Their mean OD595 value therefore has the same population mean.\\[1em]
+\noindent   
+\begin{minipage}{22em}
+    \footnotesize \WALLIS{\textwidth}{Hypothesis Test Summary. Kruskal-Wallis test for nonparametric data, testing H0 with a significance of 0.050. Analysis was performed in SPSS.}
+\end{minipage}\\[1em]
+
+\noindent   
+\begin{minipage}{22em}
+    \footnotesize \comparison{1.60}{Pairwise comparison of antibiotic treatment. Graph showing pairwise test of null Hypothesis (H0) at a significance level of .050. Each node shows the sample avarage rank of antibiotic treatment. Analysis was performed in SPSS.}
+\end{minipage}\\[1em]
+\\[4em]
+\subsection{Growth}
+Our statistical analysis showed that all treated cultures reduced the untreated OD of 3.052 by an average of 63.3\%. INH reduced the OD by 64.4\% (1.088), ETH reduced the OD by 62.4\% (1.147) and the NCE reduced the OD by 63.3\% (1.121). The reduction in OD compared to the untreated culture is significant for all three drugs. They also show a similar efficacy, since the differences in OD reduction between the individual drugs are not significant (\fullref{fig:figure5}). 
+
+\subsection{Morphology}
+{\small \textit{\textbf{Wild type culture (U).}}}
+The untreated wildtype culture (U) containing \textit{M.smegmatis} appeared as a clustered group of clumped bacilli under the microscope and has retained the pink carbol-fuchsin stain \fullref{fig:figure6}. Compared to the treated groups (Figs ttreated), the wildtype culture also appears to have more bacilli per area.\\[1em]
+\noindent   
+\begin{minipage}{22em}
+   {\footnotesize \UNTREATED{0.135}{Wild type containing \textit{M.smegmatis} under bright-field microscope.The Bacilli appear in red on a green media after the ZN-staining procedure. Observed at 1000x using 100x immersion oil lens and a 10x occular. The figure was supplied by Dr Sanjib Bhakta.}}
+\end{minipage}\\[1em]
+
+{\small \textit{\textbf{Isoniazid (I)/ Ethionamide (E) culture.}}}
+We analysed the INH and ETH (I, E) \textit{M. smegmatis} culture and observed under the microscope a non-clustered aggregation of single bacilli cells \fullref{fig:figure7}. It appeared to have less bacilli per area than the untreated culture (U) and a similar morphology and size compared to the unknown drug culture (X). It has obtained a green/blue color.
+\noindent   
+\begin{minipage}{22em}
+   {\footnotesize \INH{0.135}{ZN-staining of the Isoniazid/Ethionamide treated culture of \textit{M. smegmatis} showed the rod-shaped bacilli adopting a green/blue color. Observed at 1000x using 100x immersion oil lens and a 10x occular. The figure was supplied by Dr Sanjib Bhakta.}}
+\end{minipage}\\[1em]
+
+{\small \textit{\textbf{Unknown drug culture (X).}}}
+The bacilli appear aggregated, un-clustered with a green stain and similar morphology to the INH/ETH-stained culture (I,E). Compared to the wild type (U), it appears to have less bacilli per area.
+\noindent   
+\begin{minipage}{22em}
+   {\footnotesize \NCE{0.135}{ZN-staining of the NCE treated culture of \textit{M. smegmatis} showed the rod-shaped bacilli adopting a green/blue color. Observed at 1000x using 100x immersion oil lens and a 10x occular. The figure was supplied by Dr Sanjib Bhakta.}}
+\end{minipage}\\[1em]
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/iba/riskassesment.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/iba/riskassesment.tex:
+This file is a ASCII text, with very long lines (822) with a size of 1116 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/iba/riskassesment.tex:
+\def\riskassesment {
+Although \textit{M.smegmatis}. is a saprophytic microorganism, safety measures are nonetheless required since some opportunistic infections in human have been reported. It must therefore be handled according to Biosafety Level 1. This includes no drinking, eating, or smoking in the laboratory. Wearing a lab coat, nitrile gloves and eye/face protection all the time. All belongings must be placed in the metal cages. When leaving the laboratory, hands should be washed thoroughly. These measures are intended to avoid contamination and potential hazards and must be acknowledged with a signature prior to commencing the work. When working with the immersion oil, paying attention not to contaminate the other lenses and clean the 100x lens only with the Lense Cleansing Tissue \cite{Birkbeck2011,Birkbeck2012,Singh2009}. 
+All liquid cultures and laboratory consumables, agar plates must be disinfected with a 5\% (v/v) Trionic and disposed by autoclave using the make safe cycle. Sharp consumables must be disposed via the clinical waste stream for incineration \cite{BirkbeckHS}.
+
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/slrp/bioinformatics.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/slrp/bioinformatics.tex:
+This file is a LaTeX document, Unicode text, UTF-8 text, with very long lines (646) with a size of 5689 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/slrp/bioinformatics.tex:
+\def\Bioinformatics {
+    \newentry{03/10/2022}{Bioinformatical Investigation of UvrB L482D Mutant Protein }{PDB: \textbf{3V4R},2NMV,2D7D}{}{}
+    %\rhead{DNA-dependent ATPase activity of UvrB Mutant L482D}
+    \fontfamily{cmss}\selectfont
+    \myheader{Bioinformatics}
+    \begin{multicols}{2}
+    
+    \lettrine[lines=2]{\color{color2}T}{}his \textit{Genetics} journal template is provided to help you write your work in the correct journal format. Instructions for use are provided below. Note that by default line numbers are present to aid reviewers and editors in reading and commenting on your manuscript. To remove line numbers, remove the \texttt{lineno} option from the  declaration.
+    
+    \subsection{Introduction}
+       %\introduction
+        
+    \section{Materials and methods}
+    \label{sec:materials:methods}
+    
+    
+    \section{Results}
+    The results and discussion should not be repetitive and give a factual presentation of the data with all tables and figures referenced. The discussion should not summarize the results but provide an interpretation of the results, and should clearly delineate between the findings of the particular study and the possible impact of those findings in a larger context. Authors are encouraged to cite recent work relevant to their interpretations.\\[1em]
+    
+    \figure1{0.34}{Caption 1}{Text fig 1}\\[1em]
+    
+    
+    Present and discuss results only once, not in both the Results and Discussion sections. It is acceptable to combine results and discussion in order  to be succinct.\\[4em]
+    \twocolend
+    \vspace*{1em}
+    \table1{\textwidth}{Student Grades per rank}
+    \twocolstart
+    
+    \section{Discussion}
+    \subsection{Numbers} In the text, write out \fullref{tab:table1} numbers nine or less except as part of a date, a fraction or decimal, a percentage, or a unit of measurement. Use Arabic numbers for those larger than nine, except as the first word of a sentence; however, try to avoid starting a sentence with such a number.
+    
+    \subsection{Units} Use abbreviations of the customary units of measurement only when they are preceded by a number: "3 min" but "several minutes". Write "percent" as one word, except when used with a number: "several percent" but "75\%." To indicate temperature in centigrade, use ° (for example, 37°); include a letter after the degree symbol only when some other scale is intended (for example, 45°K).
+    
+    \subsection{Nomenclature  and italicization} Italicize \fullref{fig:figure1} names of organisms even when  when the species is not indicated.  Italicize the first three letters of the names of restriction enzyme cleavage sites, as in HindIII. Write the names of strains in roman except when incorporating specific genotypic designations. Italicize genotype names and symbols, including all components of alleles, but not when the name of a gene is the same as the name of an enzyme. Do not use "+" to indicate wild type. Carefully distinguish between genotype (italicized) and phenotype (not italicized) in both the writing and the symbolism.
+    
+    \subsection{Cross references}
+    Use the  command with the command to insert cross-references to section headings. For example, a has been defined in the section \nameref{sec:materials:methods}
+    
+    \section{Conclusion}
+    Add citations using, for example \citep{neher2013genealogies} or for multiple citations, \citealt{rodelsperger2014characterization,neher2013genealogies,Falush16}  \citep{neher2013genealogies}
+    
+    \section{Sample equation}
+    Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+    \begin{equation}
+    S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+          = \frac{1}{n}\sum_{i}^{n} X_i
+    \label{eq:refname1}
+    \end{equation}
+    denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+    
+    \section{Data availability}
+    The inclusion of a Data Availability Statement is a requirement for articles published in GENETICS. Data Availability Statements provide a standardized format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analyzed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required unique identifier.
+    
+    For example: Strains and plasmids are available upon request. File S1 contains detailed descriptions of all supplemental files. File S2 contains SNP ID numbers and locations. File S3 contains genotypes for each individual. Sequence data are available at GenBank and the accession numbers are listed in File S3. Gene expression data are available at \diteGEO with the accession number: GDS1234. Code used to generate the simulated data can be found at \url{https://figshare.org/record/123456}.
+    
+    \section{Acknowledgments}
+    Acknowledgments should be included here.
+    
+    \section{Conflicts of interest}
+    Please either state that you have no conflicts of interest, or \citep[pp.2-3]{Tewabe2021}list relevant information here.  This would cover any situations that might raise any questions of bias in your work and in your article’s conclusions, implications, or opinions. Please see \url{https://academic.oup.com/journals/pages/authors/authors_faqs/conflicts_of_interest}.
+    
+    \bibliography{bib/iba}
+    
+    \end{multicols}
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/slrp/concentrations.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/slrp/concentrations.tex:
+This file is a LaTeX document, Unicode text, UTF-8 text, with very long lines (646) with a size of 5612 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/slrp/concentrations.tex:
+\def\Concentrations {
+    \newentry{17/10/2022, 31/10/2022}{Determination of Protein Concentrations}{Keywords1}{Keywords2}{kywords3}
+    \fontfamily{cmss}\selectfont
+    \myheader{Concentrations}
+    
+    \begin{multicols}{2}
+    \lettrine[lines=2]{\color{color2}T}{}his \textit{Genetics} journal template is provided to help you write your work in the correct journal format. Instructions for use are provided below. Note that by default line numbers are present to aid reviewers and editors in reading and commenting on your manuscript. To remove line numbers, remove the \texttt{lineno} option from the  declaration.
+    
+    \section{Introduction}
+       %\introduction
+        
+    \section{Materials and methods}
+    \label{sec:materials:methods}
+    
+    
+    \section{Results}
+    The results and discussion should not be repetitive and give a factual presentation of the data with all tables and figures referenced. The discussion should not summarize the results but provide an interpretation of the results, and should clearly delineate between the findings of the particular study and the possible impact of those findings in a larger context. Authors are encouraged to cite recent work relevant to their interpretations.\\[1em]
+    
+    \figure1{0.34}{Caption 1}{Text fig1}\\[1em]
+    
+    
+    Present and discuss results only once, not in both the Results and Discussion sections. It is acceptable to combine results and discussion in order  to be succinct.\\[4em]
+    \twocolend
+    \vspace*{1em}
+    \table1{\textwidth}{Student Grades per rank}
+    \twocolstart
+    
+    \section{Discussion}
+    \subsection{Numbers} In the text, write out \fullref{tab:table1} numbers nine or less except as part of a date, a fraction or decimal, a percentage, or a unit of measurement. Use Arabic numbers for those larger than nine, except as the first word of a sentence; however, try to avoid starting a sentence with such a number.
+    
+    \subsection{Units} Use abbreviations of the customary units of measurement only when they are preceded by a number: "3 min" but "several minutes". Write "percent" as one word, except when used with a number: "several percent" but "75\%." To indicate temperature in centigrade, use ° (for example, 37°); include a letter after the degree symbol only when some other scale is intended (for example, 45°K).
+    
+    \subsection{Nomenclature  and italicization} Italicize \fullref{fig:figure1} names of organisms even when  when the species is not indicated.  Italicize the first three letters of the names of restriction enzyme cleavage sites, as in HindIII. Write the names of strains in roman except when incorporating specific genotypic designations. Italicize genotype names and symbols, including all components of alleles, but not when the name of a gene is the same as the name of an enzyme. Do not use "+" to indicate wild type. Carefully distinguish between genotype (italicized) and phenotype (not italicized) in both the writing and the symbolism.
+    
+    \subsection{Cross references}
+    Use the  command with the command to insert cross-references to section headings. For example, a has been defined in the section \nameref{sec:materials:methods}
+    
+    \section{Conclusion}
+    Add citations using, for example \citep{neher2013genealogies} or for multiple citations, \citealt{rodelsperger2014characterization,neher2013genealogies,Falush16}  \citep{neher2013genealogies}
+    
+    \section{Sample equation}
+    Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+    \begin{equation}
+    S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+          = \frac{1}{n}\sum_{i}^{n} X_i
+    \label{eq:refname1}
+    \end{equation}
+    denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+    
+    \section{Data availability}
+    The inclusion of a Data Availability Statement is a requirement for articles published in GENETICS. Data Availability Statements provide a standardized format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analyzed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required unique identifier.
+    
+    For example: Strains and plasmids are available upon request. File S1 contains detailed descriptions of all supplemental files. File S2 contains SNP ID numbers and locations. File S3 contains genotypes for each individual. Sequence data are available at GenBank and the accession numbers are listed in File S3. Gene expression data are available at \diteGEO with the accession number: GDS1234. Code used to generate the simulated data can be found at \url{https://figshare.org/record/123456}.
+    
+    \section{Acknowledgments}
+    Acknowledgments should be included here.
+    
+    \section{Conflicts of interest}
+    Please either state that you have no conflicts of interest, or \citep[pp.2-3]{Tewabe2021}list relevant information here.  This would cover any situations that might raise any questions of bias in your work and in your article’s conclusions, implications, or opinions. Please see \url{https://academic.oup.com/journals/pages/authors/authors_faqs/conflicts_of_interest}.
+    
+    \bibliography{bib/iba}
+    
+    \end{multicols}
+
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/slrp/enzymeassay.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/slrp/enzymeassay.tex:
+This file is a LaTeX document, Unicode text, UTF-8 text, with very long lines (646) with a size of 5638 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/slrp/enzymeassay.tex:
+\def\EnzymeAssay {
+    \newentry{21/11/2022}{ATPase Enzyme Assay \textsc{(DNA-dependent ATPase activity)}}{Keywords1}{Keywords2}{kywords3}
+    \myheader{ATPase Enzyme Assay}
+    \fontfamily{cmss}\selectfont
+
+    \begin{multicols}{2}
+    \lettrine[lines=2]{\color{color2}T}{}his \textit{Genetics} journal template is provided to help you write your work in the correct journal format. Instructions for use are provided below. Note that by default line numbers are present to aid reviewers and editors in reading and commenting on your manuscript. To remove line numbers, remove the \texttt{lineno} option from the  declaration.
+    
+    \section{Introduction}
+       %\introduction
+        
+    \section{Materials and methods}
+    \label{sec:materials:methods}
+    
+    
+    \section{Results}
+    The results and discussion should not be repetitive and give a factual presentation of the data with all tables and figures referenced. The discussion should not summarize the results but provide an interpretation of the results, and should clearly delineate between the findings of the particular study and the possible impact of those findings in a larger context. Authors are encouraged to cite recent work relevant to their interpretations.\\[1em]
+    \twocolend
+    \figure1{0.35}{Caption 1}{Text figure1}\\[1em]
+    \twocolstart
+    Present and discuss results only once, not in both the Results and Discussion sections. It is acceptable to combine results and discussion in order  to be succinct.\\[4em]
+    \twocolend
+    \vspace*{1em}
+    \table1{\textwidth}{Student Grades per rank}
+    \twocolstart
+    
+    \section{Discussion}
+    \subsection{Numbers} In the text, write out \fullref{tab:table1} numbers nine or less except as part of a date, a fraction or decimal, a percentage, or a unit of measurement. Use Arabic numbers for those larger than nine, except as the first word of a sentence; however, try to avoid starting a sentence with such a number.
+    
+    \subsection{Units} Use abbreviations of the customary units of measurement only when they are preceded by a number: "3 min" but "several minutes". Write "percent" as one word, except when used with a number: "several percent" but "75\%." To indicate temperature in centigrade, use ° (for example, 37°); include a letter after the degree symbol only when some other scale is intended (for example, 45°K).
+    
+    \subsection{Nomenclature  and italicization} Italicize \fullref{fig:figure1} names of organisms even when  when the species is not indicated.  Italicize the first three letters of the names of restriction enzyme cleavage sites, as in HindIII. Write the names of strains in roman except when incorporating specific genotypic designations. Italicize genotype names and symbols, including all components of alleles, but not when the name of a gene is the same as the name of an enzyme. Do not use "+" to indicate wild type. Carefully distinguish between genotype (italicized) and phenotype (not italicized) in both the writing and the symbolism.
+    
+    \subsection{Cross references}
+    Use the  command with the command to insert cross-references to section headings. For example, a has been defined in the section \nameref{sec:materials:methods}
+    
+    \section{Conclusion}
+    Add citations using, for example \citep{neher2013genealogies} or for multiple citations, \citealt{rodelsperger2014characterization,neher2013genealogies,Falush16}  \citep{neher2013genealogies}
+    
+    \section{Sample equation}
+    Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+    \begin{equation}
+    S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+          = \frac{1}{n}\sum_{i}^{n} X_i
+    \label{eq:refname1}
+    \end{equation}
+    denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+    
+    \section{Data availability}
+    The inclusion of a Data Availability Statement is a requirement for articles published in GENETICS. Data Availability Statements provide a standardized format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analyzed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required unique identifier.
+    
+    For example: Strains and plasmids are available upon request. File S1 contains detailed descriptions of all supplemental files. File S2 contains SNP ID numbers and locations. File S3 contains genotypes for each individual. Sequence data are available at GenBank and the accession numbers are listed in File S3. Gene expression data are available at \diteGEO with the accession number: GDS1234. Code used to generate the simulated data can be found at \url{https://figshare.org/record/123456}.
+    
+    \section{Acknowledgments}
+    Acknowledgments should be included here.
+    
+    \section{Conflicts of interest}
+    Please either state that you have no conflicts of interest, or \citep[pp.2-3]{Tewabe2021}list relevant information here.  This would cover any situations that might raise any questions of bias in your work and in your article’s conclusions, implications, or opinions. Please see \url{https://academic.oup.com/journals/pages/authors/authors_faqs/conflicts_of_interest}.
+    
+    \bibliography{bib/iba}
+    
+    \end{multicols}
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/slrp/results.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/slrp/results.tex:
+This file is a LaTeX document, ASCII text, with very long lines (307) with a size of 1320 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/slrp/results.tex:
+% Table 1. use \table1{\textwidth}{caption 
+% reference with \fullref{tab:table1}}
+\def\table1#1#2{
+\begin{tableminipage}{#1}
+\customlabel{tab:table1}{\textbf{Table 1}}~{#2}\\[1em]
+\begin{tabularx}{\textwidth}{@{}XXXX@{}}
+\hline
+{\bf Student} & {\bf Grade}\footnote{This is an example of a footnote in a table. Lowercase, superscript italic letters (a, b, c, etc.) are used by default. You can also use *, **, and *** to indicate conventional levels of statistical significance, explained below the table.} & {\bf Rank} & {\bf Notes} \\
+\hline
+John & 82\% & 1 & Performed very well.\\
+Bob & 65\% & 3 & Not up to his usual standard.\\
+Charlie & 73\% & 2 & A good attempt.\\
+\hline
+\end{tabularx}
+\end{tableminipage}
+}
+
+% Figure 1. use \figure1{0.35}{caption}
+% reference with \fullref{fig:figure1}}
+\def\figure1#1#2#3{
+\begin{minipage}{\textwidth}
+    \customlabel{fig:figure1}{\textbf{Figure 1}} #2\\[1em]
+    \twocolstart
+    \fbox{\includegraphics[scale=#1]{templates/example-figure.png}}
+    \fbox{\includegraphics[scale=#1]{templates/example-figure.png}}
+    \twocolend
+    {\small #3}
+\end{minipage}
+}
+%\def\figure1#1#2{
+%\customlabel{fig:figure1}
+%\framebox{\includegraphics[scale = #1]{templates/example-figure.png}}\\[1em]
+%\parbox[t]{0.5\textwidth}{\customlabel{fig:figure1}{\textbf{Figure 1}} #2}
+%}
+
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/slrp/thermoflour.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/slrp/thermoflour.tex:
+This file is a LaTeX document, Unicode text, UTF-8 text, with very long lines (646) with a size of 5577 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/slrp/thermoflour.tex:
+\def\ThermoflorA {
+    \newentry{14/11/2022}{Thermofluor Protein Assay I}{Keywords1}{Keywords2}{kywords3}
+    \fontfamily{cmss}\selectfont
+    \myheader{Thermoflor}
+    \begin{multicols}{2}
+    \lettrine[lines=2]{\color{color2}T}{}his \textit{Genetics} journal template is provided to help you write your work in the correct journal format. Instructions for use are provided below. Note that by default line numbers are present to aid reviewers and editors in reading and commenting on your manuscript. To remove line numbers, remove the \texttt{lineno} option from the  declaration.
+    
+    \section{Introduction}
+       %\introduction
+        
+    \section{Materials and methods}
+    \label{sec:materials:methods}
+    
+    
+    \section{Results}
+    The results and discussion should not be repetitive and give a factual presentation of the data with all tables and figures referenced. The discussion should not summarize the results but provide an interpretation of the results, and should clearly delineate between the findings of the particular study and the possible impact of those findings in a larger context. Authors are encouraged to cite recent work relevant to their interpretations.\\[1em]
+    
+    \figure1{0.34}{Caption 1}{text fig 1 }\\[1em]
+    
+    
+    Present and discuss results only once, not in both the Results and Discussion sections. It is acceptable to combine results and discussion in order  to be succinct.\\[4em]
+    \twocolend
+    \vspace*{1em}
+    \table1{\textwidth}{Student Grades per rank}
+    \twocolstart
+    
+    \section{Discussion}
+    \subsection{Numbers} In the text, write out \fullref{tab:table1} numbers nine or less except as part of a date, a fraction or decimal, a percentage, or a unit of measurement. Use Arabic numbers for those larger than nine, except as the first word of a sentence; however, try to avoid starting a sentence with such a number.
+    
+    \subsection{Units} Use abbreviations of the customary units of measurement only when they are preceded by a number: "3 min" but "several minutes". Write "percent" as one word, except when used with a number: "several percent" but "75\%." To indicate temperature in centigrade, use ° (for example, 37°); include a letter after the degree symbol only when some other scale is intended (for example, 45°K).
+    
+    \subsection{Nomenclature  and italicization} Italicize \fullref{fig:figure1} names of organisms even when  when the species is not indicated.  Italicize the first three letters of the names of restriction enzyme cleavage sites, as in HindIII. Write the names of strains in roman except when incorporating specific genotypic designations. Italicize genotype names and symbols, including all components of alleles, but not when the name of a gene is the same as the name of an enzyme. Do not use "+" to indicate wild type. Carefully distinguish between genotype (italicized) and phenotype (not italicized) in both the writing and the symbolism.
+    
+    \subsection{Cross references}
+    Use the  command with the command to insert cross-references to section headings. For example, a has been defined in the section \nameref{sec:materials:methods}
+    
+    \section{Conclusion}
+    Add citations using, for example \citep{neher2013genealogies} or for multiple citations, \citealt{rodelsperger2014characterization,neher2013genealogies,Falush16}  \citep{neher2013genealogies}
+    
+    \section{Sample equation}
+    Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+    \begin{equation}
+    S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+          = \frac{1}{n}\sum_{i}^{n} X_i
+    \label{eq:refname1}
+    \end{equation}
+    denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+    
+    \section{Data availability}
+    The inclusion of a Data Availability Statement is a requirement for articles published in GENETICS. Data Availability Statements provide a standardized format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analyzed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required unique identifier.
+    
+    For example: Strains and plasmids are available upon request. File S1 contains detailed descriptions of all supplemental files. File S2 contains SNP ID numbers and locations. File S3 contains genotypes for each individual. Sequence data are available at GenBank and the accession numbers are listed in File S3. Gene expression data are available at \diteGEO with the accession number: GDS1234. Code used to generate the simulated data can be found at \url{https://figshare.org/record/123456}.
+    
+    \section{Acknowledgments}
+    Acknowledgments should be included here.
+    
+    \section{Conflicts of interest}
+    Please either state that you have no conflicts of interest, or \citep[pp.2-3]{Tewabe2021}list relevant information here.  This would cover any situations that might raise any questions of bias in your work and in your article’s conclusions, implications, or opinions. Please see \url{https://academic.oup.com/journals/pages/authors/authors_faqs/conflicts_of_interest}.
+    
+    \bibliography{bib/iba}
+    
+    \end{multicols}
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/files/slrp/titlepage.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/files/slrp/titlepage.tex:
+This file is a LaTeX document, ASCII text with a size of 1361 bytes.
+---
+Full content for /home/vmuser/tmp/latex/files/slrp/titlepage.tex:
+\def\SLRPtitlepage {
+\begin{titlepage}
+\title{\vspace*{2cm}Template for preparing your submission to \textit{IBA} using Overleaf}
+\color{color3}
+\fontfamily{cmss}\selectfont
+	%\begin{flushright}
+    %\vspace*{-3.5 cm}
+    \begin{picture}(0,0)%
+        \put(105,-17.5){\includegraphics[width=2.0in]{files/slrp/logo/bbk-ismb.png}}%
+        \put(-260,-10){\includegraphics[width=3in]{files/slrp/logo/bbk_logo_slrp.png}}%
+    \end{picture}
+        %\textbf{
+    %\Large Department of Biological Sciences\\[6pt]
+    %\Large School of Science}
+    %\end{flushright}
+    \centering
+    \vspace*{7cm}\\
+    \textbf{
+	\textsc{\Large Laboratory Notebook}\\[0.5 cm]				% Course Code
+	\textsc{\large Submission B}\\[0.5 cm]}			% Course Name
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[1.5 cm]
+	
+	\begin{minipage}{0.47\textwidth}
+		\begin{flushleft} \large
+			\emph{First Day of Entry:}\\
+			03$^{th}$ of October 2022\\[4pt]
+   		\emph{Last Day of Entry:}\\
+			21$^{th}$ of November 2022
+			\end{flushleft}
+			\end{minipage}~
+			\begin{minipage}{0.47\textwidth}
+			\begin{flushright} \large
+			\emph{Student ID:}\\
+			13703089	\\[4pt]		
+   		\emph{Academic Year:}\\
+			2022 - 2023	\\[4pt]	% Your Student Number
+		\end{flushright}
+	\end{minipage}\\[2 cm]
+	
+	{\large \thedate}\\[2 cm]
+	\vfill
+\end{titlepage}
+}
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/install/cleanup-latex.sh ===
+#########################################
+Overview for /home/vmuser/tmp/latex/install/cleanup-latex.sh:
+This file is a Bourne-Again shell script, ASCII text executable with a size of 1027 bytes.
+---
+Full content for /home/vmuser/tmp/latex/install/cleanup-latex.sh:
+#!/bin/bash
+
+# Function to remove all LaTeX-related packages installed by the project-specific script
+CleanupLatexPackages() {
+    # Ensure the script is run with superuser privileges
+    if [[ "$EUID" -ne 0 ]]; then
+        echo "Please run as root or with sudo."
+        exit 1
+    fi
+
+    # List of LaTeX-related packages that were installed
+    packages=(
+        texlive-latex-extra
+        texlive-fonts-recommended
+        texlive-fonts-extra
+        texlive-science
+        texlive-bibtex-extra
+        texlive-formats-extra
+        texlive-publishers
+        texlive-xetex
+        texlive-pictures
+    )
+
+    # Remove all LaTeX-related packages
+    echo "Removing LaTeX packages..."
+    sudo apt remove --purge -y "${packages[@]}"
+
+    # Clean up any residual configuration files and dependencies
+    echo "Cleaning up residual files and dependencies..."
+    sudo apt autoremove -y
+    sudo apt clean
+
+    # Final message
+    echo "LaTeX packages cleanup complete!"
+}
+
+# Call the cleanup function
+CleanupLatexPackages
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/install/install-latex.sh ===
+#########################################
+Overview for /home/vmuser/tmp/latex/install/install-latex.sh:
+This file is a Bourne-Again shell script, ASCII text executable with a size of 858 bytes.
+---
+Full content for /home/vmuser/tmp/latex/install/install-latex.sh:
+#!/bin/bash
+
+# Function to install generic LaTeX environment
+InstallLaTeX() {
+    # Update package index
+    sudo apt update
+
+    # Install basic LaTeX environment with German and UK English support
+    sudo apt install -y texlive-latex-recommended texlive-lang-english texlive-lang-german
+
+    # Remove non-relevant LaTeX language packages
+    echo "Removing non-relevant LaTeX language packages..."
+    sudo apt-get purge -y texlive-lang-other
+
+    # Install optional GUI editors for LaTeX (optional)
+    sudo apt install -y gummi texworks
+
+    # Install PDF viewer and utilities for handling X display
+    sudo apt install -y xdg-utils evince
+
+    # Install LaTeX build tools for LaTeX Workshop in VSCode
+    sudo apt install -y latexmk biber
+
+    echo "Generic LaTeX installation complete."
+}
+
+# Call the generic LaTeX installation function
+InstallLaTeX
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/install/install-packages.sh ===
+#########################################
+Overview for /home/vmuser/tmp/latex/install/install-packages.sh:
+This file is a Bourne-Again shell script, ASCII text executable with a size of 1076 bytes.
+---
+Full content for /home/vmuser/tmp/latex/install/install-packages.sh:
+#!/bin/bash
+
+# Function to install project-specific LaTeX packages
+InstallProjectSpecificLaTeX() {
+    # Ensure the script is run with superuser privileges
+    if [[ "$EUID" -ne 0 ]]; then
+      echo "Please run as root or with sudo."
+      exit 1
+    fi
+
+    # Update package index
+    echo "Updating package index..."
+    sudo apt update -y
+
+    # Install additional project-specific LaTeX packages
+    echo "Installing specific LaTeX packages used in the project..."
+    
+    # Install LaTeX package groups that contain required individual packages
+    sudo apt install -y texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra \
+        texlive-science texlive-bibtex-extra texlive-formats-extra texlive-publishers texlive-xetex texlive-pictures
+
+
+    # Check if installation was successful
+    if [[ $? -eq 0 ]]; then
+        echo "Project-specific LaTeX packages installation complete."
+    else
+        echo "Error: Some packages failed to install."
+        exit 1
+    fi
+}
+
+# Call the project-specific LaTeX installation function
+InstallProjectSpecificLaTeX
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/styles/acb.sty ===
+#########################################
+Overview for /home/vmuser/tmp/latex/styles/acb.sty:
+This file is a TeX document, ASCII text with a size of 2082 bytes.
+---
+Full content for /home/vmuser/tmp/latex/styles/acb.sty:
+%% Updated 01 November, 2022 by Hector  --
+%% ----------------------------------------
+%% ***style file for ACB coursework ***
+%%
+ %-------------------------------------------------------------------%
+ %   \customlabel{reference_key}{display_text} ==>>    custom_label set to "display_text" 
+ %
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \inputfile{ilename} ==>>  will load  "filename.tex" fromfiles/iba/ folder
+ %---------------------------------------------------------------------
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/acb}[2015/03/31 v1.2 GSA Genetics Journal Genetics of Immunity style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{ADVANCED CELL BIOLOGY}
+
+% Set colors
+\definecolor{color2}{RGB}{123.6,5.8,32.0} % color bbk
+\definecolor{color3}{RGB}{123.6,5.8,32.0} % color bbk
+
+% define ustom reference
+\newcommand{\customlabel}[2]{%
+   \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}}}%
+   \hypertarget{#1}{#2}%
+   \linelabel{#1}
+}
+% call custom reference 
+\newcommand\fullref[1]{\nameref{#1}}% on page~\pageref{#1}}%
+
+% load helper files
+\newcommand*{\inputfile}[1]{%
+  \input{files/acb/#1.tex}}
+  
+\newcommand\twocolstart{\begin{multicols}{2}}%
+\newcommand\twocolend{\end{multicols}}%
+
+% Set environment for abstract content and styling
+
+\renewcommand{\abscontent}{
+\noindent
+{%
+\parbox{\dimexpr\linewidth}{%
+    %% v1.8: turn on line numbers
+	\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+    {\absheadfont\bfseries }\vskip3.5pt \absfont \theabstract
+}%
+\vskip15.5pt%
+\noindent
+\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+ %% v1.8: turn on line numbers
+\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+{\keywordsfont\keywordname}\hspace*{0.1em} \keywordsfont \@keywords%
+}%
+}%
+}%
+
+\def\firstpageimage{%
+\begin{picture}(0,0)%
+\put(380,-40){\includegraphics[width=2.0in]{fig/bbk-ismb.png}}%
+\put(-5,-36){\includegraphics[width=3in]{fig/bbk_logo-acb.png}}%
+\end{picture}}
+
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/styles/gos.sty ===
+#########################################
+Overview for /home/vmuser/tmp/latex/styles/gos.sty:
+This file is a ASCII text with a size of 305 bytes.
+---
+Full content for /home/vmuser/tmp/latex/styles/gos.sty:
+% GENETICS Genetics of Sex article type
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/gos}[2015/03/31 v1.2 GSA Genetics Journal Genetics of Sex style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{GENETICS OF SEX}
+
+% Set colors
+\definecolor{color2}{RGB}{130,0,0} % color
+
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/styles/gs.sty ===
+#########################################
+Overview for /home/vmuser/tmp/latex/styles/gs.sty:
+This file is a ASCII text with a size of 316 bytes.
+---
+Full content for /home/vmuser/tmp/latex/styles/gs.sty:
+% GENETICS Genomic Selection article type
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/gs}[2015/03/31 v1.2 GSA Genetics Journal Genomic Selection style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{GENOMIC SELECTION}
+
+% Set colors
+\definecolor{color2}{RGB}{160, 102, 171} % color
+
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/styles/iba.sty ===
+#########################################
+Overview for /home/vmuser/tmp/latex/styles/iba.sty:
+This file is a TeX document, ASCII text with a size of 1572 bytes.
+---
+Full content for /home/vmuser/tmp/latex/styles/iba.sty:
+%% Updated 01 November, 2022 by Hector  --
+%% ----------------------------------------
+%% ***style file for Lab protocol IBA ***
+%%
+ %-------------------------------------------------------------------%
+ %   \customlabel{reference_key}{display_text} ==>>    custom_label set to "display_text" 
+ %
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \inputfile{ilename} ==>>  will load  "filename.tex" fromfiles/iba/ folder
+ %---------------------------------------------------------------------
+
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/iba}[2015/03/31 v1.2 GSA Genetics Journal Genetics of Immunity style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{INFECTIOUS BACTERIA AND ANTIBIOTICS}
+
+% Set colors
+\definecolor{color2}{RGB}{123.6,5.8,32.0} % color bbk
+\definecolor{color3}{RGB}{123.6,5.8,32.0} % color bbk
+
+% define ustom reference
+\newcommand{\customlabel}[2]{%
+   \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}}}%
+   \hypertarget{#1}{#2}%
+   \linelabel{#1}
+}
+% call custom reference 
+\newcommand\fullref[1]{\nameref{#1}}% on page~\pageref{#1}}%
+
+% load helper files
+\newcommand*{\inputfile}[1]{%
+  \input{files/iba/#1.tex}}
+  
+\newcommand\twocolstart{\begin{multicols}{2}}%
+\newcommand\twocolend{\end{multicols}}%
+
+\def\firstpageimage{%
+\begin{picture}(0,0)%
+\put(380,-40){\includegraphics[width=2.0in]{fig/bbk-ismb.png}}%
+\put(-2,-48){\includegraphics[width=3.5129in]{fig/bbk.png}}%
+\end{picture}}
+
+  
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/styles/inv.sty ===
+#########################################
+Overview for /home/vmuser/tmp/latex/styles/inv.sty:
+This file is a ASCII text with a size of 303 bytes.
+---
+Full content for /home/vmuser/tmp/latex/styles/inv.sty:
+% GENETICS Investigation article type
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/inv}[2015/03/31 v1.2 GSA Genetics Journal Investigation style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{Investigation}
+
+% Set colors
+\definecolor{color2}{RGB}{54,117,174} % color
+
+\endinput
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/styles/mp.sty ===
+#########################################
+Overview for /home/vmuser/tmp/latex/styles/mp.sty:
+This file is a ASCII text with a size of 340 bytes.
+---
+Full content for /home/vmuser/tmp/latex/styles/mp.sty:
+% GENETICS Multiparental Populations article type
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/mp}[2015/03/31 v1.2 GSA Genetics Journal Multiparental Populations style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{MULTIPARENTAL POPULATIONS}
+
+% Set colors
+\definecolor{color2}{RGB}{109, 101, 107} % color
+
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/styles/name.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/styles/name.tex:
+This file is a empty with a size of 0 bytes.
+---
+Full content for /home/vmuser/tmp/latex/styles/name.tex:
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/styles/slrp.sty ===
+#########################################
+Overview for /home/vmuser/tmp/latex/styles/slrp.sty:
+This file is a TeX document, ASCII text with a size of 3176 bytes.
+---
+Full content for /home/vmuser/tmp/latex/styles/slrp.sty:
+%% Updated 01 November, 2022 by Hector  --
+%% ----------------------------------------
+%% ***style file for ACB coursework ***
+%%
+ %-------------------------------------------------------------------%
+ %   \customlabel{reference_key}{display_text} ==>>    custom_label set to "display_text" 
+ %
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \inputfile{ilename} ==>>  will load  "filename.tex" fromfiles/iba/ folder
+ %---------------------------------------------------------------------
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/acb}[2015/03/31 v1.2 GSA Genetics Journal Genetics of Immunity style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{ADVANCED CELL BIOLOGY}
+
+% Set colors
+\definecolor{color2}{RGB}{123.6,5.8,32.0} % color bbk
+\definecolor{color3}{RGB}{123.6,5.8,32.0} % color bbk
+
+% define ustom reference
+\newcommand{\customlabel}[2]{%
+   \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}}}%
+   \hypertarget{#1}{#2}%
+   \linelabel{#1}
+}
+% call custom reference 
+\newcommand\fullref[1]{\nameref{#1}}% on page~\pageref{#1}}%
+
+% load helper files
+\newcommand*{\inputfile}[1]{%
+  \input{files/slrp/#1.tex}}
+  
+\newcommand\twocolstart{\begin{multicols}{2}}%
+\newcommand\twocolend{\end{multicols}}%
+
+% Define right header
+\newcommand\myheader[1]{
+\fancyhf{}
+    \pagestyle{fancy}
+    \lhead{Cryptic ATPase activity of UvrB Mutant L482D}
+    \rhead{#1}
+    \cfoot{\thepage}
+    %\markright{#1\hfill #2}
+}
+        
+\newcommand\newentry[5]{
+\author[1]{Date of Laboratory: #1, Student ID: 13703089}
+%\author[2]{}
+%\author[2,3]{Author Four}
+%\author[4,$\ast$]{Author Five}
+
+\affil[1]{BSc Biomedicine$^{\ast}$}
+\affil[2]{Bootcamp Identifier: AU8}
+%\affil[3]{Author three affiliation}
+%\affil[4]{Author four affiliation}
+%\affil[$\dagger$]{These authors contributed equally to this work.}
+
+% Use the \equalcontrib command to mark authors with equal
+% contributions, using the relevant superscript numbers
+%\equalcontrib{1}
+%\equalcontrib{2}
+
+\correspondingauthoraffiliation[$\ast$]{Correspondence Address: Birkbeck University of London, Department of Biological Sciences, 14 Malet St, London WC1E 7HX. Email: \href{mailto:biosciences@bbk.ac.uk}{biosciences@bbk.ac.uk}}
+
+%\begin{abstract}
+    %\abstract
+%\end{abstract}
+\keywords{#3; #4; #5}
+%\dates{\rec{xx xx, xxxx} \acc{xx xx, xxxx}}
+\title{\LARGE #2}								
+\date{\today}										
+\maketitle
+}
+
+
+\renewcommand{\abscontent}{
+\noindent
+{%
+\parbox{\dimexpr\linewidth}{%
+    %% v1.8: turn on line numbers
+	\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+    {\absheadfont\bfseries }\vskip3.5pt \absfont \theabstract
+}%
+\vskip15.5pt%
+\noindent
+\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+ %% v1.8: turn on line numbers
+\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+{\keywordsfont\keywordname}\hspace*{0.1em} \keywordsfont \@keywords%
+}%
+}%
+}%
+
+\def\firstpageimage{%
+\begin{picture}(0,0)%
+\put(380,-40){\includegraphics[width=2.0in]{fig/bbk-ismb.png}}%
+\put(-5,-36){\includegraphics[width=3in]{fig/bbk_logo_slrp.png}}%
+\end{picture}}
+
+\endinput
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/templates/example-bibliography.bib ===
+#########################################
+Overview for /home/vmuser/tmp/latex/templates/example-bibliography.bib:
+This file is a BibTeX text file, ASCII text with a size of 1024 bytes.
+---
+Full content for /home/vmuser/tmp/latex/templates/example-bibliography.bib:
+@article{neher2013genealogies,
+  title={Genealogies of rapidly adapting populations},
+  author={Neher, Richard A and Hallatschek, Oskar},
+  journal={Proc Natl Acad Sci},
+  volume={110},
+  number={2},
+  pages={437--442},
+  year={2013},
+  publisher={National Acad Sciences}
+}
+
+@article{rodelsperger2014characterization,
+ title={Characterization of genetic diversity in the nematode Pristionchus pacificus from population-scale resequencing data},
+ author={R{\"o}delsperger, Christian and Neher, Richard A and Weller, Andreas M and Eberhardt, Gabi and Witte, Hanh and Mayer, Werner E and
+Dieterich, Christoph and Sommer, Ralf J},
+ journal={Genetics},
+ volume={196},
+ number={4},
+ pages={1153--1165},
+ year={2014},
+ publisher={Genetics Soc America}
+}
+
+@misc{Falush16,
+	author = {Falush, Daniel and van Dorp, Lucy and Lawson, Daniel},
+	title = {A tutorial on how (not) to over-interpret {STRUCTURE}/{ADMIXTURE} bar plots},
+	year = {2016},
+	howpublished = {bioRxiv. \url{http://www.biorxiv.org/content/early/2016/07/28/066431}}
+}
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/templates/gsajnl.cls ===
+#########################################
+Overview for /home/vmuser/tmp/latex/templates/gsajnl.cls:
+This file is a LaTeX document, Unicode text, UTF-8 text with a size of 11890 bytes.
+---
+Full content for /home/vmuser/tmp/latex/templates/gsajnl.cls:
+% This class file is provided for authors submitting to the
+% Genetics Society of America's GENETICS Journal
+%
+% Version: 1.11, 2022/04/01
+%
+% Produced by GSA and Overleaf (www.overleaf.com)
+%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{gsajnl}[2022/04/01, v1.11]
+\AtEndOfClass{\RequirePackage{microtype}}
+
+% Options for element switching
+\RequirePackage{xifthen}
+\newboolean{displaycopyright}
+\newboolean{displaylineno}
+\setboolean{displaylineno}{false}
+
+\DeclareOption{lineno}{\setboolean{displaylineno}{true}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{extarticle}}
+\ProcessOptions*
+\LoadClass{extarticle}
+
+% April 16, 2016:
+% Line numbers
+% v1.8 April 12, 2018: make sure line numbers are
+% displayed in outer margins of columns; so
+% remove "running" option somehow gets it right
+\RequirePackage[switch,pagewise]{lineno}
+%v1.11 April 1, 2022: re-add line numbers that were accidentally removed in 1.10
+\ifthenelse{\boolean{displaylineno}}{\linenumbers}{}
+
+% Fonts and language
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[english]{babel}
+\RequirePackage{amsmath,amsfonts,amssymb}
+\RequirePackage{mathpazo}
+\RequirePackage[scaled]{helvet}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{url}
+\RequirePackage[colorlinks=true, allcolors=blue]{hyperref}
+\RequirePackage{lettrine}
+
+\newcommand{\watermarkfont}{\color{black50}\normalfont\fontsize{10}{12}\selectfont}
+\newcommand{\headerfont}{\normalfont\fontsize{8}{10}\selectfont}
+\newcommand{\headerifont}{\normalfont\fontsize{7}{9}\selectfont}
+\newcommand{\titlefont}{\color{color3}\normalfont\sffamily\bfseries\fontsize{18}{22}\selectfont}
+\newcommand\corresfont{\fontsize{9}{11}\selectfont}
+\newcommand{\datesfont}{\normalfont\sffamily\itshape\fontsize{8}{10}\selectfont}
+\renewcommand\UrlFont{\color{color1}\sffamily}
+\newcommand{\absfont}{\normalfont\sffamily\linespread{1}\fontsize{8.9}{11}\selectfont}
+\newcommand{\absheadfont}{\color{color3}\normalfont\sffamily\fontsize{9.4}{11}\selectfont}
+\newcommand{\keywordsfont}{\normalfont\sffamily\linespread{1}\fontsize{8.9}{11}\selectfont}
+\newcommand{\keywordheadfont}{\normalfont\sffamily\fontsize{7.8}{9}\selectfont\bfseries}
+\newcommand{\copyrightfont}{\normalfont\sffamily\fontsize{7}{9}\selectfont}
+
+
+\RequirePackage{datetime}
+
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH] \THEYEAR}
+
+\RequirePackage{enumitem}
+\setlist[itemize]{noitemsep}
+
+
+% Author and affiliation
+\RequirePackage{authblk}
+\setlength{\affilsep}{9pt}
+\renewcommand\Authfont{\color{color0}\fontsize{9.5}{11}\sffamily\selectfont}
+\renewcommand\Affilfont{\color{color0}\fontsize{6.5}{9}\selectfont}
+% \makeatletter
+\renewcommand\AB@affilsep{\reset@font\protect\Affilfont}
+\renewcommand\AB@affilsepx{\reset@font\protect\\\protect\Affilfont}
+%\renewcommand\AB@affilsepx{, \protect\Affilfont}
+% \makeatother
+\renewcommand\Authands{ and }
+
+% Choose article type
+\newcommand*{\articletype}[1]{%
+  \RequirePackage{styles/#1}}
+
+% Copyright statement
+\RequirePackage{textcomp} % For copyright symbol styling
+\newcommand{\copyrightstatement}{Copyright \, \textcopyright\, \the\year{} by the Genetics Society of America}
+
+% v1.6: Remove copyright statement from PDF
+\AtBeginDocument{\setboolean{displaycopyright}{false}}
+
+% Graphics, tables and other formatting
+\RequirePackage{graphicx,xcolor}
+\RequirePackage{colortbl}
+\RequirePackage{booktabs}
+\RequirePackage{tikz}
+\RequirePackage{algorithm}
+\RequirePackage[noend]{algpseudocode}
+\RequirePackage{changepage}
+\RequirePackage[left=48pt,%
+                right=42pt,%
+                top=48pt,%
+                bottom=60pt,%
+                headheight=15pt,%
+                headsep=10pt,%
+                letterpaper,twoside]{geometry}%
+\RequirePackage[labelfont={bf,sf},%
+                list=no,%
+                labelsep=space,%
+                figurename=Figure,%
+                singlelinecheck=off,%
+                justification=RaggedRight]{caption}
+\setlength{\columnsep}{24pt} % Distance between the two columns of text
+\setlength{\parindent}{12pt} % Paragraph indent
+
+% Set document color scheme
+\definecolor{black50}{gray}{0.5} % 50% black for hrules
+\definecolor{color0}{RGB}{0,0,0} % Base color
+\definecolor{color1}{RGB}{59,90,198} % unused
+% color2&3 defined by the specific article type style file
+
+% Bibliography
+\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
+\bibliographystyle{genetics}
+\addto{\captionsenglish}{\renewcommand{\refname}{Literature cited}}
+\setlength{\bibsep}{0.0pt}
+
+% Table style
+\arrayrulecolor{color0} % Set the color of the horizontal rules
+\renewcommand{\arraystretch}{1.5} % Increased line spacing
+\captionsetup[table]{position=below} % Reduce spacing below caption
+
+% Algorithm style
+% \makeatletter
+\newcommand\fs@coloruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@coloruled
+  \def\@fs@pre{\kern2pt}%
+  \def\@fs@post{\kern2pt{\color{color2}\hrule}\relax}%
+  \def\@fs@mid{\kern2pt{\color{color2}\hrule}\kern2pt}%
+  \let\@fs@iftopcapt\iftrue}
+% \makeatother
+
+\floatstyle{coloruled}
+\restylefloat{algorithm}
+
+% Headers and footers
+\RequirePackage{fancyhdr}  % custom headers/footers
+\RequirePackage{lastpage}  % Number of pages in the document
+\pagestyle{fancy}          % Enables the custom headers/footers
+
+\newif\ifslugprint\global\slugprintfalse
+
+\def\ouplogo{{\fboxsep0pt\fcolorbox{black50}{black50}{\textcolor{white}{\vbox to 62pt{\vfil\hbox to 85pt{\hfil\fontsize{16}{16}\selectfont Birckbeck\hfil}\vspace*{10pt}}}}}\hspace*{12pt}}
+
+\def\slugnote{\global\slugprinttrue}
+
+\def\slugline{\vbox to 0pt{\vspace*{9.5pt}{\headerfont GENETICS, \the\year, XX(X), XXX\vskip-6pt}%
+\rule{121pt}{2pt}\par%
+{\headerifont\color{color2} DOI: 10.1534/genetics.XXX.XXXXXX\vskip1pt}%
+{\headerifont Advance Access Publication Date: XX XX XXXX\par}%
+{\headerfont \articletypename}}}
+
+\def\firstpageimage{%
+\begin{picture}(0,0)%
+\put(380,-40){\includegraphics[width=2.0in]{pics/bbk-ismb.png}}%
+\put(-2,-48){\includegraphics[width=3.5129in]{pics/bbk.png}}%
+\end{picture}}
+
+\fancypagestyle{firststyle}{
+   \fancyhead[LO,RE,LE,RO]{}
+   \ifslugprint\fancyhead[R]{\slugline}\else\fi%
+   \fancyhead[L]{\firstpageimage}
+   % v1.6: Remove volume and month information
+%    \fancyfoot[R]{\footnotesize Genetics, Vol. XXX, XXXX–XXXX \hspace{1em} \monthyeardate\today \hspace{2em} \thepage\ }
+}
+
+% Headers
+\fancyhead[LO,RE,LE,RO]{} % Blank headers for non-title pages.
+% Footers
+\lfoot{}
+\cfoot{}
+\rfoot{}
+% \makeatletter
+\fancyhead[RO]{\@runningauthor\hspace{2em}\thepage}
+\fancyhead[LE]{\thepage\hspace{2em}\@runningtitle}
+% \makeatother
+\fancyfoot[LO,RE]{}
+\renewcommand{\headrulewidth}{0pt}% % No header rule
+\renewcommand{\footrulewidth}{0pt}% % No footer rule
+
+%% 13 July 2016: make sure sections are unnumbered
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{0}
+
+% Section/subsection/paragraph set-up
+\RequirePackage[explicit]{titlesec}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\titleformat{\section}
+  {\large\sffamily\bfseries\color{color3}}
+  {\thesection.}
+  {0.5em}
+  {#1}
+  []
+\titleformat{name=\section,numberless}
+  {\large\sffamily\bfseries\color{color3}}
+  {}
+  {0em}
+  {#1}
+  []
+\titleformat{\subsection}
+  {\bfseries\fontsize{10}{12}\selectfont}
+  {\thesubsection.}
+  {0.5em}
+  {#1}
+  []
+\titleformat{\subsubsection}[runin]
+  {\sffamily\bfseries\itshape}
+  {\thesubsubsection.}
+  {0.5em}
+  {#1}
+  []
+\titleformat{\paragraph}[runin]
+  {\sffamily\small\bfseries}
+  {}
+  {0em}
+  {#1}
+\titlespacing*{\section}{0pc}{3ex \@plus4pt \@minus3pt}{5pt}
+\titlespacing*{\subsection}{0pc}{2.5ex \@plus3pt \@minus2pt}{2pt}
+\titlespacing*{\subsubsection}{0pc}{2ex \@plus2.5pt \@minus1.5pt}{2pt}
+\titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{12pt}
+
+% Article meta data additional fields
+\newcommand{\runningauthor}[1]{\def\@runningauthor{#1}}
+%% Backward compatibility
+\newcommand{\correspondingauthor}[1]{\runningauthor{#1}}
+\newcommand{\keywords}[1]{\def\@keywords{#1}}
+\newcommand{\runningtitle}[1]{\def\@runningtitle{#1}}
+
+\newcommand{\keywordname}{{\keywordheadfont Keywords:}} % Defines the keywords heading name
+
+% Colored margin box
+%\newcommand{\marginmark}{
+%\begin{textblock}{2}(200,9.5)
+%\begin{tikzpicture}
+%\fill[color=color2] (0,0) rectangle (1.2,0.25);
+%\end{tikzpicture}
+%\end{textblock}
+%}
+
+\newcommand{\marginmark}{
+\begin{textblock}{2}(200,9.5)
+\begin{tikzpicture}
+\fill[color=color2] (0,0) rectangle (1.2,0.25);
+\end{tikzpicture}
+\end{textblock}
+}
+
+
+\def\xabstract{abstract}
+\long\def\abstract#1\end#2{\def\two{#2}\ifx\two\xabstract
+\long\gdef\theabstract{\ignorespaces#1}
+\def\go{\end{abstract}}\else
+\typeout{^^J^^J PLEASE DO NOT USE ANY \string\begin\space \string\end^^J
+COMMANDS WITHIN ABSTRACT^^J^^J}#1\end{#2}
+\gdef\theabstract{\vskip12pt BADLY FORMED ABSTRACT: PLEASE DO
+NOT USE {\tt\string\begin...\string\end} COMMANDS WITHIN
+THE ABSTRACT\vskip12pt}\let\go\relax\fi
+\go}
+
+% Set environment for abstract content and styling
+\newcommand{\abscontent}{
+\noindent
+{%
+\parbox{\dimexpr\linewidth}{%
+    %% v1.8: turn on line numbers
+	\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+    {\absheadfont\bfseries Abstract}\vskip3.5pt \absfont \theabstract
+}%
+\vskip15.5pt%
+\noindent
+\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+ %% v1.8: turn on line numbers
+\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+{\keywordsfont\keywordname}\hspace*{0.1em} \keywordsfont \@keywords%
+}%
+}%
+}%
+
+% Custom title page
+\renewcommand{\@maketitle}{\bgroup\setlength{\parindent}{0pt}
+{%
+\vskip67pt%
+{\raggedright \titlefont \@title\vskip13pt}%
+{\raggedright \@author\vskip9.5pt}
+\ifx\@corres\undefined\vskip6.5pt\else\@corres\vskip11.5pt\fi%
+}\egroup%
+{%
+\vskip12pt%
+\abscontent
+}%
+\vskip25pt%
+}%
+
+% Other packages
+\RequirePackage{enumitem} % For reducing bullet list item separation
+
+\RequirePackage{tabularx}
+
+\RequirePackage[flushmargin,ragged]{footmisc}
+
+\newlength{\myFootnoteWidth}%
+\newlength{\myFootnoteLabel}%
+\setlength{\myFootnoteLabel}{0.5em}
+\renewcommand{\@makefntext}[1]{%
+  \setlength{\myFootnoteWidth}{\columnwidth}%
+  \addtolength{\myFootnoteWidth}{-\myFootnoteLabel}%
+  \noindent\makebox[\myFootnoteLabel][r]{\@makefnmark\ }%
+  \parbox[t]{\myFootnoteWidth}{#1}
+  }
+
+\newdimen\footrulechange
+\footrulechange\columnwidth
+% Commands to set the footnote for the front page.
+\renewcommand{\footnoterule}{%
+  \kern -3pt
+  {\color{black50} \hrule width \footrulechange height 0.5pt}
+  \kern 2.5pt
+}
+
+\newcommand{\@authfootnote}[2]{%
+  \begingroup
+  \setlength{\myFootnoteLabel}{0em}
+  \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{#1}#2}%
+   \endgroup%
+}
+
+\newcommand\blfootnote[1]{%
+  \@authfootnote{}{#1}%
+%   \begingroup
+%   \setlength{\myFootnoteLabel}{0em}
+%   \renewcommand\thefootnote{}\footnote{#1}%
+%   \addtocounter{footnote}{-1}%
+%   \addtocounter{Hfootnote}{-1}%
+%   \endgroup%
+}
+\newcommand\correspondingauthoraffiliation[2][]{%
+  \gdef\@corres{\corresfont\textsuperscript{#1}#2}%
+}
+
+\def\dates#1{\gdef\@dates{#1}}
+
+\def\rec#1{\textbf{Recevied:} #1.}
+\def\rev#1{\textbf{Revised:} #1}
+\def\acc#1{\textbf{Accepted:} #1}
+
+\newcommand{\equalcontrib}[1]{\@authfootnote{#1}{These authors contributed equally to this work.}}
+
+\newcommand{\firstpagefootnote}{\footrulechange\textwidth%
+\blfootnote{\hsize\textwidth%doi: 10.1534/genetics.XXX.XXXXXX \\%
+\ifx\@dates\undefined\vskip0pt\else\@dates\vskip0pt\fi%
+Published by Oxford University Press on behalf of Genetics Society of America \the\year. This work is written by US Government employees and is in the public
+domain in the US.
+}}
+
+\newenvironment{tableminipage}[1]{\begin{minipage}{#1}\renewcommand\footnoterule{ \kern -1ex}%
+\setlength{\myFootnoteLabel}{0.5em}%
+}{\end{minipage}}
+
+\def\firstpagebreak{\break\newpage\noindent}
+
+% Package to enable absolute positioning of figures
+\RequirePackage[absolute,overlay]{textpos}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+\textblockorigin{0mm}{0mm} % start everything near the top-left corner
+
+#########################################
+=== START OF ANALYSIS FOR /home/vmuser/tmp/latex/templates/journal-template.tex ===
+#########################################
+Overview for /home/vmuser/tmp/latex/templates/journal-template.tex:
+This file is a LaTeX 2e document, Unicode text, UTF-8 text, with very long lines (822) with a size of 14012 bytes.
+---
+Full content for /home/vmuser/tmp/latex/templates/journal-template.tex:
+\documentclass[12pt,twocolumn,twoside,lineno]{gsajnl}
+% Use the documentclass option 'lineno' to view line numbers
+
+\usepackage{epstopdf}
+
+\articletype{gs} % article type
+% {inv} Investigation
+% {gs} Genomic Selection
+% {goi} Genetics of Immunity
+% {gos} Genetics of Sex
+% {mp} Multiparental Populations
+
+\runningtitle{GENETICS Journal Template on Overleaf} % For use in the footer
+\runningauthor{FirstAuthorLastname \textit{et al.}}
+
+\title{Template for preparing your submission to \textit{GENETICS} using Overleaf}
+
+\author[1,$\dagger$]{Author One}
+\author[1]{Author Two}
+\author[2]{Author Three}
+\author[2,3]{Author Four}
+\author[4,$\ast$]{Author Five}
+
+\affil[1]{Author one affiliation}
+\affil[2]{Author two affiliation}
+\affil[3]{Author three affiliation}
+\affil[4]{Author four affiliation}
+\affil[$\dagger$]{These authors contributed equally to this work.}
+
+% Use the \equalcontrib command to mark authors with equal
+% contributions, using the relevant superscript numbers
+%\equalcontrib{1}
+%\equalcontrib{2}
+
+\correspondingauthoraffiliation[$\ast$]{Corresponding author: Please insert the affiliation correspondence address and email for the corresponding author. The corresponding author should be marked with the relevant number in the author list, as shown in the example.}
+
+\begin{abstract}
+The abstract should be written for people who may not read the entire paper, so it must stand on its own. The impression it makes usually determines whether the reader will go on to read the article, so the abstract must be engaging, clear, and concise. In addition, the abstract may be the only part of the article that is indexed in databases, so it must accurately reflect the content of the article. A well-written abstract is the  most effective way to reach intended readers, leading to more robust search, retrieval, and usage of the article.
+
+Please see additional guidelines notes on preparing your abstract below.
+\end{abstract}
+
+\keywords{Keyword; Keyword2; Keyword3}
+
+\dates{\rec{xx xx, xxxx} \acc{xx xx, xxxx}}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{firststyle}
+%\slugnote
+%\firstpagefootnote
+\vspace{-13pt}% Only used for adjusting extra space in the left column of the first page
+
+\lettrine[lines=2]{\color{color2}T}{}his \textit{Genetics} journal template is provided to help you write your work in the correct journal format. Instructions for use are provided below. Note that by default line numbers are present to aid reviewers and editors in reading and commenting on your manuscript. To remove line numbers, remove the \texttt{lineno} option from the \verb|\documentclass| declaration.
+\section{Your abstract}
+
+In addition to the guidelines provided in the example abstract above, your abstract should:
+
+\begin{itemize}
+\item provide a synopsis of the entire article;
+\item begin with the broad context of the study, followed by specific background for the study;
+\item describe the purpose, methods and procedures, core findings and results, and conclusions of the study;
+\item emphasize new or important aspects of the research;
+\item engage the broad readership of GENETICS and be understandable to a diverse audience (avoid using jargon);
+\item be a single paragraph of less than 250 words;
+\item contain the full name of the organism studied;
+\item NOT contain citations or abbreviations.
+\end{itemize}
+
+\section{Introduction}
+
+Authors should be mindful of the broad readership of the journal and set the stage for the importance of the work to a generalist reader. The scope and impact of the work should be clearly stated.
+
+In individual organisms where a mutant is being studied, the rationale for the study of that mutant must be clear to a geneticist not studying that particular organism. Similarly, study of particular phenotypes should be justified broadly and not on the basis of interest for that organism alone. General background on the importance of the genetic pathway and/or phenotype should be provided in a single, well-reasoned paragraph near the beginning of the introduction.
+
+\section{Materials and methods}
+\label{sec:materials:methods}
+
+Manuscripts submitted to GENETICS should contain a clear description of the experimental design in sufficient detail so that the experimental analysis could be repeated by another scientist. If the level of detail necessary to explain the protocol goes beyond two paragraphs, give a short description in the main body of the paper and prepare a detailed description for supporting information.  For example, details would include indicating how many individuals were used, and if applicable how individuals or groups were combined for analysis. If working with mutants indicate how many independent mutants were isolated. If working with populations indicate how samples were collected and whether they were random with respect to the target population.
+
+
+\subsection{Statistical analysis}
+
+Indicate what statistical analysis has been performed; not just the name of the software and options selected, but the method and model applied. In the case of many genes being examined simultaneously, or many phenotypes, a multiple comparison correction should be used to control the type I error rate, or a rationale for not applying a correction must be provided. The type of correction applied should be clearly stated. It should also be clear whether the p-values reported are raw, or after correction. Corrected p-values are often appropriate, but raw p-values should be available in the supporting materials so that others may perform their own corrections. In large scale data exploration studies (e.g. genome wide expression studies) a clear and complete description of the replication structure must be provided.
+
+\section{Results}
+
+The results and discussion should not be repetitive and give a factual presentation of the data with all tables and figures referenced. The discussion should not summarize the results but provide an interpretation of the results, and should clearly delineate between the findings of the particular study and the possible impact of those findings in a larger context. Authors are encouraged to cite recent work relevant to their interpretations. Present and discuss results only once, not in both the Results and Discussion sections. It is acceptable to combine results and discussion in order to be succinct.
+
+\section{Discussion}
+
+\subsection{Numbers} In the text, write out numbers nine or less except as part of a date, a fraction or decimal, a percentage, or a unit of measurement. Use Arabic numbers for those larger than nine, except as the first word of a sentence; however, try to avoid starting a sentence with such a number.
+
+\subsection{Units} Use abbreviations of the customary units of measurement only when they are preceded by a number: "3 min" but "several minutes". Write "percent" as one word, except when used with a number: "several percent" but "75\%." To indicate temperature in centigrade, use ° (for example, 37°); include a letter after the degree symbol only when some other scale is intended (for example, 45°K).
+
+\subsection{Nomenclature and italicization} Italicize names of organisms even when  when the species is not indicated.  Italicize the first three letters of the names of restriction enzyme cleavage sites, as in HindIII. Write the names of strains in roman except when incorporating specific genotypic designations. Italicize genotype names and symbols, including all components of alleles, but not when the name of a gene is the same as the name of an enzyme. Do not use "+" to indicate wild type. Carefully distinguish between genotype (italicized) and phenotype (not italicized) in both the writing and the symbolism.
+
+\subsection{Cross references}
+Use the \verb|\nameref| command with the \verb|\label| command to insert cross-references to section headings. For example, a \verb|\label| has been defined in the section \nameref{sec:materials:methods}.
+
+\section{Conclusion}
+
+Add citations using the \verb|\citep{}| command, for example \citep{neher2013genealogies} or for multiple citations, \citep{neher2013genealogies, rodelsperger2014characterization,Falush16}  \citep{neher2013genealogies}
+
+\section{Figures and tables}
+
+Figures and Tables should be labelled and referenced in the standard way using the \verb|\label{}| and \verb|\ref{}| commands.
+
+\subsection{Sample figure}
+
+Figure \ref{fig:spectrum} shows an example figure.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{example-figure}
+\caption{Example figure from \url{10.1534/genetics.114.173807}. Please include your figures in the manuscript for the review process. You can upload figures to Overleaf via the Project menu. Images of photographs or paintings can be provided as raster images. Common examples of raster images are .tif/.tiff, .raw, .gif, and .bmp file types. The resolution of raster files is measured by the number of dots or pixels in a given area, referred to as “dpi” or “ppi.”
+\begin{itemize}
+\item  minimum resolution required for printed images or pictures: 350dpi
+\item  minimum resolution for printed line art: 600dpi (complex or finely drawn line art should be 1200dpi)
+\item minimum resolution for electronic images (i.e., for on-screen viewing): 72dpi
+\protect\end{itemize}
+Images of maps, charts, graphs, and diagrams are best rendered digitally as geometric forms called vector graphics. Common file types are .eps, .ai, and .pdf. Vector images use mathematical relationships between points and the lines connecting them to describe an image. These file types do not use pixels; therefore resolution does not apply to vector images.
+Label multiple figure parts with A, B, etc. in bolded. Legends should start with a brief title and should be a self-contained description of the content of the figure that provides enough detail to fully understand the data presented. All conventional symbols used to indicate figure data points are available for typesetting; unconventional symbols should not be used. Italicize all mathematical variables (both in the figure legend and figure) , genotypes, and additional symbols that are normally italicized.}%
+\label{fig:spectrum}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{example-figure}
+\caption{Example movie (the figure file above is used as a placeholder for this example). \textit{GENETICS} supports video and movie files that can be linked from any portion of the article - including the abstract. Acceptable formats include .asf, avi, .wav, and all types of Windows Media files.
+}%
+\label{video:spectrum}
+\end{figure}
+
+\subsection{Sample table}
+
+Table \ref{tab:shape-functions} shows an example table. Avoid shading, color type, line drawings, graphics, or other illustrations within tables. Use tables for data only; present drawings, graphics, and illustrations as separate figures. Histograms should not be used to present data that can be captured easily in text or small tables, as they take up much more space.
+
+Tables numbers are given in Arabic numerals. Tables should not be numbered 1A, 1B, etc., but if necessary, interior parts of the table can be labeled A, B, etc. for easy reference in the text.
+
+\section{Sample equation}
+
+Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+\begin{equation}
+S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+      = \frac{1}{n}\sum_{i}^{n} X_i
+\label{eq:refname1}
+\end{equation}
+denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+
+\section{Data availability}
+
+The inclusion of a Data Availability Statement is a requirement for articles published in GENETICS. Data Availability Statements provide a standardized format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analyzed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required unique identifier.
+
+For example: Strains and plasmids are available upon request. File S1 contains detailed descriptions of all supplemental files. File S2 contains SNP ID numbers and locations. File S3 contains genotypes for each individual. Sequence data are available at GenBank and the accession numbers are listed in File S3. Gene expression data are available at GEO with the accession number: GDS1234. Code used to generate the simulated data can be found at \url{https://figshare.org/record/123456}.
+
+\section{Acknowledgments}
+Acknowledgments should be included here.
+
+\section{Funding}
+Funding, including Funder Names and Grant numbers should be included here.
+
+\section{Conflicts of interest}
+Please either state that you have no conflicts of interest, or list relevant information here.  This would cover any situations that might raise any questions of bias in your work and in your article’s conclusions, implications, or opinions. Please see \url{https://academic.oup.com/journals/pages/authors/authors_faqs/conflicts_of_interest}.
+
+\bibliography{example-bibliography}
+
+
+\begin{table}[p]
+\centering
+\caption{Students and their grades}
+\begin{tableminipage}{\textwidth}
+\begin{tabularx}{\textwidth}{@{}XXXX@{}}
+\hline
+{\bf Student} & {\bf Grade}\footnote{This is an example of a footnote in a table. Lowercase, superscript italic letters (a, b, c, etc.) are used by default. You can also use *, **, and *** to indicate conventional levels of statistical significance, explained below the table.} & {\bf Rank} & {\bf Notes} \\
+\hline
+Alice & 82\% & 1 & Performed very well.\\
+Bob & 65\% & 3 & Not up to his usual standard.\\
+Charlie & 73\% & 2 & A good attempt.\\
+\hline
+\end{tabularx}
+  \label{tab:shape-functions}
+\end{tableminipage}
+\end{table}
+\end{document} 

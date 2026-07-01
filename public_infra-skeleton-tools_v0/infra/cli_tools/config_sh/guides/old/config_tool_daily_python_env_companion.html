@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Daily Python Environment Workflow Companion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#0f172a;--panel:#111827;--panel2:#172033;--text:#e5e7eb;--muted:#9ca3af;
+  --accent:#38bdf8;--good:#34d399;--warn:#facc15;--bad:#fb7185;--code:#020617;--border:#334155;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#0f172a,#111827);color:var(--text);line-height:1.55}
+header{padding:2.5rem 1.25rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(2,6,23,.38)}
+main{max-width:1180px;margin:0 auto;padding:1.25rem}
+h1{margin:0 0 .5rem;font-size:clamp(2rem,5vw,3.35rem);line-height:1.05}
+h2{margin:2.5rem 0 1rem;font-size:1.75rem;border-bottom:1px solid var(--border);padding-bottom:.4rem}
+h3{margin:1.4rem 0 .65rem;font-size:1.22rem;color:#f8fafc}
+p{max-width:84ch}
+code,kbd{background:var(--code);border:1px solid var(--border);padding:.12rem .32rem;border-radius:.35rem}
+pre{background:var(--code);border:1px solid var(--border);border-radius:.75rem;padding:1rem;overflow:auto;color:#e2e8f0}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:1rem;padding:1rem;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.grid{display:grid;gap:1rem}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.grid.three{grid-template-columns:repeat(auto-fit,minmax(235px,1fr))}
+.note,.good,.bad{padding:.9rem 1rem;border-radius:.75rem;margin:1rem 0}
+.note{border-left:4px solid var(--warn);background:rgba(250,204,21,.08)}
+.good{border-left:4px solid var(--good);background:rgba(52,211,153,.08)}
+.bad{border-left:4px solid var(--bad);background:rgba(251,113,133,.08)}
+.small{font-size:.93rem;color:var(--muted)}
+.badge{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:.18rem .55rem;margin:.15rem .25rem .15rem 0;color:#dbeafe;background:rgba(59,130,246,.12);font-size:.85rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.65rem;text-align:left;vertical-align:top}
+th{background:#1e293b;color:#f8fafc}
+td{background:rgba(15,23,42,.55)}
+.toc a{display:block;text-decoration:none;color:var(--accent);padding:.25rem 0}
+.workflow{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:.6rem;margin:1rem 0}
+.step{border:1px solid var(--border);border-radius:.75rem;padding:.75rem;background:#101827}
+.step strong{display:block;color:#f8fafc;margin-bottom:.25rem}
+.footer{margin:3rem 0 1rem;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+<main>
+<h1>Daily Python Environment Workflow Companion</h1>
+<p>A practical operator guide for using profile-aligned Python environments with managed config functions.</p>
+<p>
+<span class="badge">python-env-profiles.tsv</span>
+<span class="badge">PYTHON_ENV</span>
+<span class="badge">aiengineer</span>
+<span class="badge">researchscientist</span>
+<span class="badge">publisher</span>
+<span class="badge">experiment envs</span>
+</p>
+</main>
+</header>
+
+<main>
+<section class="card toc">
+<h2>Contents</h2>
+<a href="#idea">1. The core idea</a>
+<a href="#defaults">2. Default role envs</a>
+<a href="#daily">3. Daily workflow</a>
+<a href="#source">4. Source-of-truth file</a>
+<a href="#override">5. Override to an experiment env</a>
+<a href="#run">6. Run one env-targeted step</a>
+<a href="#checks">7. Check what is installed where</a>
+<a href="#patterns">8. Common patterns</a>
+<a href="#trouble">9. Troubleshooting</a>
+<a href="#codex">10. Codex prompt for future env work</a>
+</section>
+
+<section id="idea">
+<h2>1. The core idea</h2>
+<div class="good">
+<strong>Functions are global. Python packages are environment-specific.</strong>
+Your managed config functions can be available to every target, but when a function installs Python packages it must choose one explicit Python environment.
+</div>
+
+<div class="workflow">
+<div class="step"><strong>Account profile</strong><code>AIEngineer</code></div>
+<div class="step"><strong>Target role</strong><code>ai-engineer</code></div>
+<div class="step"><strong>Python env policy</strong><code>aiengineer</code></div>
+<div class="step"><strong>Target env</strong><code>PYTHON_ENV=aiengineer</code></div>
+<div class="step"><strong>Installer</strong><code>pip install into aiengineer</code></div>
+</div>
+
+<p>
+A virtualenv called <code>experiment1</code> does not automatically see packages installed into
+<code>base</code> or <code>aiengineer</code>. That isolation is useful, but only if your installer functions do not silently install into the wrong place.
+</p>
+
+<div class="bad">
+<strong>Do not rely on “whatever env is active”.</strong>
+A managed install step should resolve <code>PYTHON_ENV</code> from profile policy and print where it is installing.
+</div>
+</section>
+
+<section id="defaults">
+<h2>2. Default role envs</h2>
+<p>The default environment names should match the roles you actually use day to day.</p>
+
+<table>
+<thead><tr><th>Profile</th><th>Target role</th><th>Default Python env</th><th>Use case</th></tr></thead>
+<tbody>
+<tr><td><code>DefaultOperator</code></td><td><code>operator</code></td><td><code>operator</code></td><td>Operator automation helpers</td></tr>
+<tr><td><code>DefaultTarget</code></td><td><code>target</code></td><td><code>target</code></td><td>Generic target tools</td></tr>
+<tr><td><code>AIEngineer</code></td><td><code>ai-engineer</code></td><td><code>aiengineer</code></td><td>ML, LLM, API, MLOps</td></tr>
+<tr><td><code>ResearchScientist</code></td><td><code>research-scientist</code></td><td><code>researchscientist</code></td><td>GRN, Turing-pattern, parameter search</td></tr>
+<tr><td><code>Publisher</code></td><td><code>publisher</code></td><td><code>publisher</code></td><td>Pandoc, notebooks, publishing tools</td></tr>
+</tbody>
+</table>
+
+<pre><code># target env result examples
+PYTHON_ENV_PROFILE="AIEngineer"
+PYTHON_ENV="aiengineer"
+PYTHON_ENV_MANAGER="auto"
+PYTHON_ENV_CREATE_MISSING="0"
+PYTHON_ENV_ALLOW_SYSTEM="0"</code></pre>
+</section>
+
+<section id="daily">
+<h2>3. Daily workflow</h2>
+
+<div class="grid two">
+<div class="card">
+<h3>When creating a role user</h3>
+<ol>
+<li>Create/reconcile the account from its account profile.</li>
+<li>Check <code>config-show</code> for the resolved <code>PYTHON_ENV</code>.</li>
+<li>Create the env manually if needed.</li>
+<li>Run only one role install step.</li>
+<li>Verify packages inside that env.</li>
+</ol>
+</div>
+<div class="card">
+<h3>When starting an experiment</h3>
+<ol>
+<li>Create a new env, for example <code>experiment1</code>.</li>
+<li>Override <code>PYTHON_ENV</code> for that target or profile.</li>
+<li>Run the one install step into <code>experiment1</code>.</li>
+<li>Keep experiment packages isolated from the role default env.</li>
+</ol>
+</div>
+</div>
+
+<pre><code># inspect target policy
+config --target aiengineer config-show
+
+# inspect bootstrap plan/status
+config --target aiengineer bootstrap steps
+sudo config --target aiengineer bootstrap status
+
+# run one env-targeted step only
+sudo config --target aiengineer bootstrap step install_ml_base_python_stack</code></pre>
+</section>
+
+<section id="source">
+<h2>4. Source-of-truth file</h2>
+<p>The policy should live in one file, not scattered across installer functions.</p>
+
+<pre><code>/home/vmuser/.local/etc/config-sh/install/python-env-profiles.tsv</code></pre>
+
+<p>Suggested columns:</p>
+
+<pre><code>profile_name	target_role	python_env	env_manager	create_missing	allow_system	description</code></pre>
+
+<p>Suggested rows:</p>
+
+<pre><code>DefaultOperator	operator	operator	auto	0	0	Operator Python tools
+DefaultTarget	target	target	auto	0	0	Generic target Python tools
+AIEngineer	ai-engineer	aiengineer	auto	0	0	AI Engineer Python environment
+ResearchScientist	research-scientist	researchscientist	auto	0	0	Research Scientist Python environment
+Publisher	publisher	publisher	auto	0	0	Publisher Python environment</code></pre>
+
+<div class="note">
+<strong>create_missing=0</strong> means managed install steps do not create virtualenvs automatically. This is safer. You create the env first, then run the step into it.
+</div>
+
+<div class="note">
+<strong>allow_system=0</strong> means do not install into system Python. This avoids breaking the OS Python or shared system packages.
+</div>
+</section>
+
+<section id="override">
+<h2>5. Override to an experiment env</h2>
+<p>Sometimes you want a temporary or project-specific env such as <code>experiment1</code>. That should be explicit.</p>
+
+<h3>Option A — override the target policy</h3>
+<pre><code># in /home/vmuser/.local/etc/config-sh/targets/aiengineer.env
+PYTHON_ENV="experiment1"</code></pre>
+
+<h3>Option B — override the profile source of truth</h3>
+<pre><code># in python-env-profiles.tsv
+AIEngineer	ai-engineer	experiment1	auto	0	0	AI Engineer experiment env</code></pre>
+
+<div class="good">
+<strong>Use target override</strong> when only one user or one experiment should change.
+<br>
+<strong>Use source-of-truth override</strong> when every future user with that profile should use the new env.
+</div>
+
+<h3>Use base intentionally</h3>
+<pre><code>PYTHON_ENV="base"</code></pre>
+
+<p>
+This is allowed as an explicit operator choice. It should not be the only possible behavior.
+</p>
+</section>
+
+<section id="run">
+<h2>6. Run one env-targeted step</h2>
+
+<p>The installer should print the target env before doing package work.</p>
+
+<pre><code>sudo config --target aiengineer bootstrap step install_ml_base_python_stack</code></pre>
+
+<p>Expected output shape:</p>
+
+<pre><code>target user: aiengineer
+target role: ai-engineer
+target Python env: aiengineer
+env manager: auto
+installing packages from PIP_ML_BASE_STACK into aiengineer</code></pre>
+
+<p>For an experiment override:</p>
+
+<pre><code>target Python env: experiment1
+installing packages from PIP_ML_BASE_STACK into experiment1</code></pre>
+
+<div class="bad">
+If output says it is installing into <code>system</code>, stop unless you explicitly set <code>PYTHON_ENV_ALLOW_SYSTEM=1</code>.
+</div>
+</section>
+
+<section id="checks">
+<h2>7. Check what is installed where</h2>
+
+<h3>Conda-style checks</h3>
+<pre><code># list envs
+sudo -H -u aiengineer bash -lc 'conda env list'
+
+# check Python executable
+sudo -H -u aiengineer bash -lc 'conda run -n aiengineer python -c "import sys; print(sys.executable)"'
+
+# check package inside role env
+sudo -H -u aiengineer bash -lc 'conda run -n aiengineer python -c "import numpy; print(numpy.__version__)"'
+
+# check package inside experiment env
+sudo -H -u aiengineer bash -lc 'conda run -n experiment1 python -c "import numpy; print(numpy.__version__)"'</code></pre>
+
+<h3>venv-style checks</h3>
+<pre><code># example venv path convention
+sudo -H -u aiengineer bash -lc '/home/aiengineer/.virtualenvs/aiengineer/bin/python -c "import sys; print(sys.executable)"'
+
+sudo -H -u aiengineer bash -lc '/home/aiengineer/.virtualenvs/aiengineer/bin/python -m pip list'</code></pre>
+
+<div class="note">
+The exact check depends on your environment manager. The policy file can say <code>env_manager=auto</code>, but the installer should still print what it resolved.
+</div>
+</section>
+
+<section id="patterns">
+<h2>8. Common patterns</h2>
+
+<div class="grid three">
+<div class="card">
+<h3>Stable role env</h3>
+<p>Use this for the normal daily toolset of a role.</p>
+<pre><code>AIEngineer -> aiengineer
+ResearchScientist -> researchscientist
+Publisher -> publisher</code></pre>
+</div>
+
+<div class="card">
+<h3>Temporary experiment env</h3>
+<p>Use this for trying package versions without contaminating the role env.</p>
+<pre><code>PYTHON_ENV="experiment1"</code></pre>
+</div>
+
+<div class="card">
+<h3>Base env</h3>
+<p>Use only when you intentionally want a shared base for that role/user.</p>
+<pre><code>PYTHON_ENV="base"</code></pre>
+</div>
+</div>
+
+<h3>Recommended package split</h3>
+<table>
+<thead><tr><th>Env</th><th>Install here</th><th>Avoid here</th></tr></thead>
+<tbody>
+<tr><td><code>aiengineer</code></td><td>stable ML/LLM/API tools</td><td>one-off experiment pins</td></tr>
+<tr><td><code>researchscientist</code></td><td>stable research/numerics tools</td><td>paper-specific unpublished data</td></tr>
+<tr><td><code>publisher</code></td><td>notebook/export/publishing Python tools</td><td>private vault contents</td></tr>
+<tr><td><code>experiment1</code></td><td>temporary package versions</td><td>assumptions that other envs can import it</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="trouble">
+<h2>9. Troubleshooting</h2>
+
+<table>
+<thead><tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr></thead>
+<tbody>
+<tr>
+<td>Package installed but import fails in experiment1</td>
+<td>It was installed into a different env, probably base or role env</td>
+<td>Run the install step with <code>PYTHON_ENV=experiment1</code></td>
+</tr>
+<tr>
+<td>Installer uses system Python</td>
+<td>Env resolver fell back too far</td>
+<td>Set <code>PYTHON_ENV</code> explicitly and keep <code>PYTHON_ENV_ALLOW_SYSTEM=0</code></td>
+</tr>
+<tr>
+<td>Env not found</td>
+<td><code>create_missing=0</code> and env was not created yet</td>
+<td>Create the env manually, or intentionally set <code>create_missing=1</code></td>
+</tr>
+<tr>
+<td>Wrong env after profile edit</td>
+<td>Target env was not reconciled/refreshed</td>
+<td>Reconcile target policy and re-check <code>config-show</code></td>
+</tr>
+<tr>
+<td>Packages pollute base</td>
+<td>Role env default was set to base</td>
+<td>Use profile-aligned env: <code>aiengineer</code>, <code>researchscientist</code>, or <code>publisher</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<section id="codex">
+<h2>10. Codex prompt for future env work</h2>
+<pre><code>Read config.sh, installers.sh, and /home/vmuser/.local/etc/config-sh/install/python-env-profiles.tsv.
+
+Make one Python-installing function environment-aware.
+
+Requirements:
+- Resolve PYTHON_ENV from target env policy.
+- Do not use the currently active shell env silently.
+- Do not install into system Python unless PYTHON_ENV_ALLOW_SYSTEM=1.
+- Do not use sudo pip.
+- Print the target env before installing.
+- If the env is missing and PYTHON_ENV_CREATE_MISSING=0, skip or fail clearly.
+- Run:
+  bash --noprofile --norc -n /home/vmuser/.local/bin/config.sh
+  bash --noprofile --norc -n /home/vmuser/.local/lib/config-sh/installers.sh
+
+Final answer:
+Changed files:
+Tests run:
+Notes:</code></pre>
+
+<h3>Commit messages</h3>
+<pre><code>feat: add profile-aligned Python env policy
+feat: resolve Python envs from role profiles
+fix: prevent Python installs from falling back to system env
+docs: add daily Python environment workflow guide</code></pre>
+</section>
+
+<p class="footer">Generated for the vmuser config tool daily Python environment workflow.</p>
+</main>
+</body>
+</html>

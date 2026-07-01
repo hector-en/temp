@@ -1,0 +1,50 @@
+%% Updated 01 November, 2022 by Hector  --
+%% ----------------------------------------
+%% ***style file for Lab protocol IBA ***
+%%
+ %-------------------------------------------------------------------%
+ %   \customlabel{reference_key}{display_text} ==>>    custom_label set to "display_text" 
+ %
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \inputfile{ilename} ==>>  will load  "filename.tex" fromfiles/iba/ folder
+ %---------------------------------------------------------------------
+
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/iba}[2015/03/31 v1.2 GSA Genetics Journal Genetics of Immunity style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{INFECTIOUS BACTERIA AND ANTIBIOTICS}
+
+% Set colors
+\definecolor{color2}{RGB}{123.6,5.8,32.0} % color bbk
+\definecolor{color3}{RGB}{123.6,5.8,32.0} % color bbk
+
+% define ustom reference
+\newcommand{\customlabel}[2]{%
+   \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}}}%
+   \hypertarget{#1}{#2}%
+   \linelabel{#1}
+}
+% call custom reference 
+\newcommand\fullref[1]{\nameref{#1}}% on page~\pageref{#1}}%
+
+% load helper files
+\newcommand*{\inputfile}[1]{%
+  \input{files/iba/#1.tex}}
+  
+\newcommand\twocolstart{\begin{multicols}{2}}%
+\newcommand\twocolend{\end{multicols}}%
+
+\def\firstpageimage{%
+\begin{picture}(0,0)%
+\put(380,-40){\includegraphics[width=2.0in]{fig/bbk-ismb.png}}%
+\put(-2,-48){\includegraphics[width=3.5129in]{fig/bbk.png}}%
+\end{picture}}
+
+  
+\endinput

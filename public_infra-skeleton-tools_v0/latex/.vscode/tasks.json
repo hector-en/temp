@@ -1,0 +1,57 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build with pdflatex",
+            "type": "shell",
+            "command": "./build/build_pdflatex.sh",
+            "args": [
+                "${file}"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build with xelatex",
+            "type": "shell",
+            "command": "./build/build_xelatex.sh",
+            "args": [
+                "${file}"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build with lualatex",
+            "type": "shell",
+            "command": "./build/build_lualatex.sh",
+            "args": [
+                "${file}"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build with latex -> dvips -> ps2pdf",
+            "type": "shell",
+            "command": "./build/build_latex_dvips_ps2pdf.sh",
+            "args": [
+                "${file}"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}

@@ -1,0 +1,105 @@
+%% Updated 01 November, 2022 by Hector  --
+%% ----------------------------------------
+%% ***style file for ACB coursework ***
+%%
+ %-------------------------------------------------------------------%
+ %   \customlabel{reference_key}{display_text} ==>>    custom_label set to "display_text" 
+ %
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \fullref{reference_key} ==>>   Will return the "display_text"
+ 
+ %   \inputfile{ilename} ==>>  will load  "filename.tex" fromfiles/iba/ folder
+ %---------------------------------------------------------------------
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/acb}[2015/03/31 v1.2 GSA Genetics Journal Genetics of Immunity style]
+
+% Set article type name for header
+\newcommand*{\articletypename}{ADVANCED CELL BIOLOGY}
+
+% Set colors
+\definecolor{color2}{RGB}{123.6,5.8,32.0} % color bbk
+\definecolor{color3}{RGB}{123.6,5.8,32.0} % color bbk
+
+% define ustom reference
+\newcommand{\customlabel}[2]{%
+   \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}}}%
+   \hypertarget{#1}{#2}%
+   \linelabel{#1}
+}
+% call custom reference 
+\newcommand\fullref[1]{\nameref{#1}}% on page~\pageref{#1}}%
+
+% load helper files
+\newcommand*{\inputfile}[1]{%
+  \input{files/slrp/#1.tex}}
+  
+\newcommand\twocolstart{\begin{multicols}{2}}%
+\newcommand\twocolend{\end{multicols}}%
+
+% Define right header
+\newcommand\myheader[1]{
+\fancyhf{}
+    \pagestyle{fancy}
+    \lhead{Cryptic ATPase activity of UvrB Mutant L482D}
+    \rhead{#1}
+    \cfoot{\thepage}
+    %\markright{#1\hfill #2}
+}
+        
+\newcommand\newentry[5]{
+\author[1]{Date of Laboratory: #1, Student ID: 13703089}
+%\author[2]{}
+%\author[2,3]{Author Four}
+%\author[4,$\ast$]{Author Five}
+
+\affil[1]{BSc Biomedicine$^{\ast}$}
+\affil[2]{Bootcamp Identifier: AU8}
+%\affil[3]{Author three affiliation}
+%\affil[4]{Author four affiliation}
+%\affil[$\dagger$]{These authors contributed equally to this work.}
+
+% Use the \equalcontrib command to mark authors with equal
+% contributions, using the relevant superscript numbers
+%\equalcontrib{1}
+%\equalcontrib{2}
+
+\correspondingauthoraffiliation[$\ast$]{Correspondence Address: Birkbeck University of London, Department of Biological Sciences, 14 Malet St, London WC1E 7HX. Email: \href{mailto:biosciences@bbk.ac.uk}{biosciences@bbk.ac.uk}}
+
+%\begin{abstract}
+    %\abstract
+%\end{abstract}
+\keywords{#3; #4; #5}
+%\dates{\rec{xx xx, xxxx} \acc{xx xx, xxxx}}
+\title{\LARGE #2}								
+\date{\today}										
+\maketitle
+}
+
+
+\renewcommand{\abscontent}{
+\noindent
+{%
+\parbox{\dimexpr\linewidth}{%
+    %% v1.8: turn on line numbers
+	\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+    {\absheadfont\bfseries }\vskip3.5pt \absfont \theabstract
+}%
+\vskip15.5pt%
+\noindent
+\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+ %% v1.8: turn on line numbers
+\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+{\keywordsfont\keywordname}\hspace*{0.1em} \keywordsfont \@keywords%
+}%
+}%
+}%
+
+\def\firstpageimage{%
+\begin{picture}(0,0)%
+\put(380,-40){\includegraphics[width=2.0in]{fig/bbk-ismb.png}}%
+\put(-5,-36){\includegraphics[width=3in]{fig/bbk_logo_slrp.png}}%
+\end{picture}}
+
+\endinput

@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Config Tool Developer Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#0f172a;--panel:#111827;--panel2:#172033;--text:#e5e7eb;--muted:#9ca3af;
+  --accent:#38bdf8;--good:#34d399;--warn:#facc15;--bad:#fb7185;--code:#020617;--border:#334155;
+  --purple:#a78bfa;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#0f172a,#111827);color:var(--text);line-height:1.62}
+a{color:var(--accent)}
+header{padding:3rem 1.25rem 1.75rem;border-bottom:1px solid var(--border);background:rgba(2,6,23,.5)}
+main{max-width:1280px;margin:0 auto;padding:1.25rem}
+h1{margin:0 0 .7rem;font-size:clamp(2.25rem,5vw,4rem);line-height:1.02;letter-spacing:-.04em}
+h2{margin:3rem 0 1rem;font-size:1.9rem;border-bottom:1px solid var(--border);padding-bottom:.45rem}
+h3{margin:1.55rem 0 .7rem;font-size:1.28rem;color:#f8fafc}
+h4{margin:1.1rem 0 .4rem;color:#f8fafc}
+p{max-width:94ch}
+code,kbd{background:var(--code);border:1px solid var(--border);padding:.12rem .32rem;border-radius:.35rem}
+pre{background:var(--code);border:1px solid var(--border);border-radius:.85rem;padding:1rem;overflow:auto;color:#e2e8f0}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:1rem;padding:1rem;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.grid{display:grid;gap:1rem}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.grid.three{grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
+.grid.four{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.abstract,.chapter,.scenario,.principle,.note,.good,.bad,.command,.review{padding:1rem;border-radius:.85rem;margin:1rem 0}
+.abstract{font-size:1.06rem;background:rgba(255,255,255,.06);border:1px solid var(--border)}
+.chapter{border:1px solid var(--border);background:rgba(15,23,42,.65)}
+.scenario{border-left:4px solid var(--accent);background:rgba(56,189,248,.08)}
+.principle{border-left:4px solid var(--purple);background:rgba(167,139,250,.08)}
+.note{border-left:4px solid var(--warn);background:rgba(250,204,21,.08)}
+.good{border-left:4px solid var(--good);background:rgba(52,211,153,.08)}
+.bad{border-left:4px solid var(--bad);background:rgba(251,113,133,.08)}
+.command{border-left:4px solid var(--purple);background:rgba(167,139,250,.08)}
+.review{border-left:4px solid var(--good);background:rgba(52,211,153,.07)}
+.small{font-size:.93rem;color:var(--muted)}
+.badge{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:.18rem .55rem;margin:.15rem .25rem .15rem 0;color:#dbeafe;background:rgba(59,130,246,.12);font-size:.85rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.7rem;text-align:left;vertical-align:top}
+th{background:#1e293b;color:#f8fafc}
+td{background:rgba(15,23,42,.55)}
+.toc a{display:block;text-decoration:none;color:var(--accent);padding:.25rem 0}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:.75rem;margin:1rem 0}
+.step{border:1px solid var(--border);border-radius:.8rem;padding:.85rem;background:#101827}
+.step strong{display:block;color:#f8fafc;margin-bottom:.3rem}
+.lead{font-size:1.09rem;color:#dbeafe}
+.footer{margin:3rem 0 1rem;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+<main>
+<h1>Config Tool Developer Guide</h1>
+<p class="lead">
+A contributor-focused technical article for developers extending the <code>vmuser</code> configuration tool:
+architecture, design rules, code paths, profile modeling, managed installers, safe dispatch, state semantics,
+testing, and contribution checklists.
+</p>
+<div class="abstract">
+<strong>Abstract.</strong>
+The config tool is a shell-based orchestration system for provisioning role-specific Linux/WSL accounts and
+their development environments. It deliberately separates editable policy from executable behavior. Developers
+contributing to it should understand the difference between account profiles, target env policy, bootstrap plans,
+runtime markers, and trusted installer functions before changing code. This guide explains the internal model and
+shows how to add new capabilities without weakening the safety boundary: add a trusted function, allowlist it,
+register it, place it in role plans, test it with one target and one step, then document the behavior.
+</div>
+<p>
+<span class="badge">developer guide</span>
+<span class="badge">contribution model</span>
+<span class="badge">shell architecture</span>
+<span class="badge">profiles.tsv</span>
+<span class="badge">installers.sh</span>
+<span class="badge">steps.tsv</span>
+<span class="badge">state markers</span>
+<span class="badge">safe dispatch</span>
+</p>
+</main>
+</header>
+
+<main>
+<section class="card toc">
+<h2>Contents</h2>
+<a href="#audience">1. Who this guide is for</a>
+<a href="#architecture">2. Architecture in one pass</a>
+<a href="#safety">3. Safety model and contribution contract</a>
+<a href="#code-map">4. Code map: where behavior lives</a>
+<a href="#cli">5. CLI switches and command design</a>
+<a href="#profiles">6. Profile system: accounts, SMB, mounts, Python envs</a>
+<a href="#state">7. Bootstrap plan and state semantics</a>
+<a href="#installers">8. Managed installers and step dispatch</a>
+<a href="#new-function">9. How to add a new managed function</a>
+<a href="#new-profile">10. How to add a new profile or role</a>
+<a href="#python-env">11. How to add environment-aware Python installers</a>
+<a href="#account-lifecycle">12. Account lifecycle extension notes</a>
+<a href="#testing">13. Testing and validation</a>
+<a href="#review">14. Review checklist</a>
+<a href="#anti-patterns">15. Anti-patterns</a>
+<a href="#examples">16. Contributor examples</a>
+</section>
+
+<section id="audience">
+<h2>1. Who this guide is for</h2>
+<div class="scenario">
+<strong>Scenario.</strong>
+You want to contribute a new role, installer, account lifecycle command, Python environment rule, SMB/mount behavior,
+or bootstrap plan feature. You need to know which file to edit and how to avoid breaking target isolation.
+</div>
+
+<p>
+This guide is for developers who will modify the implementation, not only operate the tool. It assumes you are comfortable
+reading shell scripts and that you will validate changes with syntax checks and dry-runs before applying them.
+</p>
+
+<div class="principle">
+<strong>Main rule.</strong>
+When adding behavior, ask: is this policy, execution, state, or documentation? Each belongs in a different place.
+</div>
+
+<table>
+<thead><tr><th>Change type</th><th>Where it belongs</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Stable policy</td><td><code>etc/config-sh/**/*.env</code> or <code>accounts/*.tsv</code></td><td>Default SMB user, mount profile, Python env name.</td></tr>
+<tr><td>Executable behavior</td><td><code>lib/config-sh/installers.sh</code> or trusted functions in <code>config.sh</code></td><td>Install packages, create account, reconcile files.</td></tr>
+<tr><td>Step metadata</td><td><code>bootstrap/steps.tsv</code></td><td>Step name, function name, scope, network flag.</td></tr>
+<tr><td>Runtime state</td><td><code>/home/USER/.local/state/config-sh</code></td><td><code>bootstrap.plan</code>, <code>*.done</code>, <code>*.skipped</code>.</td></tr>
+<tr><td>Developer docs</td><td>HTML guides, milestone specs, run instructions</td><td>How to use, test, and extend a feature.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="architecture">
+<h2>2. Architecture in one pass</h2>
+<div class="chapter">
+<strong>Scenario.</strong>
+A developer adds a new AI platform installer. The operator should be able to discover it, see which roles receive it,
+unskip it for one target, run it once, and inspect whether it finished. That requires several layers working together.
+</div>
+
+<div class="flow">
+<div class="step"><strong>Policy</strong><code>profiles.tsv</code><br>who the target is</div>
+<div class="step"><strong>Target env</strong><code>targets/USER.env</code><br>resolved policy</div>
+<div class="step"><strong>Registry</strong><code>steps.tsv</code><br>known step</div>
+<div class="step"><strong>Trust gate</strong><code>allowlist</code><br>known function</div>
+<div class="step"><strong>Execution</strong><code>installers.sh</code><br>actual work</div>
+<div class="step"><strong>State</strong><code>*.done</code><br>history</div>
+</div>
+
+<div class="principle">
+<strong>Why this architecture exists.</strong>
+Editable configuration must not become an arbitrary command runner. A row in <code>steps.tsv</code> is allowed to name a function,
+but <code>config.sh</code> must still verify that the function is trusted before dispatching it.
+</div>
+
+<table>
+<thead><tr><th>Layer</th><th>Responsibility</th><th>Contribution risk</th></tr></thead>
+<tbody>
+<tr><td>Account/profile layer</td><td>Resolves role, groups, SMB, mounts, bootstrap profile, generated target policy.</td><td>Wrong profile kind can create wrong account policy.</td></tr>
+<tr><td>Target context layer</td><td>Sets <code>TARGET_USER</code>, <code>TARGET_HOME</code>, <code>STATE_DIR</code>, SMB users, mount context.</td><td>Wrong home ownership or root-owned policy files.</td></tr>
+<tr><td>Bootstrap layer</td><td>Reads known steps, target plan, markers, and dispatches one step or a plan.</td><td>Broad execution if plan/marker semantics are weakened.</td></tr>
+<tr><td>Installer layer</td><td>Performs actual install or check work.</td><td>Package pollution, wrong target user, accidental system changes.</td></tr>
+<tr><td>Docs/spec layer</td><td>Explains intended workflow and Codex-safe implementation scope.</td><td>Ambiguous specs cause broad or unsafe patches.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="safety">
+<h2>3. Safety model and contribution contract</h2>
+<div class="scenario">
+<strong>Scenario.</strong>
+A contributor wants to make the tool more flexible by letting <code>steps.tsv</code> call any function by name. That is convenient,
+but it breaks the core trust boundary.
+</div>
+
+<div class="bad">
+<strong>Do not let editable files execute arbitrary code.</strong>
+Files such as <code>.env</code>, <code>.tsv</code>, and <code>.plan</code> are operator-editable policy. They must describe intent, not execute shell.
+</div>
+
+<h3>Contribution contract</h3>
+<ul>
+<li>Executable behavior goes into trusted shell functions.</li>
+<li>Trusted functions must be allowlisted before a manifest can dispatch them.</li>
+<li>Target-aware behavior must use <code>TARGET_USER</code> and <code>TARGET_HOME</code>, not hard-coded usernames.</li>
+<li>System-level changes must require sudo and be explicit in step scope.</li>
+<li>Python installs must target explicit env policy and avoid accidental system Python.</li>
+<li>Credentials must never be printed, copied into logs, or inspected casually.</li>
+<li>Dry-run must show enough detail to catch wrong account/profile/scope decisions.</li>
+</ul>
+
+<h3>Safe default hierarchy</h3>
+<table>
+<thead><tr><th>Area</th><th>Safe default</th><th>Explicit override</th></tr></thead>
+<tbody>
+<tr><td>Account creation</td><td>Dry-run before apply.</td><td><code>--interactive</code> or <code>--non-interactive</code>.</td></tr>
+<tr><td>Password handling</td><td>Do not accept passwords on command line.</td><td>Run <code>passwd USER</code> interactively.</td></tr>
+<tr><td>Account removal</td><td>Keep home, config, state, credentials.</td><td><code>--remove-home</code>, <code>--purge-config</code>.</td></tr>
+<tr><td>Python packages</td><td>Do not install into system Python.</td><td><code>PYTHON_ENV_ALLOW_SYSTEM=1</code>.</td></tr>
+<tr><td>Bootstrap execution</td><td>Run one step for validation.</td><td>Full bootstrap only after plan is trusted.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="code-map">
+<h2>4. Code map: where behavior lives</h2>
+<div class="chapter">
+<strong>Scenario.</strong>
+You see a bug or want a feature, but you do not know whether to edit <code>config.sh</code>, <code>installers.sh</code>,
+<code>steps.tsv</code>, profile files, or target env files.
+</div>
+
+<table>
+<thead><tr><th>Function/file</th><th>What it does</th><th>Why it exists</th><th>When to edit</th></tr></thead>
+<tbody>
+<tr><td><code>config_parse_global_args</code></td><td>Parses global switches and command name.</td><td>Separates target selection from command behavior.</td><td>Adding a global option.</td></tr>
+<tr><td><code>config_set_target_user</code></td><td>Resolves target home and reloads config policy.</td><td>Keeps target context canonical.</td><td>Changing target resolution or validation.</td></tr>
+<tr><td><code>config_load_config_files</code></td><td>Loads global, mount, target, package, version, repo policy.</td><td>Centralizes config load order.</td><td>Adding a new source-of-truth file.</td></tr>
+<tr><td><code>config_resolve_account_profile</code></td><td>Combines account, SMB, and mount profiles into an account plan.</td><td>Builds the single plan used by create-account.</td><td>Adding profile columns or derived plan fields.</td></tr>
+<tr><td><code>config_run_create_account</code></td><td>Parses account creation switches and coordinates dry-run/apply.</td><td>Account creation must be inspectable and guarded.</td><td>Adding create-account options.</td></tr>
+<tr><td><code>config_apply_account_plan</code></td><td>Creates/updates groups, Linux user, home, target env.</td><td>Actual account mutation happens here.</td><td>Changing account creation behavior.</td></tr>
+<tr><td><code>config_reconcile_target_env_file</code></td><td>Writes managed target env block and fixes owner/mode.</td><td>Keeps target policy consistent and operator-owned.</td><td>Adding generated target env variables.</td></tr>
+<tr><td><code>config_bootstrap_function_allowed</code></td><td>Allowlist of trusted functions callable from step metadata.</td><td>Prevents arbitrary function dispatch.</td><td>Every new managed step function.</td></tr>
+<tr><td><code>run_once</code></td><td>Runs one step with done/skipped/failed/running markers.</td><td>Provides idempotent execution and failure records.</td><td>Changing state semantics only.</td></tr>
+<tr><td><code>installers.sh</code></td><td>Actual install/check function library.</td><td>Trusted executable behavior.</td><td>Adding new install/check capabilities.</td></tr>
+<tr><td><code>create-cifs-credentials-files.sh</code></td><td>Creates target-owned SMB credential files.</td><td>Separates secret entry from mount logic.</td><td>Adding credential file types or prompts.</td></tr>
+<tr><td><code>mounts.sh</code></td><td>Mount behavior and share mapping.</td><td>Separates mount execution from config CLI.</td><td>Adding/removing shares or mount rules.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="cli">
+<h2>5. CLI switches and command design</h2>
+<div class="scenario">
+<strong>Scenario.</strong>
+You need to add a new command option. Before adding it, decide whether it is stable policy, one-time runtime choice, or
+a dangerous/destructive operation.
+</div>
+
+<div class="principle">
+<strong>Design rule.</strong>
+Stable role defaults belong in config files. One-time operator decisions belong in switches. Destructive actions should
+require explicit switches and clear dry-run output.
+</div>
+
+<table>
+<thead><tr><th>Switch</th><th>Meaning</th><th>Rationale</th><th>Developer note</th></tr></thead>
+<tbody>
+<tr><td><code>--target USER</code></td><td>Choose affected account.</td><td>Operator may configure many targets.</td><td>Do not infer target from current shell when command is target-sensitive.</td></tr>
+<tr><td><code>--profile NAME</code></td><td>Choose account profile.</td><td>Creation-time role choice.</td><td>Validate profile kind against command kind.</td></tr>
+<tr><td><code>--dry-run</code></td><td>Show plan without mutation.</td><td>Current system state matters.</td><td>Dry-run should expose owner/mode, home, groups, target env, password policy.</td></tr>
+<tr><td><code>--interactive</code></td><td>Prompt before applying.</td><td>Safe for manual operator sessions.</td><td>May prompt for choices, but do not expose passwords.</td></tr>
+<tr><td><code>--non-interactive</code></td><td>No prompts.</td><td>Needed for scripted/Codex runs.</td><td>Must never block waiting for input.</td></tr>
+<tr><td><code>--expire-password</code></td><td>Force first-login password change.</td><td>One-time account lifecycle action.</td><td>Only run after password exists or was set.</td></tr>
+<tr><td><code>--remove-home</code></td><td>Delete target home.</td><td>Destructive, explicit only.</td><td>Warn that state/credentials under home are removed too.</td></tr>
+<tr><td><code>--purge-config</code></td><td>Remove target env policy.</td><td>Destructive policy cleanup.</td><td>Default should keep policy for audit/recovery.</td></tr>
+</tbody>
+</table>
+
+<h3>Bad switch design</h3>
+<pre><code># Bad: silently destructive default
+sudo config --remove-target --name aiengineer
+
+# Bad: password value on command line
+sudo config --create-target --name aiengineer --password "secret"</code></pre>
+
+<h3>Good switch design</h3>
+<pre><code># Good: inspect first
+sudo config --remove-target --name aiengineer --dry-run
+
+# Good: explicit destructive behavior
+sudo config --remove-target --name aiengineer --remove-home --purge-config</code></pre>
+</section>
+
+<section id="profiles">
+<h2>6. Profile system: accounts, SMB, mounts, Python envs</h2>
+<div class="chapter">
+<strong>Scenario.</strong>
+You want to add a new role, such as <code>DataEngineer</code> or <code>BioModeler</code>. That role needs a Linux user,
+a role group, SMB identities, mount choices, bootstrap defaults, and probably Python env policy.
+</div>
+
+<div class="principle">
+<strong>Design rule.</strong>
+Profiles model role policy. They should be readable, auditable, and mostly static. Runtime execution should not be hidden inside profiles.
+</div>
+
+<h3>Profile files</h3>
+<table>
+<thead><tr><th>File</th><th>Purpose</th><th>Typical edit</th></tr></thead>
+<tbody>
+<tr><td><code>accounts/profiles.tsv</code></td><td>Account kind, username, groups, role labels, bootstrap profile, SMB profile, mount profile.</td><td>Add or modify role definitions.</td></tr>
+<tr><td><code>accounts/smb-profiles.tsv</code></td><td>SMB usernames per share type.</td><td>Change share identities for a role.</td></tr>
+<tr><td><code>accounts/mount-profiles.tsv</code></td><td>Enabled share groups.</td><td>Control which mounts a role receives.</td></tr>
+<tr><td><code>install/python-env-profiles.tsv</code></td><td>Python env name and manager policy by role.</td><td>Assign envs such as <code>aiengineer</code>, <code>researchscientist</code>, <code>publisher</code>.</td></tr>
+</tbody>
+</table>
+
+<h3>Account kind matters</h3>
+<p>
+The second column in <code>profiles.tsv</code>, <code>account_kind</code>, is not decoration. It decides whether a profile is valid for
+<code>create-operator</code> or <code>create-target</code>.
+</p>
+
+<pre><code># valid operator profile
+DefaultOperator    operator    vmuser    operator    operator    770    operator    Operator    operator    operator    all    1    1    1    Operator account
+
+# valid target profile
+AIEngineer         target      aiengineer    aiengineer    aiengineer    770    ai-engineer    AI Engineer    ai-engineer    aiengineer    research    0    1    1    AI engineering role</code></pre>
+
+<div class="good">
+<strong>Contributor note.</strong>
+When adding a profile, immediately test both the valid and invalid command path. Example:
+<pre><code>sudo config --create-target --profile AIEngineer --name aiengineer --dry-run
+config --create-operator --profile AIEngineer --name badoperator --dry-run</code></pre>
+</div>
+</section>
+
+<section id="state">
+<h2>7. Bootstrap plan and state semantics</h2>
+<div class="scenario">
+<strong>Scenario.</strong>
+A new step is added and appears in <code>steps.tsv</code>, but the target does not run it. The reason is usually plan/marker state,
+not missing code.
+</div>
+
+<div class="principle">
+<strong>Design rule.</strong>
+The bootstrap plan says what may run. Markers say what already happened. The engine reconciles those two views before execution.
+</div>
+
+<table>
+<thead><tr><th>State</th><th>Meaning</th><th>Developer implication</th></tr></thead>
+<tbody>
+<tr><td><code>pending STEP</code></td><td>Plan allows this step to run.</td><td>Execution still checks markers.</td></tr>
+<tr><td><code>next STEP</code></td><td>Operator intent marker; treated like pending.</td><td>Useful for human planning.</td></tr>
+<tr><td><code>skipped STEP</code></td><td>Plan blocks this step.</td><td>Do not run even if function exists.</td></tr>
+<tr><td><code>STEP.done</code></td><td>Step completed before.</td><td><code>run_once</code> skips it.</td></tr>
+<tr><td><code>STEP.skipped</code></td><td>Marker blocks the step.</td><td><code>unskip</code> removes it.</td></tr>
+<tr><td><code>STEP.failed</code></td><td>Step failed before.</td><td>Status should show reason if available.</td></tr>
+<tr><td><code>STEP.running</code></td><td>Step is running or was interrupted.</td><td>Lock/stale state needs careful handling.</td></tr>
+</tbody>
+</table>
+
+<h3>Contribution note</h3>
+<p>
+Avoid changing <code>run_once</code> unless you are explicitly working on state semantics. Most new features should enter as new steps,
+not by changing the runner.
+</p>
+
+<pre><code>sudo config --target aiengineer bootstrap status
+sudo config --target aiengineer unskip install_example_tooling
+sudo config --target aiengineer bootstrap step install_example_tooling</code></pre>
+</section>
+
+<section id="installers">
+<h2>8. Managed installers and step dispatch</h2>
+<div class="chapter">
+<strong>Scenario.</strong>
+You want to add <code>InstallMLBasePythonStack</code>. If you only add the function, operators cannot safely discover or run it.
+If you only add a row to <code>steps.tsv</code>, the engine should reject it unless it is allowlisted.
+</div>
+
+<div class="principle">
+<strong>Design rule.</strong>
+A managed installer is complete only when it has implementation, trust, metadata, role placement, and a one-step validation path.
+</div>
+
+<h3>The complete chain</h3>
+<div class="flow">
+<div class="step"><strong>Implementation</strong><code>installers.sh</code><br><code>InstallExampleTooling</code></div>
+<div class="step"><strong>Trust</strong><code>config.sh</code><br><code>config_bootstrap_function_allowed</code></div>
+<div class="step"><strong>Metadata</strong><code>steps.tsv</code><br><code>install_example_tooling</code></div>
+<div class="step"><strong>Role default</strong><code>profiles/*.plan</code><br><code>pending/skipped</code></div>
+<div class="step"><strong>Validation</strong><code>bootstrap step</code><br>one target, one step</div>
+</div>
+
+<h3>Installer function expectations</h3>
+<ul>
+<li>Print what target and environment it is affecting.</li>
+<li>Return non-zero only for real failures.</li>
+<li>Skip clearly when optional config is missing.</li>
+<li>Use target-aware helpers for target-owned files.</li>
+<li>Do not assume <code>$HOME</code> means <code>TARGET_HOME</code>.</li>
+<li>Do not print secrets or credential file contents.</li>
+<li>Prefer idempotent operations.</li>
+</ul>
+
+<pre><code>InstallExampleTooling() {
+  local target_user="${TARGET_USER:-}"
+  local target_home="${TARGET_HOME:-}"
+
+  if [[ -z "$target_user" || -z "$target_home" ]]; then
+    echo "[ERROR] TARGET_USER/TARGET_HOME not set" >&2
+    return 1
+  fi
+
+  echo "[INFO] Installing example tooling for ${target_user}"
+  install -d -m 755 -o "$target_user" -g "$(id -gn "$target_user")" "${target_home}/.local/bin"
+
+  # real work here
+}</code></pre>
+</section>
+
+<section id="new-function">
+<h2>9. How to add a new managed function</h2>
+<div class="scenario">
+<strong>Scenario.</strong>
+A manual workflow has become repeatable: install a Python package set, configure a CLI, add notebooks, install publisher tooling,
+or check GPU/Torch support. It should become a managed step.
+</div>
+
+<h3>Step 1: name the step and function</h3>
+<table>
+<thead><tr><th>Thing</th><th>Convention</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Step name</td><td>lowercase snake case</td><td><code>install_ml_base_python_stack</code></td></tr>
+<tr><td>Function name</td><td>PascalCase shell function</td><td><code>InstallMLBasePythonStack</code></td></tr>
+<tr><td>Package variable</td><td>uppercase env-style name</td><td><code>PIP_ML_BASE_STACK</code></td></tr>
+</tbody>
+</table>
+
+<h3>Step 2: implement trusted function</h3>
+<pre><code># /home/vmuser/.local/lib/config-sh/installers.sh
+InstallMLBasePythonStack() {
+  local packages="${PIP_ML_BASE_STACK:-}"
+  [[ -n "$packages" ]] || {
+    echo "[SKIP] PIP_ML_BASE_STACK is empty"
+    return 0
+  }
+
+  echo "[INFO] Installing ML base Python stack for ${TARGET_USER}"
+  InstallPythonPackagesIntoEnv "${PYTHON_ENV:-}" $packages
+}</code></pre>
+
+<h3>Step 3: add allowlist entry</h3>
+<pre><code># /home/vmuser/.local/bin/config.sh
+config_bootstrap_function_allowed() {
+  case "$1" in
+    ...|InstallMLBasePythonStack)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}</code></pre>
+
+<h3>Step 4: register in steps.tsv</h3>
+<pre><code>install_ml_base_python_stack    InstallMLBasePythonStack    target    1    Install base ML Python packages into the target env</code></pre>
+
+<h3>Step 5: add to profile plans</h3>
+<pre><code># ai-engineer.plan
+pending install_ml_base_python_stack
+
+# research-scientist.plan
+skipped install_ml_base_python_stack
+
+# publisher.plan
+skipped install_ml_base_python_stack</code></pre>
+
+<h3>Step 6: validate one step</h3>
+<pre><code>bash --noprofile --norc -n /home/vmuser/.local/bin/config.sh
+bash --noprofile --norc -n /home/vmuser/.local/lib/config-sh/installers.sh
+
+config --target aiengineer bootstrap steps
+sudo config --target aiengineer bootstrap status
+sudo config --target aiengineer unskip install_ml_base_python_stack
+sudo config --target aiengineer bootstrap step install_ml_base_python_stack</code></pre>
+</section>
+
+<section id="new-profile">
+<h2>10. How to add a new profile or role</h2>
+<div class="scenario">
+<strong>Scenario.</strong>
+You need a new role such as <code>DataEngineer</code>. It should get its own user defaults, role group, SMB identity,
+mount profile, bootstrap profile, and Python environment.
+</div>
+
+<h3>Checklist</h3>
+<ol>
+<li>Add account profile row in <code>accounts/profiles.tsv</code>.</li>
+<li>Add SMB profile row in <code>accounts/smb-profiles.tsv</code> if needed.</li>
+<li>Add mount profile row in <code>accounts/mount-profiles.tsv</code> if needed.</li>
+<li>Add bootstrap profile file under <code>bootstrap/profiles/</code>.</li>
+<li>Add Python env profile row in <code>install/python-env-profiles.tsv</code> if AN2-02 is implemented.</li>
+<li>Ensure <code>config-init</code> can generate the example row/file for new installs.</li>
+<li>Dry-run create-target with valid and invalid profile-kind paths.</li>
+</ol>
+
+<pre><code>sudo config --create-target --profile DataEngineer --name dataengineer --dry-run
+config --create-operator --profile DataEngineer --name badoperator --dry-run</code></pre>
+
+<div class="note">
+<strong>Important.</strong>
+Adding a profile is not enough to install tools. Profiles choose defaults. Installers do execution later through bootstrap steps.
+</div>
+</section>
+
+<section id="python-env">
+<h2>11. How to add environment-aware Python installers</h2>
+<div class="chapter">
+<strong>Scenario.</strong>
+A contributor adds a Python package installer. It works on their shell because the right conda env is active, but it fails for targets
+or installs into the wrong environment during automation.
+</div>
+
+<div class="principle">
+<strong>Design rule.</strong>
+Managed Python installers must not depend on the active shell. They must resolve an explicit target environment.
+</div>
+
+<h3>Resolution order</h3>
+<pre><code>ResolveTargetPythonEnv:
+  1. explicit env argument
+  2. PYTHON_ENV from targets/USER.env
+  3. CONFIG_PYTHON_ENV_DEFAULT if defined
+  4. refuse system Python unless PYTHON_ENV_ALLOW_SYSTEM=1
+  5. if env missing and PYTHON_ENV_CREATE_MISSING=0, fail or skip clearly</code></pre>
+
+<h3>What to print</h3>
+<pre><code>target user: aiengineer
+target role: ai-engineer
+target Python env: aiengineer
+env manager: auto
+installing packages from PIP_ML_BASE_STACK into aiengineer</code></pre>
+
+<h3>Why this matters</h3>
+<p>
+A virtualenv or conda env named <code>experiment1</code> does not automatically see packages installed into <code>base</code> or
+<code>aiengineer</code>. That isolation is useful only if the installer prints and uses the intended environment.
+</p>
+
+<div class="bad">
+Do not use <code>sudo pip</code>. Do not install into system Python silently. Do not assume <code>conda activate</code> happened in the calling shell.
+</div>
+</section>
+
+<section id="account-lifecycle">
+<h2>12. Account lifecycle extension notes</h2>
+<div class="scenario">
+<strong>Scenario.</strong>
+A developer adds <code>--expire-password</code>, <code>remove-target</code>, or <code>remove-operator</code>. These are lifecycle features,
+not installer steps, so they belong in the account command path.
+</div>
+
+<h3>Where lifecycle behavior belongs</h3>
+<table>
+<thead><tr><th>Feature</th><th>Likely code path</th><th>Important rule</th></tr></thead>
+<tbody>
+<tr><td><code>--expire-password</code></td><td><code>config_run_create_account</code>, <code>config_apply_account_plan</code></td><td>Only expire after password exists or was set.</td></tr>
+<tr><td>profile-kind validation</td><td>After <code>config_resolve_account_profile</code></td><td>Fail before printing/applying mismatched plan.</td></tr>
+<tr><td><code>remove-target</code></td><td>New remove account helper path in <code>config.sh</code></td><td>Conservative default: keep home/config/state/credentials.</td></tr>
+<tr><td><code>remove-operator</code></td><td>Separate guarded operator removal path</td><td>Refuse current operator; protect <code>vmuser</code> unless forced.</td></tr>
+</tbody>
+</table>
+
+<h3>Profile-kind validation placement</h3>
+<pre><code>config_resolve_account_profile "$resolved_profile" ...
+config_validate_account_plan_kind "$kind" || return 1
+config_print_account_plan_summary
+config_print_account_plan_actions</code></pre>
+
+<div class="principle">
+<strong>Why placement matters.</strong>
+Before profile resolution, the code does not know the profile kind. After the apply path, the wrong policy may already be written.
+</div>
+</section>
+
+<section id="testing">
+<h2>13. Testing and validation</h2>
+<div class="chapter">
+<strong>Scenario.</strong>
+You have made a change and need to prove it did not break parsing, profile resolution, dry-run safety, target ownership, or step dispatch.
+</div>
+
+<h3>Always run syntax checks</h3>
+<pre><code>bash --noprofile --norc -n /home/vmuser/.local/bin/config.sh
+bash --noprofile --norc -n /home/vmuser/.local/lib/config-sh/installers.sh
+bash --noprofile --norc -n /home/vmuser/.local/bin/mounts.sh
+bash --noprofile --norc -n /home/vmuser/.local/bin/create-cifs-credentials-files.sh</code></pre>
+
+<h3>Dry-run account tests</h3>
+<pre><code>sudo config --create-operator --profile DefaultOperator --name vmuser --dry-run
+sudo config --create-target --profile AIEngineer --name aiengineer --dry-run
+sudo config --create-target --profile ResearchScientist --name researchscientist --dry-run
+sudo config --create-target --profile Publisher --name publisher --dry-run</code></pre>
+
+<h3>Negative tests</h3>
+<pre><code>config --create-operator --profile AIEngineer --name badoperator --dry-run
+config --create-target --profile DefaultOperator --name badtarget --dry-run</code></pre>
+
+<h3>Step visibility tests</h3>
+<pre><code>config --target aiengineer bootstrap steps
+sudo config --target aiengineer bootstrap status</code></pre>
+
+<h3>One-step execution test</h3>
+<pre><code>sudo config --target aiengineer unskip install_example_tooling
+sudo config --target aiengineer bootstrap step install_example_tooling
+sudo config --target aiengineer bootstrap status</code></pre>
+
+<div class="note">
+For destructive commands, start with <code>--dry-run</code>. If the feature removes users, homes, config files, or state, include explicit negative tests proving safe refusals.
+</div>
+</section>
+
+<section id="review">
+<h2>14. Review checklist</h2>
+<div class="review">
+<strong>Before merging a contribution, verify:</strong>
+<ul>
+<li>The change has a clear scope: account lifecycle, profile policy, bootstrap, installer, mount, credential, or docs.</li>
+<li>Executable behavior is not hidden in editable config files.</li>
+<li>New installer functions are allowlisted and registered in <code>steps.tsv</code>.</li>
+<li>New steps are placed in appropriate role profile plans as <code>pending</code> or <code>skipped</code>.</li>
+<li>Target-specific file writes use <code>TARGET_USER</code> and <code>TARGET_HOME</code>.</li>
+<li>Operator-owned policy files remain operator-owned and mode <code>600</code> where appropriate.</li>
+<li>Credential files are not read or printed.</li>
+<li>Dry-run output exposes the important owner/group/mode/scope decisions.</li>
+<li>Syntax checks pass.</li>
+<li>Negative tests are included for dangerous or mismatched command paths.</li>
+<li>The final answer or changelog lists changed files and tests run.</li>
+</ul>
+</div>
+
+<h3>Commit message patterns</h3>
+<pre><code>feat: add managed ML base workflow step
+feat: add profile-aligned Python env policy
+fix: reject account profile kind mismatches
+fix: preserve operator ownership for target env files
+docs: add developer contribution guide
+chore: register publisher workflow profile steps</code></pre>
+</section>
+
+<section id="anti-patterns">
+<h2>15. Anti-patterns</h2>
+<table>
+<thead><tr><th>Anti-pattern</th><th>Why it is bad</th><th>Better approach</th></tr></thead>
+<tbody>
+<tr><td>Put shell commands in <code>.env</code> files.</td><td>Turns policy into execution.</td><td>Put commands in trusted functions.</td></tr>
+<tr><td>Let <code>steps.tsv</code> call arbitrary functions.</td><td>Breaks the allowlist trust boundary.</td><td>Require <code>config_bootstrap_function_allowed</code>.</td></tr>
+<tr><td>Use <code>$HOME</code> in target installers.</td><td>May point to root/operator, not target.</td><td>Use <code>TARGET_HOME</code> and target helpers.</td></tr>
+<tr><td>Use <code>sudo pip</code>.</td><td>Can damage system Python and mix envs.</td><td>Resolve <code>PYTHON_ENV</code> and install inside it.</td></tr>
+<tr><td>Default to deleting homes/config during removal.</td><td>Destructive and hard to recover.</td><td>Default keep; require explicit destructive switches.</td></tr>
+<tr><td>Run full bootstrap to test one new step.</td><td>Can run unrelated installers.</td><td>Use <code>bootstrap step STEP</code>.</td></tr>
+<tr><td>Print credential files for debugging.</td><td>Leaks secrets.</td><td>Print paths and ownership only.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="examples">
+<h2>16. Contributor examples</h2>
+
+<h3>Example A: add account profile kind validation</h3>
+<p>
+Goal: reject <code>create-operator --profile AIEngineer</code> because <code>AIEngineer</code> is a target profile.
+</p>
+<pre><code>config_resolve_account_profile "$resolved_profile" ...
+config_validate_account_plan_kind "$kind" || return 1</code></pre>
+<p>
+The helper should list valid profiles for the requested kind by reading <code>accounts/profiles.tsv</code>.
+</p>
+
+<h3>Example B: add a publisher tool step</h3>
+<pre><code># Function
+InstallPublisherBaseTools() { ... }
+
+# Allowlist
+InstallPublisherBaseTools
+
+# steps.tsv
+install_publisher_base_tools    InstallPublisherBaseTools    target    1    Install publisher base tools
+
+# profiles
+publisher.plan: pending install_publisher_base_tools
+ai-engineer.plan: skipped install_publisher_base_tools
+research-scientist.plan: skipped install_publisher_base_tools</code></pre>
+
+<h3>Example C: add Python env source of truth</h3>
+<pre><code># New file
+/home/vmuser/.local/etc/config-sh/install/python-env-profiles.tsv
+
+# Generated target env fields
+PYTHON_ENV_PROFILE="AIEngineer"
+PYTHON_ENV="aiengineer"
+PYTHON_ENV_MANAGER="auto"
+PYTHON_ENV_CREATE_MISSING="0"
+PYTHON_ENV_ALLOW_SYSTEM="0"</code></pre>
+
+<h3>Example D: Codex-safe implementation prompt</h3>
+<pre><code>Read config.sh, installers.sh, bootstrap/steps.tsv, and bootstrap profile plans.
+
+Implement one managed step only.
+
+Requirements:
+- Put executable work in installers.sh.
+- Add allowlist entry in config.sh.
+- Add one steps.tsv row.
+- Add profile plan rows only where appropriate.
+- Do not print full file contents.
+- Do not run broad bootstrap/install/mount/pull/push.
+- Run syntax checks.
+
+Final answer:
+Changed files:
+Tests run:
+Notes:</code></pre>
+</section>
+
+<p class="footer">Config Tool Developer Guide — contributor article for safe extension of the vmuser config tool.</p>
+</main>
+</body>
+</html>

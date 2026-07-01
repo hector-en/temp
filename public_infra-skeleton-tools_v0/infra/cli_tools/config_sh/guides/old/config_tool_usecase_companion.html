@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>config Tool Companion Guide</title>
+<style>
+:root {
+  --bg:#f6f8fb; --ink:#111827; --muted:#5b6472; --panel:#fff; --line:#d9e0ea;
+  --blue:#2563eb; --blue-soft:#eaf1ff; --green:#15803d; --green-soft:#eaf8ef;
+  --yellow:#facc15; --yellow-soft:#fffbdd; --orange:#b45309; --orange-soft:#fff4df;
+  --red:#b91c1c; --red-soft:#fff1f1; --purple:#6d28d9; --purple-soft:#f3edff;
+  --code:#101827; --code-text:#e6edf7; --shadow:0 8px 30px rgba(31,41,55,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);line-height:1.58}
+a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+code{background:#eef2f7;border:1px solid #dce3ee;border-radius:.35rem;padding:.06rem .28rem;font-size:.94em}
+pre{background:var(--code);color:var(--code-text);border-radius:.9rem;padding:1rem;overflow-x:auto;border:1px solid #1f2937;margin:.8rem 0}
+pre code{background:transparent;border:0;padding:0;color:inherit}
+.layout{display:grid;grid-template-columns:17rem minmax(0,1fr);min-height:100vh}
+nav{position:sticky;top:0;height:100vh;overflow-y:auto;padding:1.25rem;background:#0f172a;color:white}
+nav h2{font-size:.9rem;color:#93a4bd;margin:0 0 .75rem;text-transform:uppercase;letter-spacing:.08em}
+nav a{color:#dce8fa;display:block;padding:.42rem .5rem;border-radius:.45rem;font-size:.92rem}
+nav a:hover{background:rgba(255,255,255,.08);text-decoration:none}
+main{max-width:84rem;padding:2rem min(5vw,4rem) 5rem}
+.hero{background:linear-gradient(135deg,#fff,#eef5ff);border:1px solid var(--line);border-radius:1.4rem;padding:2rem;box-shadow:0 20px 60px rgba(31,41,55,.08)}
+h1{font-size:clamp(2rem,5vw,4rem);line-height:1.05;margin:0;letter-spacing:-.045em}
+h2{margin:0 0 .75rem;padding-bottom:.45rem;border-bottom:1px solid var(--line);font-size:1.75rem;letter-spacing:-.02em}
+h3{margin-top:1.55rem;font-size:1.22rem} h4{margin:1rem 0 .35rem}
+section{margin:2.5rem 0}
+.abstract,.overview{margin-top:1.1rem;background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:1rem;padding:1rem;color:#1f2937;max-width:70rem}
+.abstract h2,.overview h3{font-size:1.1rem;border:0;margin:0 0 .55rem;padding:0}
+.abstract p,.overview p{margin:.55rem 0}
+.subtitle{max-width:64rem;color:var(--muted);font-size:1.08rem;margin-top:1rem}
+.badges{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.badge{padding:.3rem .65rem;border-radius:999px;background:white;border:1px solid var(--line);color:var(--muted);font-size:.86rem}
+.tabs{display:flex;flex-wrap:wrap;gap:.45rem;margin:.7rem 0 1.1rem;padding-bottom:.3rem;border-bottom:1px dashed #cbd5e1}
+.tabs a{display:inline-block;background:white;border:1px solid var(--line);border-radius:999px;padding:.28rem .7rem;font-size:.88rem;color:#1f2937;box-shadow:0 3px 14px rgba(31,41,55,.04)}
+.tabs a:hover{background:var(--blue-soft);text-decoration:none;border-color:#bcd0ff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1rem}
+.card,.decision,.scope-card,.map-card{background:var(--panel);border:1px solid var(--line);border-radius:1rem;padding:1rem;box-shadow:var(--shadow)}
+.note{border-radius:.85rem;padding:.9rem 1rem;margin:1rem 0;border:1px solid var(--line);background:var(--blue-soft);border-left:.35rem solid var(--blue)}
+.note.green{background:var(--green-soft);border-left-color:var(--green)} .note.warn{background:var(--orange-soft);border-left-color:var(--orange)} .note.danger{background:var(--red-soft);border-left-color:var(--red)} .note.purple{background:var(--purple-soft);border-left-color:var(--purple)}
+table{width:100%;border-collapse:collapse;background:white;border:1px solid var(--line);border-radius:.9rem;overflow:hidden;margin:1rem 0}
+th,td{text-align:left;padding:.72rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f1f5f9} tr:last-child td{border-bottom:0}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(8rem,1fr));gap:.7rem;align-items:stretch;margin:1.2rem 0}
+.flow .box{background:white;border:1px solid var(--line);border-radius:.9rem;padding:.8rem;position:relative;box-shadow:var(--shadow)}
+.flow .box:not(:last-child)::after{content:"→";position:absolute;right:-.65rem;top:50%;transform:translateY(-50%);color:var(--blue);font-weight:800;z-index:2}
+.box strong{display:block;color:var(--blue);margin-bottom:.25rem}
+.where,.context,.do,.why,.summary-map{border-radius:.75rem;padding:.75rem;margin:.75rem 0}
+.where{background:#f8fafc;border:1px solid #e2e8f0} .context{background:#fff;border:1px solid #e5e7eb} .do{background:var(--green-soft);border:1px solid #bbf7d0} .why{background:var(--blue-soft);border:1px solid #bfdbfe} .summary-map{background:#fff;border:1px solid var(--line)}
+.where strong,.context strong,.do strong,.why strong,.summary-map strong{display:block;color:#334155;margin-bottom:.35rem}
+.workblock{display:grid;grid-template-columns:minmax(0,1fr) 21rem;gap:1rem;align-items:start;margin:1rem 0}
+.sticky-note{position:sticky;top:1rem;background:var(--yellow-soft);border:1px solid #fde68a;border-left:.45rem solid var(--yellow);border-radius:1rem;padding:.85rem;box-shadow:var(--shadow)}
+.sticky-note h4{margin:0 0 .4rem;color:#713f12}
+.sticky-note details{margin:.4rem 0} .sticky-note summary{cursor:pointer;font-weight:750;color:#713f12}
+.sticky-note p,.sticky-note li{font-size:.92rem} .sticky-note pre{font-size:.8rem;padding:.7rem;border-radius:.65rem}
+.scope-choice,.map-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(20rem,1fr));gap:1rem}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.75rem}
+.mini div{background:white;border:1px solid var(--line);border-radius:.8rem;padding:.75rem}
+details.panel{background:white;border:1px solid var(--line);border-radius:.9rem;padding:.85rem 1rem;margin:.85rem 0;box-shadow:var(--shadow)}
+details.panel summary{cursor:pointer;font-weight:750;color:#0f172a}
+.cmd-history{counter-reset:cmd;display:grid;gap:.7rem}
+.cmd{background:#fff;border:1px solid var(--line);border-radius:.9rem;padding:.85rem;box-shadow:var(--shadow);position:relative}
+.cmd::before{counter-increment:cmd;content:counter(cmd);position:absolute;top:.75rem;right:.75rem;background:var(--blue-soft);color:var(--blue);border:1px solid #bfdbfe;width:1.7rem;height:1.7rem;border-radius:999px;display:grid;place-items:center;font-weight:800;font-size:.86rem}
+.cmd h4{margin:0 2.5rem .4rem 0} .cmd p{margin:.45rem 0}
+.tight li{margin:.35rem 0}
+.role-pill{display:inline-block;border-radius:999px;background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;padding:.12rem .5rem;font-size:.82rem}
+@media(max-width:980px){.layout{display:block}nav{position:static;height:auto}main{padding:1rem}.flow,.workblock{grid-template-columns:1fr}.flow .box:not(:last-child)::after{content:"↓";right:1rem;top:auto;bottom:-.75rem}.sticky-note{position:static}}
+@media print{nav{display:none}.layout{display:block}body{background:white}main{max-width:none;padding:0}.hero,.card,.decision,table,.cmd,.sticky-note{box-shadow:none}.tabs{display:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav>
+  <h2>Companion Guide</h2>
+  <a href="#start">Overview</a>
+  <a href="#architecture-first">Architecture first</a>
+  <a href="#before">Before you run</a>
+  <a href="#roles">Configure all roles</a>
+  <a href="#scenarios">Use-case scenarios</a>
+  <a href="#scope-model">System vs target vs local</a>
+  <a href="#policy-env">Policy and env files</a>
+  <a href="#steps">Install steps</a>
+  <a href="#extend">Add installer</a>
+  <a href="#state">Plan and state</a>
+  <a href="#command-history">Command glossary</a>
+  <a href="#troubleshooting">Troubleshooting</a>
+</nav>
+<main>
+<header class="hero" id="start">
+  <h1>Using your <code>config</code> shell tool</h1>
+  <div class="abstract">
+    <h2>Abstract: where you are, what you are touching, and why the order matters</h2>
+    <p>
+      This tool is for the moment when you are logged in as <strong>Operator (vmuser)</strong> and need to configure a working account such as
+      <strong>AI Engineer (AIEngineer)</strong>, <strong>Research Scientist (ResearchScientist)</strong>, or <strong>Publisher</strong>.
+      The first question is not “what command exists?” but “who will this affect, and at what scope?”
+    </p>
+    <p>
+      The safe workflow is always the same: create missing templates once with <code>config config-init</code>, inspect the target with
+      <code>config-show</code>, inspect the step registry with <code>bootstrap steps</code>, inspect target state with <code>bootstrap status</code>,
+      allow only the step you mean to run, then run one selected step with <code>bootstrap step STEP</code>.
+    </p>
+    <p>
+      If the flow is not followed, common mistakes are predictable: files land under the wrong home directory, target-owned files become root-owned,
+      a system-wide installer runs when you only meant to configure one role, or a plan/profile edit does not affect an already-created target plan.
+      The guide below keeps those boundaries visible.
+    </p>
+  </div>
+  <p class="subtitle">
+    The style is deliberately companion-like: every topic says where the operator is, what to do, why the command matters, and which files carry policy, state, or executable behavior.
+  </p>
+  <div class="badges">
+    <span class="badge">Generated 2026-06-13 00:08:04</span>
+    <span class="badge">Holistic operator perspective</span>
+    <span class="badge">Sticky quick notes</span>
+    <span class="badge">Role profiles included</span>
+  </div>
+</header>
+
+<section id="architecture-first">
+  <h2>1. Architecture map before commands</h2>
+  <div class="tabs"><a href="#arch-map">Map</a><a href="#arch-flow">Flow</a><a href="#arch-boundary">Boundary</a><a href="#arch-summary">Summary</a></div>
+
+  <div class="overview">
+    <h3>What this flow achieves</h3>
+    <p>
+      The architecture separates decisions from execution. Policy files say what a role should prefer. The plan says what a target is currently allowed to run.
+      The engine validates and dispatches. The installer library contains trusted executable behavior. Runtime markers remember what already happened.
+    </p>
+  </div>
+
+  <div id="arch-map" class="map-grid">
+    <div class="map-card"><h3><code>bin/config.sh</code></h3><p><strong>Engine:</strong> target parsing, config loading, state, safety, allowlist, dispatch.</p><pre><code>config --target AIEngineer bootstrap step STEP
+# config.sh validates target, plan, marker, function allowlist</code></pre></div>
+    <div class="map-card"><h3><code>lib/config-sh/installers.sh</code></h3><p><strong>Trusted behavior:</strong> real installer functions.</p><pre><code>InstallNodeJS() {
+  config_apt_install_list APT_NODEJS "nodejs npm"
+}</code></pre></div>
+    <div class="map-card"><h3><code>etc/config-sh</code></h3><p><strong>Editable policy:</strong> roles, packages, versions, profiles, step metadata.</p><pre><code>BOOTSTRAP_PROFILE="ai-engineer"
+APT_NODEJS="nodejs npm"
+SYNC_SYSTEM_ITEMS="0"</code></pre></div>
+    <div class="map-card"><h3><code>state/config-sh</code></h3><p><strong>Target runtime:</strong> actual target plan and markers.</p><pre><code>bootstrap.plan
+install_nodejs.done
+install_docker.skipped</code></pre></div>
+  </div>
+
+  <h3 id="arch-flow">Main run flow</h3>
+  <div class="flow">
+    <div class="box"><strong>1. Choose target</strong><code>--target AIEngineer</code></div>
+    <div class="box"><strong>2. Load policy</strong><code>targets/AIEngineer.env</code></div>
+    <div class="box"><strong>3. Check state</strong><code>bootstrap.plan + markers</code></div>
+    <div class="box"><strong>4. Dispatch safely</strong><code>config.sh allowlist</code></div>
+    <div class="box"><strong>5. Run behavior</strong><code>installers.sh</code></div>
+  </div>
+
+  <div id="arch-boundary" class="note purple">
+    <strong>The boundary to remember:</strong>
+    <pre><code>bin/config.sh
+  Engine, safety, dispatch, state.
+  Example: parse --target, validate allowlist, run run_once.
+
+lib/config-sh/installers.sh
+  Trusted executable install behavior.
+  Example: InstallDocker(), InstallNodeJS(), InstallDevEnvAnaconda().
+
+etc/config-sh
+  Editable policy and metadata only.
+  Example: APT_NODEJS="nodejs npm", BOOTSTRAP_PROFILE="ai-engineer".
+
+state/config-sh
+  Per-target plan and runtime history.
+  Example: bootstrap.plan, install_nodejs.done, install_docker.skipped.</code></pre>
+  </div>
+
+  <div id="arch-summary" class="summary-map">
+    <strong>Summary workflow: what to touch for what purpose</strong>
+    <table>
+      <tr><th>Purpose</th><th>Touch</th><th>Normally affects</th></tr>
+      <tr><td>Define role defaults</td><td><code>etc/config-sh/targets/ROLE.env</code></td><td>Future command policy for that role.</td></tr>
+      <tr><td>Define installed packages/versions</td><td><code>etc/config-sh/install/*.env</code></td><td>Future installer inputs only.</td></tr>
+      <tr><td>Add trusted install behavior</td><td><code>lib/config-sh/installers.sh</code> + allowlist in <code>bin/config.sh</code></td><td>The tool’s executable capability.</td></tr>
+      <tr><td>Allow/block a current target step</td><td><code>state/config-sh/bootstrap.plan</code> or <code>skip/unskip</code></td><td>Current target runtime behavior.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="before">
+  <h2>2. Before you run anything</h2>
+  <div class="tabs"><a href="#before-init">config-init</a><a href="#before-target">Target</a><a href="#before-inspect">Inspect</a><a href="#before-edit">Edit location</a><a href="#before-exec">Execution boundary</a></div>
+
+  <div id="before-init" class="workblock">
+    <div>
+      <h3>Initialize templates only when needed</h3>
+      <div class="context"><strong>Context</strong>You use <code>config config-init</code> when the shared editable configuration layout is missing or after the tool gained new template files. It is not a per-target daily command.</div>
+      <div class="do"><strong>Do</strong><pre><code>config config-init</code></pre></div>
+      <div class="why"><strong>Why</strong>It creates commented shared files under <code>/home/vmuser/.local/etc/config-sh</code>. Normal safe behavior is create-if-missing, not overwrite-existing. Use <code>bootstrap plan-init</code>, not <code>config-init</code>, when creating a target’s runtime checklist.</div>
+      <div class="note warn"><strong>Why not <code>config --target AIEngineer config-init</code>?</strong> Because the templates are shared tool policy. The target-specific runtime file is <code>AIEngineer</code>’s <code>bootstrap.plan</code>, created with <code>sudo config --target AIEngineer bootstrap plan-init</code>.</div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary><code>config config-init</code></summary><p>Create missing shared templates. Run once after install, after template changes, or to repair missing files. It should not overwrite existing files in normal use. It does not create a target user; it prepares shared policy files.</p></details></aside>
+  </div>
+
+  <div id="before-target" class="workblock">
+    <div>
+      <h3>Start from where you are</h3>
+      <div class="context"><strong>Context</strong>You are usually logged in as Operator (vmuser), but you may be configuring AI Engineer (AIEngineer). The first question is not “what command exists?” but “who will this affect?”</div>
+      <div class="do"><strong>Do</strong><pre><code>config --target AIEngineer status
+sudo config --target AIEngineer bootstrap status</code></pre></div>
+      <div class="why"><strong>Why</strong>The target controls <code>TARGET_HOME</code>, <code>STATE_DIR</code>, target config, mount identity, and the bootstrap plan path.</div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary><code>--target AIEngineer</code></summary><p>All target-sensitive logic follows this identity. If you omit or mistype it, you may inspect or change the wrong account.</p></details></aside>
+  </div>
+
+  <div id="before-inspect" class="workblock">
+    <div>
+      <h3>Inspect before changing</h3>
+      <div class="context"><strong>Context</strong>If you are unsure what the tool will do, stay in inspection mode first.</div>
+      <div class="do"><strong>Do</strong><pre><code>config --target AIEngineer config-show
+config --target AIEngineer bootstrap steps
+sudo config --target AIEngineer bootstrap status</code></pre></div>
+      <div class="why"><strong>Why</strong>These commands explain loaded policy, available steps, and current target state without installing packages or mounting shares.</div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary>Inspection trio</summary><p><code>config-show</code> explains policy. <code>bootstrap steps</code> explains the registry. <code>bootstrap status</code> explains current runtime state.</p></details></aside>
+  </div>
+
+  <div id="before-edit" class="workblock">
+    <div>
+      <h3>Choose the right edit location</h3>
+      <div class="context"><strong>Context</strong>You may be changing a use case, a package list, a step definition, or real behavior. Those are different types of edits.</div>
+      <div class="do"><strong>Do</strong><ul class="tight"><li>Edit <code>etc/config-sh/targets/USER.env</code> for user policy.</li><li>Edit <code>etc/config-sh/install/*.env</code> for packages, versions, and repo metadata.</li><li>Edit <code>etc/config-sh/bootstrap/steps.tsv</code> to register step metadata.</li><li>Edit <code>lib/config-sh/installers.sh</code> for actual installer behavior.</li><li>Edit <code>bin/config.sh</code> for engine behavior, dispatch safety, or allowlist changes.</li></ul></div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary>Rule</summary><p>If it is a value, prefer <code>etc</code>. If it runs shell commands, it belongs in trusted source. If it records what happened, it belongs in state.</p></details></aside>
+  </div>
+
+  <div id="before-exec" class="workblock">
+    <div>
+      <h3>Know when you cross into execution</h3>
+      <div class="context"><strong>Context</strong>A command can be safe, state-changing, or execution-heavy.</div>
+      <div class="do"><strong>Do</strong><pre><code># Safe
+config --target AIEngineer config-show
+
+# State-changing
+sudo config --target AIEngineer unskip STEP
+
+# Execution
+sudo config --target AIEngineer bootstrap step STEP</code></pre></div>
+      <div class="why"><strong>Why</strong><code>bootstrap step</code> can run an installer. Broad <code>bootstrap</code> can run many installers.</div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary>Execution boundary</summary><p>Use status/steps first. Prefer one-step execution until the target plan is trustworthy.</p></details></aside>
+  </div>
+</section>
+
+<section id="roles">
+  <h2>3. Configure all target roles</h2>
+  <div class="tabs"><a href="#role-operator">Operator</a><a href="#role-ai">AI Engineer</a><a href="#role-research">Research Scientist</a><a href="#role-publisher">Publisher</a><a href="#role-map">Functional map</a></div>
+
+  <div class="note warn">
+    <strong>Naming note:</strong> if your Linux system allows uppercase usernames, you can use <code>AIEngineer</code>, <code>ResearchScientist</code>, and <code>Publisher</code>. For maximum shell portability, lowercase equivalents are safer. The guide uses the requested role labels.
+  </div>
+
+  <div id="role-operator" class="decision">
+    <h3>Operator (vmuser)</h3>
+    <p><a class="role-pill" href="codex_prepare_config_targets_from_companion.md" download>Download Codex target-prep instructions</a></p>
+    <div class="context"><strong>Context</strong>This is the admin/operator account that owns the tool and performs system-level orchestration. It should be able to inspect, mount, pull/push, and manage target plans.</div>
+    <div class="where"><strong>Policy file</strong><code>/home/vmuser/.local/etc/config-sh/targets/vmuser.env</code></div>
+    <div class="do"><strong>Do</strong><pre><code>TARGET_ROLE="operator"
+TARGET_ROLE_LABEL="Operator"
+BOOTSTRAP_PROFILE="operator"
+SYNC_SYSTEM_ITEMS="1"
+SMB_USER_DEFAULT="hector"</code></pre></div>
+
+      <aside class="sticky-note">
+        <h4>Variable sticky note</h4>
+        <details open><summary><code>TARGET_ROLE</code></summary><p>Machine-friendly policy key. It does not have to be a Linux username. Use it to group behavior such as <code>ai-engineer</code>, <code>research-scientist</code>, or <code>publisher</code>.</p></details>
+        <details><summary><code>TARGET_ROLE_LABEL</code></summary><p>Human-readable label for help text, guides, and future reporting. It is just a label unless your code later chooses to display it.</p></details>
+        <details><summary><code>BOOTSTRAP_PROFILE</code></summary><p>Name of the profile template used by <code>bootstrap plan-init</code> when the target plan is missing. It should correspond to a file under <code>etc/config-sh/bootstrap/profiles/</code>.</p></details>
+        <details><summary><code>SYNC_SYSTEM_ITEMS</code></summary><p><code>0</code> means user/target-scoped sync only. <code>1</code> allows supported system-level sync and should normally be reserved for Operator (vmuser).</p></details>
+        <details><summary><code>SMB_USER_DEFAULT</code></summary><p>Default SMB username for mounts/sync identity when no command-specific override is provided. It is not a password and should not store secrets.</p></details>
+      </aside>
+
+    <div class="why"><strong>Why</strong>The operator profile can include administrative/system-capable steps because this account manages the workstation and shared tool layout.</div>
+    <div class="summary-map"><strong>Likely installers</strong><p>System basics, networking, mount support, Docker/system tooling if used for administration, config sync tooling, shell helpers. Avoid user-specific research stacks here unless Operator (vmuser) also uses them directly.</p></div>
+  </div>
+
+  <div id="role-ai" class="decision">
+    <h3>AI Engineer (AIEngineer)</h3>
+    <p><a class="role-pill" href="codex_prepare_config_targets_from_companion.md" download>Download Codex target-prep instructions</a></p>
+    <div class="context"><strong>Context</strong>This role builds an AI-powered research assistant platform using Runpod, Agentfield, Kubernetes-oriented workflows, GitHub projects, and MLOps tooling. It needs more engineering and orchestration capability than the other target roles.</div>
+    <div class="where"><strong>Policy file</strong><code>/home/vmuser/.local/etc/config-sh/targets/AIEngineer.env</code></div>
+    <div class="do"><strong>Do</strong><pre><code>TARGET_ROLE="ai-engineer"
+TARGET_ROLE_LABEL="AI Engineer"
+BOOTSTRAP_PROFILE="ai-engineer"
+SYNC_SYSTEM_ITEMS="0"
+SMB_USER_DEFAULT="AIEngineer"</code></pre></div>
+
+      <aside class="sticky-note">
+        <h4>Variable sticky note</h4>
+        <details open><summary><code>TARGET_ROLE</code></summary><p>Machine-friendly policy key. It does not have to be a Linux username. Use it to group behavior such as <code>ai-engineer</code>, <code>research-scientist</code>, or <code>publisher</code>.</p></details>
+        <details><summary><code>TARGET_ROLE_LABEL</code></summary><p>Human-readable label for help text, guides, and future reporting. It is just a label unless your code later chooses to display it.</p></details>
+        <details><summary><code>BOOTSTRAP_PROFILE</code></summary><p>Name of the profile template used by <code>bootstrap plan-init</code> when the target plan is missing. It should correspond to a file under <code>etc/config-sh/bootstrap/profiles/</code>.</p></details>
+        <details><summary><code>SYNC_SYSTEM_ITEMS</code></summary><p><code>0</code> means user/target-scoped sync only. <code>1</code> allows supported system-level sync and should normally be reserved for Operator (vmuser).</p></details>
+        <details><summary><code>SMB_USER_DEFAULT</code></summary><p>Default SMB username for mounts/sync identity when no command-specific override is provided. It is not a password and should not store secrets.</p></details>
+      </aside>
+
+    <div class="why"><strong>Why</strong>Most development environment files should be target-owned, but Kubernetes/Docker/system packages may be system or mixed scope. Keep broad system installers explicit and plan-gated.</div>
+    <div class="summary-map">
+      <strong>Suggested step profile</strong>
+      <table>
+        <tr><th>Likely pending</th><th>Likely skipped until needed</th></tr>
+        <tr><td><code>install_dev_env_system_packages</code>, <code>install_dev_env_shell_init</code>, <code>install_dev_env_python_user_tools</code>, <code>install_dev_env_pyenv</code>, <code>install_docker</code>, <code>install_kubernets</code>, <code>install_minikube</code>, <code>install_terraform</code></td><td><code>install_sqlserver_support_2004</code>, <code>install_sqlserver_cli_tool_2204</code>, large GUI/support steps unless required</td></tr>
+      </table>
+      <p>Possible future manifest additions: Runpod CLI/API helper, Agentfield repo bootstrap, MLOps package group, experiment tracking tools, Kubernetes namespace/context helper.</p>
+    </div>
+  </div>
+
+  <div id="role-research" class="decision">
+    <h3>Research Scientist (ResearchScientist)</h3>
+    <p><a class="role-pill" href="codex_prepare_config_targets_from_companion.md" download>Download Codex target-prep instructions</a></p>
+    <div class="context"><strong>Context</strong>This role explores biologically realistic 5-node GRNs capable of Turing patterns. It compares random search, LHS, genetic algorithms, Bayesian methods, and a novel NCA-ART architecture to find Turing islands. The priority is reproducible scientific computing, parameter search, plotting, notebooks, and experiment organization.</div>
+    <div class="where"><strong>Policy file</strong><code>/home/vmuser/.local/etc/config-sh/targets/ResearchScientist.env</code></div>
+    <div class="do"><strong>Do</strong><pre><code>TARGET_ROLE="research-scientist"
+TARGET_ROLE_LABEL="Research Scientist"
+BOOTSTRAP_PROFILE="research-scientist"
+SYNC_SYSTEM_ITEMS="0"
+SMB_USER_DEFAULT="ResearchScientist"</code></pre></div>
+
+      <aside class="sticky-note">
+        <h4>Variable sticky note</h4>
+        <details open><summary><code>TARGET_ROLE</code></summary><p>Machine-friendly policy key. It does not have to be a Linux username. Use it to group behavior such as <code>ai-engineer</code>, <code>research-scientist</code>, or <code>publisher</code>.</p></details>
+        <details><summary><code>TARGET_ROLE_LABEL</code></summary><p>Human-readable label for help text, guides, and future reporting. It is just a label unless your code later chooses to display it.</p></details>
+        <details><summary><code>BOOTSTRAP_PROFILE</code></summary><p>Name of the profile template used by <code>bootstrap plan-init</code> when the target plan is missing. It should correspond to a file under <code>etc/config-sh/bootstrap/profiles/</code>.</p></details>
+        <details><summary><code>SYNC_SYSTEM_ITEMS</code></summary><p><code>0</code> means user/target-scoped sync only. <code>1</code> allows supported system-level sync and should normally be reserved for Operator (vmuser).</p></details>
+        <details><summary><code>SMB_USER_DEFAULT</code></summary><p>Default SMB username for mounts/sync identity when no command-specific override is provided. It is not a password and should not store secrets.</p></details>
+      </aside>
+
+    <div class="why"><strong>Why</strong>This target should emphasize Python/scientific user-space tooling, notebooks, plotting, and reproducibility. It usually needs fewer system orchestration tools than AI Engineer.</div>
+    <div class="summary-map">
+      <strong>Suggested step profile</strong>
+      <table>
+        <tr><th>Likely pending</th><th>Likely skipped until needed</th></tr>
+        <tr><td><code>install_dev_env_system_packages</code>, <code>install_dev_env_shell_init</code>, <code>install_dev_env_python_user_tools</code>, <code>install_dev_env_pyenv</code>, <code>install_dev_env_anaconda</code>, <code>install_gui_support</code></td><td><code>install_docker</code>, <code>install_kubernets</code>, <code>install_minikube</code>, <code>install_terraform</code>, SQL tooling unless the research store needs it</td></tr>
+      </table>
+      <p>Possible future package groups: NumPy/SciPy, JAX/PyTorch if needed, SALib, scikit-optimize, DEAP, Optuna, BoTorch, plotting, notebook, symbolic/math tooling.</p>
+    </div>
+  </div>
+
+  <div id="role-publisher" class="decision">
+    <h3>Publisher</h3>
+    <p><a class="role-pill" href="codex_prepare_config_targets_from_companion.md" download>Download Codex target-prep instructions</a></p>
+    <div class="context"><strong>Context</strong>This role turns PKM material from Obsidian into publishable scientific output. It may use Obsidian vaults, an open science model workflow, Claude Code or similar coding assistant workflows, LaTeX generation, and your own manuscript template.</div>
+    <div class="where"><strong>Policy file</strong><code>/home/vmuser/.local/etc/config-sh/targets/Publisher.env</code></div>
+    <div class="do"><strong>Do</strong><pre><code>TARGET_ROLE="publisher"
+TARGET_ROLE_LABEL="Publisher"
+BOOTSTRAP_PROFILE="publisher"
+SYNC_SYSTEM_ITEMS="0"
+SMB_USER_DEFAULT="Publisher"</code></pre></div>
+
+      <aside class="sticky-note">
+        <h4>Variable sticky note</h4>
+        <details open><summary><code>TARGET_ROLE</code></summary><p>Machine-friendly policy key. It does not have to be a Linux username. Use it to group behavior such as <code>ai-engineer</code>, <code>research-scientist</code>, or <code>publisher</code>.</p></details>
+        <details><summary><code>TARGET_ROLE_LABEL</code></summary><p>Human-readable label for help text, guides, and future reporting. It is just a label unless your code later chooses to display it.</p></details>
+        <details><summary><code>BOOTSTRAP_PROFILE</code></summary><p>Name of the profile template used by <code>bootstrap plan-init</code> when the target plan is missing. It should correspond to a file under <code>etc/config-sh/bootstrap/profiles/</code>.</p></details>
+        <details><summary><code>SYNC_SYSTEM_ITEMS</code></summary><p><code>0</code> means user/target-scoped sync only. <code>1</code> allows supported system-level sync and should normally be reserved for Operator (vmuser).</p></details>
+        <details><summary><code>SMB_USER_DEFAULT</code></summary><p>Default SMB username for mounts/sync identity when no command-specific override is provided. It is not a password and should not store secrets.</p></details>
+      </aside>
+
+    <div class="why"><strong>Why</strong>Publisher should be light on system orchestration and strong on document tooling, LaTeX, markdown conversion, Git, templates, and access to the PKM/vault workflow.</div>
+    <div class="summary-map">
+      <strong>Suggested step profile</strong>
+      <table>
+        <tr><th>Likely pending</th><th>Likely skipped until needed</th></tr>
+        <tr><td><code>standard_apps</code>, <code>install_dev_env_shell_init</code>, <code>install_dev_env_python_user_tools</code>, possible future <code>install_latex_toolchain</code>, future <code>install_pandoc_obsidian_tools</code></td><td><code>install_docker</code>, <code>install_kubernets</code>, <code>install_minikube</code>, heavy MLOps steps</td></tr>
+      </table>
+      <p>Possible future manifest additions: LaTeX toolchain, Pandoc, citation tools, Obsidian helper sync, template repository bootstrap, manuscript build command wrappers.</p>
+    </div>
+  </div>
+
+  <div id="role-map" class="summary-map">
+    <strong>Functional map: role to files</strong>
+    <table>
+      <tr><th>Role</th><th>Target policy</th><th>Profile template</th><th>Actual runtime plan</th></tr>
+      <tr><td>Operator (vmuser)</td><td><code>targets/vmuser.env</code></td><td><code>profiles/operator.plan</code></td><td><code>/home/vmuser/.local/state/config-sh/bootstrap.plan</code></td></tr>
+      <tr><td>AI Engineer (AIEngineer)</td><td><code>targets/AIEngineer.env</code></td><td><code>profiles/ai-engineer.plan</code></td><td><code>/home/AIEngineer/.local/state/config-sh/bootstrap.plan</code></td></tr>
+      <tr><td>Research Scientist (ResearchScientist)</td><td><code>targets/ResearchScientist.env</code></td><td><code>profiles/research-scientist.plan</code></td><td><code>/home/ResearchScientist/.local/state/config-sh/bootstrap.plan</code></td></tr>
+      <tr><td>Publisher</td><td><code>targets/Publisher.env</code></td><td><code>profiles/publisher.plan</code></td><td><code>/home/Publisher/.local/state/config-sh/bootstrap.plan</code></td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="scenarios">
+  <h2>4. Use-case scenarios</h2>
+  <div class="tabs"><a href="#scenario-one-step">Run one step</a><a href="#scenario-packages">Change packages</a><a href="#scenario-reset">Reset state</a></div>
+
+  <div id="scenario-one-step" class="workblock">
+    <div>
+      <h3>Run one selected step</h3>
+      <div class="context"><strong>Context</strong>You know the step you want, but you do not want broad bootstrap. This is the normal safe execution path.</div>
+      <div class="do"><strong>Do</strong><pre><code>config --target AIEngineer bootstrap steps
+sudo config --target AIEngineer unskip install_kubernets
+sudo config --target AIEngineer bootstrap status
+sudo config --target AIEngineer bootstrap step install_kubernets</code></pre></div>
+      <div class="why"><strong>Why</strong>It verifies the registry, opens only the intended gate, checks runtime state, then runs one trusted function.</div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary><code>bootstrap step STEP</code></summary><p>One-step execution. Prefer this until the whole plan is trustworthy.</p></details></aside>
+  </div>
+
+  <div id="scenario-packages" class="workblock">
+    <div>
+      <h3>Change packages for an existing installer</h3>
+      <div class="context"><strong>Context</strong>You are changing input to an existing installer, not adding new behavior.</div>
+      <div class="do"><strong>Do</strong><pre><code>sudoedit /home/vmuser/.local/etc/config-sh/install/packages.env
+sudo config --target ResearchScientist bootstrap status
+sudo config --target ResearchScientist bootstrap step install_dev_env_python_user_tools</code></pre></div>
+      <div class="why"><strong>Why</strong>Editing <code>packages.env</code> does not change system state. The step changes state only when executed.</div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary><code>packages.env</code></summary><p>Configuration input, not execution. It becomes active only when an installer reads it.</p></details></aside>
+  </div>
+
+  <div id="scenario-reset" class="workblock">
+    <div>
+      <h3>Clear state but keep safe</h3>
+      <div class="context"><strong>Context</strong>A step is done or failed, but you want to reset it without making it surprise-run.</div>
+      <div class="do"><strong>Do</strong><pre><code>sudo config --target AIEngineer rm install_minikube
+sudo config --target AIEngineer bootstrap status</code></pre></div>
+      <div class="why"><strong>Why</strong><code>rm</code> clears runtime state and should leave the plan skipped. <code>unskip</code> is the later explicit allow signal.</div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary><code>rm STEP</code></summary><p>Reset state while preserving safety. It is not the same as run again.</p></details></aside>
+  </div>
+</section>
+
+<section id="scope-model">
+  <h2>5. System vs target vs local/operator scope</h2>
+  <div class="tabs"><a href="#scope-meaning">Meaning</a><a href="#scope-created">Where set</a><a href="#scope-code-policy">Policy + code</a><a href="#scope-examples">Examples</a></div>
+
+  <div class="context"><strong>Context</strong>Scope is the part that prevents confusion. You can run with sudo, as Operator (vmuser), while configuring AI Engineer (AIEngineer). The tool must know whether a change affects the whole system, the selected target, or the tool itself.</div>
+
+  <table id="scope-meaning">
+    <tr><th>Scope</th><th>Meaning</th><th>Gravity</th><th>Prefer when...</th></tr>
+    <tr><td><code>system</code></td><td>Shared Linux/WSL machine.</td><td>High. Can affect all roles.</td><td>apt packages, Docker, repo files, groups, <code>/etc</code>, <code>/usr</code>.</td></tr>
+    <tr><td><code>target</code></td><td>Selected target user.</td><td>Medium. Affects one home/state.</td><td>dotfiles, Anaconda, pyenv, pip user tools, target plan/state.</td></tr>
+    <tr><td><code>mixed</code></td><td>System plus target.</td><td>High. Needs both root-safe and target-owned behavior.</td><td>system dependency plus target configuration.</td></tr>
+    <tr><td><code>local/operator</code></td><td>Tool owner context.</td><td>Tool-level.</td><td>editing source, templates, shared policy.</td></tr>
+  </table>
+
+  <div id="scope-created" class="note purple">
+    <strong>Scope marker creation map</strong>
+    <pre><code># Scope is declared in the step registry:
+# /home/vmuser/.local/etc/config-sh/bootstrap/steps.tsv
+install_nodejs    InstallNodeJS    system    1    Install Node.js and npm
+
+# Role policy is declared in a target env file:
+# /home/vmuser/.local/etc/config-sh/targets/AIEngineer.env
+BOOTSTRAP_PROFILE="ai-engineer"
+SYNC_SYSTEM_ITEMS="0"
+
+# Behavior is implemented in trusted source:
+# /home/vmuser/.local/lib/config-sh/installers.sh
+InstallNodeJS() { ... }
+
+# Dispatch safety lives in:
+# /home/vmuser/.local/bin/config.sh
+config_bootstrap_function_allowed() { ... }</code></pre>
+  </div>
+
+  <table id="scope-code-policy">
+    <tr><th>Question</th><th>Policy/env decides</th><th>Shell code enforces</th></tr>
+    <tr><td>Which role?</td><td><code>targets/USER.env</code></td><td><code>config_set_target_user</code> loads it.</td></tr>
+    <tr><td>Which scope label?</td><td><code>steps.tsv</code></td><td>The installer function must actually match that behavior.</td></tr>
+    <tr><td>Where target files go?</td><td><code>--target USER</code></td><td><code>TARGET_HOME</code>, <code>run_as_target</code>, target-aware helpers.</td></tr>
+    <tr><td>Whether system files sync?</td><td><code>SYNC_SYSTEM_ITEMS</code></td><td>Pull/push code checks policy before copying.</td></tr>
+  </table>
+
+  <div id="scope-examples" class="summary-map">
+    <strong>Examples</strong>
+    <table>
+      <tr><th>Thing</th><th>Scope</th><th>Why</th></tr>
+      <tr><td>Docker engine</td><td>system/mixed</td><td>Installs machine service, but may add a target user to groups.</td></tr>
+      <tr><td>Anaconda under AIEngineer home</td><td>target</td><td>Belongs to one target and must be target-owned.</td></tr>
+      <tr><td>APT package group edit</td><td>policy input</td><td>No state change until an installer consumes it.</td></tr>
+      <tr><td>Obsidian/Pandoc publishing setup</td><td>target or mixed</td><td>Most files target-owned; LaTeX packages may be system-level.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="policy-env">
+  <h2>6. Policy and env files: gravity and effect</h2>
+  <div class="note warn"><strong>Gravity rule:</strong> editing an <code>.env</code> file changes future command inputs. It does not install packages, copy files, or change system state until an execution command consumes those values.</div>
+  <table>
+    <tr><th>File</th><th>Affects</th><th>Immediate system state?</th></tr>
+    <tr><td><code>targets/USER.env</code></td><td>Role, profile, SMB defaults, sync breadth.</td><td>No.</td></tr>
+    <tr><td><code>install/packages.env</code></td><td>Package groups consumed by installers.</td><td>No.</td></tr>
+    <tr><td><code>install/versions.env</code></td><td>Version strings and installer filenames.</td><td>No.</td></tr>
+    <tr><td><code>bootstrap/steps.tsv</code></td><td>Step metadata and function mapping.</td><td>No, but it can affect dispatch if function is allowlisted.</td></tr>
+    <tr><td><code>state/config-sh/bootstrap.plan</code></td><td>Current target allow/block decisions.</td><td>State-changing, but not installer execution by itself.</td></tr>
+  </table>
+</section>
+
+<section id="steps">
+  <h2>7. Install steps explained</h2>
+  <table>
+    <tr><th>Layer</th><th>File</th><th>Do</th><th>Why</th></tr>
+    <tr><td>Capability</td><td><code>lib/config-sh/installers.sh</code></td><td>Add/edit the shell function.</td><td>This code actually executes.</td></tr>
+    <tr><td>Trust</td><td><code>bin/config.sh</code></td><td>Add function to allowlist.</td><td>Editable metadata must not call arbitrary code.</td></tr>
+    <tr><td>Registration</td><td><code>etc/config-sh/bootstrap/steps.tsv</code></td><td>Register name, function, scope, network, description.</td><td>Makes step visible and dispatchable.</td></tr>
+    <tr><td>Intent</td><td><code>state/config-sh/bootstrap.plan</code></td><td>Set pending/skipped for target.</td><td>Controls whether target may run it.</td></tr>
+  </table>
+  <div class="flow">
+    <div class="box"><strong>Known?</strong><code>steps.tsv</code></div>
+    <div class="box"><strong>Trusted?</strong><code>config.sh allowlist</code></div>
+    <div class="box"><strong>Allowed?</strong><code>plan + markers</code></div>
+    <div class="box"><strong>Implemented?</strong><code>installers.sh</code></div>
+    <div class="box"><strong>Recorded?</strong><code>run_once</code></div>
+  </div>
+</section>
+
+<section id="extend">
+  <h2>8. Add a new installer</h2>
+  <div class="workblock">
+    <div>
+      <div class="context"><strong>Context</strong>You are adding executable behavior. That means source code plus trust plus registry plus target intent.</div>
+      <div class="do"><strong>Do</strong><pre><code># 1. Add trusted function in installers.sh
+InstallNodeJS() {
+  config_apt_refresh_if_stale || return 1
+  config_apt_install_list APT_NODEJS "nodejs npm" || return 1
+}
+
+# 2. Add package group in packages.env
+APT_NODEJS="nodejs npm"
+
+# 3. Add InstallNodeJS to config_bootstrap_function_allowed in config.sh
+
+# 4. Register in steps.tsv
+install_nodejs    InstallNodeJS    system    1    Install Node.js and npm
+
+# 5. Choose profile default
+skipped install_nodejs</code></pre></div>
+      <div class="why"><strong>Why</strong>Source code creates capability, allowlist grants trust, manifest registers metadata, profile/plan decides whether it runs.</div>
+    </div>
+    <aside class="sticky-note"><h4>Sticky command note</h4><details open><summary>After editing source</summary><pre><code>bash --noprofile --norc -n /home/vmuser/.local/lib/config-sh/installers.sh
+bash --noprofile --norc -n /home/vmuser/.local/bin/config.sh</code></pre></details><details><summary>After registering</summary><pre><code>config --target AIEngineer bootstrap steps</code></pre></details></aside>
+  </div>
+</section>
+
+<section id="state">
+  <h2>9. Plan and state</h2>
+  <table>
+    <tr><th>Source</th><th>Meaning</th><th>Do</th></tr>
+    <tr><td><code>marker:done</code></td><td>The step completed before.</td><td>Use <code>rm STEP</code> only if intentionally clearing state.</td></tr>
+    <tr><td><code>marker:skipped</code></td><td>A skipped marker blocks the step.</td><td><code>sudo config --target AIEngineer unskip STEP</code></td></tr>
+    <tr><td><code>plan:skipped</code></td><td>The target checklist blocks the step.</td><td><code>unskip STEP</code> or edit the plan.</td></tr>
+    <tr><td><code>plan:pending</code></td><td>The target checklist allows the step.</td><td><code>bootstrap step STEP</code></td></tr>
+  </table>
+</section>
+
+<section id="command-history">
+  <h2>10. Command glossary</h2>
+  <p>The yellow notes beside workflows are the quick version. This is the longer developer/operator glossary.</p>
+  <div class="cmd-history">
+    <div class="cmd"><h4><code>config config-init</code></h4><pre><code>config config-init</code></pre><p>Creates missing shared config/manifest templates. Use after first install, after template changes, or to repair missing files. It is not a normal per-target command.</p></div>
+    <div class="cmd"><h4><code>config --target AIEngineer config-show</code></h4><pre><code>config --target AIEngineer config-show</code></pre><p>Shows effective policy for AI Engineer (AIEngineer), including target home, loaded policy, SMB defaults, bootstrap profile, and sync behavior. Should not print secrets.</p></div>
+    <div class="cmd"><h4><code>config --target AIEngineer bootstrap steps</code></h4><pre><code>config --target AIEngineer bootstrap steps</code></pre><p>Shows the step registry: name, scope, network flag, function, description.</p></div>
+    <div class="cmd"><h4><code>sudo config --target AIEngineer bootstrap status</code></h4><pre><code>sudo config --target AIEngineer bootstrap status</code></pre><p>Shows resolved state and source for each step.</p></div>
+    <div class="cmd"><h4><code>sudo config --target AIEngineer bootstrap plan-init</code></h4><pre><code>sudo config --target AIEngineer bootstrap plan-init</code></pre><p>Creates the target bootstrap plan from the selected profile only if it is missing.</p></div>
+    <div class="cmd"><h4><code>sudo config --target AIEngineer unskip STEP</code></h4><pre><code>sudo config --target AIEngineer unskip install_minikube</code></pre><p>Allows a step by clearing skip state and setting plan pending.</p></div>
+    <div class="cmd"><h4><code>sudo config --target AIEngineer bootstrap step STEP</code></h4><pre><code>sudo config --target AIEngineer bootstrap step install_minikube</code></pre><p>Runs one selected step through <code>run_once</code>.</p></div>
+  </div>
+</section>
+
+<section id="troubleshooting">
+  <h2>11. Troubleshooting by symptom</h2>
+  <details class="panel" open><summary>The step does not run and says skipped by plan</summary><pre><code>sudo config --target AIEngineer unskip STEP
+sudo config --target AIEngineer bootstrap status
+sudo config --target AIEngineer bootstrap step STEP</code></pre></details>
+  <details class="panel"><summary>The step does not run and says already done</summary><pre><code>sudo config --target AIEngineer rm STEP
+sudo config --target AIEngineer unskip STEP
+sudo config --target AIEngineer bootstrap step STEP</code></pre></details>
+  <details class="panel"><summary>I added a row to steps.tsv but the step is unknown</summary><ol class="tight"><li>Confirm the function exists in <code>installers.sh</code>.</li><li>Confirm it is in <code>config_bootstrap_function_allowed</code>.</li><li>Confirm <code>steps.tsv</code> uses the exact same function name.</li><li>Run <code>config --target AIEngineer bootstrap steps</code>.</li></ol></details>
+</section>
+
+</main>
+</div>
+</body>
+</html>

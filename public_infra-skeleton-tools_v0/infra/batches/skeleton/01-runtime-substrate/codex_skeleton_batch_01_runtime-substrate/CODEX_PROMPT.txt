@@ -1,0 +1,43 @@
+Use this Codex pack for one skeleton-dummy implementation batch.
+
+Batch: 01
+Slug: 01-runtime-substrate
+Scope: Layer 1 / Bundle 1 + Bundle 7 — runtime roots, Runpod workspace checks, and remote model dummy client.
+
+Read order:
+1. PROJECT_CACHE.md
+2. SPEC.md
+3. RUN_INSTRUCTIONS.md
+4. CONFIG_TOOL.md only if available in the surrounding workspace and needed for read-only config/lv boundary context
+5. 00_skeleton_dummy_master_implementation_companion.md only if SPEC or RUN_INSTRUCTIONS explicitly says the cache is insufficient
+
+Hard scope:
+- Implement only Batch 01: 01-runtime-substrate.
+- This is a skeleton-first batch: create generic runtime roots, layout/policy markers, safe readiness checks, tiny dummy remote-model client/router files, and local smoke checks.
+- Do not create /workspace/repos/nca-art-grn or any other project-specific research namespace in this batch.
+- Do not implement real NCA/ART/PDE/ODE science.
+- Do not build Agentfield, Paperclip, OpenClaw, PKM, or LaTeX layers.
+- Do not scan the whole repository.
+- Do not create guides, articles, HTML, manuals, or external docs beyond the required local contract/README marker files.
+- Do not edit config tool internals.
+- Do not edit /home/vmuser/.local/bin/config.sh.
+- Do not edit /home/vmuser/.local/lib/config-sh/installers.sh.
+- Do not edit /home/vmuser/.local/etc/config-sh unless SPEC.md explicitly allows a named file. This batch does not allow it.
+- Use config only as an inspection/status interface if available; do not run broad bootstrap.
+- Do not run broad bootstrap, install, mount, pull, push, account mutation, Docker build, Kubernetes apply, Runpod job, OpenClaw agent, training, inference, or live model/API call.
+- Do not read or print credentials, private vault contents, private notes, API keys, datasets, or manuscripts.
+
+Expected implementation locations:
+- Generic runtime roots go directly under /workspace.
+- Runtime policy/check artifacts go under /workspace/runtime and /workspace/scripts/runtime_checks if those paths are usable.
+- Remote model dummy client code goes under /workspace/repos/research-assistant.
+- Smoke/run outputs go under /workspace/runs and /mnt/egress/dev-recordings/skeleton/01-runtime-substrate when writable.
+
+Posthoc config integration bridge:
+- Do not integrate this batch into the config tool directly.
+- Create /mnt/egress/dev-recordings/skeleton/01-runtime-substrate/INTEGRATION_REQUEST.md when that root is writable.
+- The integration request should describe any later config/lv/workflow exposure needed for runtime roots, health checks, and the remote-model client contract, but must not patch config.sh, installers.sh, steps.tsv, profile plans, package policy, or Python env profiles.
+
+Postcheck:
+- Write /mnt/egress/dev-recordings/skeleton/01-runtime-substrate/POSTCHECK.md.
+- Include changed files, tests run, PASS/FAIL, safety confirmations, integration request path/status, and next step.

@@ -1,0 +1,37 @@
+Use this Codex pack for one transition-to-real-organs implementation batch.
+
+Read order:
+1. PROJECT_CACHE.md
+2. SPEC.md
+3. RUN_INSTRUCTIONS.md
+4. CONFIG_TOOL.md only if this batch uses config/lv/target-role workflow context
+5. The skeleton master and transition master only if SPEC or RUN_INSTRUCTIONS explicitly says the cache is insufficient
+
+Hard scope:
+- Implement only the transition tasks described in SPEC.md and RUN_INSTRUCTIONS.md.
+- Preserve every public path, CLI command, schema, status file, and output filename created by the skeleton pass.
+- Replace dummy internals with real implementation one organ at a time.
+- Keep compatibility shims if a dummy CLI/output is already consumed by Agentfield, Paperclip, OpenClaw, Publisher, or tests.
+- Do not edit config tool internals unless SPEC.md explicitly allows a named file.
+- Do not run broad bootstrap, install, mount, pull, push, account mutation, Docker build, Kubernetes apply, Runpod job, OpenClaw agent, training, inference, or live Paperclip write unless this transition batch explicitly says so.
+- Live actions must default to dry-run and require explicit opt-in flags.
+- Do not read or print credentials, private vault contents, private notes, API keys, datasets, or manuscripts.
+
+Posthoc config integration handoff:
+- Do not implement config integration in this batch.
+- Do not decide final config step names, lv profiles, role aliases, health checks, or bootstrap rows here.
+- Preserve the skeleton/config-facing contract and record any later operator/config needs in:
+  /mnt/egress/organs/dev-recordings/organs/<batch-slug>/INTEGRATION_REQUEST.md
+- Use that file to describe what a later vmuser/operator config-integration batch may need to expose: role owner, workspace root, commands, packages/envs, smoke checks, output contracts, suggested integration type, safety boundaries, and open questions.
+- If no config integration is needed, still create the file and set suggested integration type to none.
+
+External-code rule:
+- If Runpod API/job code is needed, add a stub and a TODO saying to ask Runpod AI/dev chat or use official Runpod docs.
+- If Agentfield API details are needed, add a stub and a TODO saying to ask the Agentfield developer or use Agentfield GitHub/developer docs.
+- If Paperclip DB/API details are needed, add a stub and a TODO saying to inspect Paperclip repo/API docs before live writes.
+- If OpenClaw execution details are needed, add a stub and a TODO saying to inspect OpenClaw docs/repo before running agents.
+
+Postcheck:
+- Write the postcheck log requested by RUN_INSTRUCTIONS.md.
+- Create or update the integration request requested by RUN_INSTRUCTIONS.md.
+- Include changed files, tests run, PASS/FAIL, safety confirmations, compatibility notes, integration request path, and remaining real-code blockers.

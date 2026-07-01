@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Config Tool Daily Operator Companion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--bg:#0f172a;--panel:#111827;--panel2:#172033;--text:#e5e7eb;--muted:#9ca3af;--accent:#38bdf8;--good:#34d399;--warn:#facc15;--bad:#fb7185;--code:#020617;--border:#334155}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#0f172a,#111827);color:var(--text);line-height:1.55}
+header{padding:2.4rem 1.2rem 1.4rem;border-bottom:1px solid var(--border);background:rgba(2,6,23,.35)}
+main{max-width:1180px;margin:0 auto;padding:1.25rem}
+h1{margin:0 0 .5rem;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05}
+h2{margin:2.4rem 0 1rem;font-size:1.75rem;border-bottom:1px solid var(--border);padding-bottom:.4rem}
+h3{margin:1.4rem 0 .65rem;font-size:1.22rem;color:#f8fafc}
+p{max-width:84ch}
+code,kbd{background:var(--code);border:1px solid var(--border);padding:.12rem .32rem;border-radius:.35rem}
+pre{background:var(--code);border:1px solid var(--border);border-radius:.75rem;padding:1rem;overflow:auto;color:#e2e8f0}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:1rem;padding:1rem;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.grid{display:grid;gap:1rem}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.grid.three{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.note,.good,.bad{padding:.9rem 1rem;border-radius:.75rem;margin:1rem 0}
+.note{border-left:4px solid var(--warn);background:rgba(250,204,21,.08)}
+.good{border-left:4px solid var(--good);background:rgba(52,211,153,.08)}
+.bad{border-left:4px solid var(--bad);background:rgba(251,113,133,.08)}
+.small{font-size:.93rem;color:var(--muted)}
+.badge{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:.18rem .55rem;margin:.15rem .25rem .15rem 0;color:#dbeafe;background:rgba(59,130,246,.12);font-size:.85rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.65rem;text-align:left;vertical-align:top}
+th{background:#1e293b;color:#f8fafc}
+td{background:rgba(15,23,42,.55)}
+.toc a{display:block;text-decoration:none;color:var(--accent);padding:.25rem 0}
+.workflow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.6rem;margin:1rem 0}
+.step{border:1px solid var(--border);border-radius:.75rem;padding:.75rem;background:#101827}
+.step strong{display:block;color:#f8fafc;margin-bottom:.25rem}
+.footer{margin:3rem 0 1rem;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+<main>
+<h1>Config Tool Daily Operator Companion</h1>
+<p>A day-to-day guide for creating a new trusted function, wiring it into steps, profiles, targets, help, and safe execution.</p>
+<p><span class="badge">config.sh</span><span class="badge">installers.sh</span><span class="badge">steps.tsv</span><span class="badge">profiles/*.plan</span><span class="badge">targets/USER.env</span></p>
+</main>
+</header>
+<main>
+
+<section class="card toc">
+<h2>Contents</h2>
+<a href="#model">1. Mental model</a>
+<a href="#loop">2. Daily loop</a>
+<a href="#function">3. Add the trusted function</a>
+<a href="#registry">4. Register the step</a>
+<a href="#profiles">5. Add it to profiles</a>
+<a href="#targets">6. Refresh targets and plans</a>
+<a href="#run">7. Run one step safely</a>
+<a href="#templates">8. Copy/paste templates</a>
+<a href="#examples">9. Worked examples</a>
+<a href="#trouble">10. Troubleshooting</a>
+<a href="#commit">11. Commit checklist</a>
+</section>
+
+<section id="model">
+<h2>1. Mental model</h2>
+<div class="workflow">
+<div class="step"><strong>Function</strong><code>InstallSomething</code><br>trusted shell work</div>
+<div class="step"><strong>Allowlist</strong><code>install_something</code><br>safe dispatch</div>
+<div class="step"><strong>Step registry</strong><code>steps.tsv</code><br>metadata</div>
+<div class="step"><strong>Profile plan</strong><code>profiles/*.plan</code><br>role defaults</div>
+<div class="step"><strong>Target plan</strong><code>/home/USER/.../bootstrap.plan</code><br>runtime copy</div>
+<div class="step"><strong>Markers</strong><code>*.done</code><br>history</div>
+</div>
+<div class="good"><strong>Core rule:</strong> executable behavior belongs in trusted shell functions. Config files describe policy, defaults, and plans. They must not contain arbitrary shell code.</div>
+<table>
+<thead><tr><th>File</th><th>Daily purpose</th><th>What changes here</th></tr></thead>
+<tbody>
+<tr><td><code>/home/vmuser/.local/lib/config-sh/installers.sh</code></td><td>Function library</td><td>Add trusted install/check functions.</td></tr>
+<tr><td><code>/home/vmuser/.local/bin/config.sh</code></td><td>Orchestrator</td><td>Add allowlist mapping, help, config-init examples, and dispatch support.</td></tr>
+<tr><td><code>/home/vmuser/.local/etc/config-sh/bootstrap/steps.tsv</code></td><td>Step registry</td><td>Add one row per step.</td></tr>
+<tr><td><code>/home/vmuser/.local/etc/config-sh/bootstrap/profiles/*.plan</code></td><td>Role defaults</td><td>Add the step as pending or skipped for each role.</td></tr>
+<tr><td><code>/home/vmuser/.local/etc/config-sh/install/*.env</code></td><td>Declarative defaults</td><td>Add package lists, version pins, repo URLs. No secrets.</td></tr>
+<tr><td><code>/home/vmuser/.local/etc/config-sh/targets/USER.env</code></td><td>Target policy</td><td>Generated/reconciled. Usually do not hand-edit.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="loop">
+<h2>2. Daily loop</h2>
+<div class="grid two">
+<div class="card">
+<h3>Safe workflow</h3>
+<ol>
+<li>Name the step: <code>install_example_tooling</code>.</li>
+<li>Name the function: <code>InstallExampleTooling</code>.</li>
+<li>Add implementation to <code>installers.sh</code>.</li>
+<li>Add allowlist mapping in <code>config.sh</code>.</li>
+<li>Add a row to <code>bootstrap/steps.tsv</code>.</li>
+<li>Add profile plan rows for the right roles.</li>
+<li>Add package/repo defaults if needed.</li>
+<li>Run syntax checks only.</li>
+<li>Inspect target plans.</li>
+<li>Unskip and run one step only.</li>
+</ol>
+</div>
+<div class="card">
+<h3>Avoid</h3>
+<ul>
+<li>Do not put shell code into <code>*.env</code>, <code>*.tsv</code>, or <code>*.plan</code>.</li>
+<li>Do not use <code>eval</code> for config-driven execution.</li>
+<li>Do not run full bootstrap just to validate one function.</li>
+<li>Do not read or print credential files.</li>
+<li>Do not store secrets, tokens, research data, or vault contents in config files.</li>
+</ul>
+</div>
+</div>
+<pre><code>grep -n "install_example" /home/vmuser/.local/etc/config-sh/bootstrap/steps.tsv
+grep -n "InstallExample" /home/vmuser/.local/lib/config-sh/installers.sh
+grep -n "install_example" /home/vmuser/.local/bin/config.sh
+
+bash --noprofile --norc -n /home/vmuser/.local/bin/config.sh
+bash --noprofile --norc -n /home/vmuser/.local/lib/config-sh/installers.sh</code></pre>
+</section>
+
+<section id="function">
+<h2>3. Add the trusted function</h2>
+<p>New executable work should be a shell function in <code>installers.sh</code>. It should be idempotent: running it twice should not corrupt the target.</p>
+<div class="note"><strong>Target context:</strong> use <code>TARGET_USER</code>, <code>TARGET_HOME</code>, <code>CURRENT_HOME</code>, and config defaults loaded from <code>etc/config-sh/install/*.env</code>. Do not assume the user is always <code>labuser</code>.</div>
+<pre><code>InstallExampleTooling() {
+  local target_user="${TARGET_USER:-}"
+  local target_home="${TARGET_HOME:-}"
+
+  if [ -z "$target_user" ] || [ -z "$target_home" ]; then
+    echo "[ERROR] TARGET_USER/TARGET_HOME not set" >&2
+    return 1
+  fi
+
+  echo "[INFO] Installing example tooling for ${target_user}"
+  install -d -m 755 -o "$target_user" -g "$target_user" "${target_home}/.local/bin"
+
+  if [ -z "${EXAMPLE_TOOLING_REPO_URL:-}" ]; then
+    echo "[SKIP] EXAMPLE_TOOLING_REPO_URL is empty"
+    return 0
+  fi
+
+  # Narrow, explicit work goes here.
+}</code></pre>
+<ul>
+<li>Use target context, not hard-coded usernames.</li>
+<li>Do not print secrets.</li>
+<li>Skip clearly when optional config is missing.</li>
+<li>Create target-owned files with explicit owner/mode.</li>
+<li>Return non-zero only for real failures.</li>
+</ul>
+</section>
+
+<section id="registry">
+<h2>4. Register the step</h2>
+<h3>Allowlist in config.sh</h3>
+<pre><code>install_example_tooling)
+  InstallExampleTooling
+  ;;</code></pre>
+<h3>Step registry row</h3>
+<p class="small">Use the exact column order already present in your <code>steps.tsv</code>.</p>
+<pre><code>install_example_tooling    InstallExampleTooling    target    0    Install example target tooling</code></pre>
+<div class="bad"><strong>No arbitrary dispatch:</strong> a step from a plan must map to a known trusted function, or it should fail/skip safely.</div>
+</section>
+
+<section id="profiles">
+<h2>5. Add it to profiles</h2>
+<table>
+<thead><tr><th>Profile</th><th>Use when</th><th>Common default</th></tr></thead>
+<tbody>
+<tr><td><code>operator.plan</code></td><td>Operator tooling</td><td><code>skipped</code> unless needed</td></tr>
+<tr><td><code>default-target.plan</code></td><td>Generic target</td><td><code>skipped</code> for specialized tooling</td></tr>
+<tr><td><code>ai-engineer.plan</code></td><td>AI/ML/API/MLOps</td><td><code>pending</code> for AI steps</td></tr>
+<tr><td><code>research-scientist.plan</code></td><td>Research/GRN/Turing patterns</td><td><code>pending</code> for research steps</td></tr>
+<tr><td><code>publisher.plan</code></td><td>Publishing/PKM/manuscript</td><td><code>pending</code> for publisher steps</td></tr>
+</tbody>
+</table>
+<pre><code># bootstrap/profiles/ai-engineer.plan
+install_example_tooling    pending
+
+# bootstrap/profiles/research-scientist.plan
+install_example_tooling    skipped
+
+# bootstrap/profiles/publisher.plan
+install_example_tooling    skipped</code></pre>
+<div class="note"><strong>Pending vs skipped:</strong> use <code>pending</code> when the role should normally receive the step. Use <code>skipped</code> when the operator should opt in later.</div>
+</section>
+
+<section id="targets">
+<h2>6. Refresh targets and plans</h2>
+<p>Account profiles and target env files describe who the user is. Bootstrap profile plans describe what the user can receive. The runtime target plan is what execution uses.</p>
+<pre><code>config --target aiengineer config-show
+config --target aiengineer bootstrap steps
+sudo config --target aiengineer bootstrap status</code></pre>
+<ol>
+<li>Add the step to the role profile plan.</li>
+<li>Refresh/reconcile the target plan using your existing plan-aware command.</li>
+<li>Inspect the target plan/status.</li>
+<li>Unskip only the step you intend to run.</li>
+</ol>
+<div class="note"><strong>Target env files:</strong> files under <code>/home/vmuser/.local/etc/config-sh/targets</code> should remain operator-owned policy files, for example <code>vmuser:operator</code> with mode <code>600</code>.</div>
+</section>
+
+<section id="run">
+<h2>7. Run one step safely</h2>
+<pre><code>config --target aiengineer bootstrap steps
+sudo config --target aiengineer bootstrap status
+
+sudo config --target aiengineer unskip install_example_tooling
+sudo config --target aiengineer bootstrap step install_example_tooling
+
+sudo config --target aiengineer bootstrap status</code></pre>
+<div class="bad"><strong>Avoid broad execution:</strong> do not run full bootstrap/install/mount/pull/push just to validate a new function.</div>
+</section>
+
+<section id="templates">
+<h2>8. Copy/paste templates</h2>
+<h3>Codex prompt for one new function</h3>
+<pre><code>Read the current config.sh, installers.sh, bootstrap/steps.tsv, and bootstrap profile plans.
+
+Implement one new managed step only.
+
+Step name:
+  install_example_tooling
+
+Function name:
+  InstallExampleTooling
+
+Requirements:
+- Put executable work in installers.sh.
+- Add the step to the config.sh trusted allowlist.
+- Add one row to bootstrap/steps.tsv using the existing column format.
+- Add the step to the relevant profile plan files only.
+- Add package/repo defaults to etc/config-sh/install/*.env only if needed.
+- Do not put shell code in env/tsv/plan files.
+- Do not use eval.
+- Do not print full file contents.
+- Do not run broad bootstrap/install/mount/pull/push.
+- Run:
+  bash --noprofile --norc -n /home/vmuser/.local/bin/config.sh
+  bash --noprofile --norc -n /home/vmuser/.local/lib/config-sh/installers.sh
+
+Final answer format:
+Changed files:
+Tests run:
+Notes:</code></pre>
+<h3>Post-change inspection</h3>
+<pre><code>grep -n "install_example_tooling" /home/vmuser/.local/etc/config-sh/bootstrap/steps.tsv
+grep -n "InstallExampleTooling" /home/vmuser/.local/lib/config-sh/installers.sh
+grep -n "install_example_tooling" /home/vmuser/.local/bin/config.sh
+grep -n "install_example_tooling" /home/vmuser/.local/etc/config-sh/bootstrap/profiles/*.plan</code></pre>
+</section>
+
+<section id="examples">
+<h2>9. Worked examples</h2>
+<div class="grid three">
+<div class="card"><h3>AI Engineer</h3><p><strong>Step:</strong> <code>install_ml_base_python_stack</code></p><p><strong>Function:</strong> <code>InstallMLBasePythonStack</code></p><p><strong>Profile:</strong> <code>ai-engineer.plan</code> pending</p></div>
+<div class="card"><h3>Research Scientist</h3><p><strong>Step:</strong> <code>install_grn_research_python_stack</code></p><p><strong>Function:</strong> <code>InstallGRNResearchPythonStack</code></p><p><strong>Profile:</strong> <code>research-scientist.plan</code> pending</p></div>
+<div class="card"><h3>Publisher</h3><p><strong>Step:</strong> <code>install_publisher_base_tools</code></p><p><strong>Function:</strong> <code>InstallPublisherBaseTools</code></p><p><strong>Profile:</strong> <code>publisher.plan</code> pending</p></div>
+</div>
+<pre><code># etc/config-sh/install/packages.env
+PIP_EXAMPLE_TOOLS="rich typer pytest"
+
+# installers.sh
+InstallExamplePythonTools() {
+  local packages="${PIP_EXAMPLE_TOOLS:-}"
+  if [ -z "$packages" ]; then
+    echo "[SKIP] PIP_EXAMPLE_TOOLS is empty"
+    return 0
+  fi
+  echo "[INFO] Installing Python tools for ${TARGET_USER}"
+  sudo -H -u "$TARGET_USER" python3 -m pip install --user $packages
+}</code></pre>
+</section>
+
+<section id="trouble">
+<h2>10. Troubleshooting</h2>
+<table>
+<thead><tr><th>Problem</th><th>Likely cause</th><th>Check</th></tr></thead>
+<tbody>
+<tr><td>Step appears but cannot run</td><td>Missing allowlist or function mismatch</td><td><code>grep -n "step_name" config.sh installers.sh steps.tsv</code></td></tr>
+<tr><td>Step runs for wrong user</td><td>Hard-coded username or wrong HOME</td><td>Inspect for <code>labuser</code>, <code>vmuser</code>, <code>$HOME</code></td></tr>
+<tr><td>Target env is root-owned</td><td>Created by sudo without ownership correction</td><td><code>ls -la /home/vmuser/.local/etc/config-sh/targets</code></td></tr>
+<tr><td>Plan lacks new step</td><td>Runtime target plan not refreshed</td><td><code>config --target USER bootstrap steps</code></td></tr>
+<tr><td>Secrets appear in output</td><td>Function printed env or credential contents</td><td>Stop, remove output, rotate exposed secret</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="commit">
+<h2>11. Commit checklist</h2>
+<div class="grid two">
+<div class="card">
+<h3>Before commit</h3>
+<ul>
+<li>Function added to <code>installers.sh</code>.</li>
+<li>Step allowlisted in <code>config.sh</code>.</li>
+<li>Step row added to <code>steps.tsv</code>.</li>
+<li>Profile rows added only where appropriate.</li>
+<li>Package/repo defaults added if needed.</li>
+<li>Syntax checks passed.</li>
+<li>No secrets or private data printed.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Commit messages</h3>
+<pre><code>feat: add managed ML base workflow step
+feat: add publisher tooling workflow step
+docs: add daily managed function workflow guide
+fix: preserve operator ownership for target env files
+chore: register research workflow profile steps</code></pre>
+</div>
+</div>
+</section>
+
+<p class="footer">Generated as a focused daily companion for the vmuser config tool workflow.</p>
+</main>
+</body>
+</html>

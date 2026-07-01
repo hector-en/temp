@@ -1,0 +1,64 @@
+\def\EnzymeAssay {
+    \newentry{21/11/2022}{ATPase Enzyme Assay \textsc{(DNA-dependent ATPase activity)}}{Keywords1}{Keywords2}{kywords3}
+    \myheader{ATPase Enzyme Assay}
+    \fontfamily{cmss}\selectfont
+
+    \begin{multicols}{2}
+    \lettrine[lines=2]{\color{color2}T}{}his \textit{Genetics} journal template is provided to help you write your work in the correct journal format. Instructions for use are provided below. Note that by default line numbers are present to aid reviewers and editors in reading and commenting on your manuscript. To remove line numbers, remove the \texttt{lineno} option from the  declaration.
+    
+    \section{Introduction}
+       %\introduction
+        
+    \section{Materials and methods}
+    \label{sec:materials:methods}
+    
+    
+    \section{Results}
+    The results and discussion should not be repetitive and give a factual presentation of the data with all tables and figures referenced. The discussion should not summarize the results but provide an interpretation of the results, and should clearly delineate between the findings of the particular study and the possible impact of those findings in a larger context. Authors are encouraged to cite recent work relevant to their interpretations.\\[1em]
+    \twocolend
+    \figure1{0.35}{Caption 1}{Text figure1}\\[1em]
+    \twocolstart
+    Present and discuss results only once, not in both the Results and Discussion sections. It is acceptable to combine results and discussion in order  to be succinct.\\[4em]
+    \twocolend
+    \vspace*{1em}
+    \table1{\textwidth}{Student Grades per rank}
+    \twocolstart
+    
+    \section{Discussion}
+    \subsection{Numbers} In the text, write out \fullref{tab:table1} numbers nine or less except as part of a date, a fraction or decimal, a percentage, or a unit of measurement. Use Arabic numbers for those larger than nine, except as the first word of a sentence; however, try to avoid starting a sentence with such a number.
+    
+    \subsection{Units} Use abbreviations of the customary units of measurement only when they are preceded by a number: "3 min" but "several minutes". Write "percent" as one word, except when used with a number: "several percent" but "75\%." To indicate temperature in centigrade, use ° (for example, 37°); include a letter after the degree symbol only when some other scale is intended (for example, 45°K).
+    
+    \subsection{Nomenclature  and italicization} Italicize \fullref{fig:figure1} names of organisms even when  when the species is not indicated.  Italicize the first three letters of the names of restriction enzyme cleavage sites, as in HindIII. Write the names of strains in roman except when incorporating specific genotypic designations. Italicize genotype names and symbols, including all components of alleles, but not when the name of a gene is the same as the name of an enzyme. Do not use "+" to indicate wild type. Carefully distinguish between genotype (italicized) and phenotype (not italicized) in both the writing and the symbolism.
+    
+    \subsection{Cross references}
+    Use the  command with the command to insert cross-references to section headings. For example, a has been defined in the section \nameref{sec:materials:methods}
+    
+    \section{Conclusion}
+    Add citations using, for example \citep{neher2013genealogies} or for multiple citations, \citealt{rodelsperger2014characterization,neher2013genealogies,Falush16}  \citep{neher2013genealogies}
+    
+    \section{Sample equation}
+    Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+    \begin{equation}
+    S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+          = \frac{1}{n}\sum_{i}^{n} X_i
+    \label{eq:refname1}
+    \end{equation}
+    denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+    
+    \section{Data availability}
+    The inclusion of a Data Availability Statement is a requirement for articles published in GENETICS. Data Availability Statements provide a standardized format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analyzed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required unique identifier.
+    
+    For example: Strains and plasmids are available upon request. File S1 contains detailed descriptions of all supplemental files. File S2 contains SNP ID numbers and locations. File S3 contains genotypes for each individual. Sequence data are available at GenBank and the accession numbers are listed in File S3. Gene expression data are available at \diteGEO with the accession number: GDS1234. Code used to generate the simulated data can be found at \url{https://figshare.org/record/123456}.
+    
+    \section{Acknowledgments}
+    Acknowledgments should be included here.
+    
+    \section{Conflicts of interest}
+    Please either state that you have no conflicts of interest, or \citep[pp.2-3]{Tewabe2021}list relevant information here.  This would cover any situations that might raise any questions of bias in your work and in your article’s conclusions, implications, or opinions. Please see \url{https://academic.oup.com/journals/pages/authors/authors_faqs/conflicts_of_interest}.
+    
+    \bibliography{bib/iba}
+    
+    \end{multicols}
+}
+\endinput

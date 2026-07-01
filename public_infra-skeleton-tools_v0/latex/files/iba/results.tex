@@ -1,0 +1,63 @@
+\def\results {
+\subsection{Data Analysis}
+All four treatment groups follow a normal distribution (\fullref{fig:figure3}) Homoscedasticity criteria (variance is approximately equal) is only fulfilled between INH, NCE and ETH. There is no overlap between the untreated sample and the antibiotic treatment group, suggesting different population means (\fullref{fig:figure4}). 
+\noindent   
+\twocolend
+\noindent
+\begin{minipage}{\textwidth}
+   {\footnotesize \histograms{1.2}{Histogram showing normal distribution for a) Untreated sample (UT), b) Isoniazid (INH), c) Unknown sample (NCE) and d) Ethionamide (ETH). Analysis was performed in SPSS.}}
+\end{minipage}\\[1em]
+\twocolstart
+\twocolend
+\noindent   
+\begin{minipage}{\textwidth}
+    {\footnotesize \boxplot{2}{Boxplot of antibiotic agents, showing difference in variance between the means of samples treated with antibiotics and untreated samples. The dotted line shows the average OD595 between the antibiotics. Analysis was performed in SPSS.}}
+\end{minipage}\\[1em]
+\twocolstart
+Our null hypothesis (H0) is therefore µ1 = µ2 = µ3 and our \textbf{alternative hypothesis} \textbf{(H1)} can be stated as:$$
+\begin{minipage}{20em}  \textit{One or more of the four treatments leads to unequal mean OD600 values and therefore influences the growth of M. Smegmatis.}\end{minipage}
+$$\\[1em]
+\fullref{tab:table1} shows, that there is a high variance between the untreated and the treated groups and low variance within the treated groups, which confirms our observation of the non-homoscedasticity. Our P value is given with P $<$ 0.001. With P $<< \alpha$ (0.05). We therefore have a significant result and reject H0. We accept H1.\\[1em]
+\noindent   
+\begin{minipage}{22em}
+    \footnotesize \ANOVA{\textwidth}{Analysis of Variance (ANOVA) for optical density at 595 nm values. Analysis for INH, ETH, NCE and WT showing high variance between treated and untreated culture and low variance within the treated cultures. Analysis was performed in SPSS.}
+\end{minipage}\\[1em]
+
+To investigate further which pairs of means contributed to the significant F-value, we perform the Kruskal-Wallis test to identify overall significance and examine each pair for significance in the post hoc study \fullref{tab:table2}. Looking at Table 2, the Null hypothesis is rejected and the pairwise comparison \fullref{fig:figure5} shows, that all antibiotic agents, including the unknown drug had a significant result (p << 0.001) when compared to the untreated sample. Figure 5 also shows, that all antibiotics when compared between each other had an insignificant result. Their mean OD595 value therefore has the same population mean.\\[1em]
+\noindent   
+\begin{minipage}{22em}
+    \footnotesize \WALLIS{\textwidth}{Hypothesis Test Summary. Kruskal-Wallis test for nonparametric data, testing H0 with a significance of 0.050. Analysis was performed in SPSS.}
+\end{minipage}\\[1em]
+
+\noindent   
+\begin{minipage}{22em}
+    \footnotesize \comparison{1.60}{Pairwise comparison of antibiotic treatment. Graph showing pairwise test of null Hypothesis (H0) at a significance level of .050. Each node shows the sample avarage rank of antibiotic treatment. Analysis was performed in SPSS.}
+\end{minipage}\\[1em]
+\\[4em]
+\subsection{Growth}
+Our statistical analysis showed that all treated cultures reduced the untreated OD of 3.052 by an average of 63.3\%. INH reduced the OD by 64.4\% (1.088), ETH reduced the OD by 62.4\% (1.147) and the NCE reduced the OD by 63.3\% (1.121). The reduction in OD compared to the untreated culture is significant for all three drugs. They also show a similar efficacy, since the differences in OD reduction between the individual drugs are not significant (\fullref{fig:figure5}). 
+
+\subsection{Morphology}
+{\small \textit{\textbf{Wild type culture (U).}}}
+The untreated wildtype culture (U) containing \textit{M.smegmatis} appeared as a clustered group of clumped bacilli under the microscope and has retained the pink carbol-fuchsin stain \fullref{fig:figure6}. Compared to the treated groups (Figs ttreated), the wildtype culture also appears to have more bacilli per area.\\[1em]
+\noindent   
+\begin{minipage}{22em}
+   {\footnotesize \UNTREATED{0.135}{Wild type containing \textit{M.smegmatis} under bright-field microscope.The Bacilli appear in red on a green media after the ZN-staining procedure. Observed at 1000x using 100x immersion oil lens and a 10x occular. The figure was supplied by Dr Sanjib Bhakta.}}
+\end{minipage}\\[1em]
+
+{\small \textit{\textbf{Isoniazid (I)/ Ethionamide (E) culture.}}}
+We analysed the INH and ETH (I, E) \textit{M. smegmatis} culture and observed under the microscope a non-clustered aggregation of single bacilli cells \fullref{fig:figure7}. It appeared to have less bacilli per area than the untreated culture (U) and a similar morphology and size compared to the unknown drug culture (X). It has obtained a green/blue color.
+\noindent   
+\begin{minipage}{22em}
+   {\footnotesize \INH{0.135}{ZN-staining of the Isoniazid/Ethionamide treated culture of \textit{M. smegmatis} showed the rod-shaped bacilli adopting a green/blue color. Observed at 1000x using 100x immersion oil lens and a 10x occular. The figure was supplied by Dr Sanjib Bhakta.}}
+\end{minipage}\\[1em]
+
+{\small \textit{\textbf{Unknown drug culture (X).}}}
+The bacilli appear aggregated, un-clustered with a green stain and similar morphology to the INH/ETH-stained culture (I,E). Compared to the wild type (U), it appears to have less bacilli per area.
+\noindent   
+\begin{minipage}{22em}
+   {\footnotesize \NCE{0.135}{ZN-staining of the NCE treated culture of \textit{M. smegmatis} showed the rod-shaped bacilli adopting a green/blue color. Observed at 1000x using 100x immersion oil lens and a 10x occular. The figure was supplied by Dr Sanjib Bhakta.}}
+\end{minipage}\\[1em]
+
+}
+\endinput
