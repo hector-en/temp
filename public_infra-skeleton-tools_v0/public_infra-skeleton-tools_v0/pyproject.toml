@@ -1,8 +1,0 @@
-[project]
-name = "infra-skeleton-tools"
-version = "0.0.1"
-description = "Deterministic CLI helpers for Infra-Skeleton public/private workflow."
-requires-python = ">=3.10"
-
-[project.scripts]
-infractl = "infractl.cli:main"
