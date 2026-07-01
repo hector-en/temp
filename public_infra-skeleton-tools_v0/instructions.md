@@ -108,6 +108,60 @@ generated/
 EXTRA_SOURCE_ROUTING.md
 ```
 
+## 1A. Required workflow direction gate
+
+Before running any `infractl request-create`, `infractl request-update`, `infractl package-codex-create`, or `infractl package-codex-update` command, ask the user for a `WORKFLOW_DIRECTION` block.
+
+Required format:
+
+```text
+WORKFLOW_DIRECTION:
+  mode: request-create | request-update | package-codex-create | package-codex-update | check-evidence | status
+  track: skeleton | organ
+  batch: <batch-id>
+  topic: <short-topic-slug>
+  evidence_required: yes | no
+  extra_sources: none | <list of uploaded filenames or paths>
+```
+
+Do not infer the direction from the uploaded bundle.
+
+Safe validation commands may run before this block is provided:
+
+```bash
+python -m infractl.cli profiles
+python -m infractl.cli list-batches --project <PRIVATE_PROJECT>
+python -m infractl.cli list-hooks --project <PRIVATE_PROJECT>
+python -m infractl.cli check-required-files --project <PRIVATE_PROJECT>
+python -m infractl.cli status --project <PRIVATE_PROJECT>
+```
+
+Do not run request, update, or packaging commands until the user has provided `WORKFLOW_DIRECTION`.
+
+## 1B. Missing evidence stop rule
+
+If `WORKFLOW_DIRECTION.evidence_required` is `yes`, check the expected evidence snapshot before generating any request/update pack.
+
+If any expected evidence is missing, stop and ask the user to upload the missing files or explicitly confirm continuing without evidence.
+
+For a skeleton update, expected evidence is usually:
+
+```text
+evidence_snapshots/skeleton/<batch-slug>/POSTCHECK.md
+evidence_snapshots/skeleton/<batch-slug>/INTEGRATION_REQUEST.md
+evidence_snapshots/skeleton/<batch-slug>/SMOKE_REPORT.md
+```
+
+For an organ update, expected evidence is usually:
+
+```text
+evidence_snapshots/organ/<batch-slug>/POSTCHECK.md
+evidence_snapshots/organ/<batch-slug>/INTEGRATION_REQUEST.md
+evidence_snapshots/organ/<batch-slug>/SMOKE_REPORT.md
+```
+
+The assistant must not silently continue when `evidence_required=yes` and evidence is missing.
+
 ## 2. Supported v0 profiles
 
 The CLI supports four profiles:
@@ -248,6 +302,8 @@ Use `request-create` for a not-yet-run skeleton batch.
 
 Example:
 
+Only run the following `request-create` command after the user has provided a matching `WORKFLOW_DIRECTION`.
+
 ```bash
 cd /mnt/data/infra-skeleton-tools_real_v0
 
@@ -277,6 +333,8 @@ source_bundle.zip
 Use `request-update` for already-run batches or retroactive corrections.
 
 Example:
+
+Only run the following `request-update` command after the user has provided a matching `WORKFLOW_DIRECTION`.
 
 ```bash
 cd /mnt/data/infra-skeleton-tools_real_v0
@@ -518,5 +576,5 @@ Follow `NEW_CHAT_PROMPT_update_infra.md`. Read the public infractl repo, then us
 Use this prompt in future chats:
 
 ```text
-Read the public `infractl` tool from https://github.com/hector-en/temp/tree/main/infra-skeleton-tools_real_v0, then ask me for my private `agentfield-grn-private_real_v0` bundle zip, validate both, and start the workflow in `webchat-sandbox` mode without treating extra sources as authoritative until routed through `EXTRA_SOURCE_ROUTING.md`. Keep `CLI_EXTRACTION_NOTES.md` active until Skeleton Batch 04.
+Read the public `infractl` tool from https://github.com/hector-en/temp/tree/main/infra-skeleton-tools_real_v0, then ask me for my private `agentfield-grn-private_real_v0` bundle zip, validate both, and ask me for a `WORKFLOW_DIRECTION` block before running any request/update or packaging command. If required files or evidence snapshots are missing, stop and ask me to upload them or explicitly confirm continuing without them. Run only deterministic commands in `webchat-sandbox` mode, do not treat extra sources as authoritative until routed through `EXTRA_SOURCE_ROUTING.md`, and keep `CLI_EXTRACTION_NOTES.md` active until Skeleton Batch 04.
 ```

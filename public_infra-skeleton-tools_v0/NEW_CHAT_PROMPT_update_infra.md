@@ -51,6 +51,72 @@ Before doing the update, ask me to provide or confirm access to:
 
 If any required file is missing or inaccessible, stop and list the exact missing files. Do not invent structure.
 
+## Mandatory direction gate
+
+After the public tool and private bundle are available, do not choose a batch, track, topic, or mode yourself.
+
+Ask the user for:
+
+```text
+WORKFLOW_DIRECTION:
+  mode: request-create | request-update | package-codex-create | package-codex-update | check-evidence | status
+  track: skeleton | organ
+  batch: <batch-id>
+  topic: <short-topic-slug>
+  evidence_required: yes | no
+  extra_sources: none | <list of uploaded filenames or paths>
+```
+
+If the user has not provided this block, stop after validation and ask for it.
+
+Allowed before `WORKFLOW_DIRECTION`:
+
+```text
+- validate zip files
+- inspect public CLI layout
+- inspect private bundle layout
+- run `profiles`
+- run `list-batches`
+- run `list-hooks`
+- run `check-required-files`
+- run `status`
+```
+
+Not allowed before `WORKFLOW_DIRECTION`:
+
+```text
+- `request-create`
+- `request-update`
+- `package-codex-create`
+- `package-codex-update`
+- generating update packs
+- choosing Batch 01 or any default batch automatically
+```
+
+## Missing evidence stop rule
+
+If `WORKFLOW_DIRECTION.evidence_required` is `yes`, check the expected evidence snapshot before generating any request/update pack.
+
+If any expected evidence is missing, stop and ask the user to upload the missing files or explicitly confirm continuing without evidence.
+
+For a skeleton update, expected evidence is usually:
+
+```text
+evidence_snapshots/skeleton/<batch-slug>/POSTCHECK.md
+evidence_snapshots/skeleton/<batch-slug>/INTEGRATION_REQUEST.md
+evidence_snapshots/skeleton/<batch-slug>/SMOKE_REPORT.md
+```
+
+For an organ update, expected evidence is usually:
+
+```text
+evidence_snapshots/organ/<batch-slug>/POSTCHECK.md
+evidence_snapshots/organ/<batch-slug>/INTEGRATION_REQUEST.md
+evidence_snapshots/organ/<batch-slug>/SMOKE_REPORT.md
+```
+
+The assistant must not silently continue when `evidence_required=yes` and evidence is missing.
+
 ---
 
 ## Optional files to ask for if relevant
@@ -236,6 +302,7 @@ python -m infractl.cli validate-real-layout \
   --repo-root /mnt/data/agentfield-grn-private_<VERSION> \
   --allow-bundle-fallback
 
+# The following `request-create` and `request-update` commands require a matching `WORKFLOW_DIRECTION`.
 python -m infractl.cli request-create \
   --project /mnt/data/agentfield-grn-private_<VERSION> \
   --track skeleton \
@@ -269,6 +336,7 @@ python -m infractl.cli validate-real-layout \
   --project /workspace/private/agentfield-grn-private_<VERSION> \
   --repo-root /mnt/ingress
 
+# The following workspace request commands require a matching `WORKFLOW_DIRECTION`.
 python -m infractl.cli request-create \
   --project /workspace/private/agentfield-grn-private_<VERSION> \
   --track skeleton \
