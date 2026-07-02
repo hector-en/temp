@@ -101,6 +101,17 @@ python -m infractl.cli validate-real-layout \
   --repo-root /mnt/ingress
 ```
 
+This is the real workspace preflight gate. If any `required: true` source in `files.yaml` is missing from the real tree under `--repo-root`, `validate-real-layout` exits non-zero with `MISSING_REQUIRED_REAL_PATHS`.
+
+Inside ChatGPT/webchat only, where `/mnt/ingress/infra` is not mounted, use bundle fallback validation instead:
+
+```bash
+python -m infractl.cli validate-real-layout \
+  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --repo-root /mnt/data/agentfield-grn-private_real_v0 \
+  --allow-bundle-fallback
+```
+
 Do not use `/workspace/repos/public_infra-skeleton-tools_v0` as `--repo-root`; that is the public CLI folder, not the private infra tree.
 
 ## Scope of v0

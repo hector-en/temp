@@ -2,6 +2,8 @@
 
 Use this file as the starter instruction for a new ChatGPT workflow after the public `infractl` tool has been pushed to GitHub.
 
+For daily operation, use `workflow.md` first. This file is the longer bootstrap and governance instruction for a fresh ChatGPT chat, WSL2/local CLI, and Codex handoff.
+
 ## 0. Core rule
 
 Keep the public reusable tool and the private project data separate.
@@ -9,7 +11,7 @@ Keep the public reusable tool and the private project data separate.
 Public tool:
 
 ```text
-infra-skeleton-tools_real_v0/
+public_infra-skeleton-tools_v0/
   infractl/
     cli.py
     project.py
@@ -21,6 +23,7 @@ infra-skeleton-tools_real_v0/
   templates/
   examples/
   README.md
+  workflow.md
 ```
 
 Private project bundle:
@@ -52,7 +55,7 @@ When starting a new chat, do this:
 1. Read the public tool repo:
 
 ```text
-https://github.com/hector-en/temp/tree/main/infra-skeleton-tools_real_v0
+https://github.com/hector-en/temp/tree/main/public_infra-skeleton-tools_v0
 ```
 
 2. Confirm that the public CLI files are accessible, especially:
@@ -67,6 +70,7 @@ infractl/profiles.py
 schemas/README.md
 templates/README.md
 README.md
+workflow.md
 ```
 
 3. Ask the user to upload the private bundle zip:
@@ -107,60 +111,6 @@ generated/
 ```text
 EXTRA_SOURCE_ROUTING.md
 ```
-
-## 1A. Required workflow direction gate
-
-Before running any `infractl request-create`, `infractl request-update`, `infractl package-codex-create`, or `infractl package-codex-update` command, ask the user for a `WORKFLOW_DIRECTION` block.
-
-Required format:
-
-```text
-WORKFLOW_DIRECTION:
-  mode: request-create | request-update | package-codex-create | package-codex-update | check-evidence | status
-  track: skeleton | organ
-  batch: <batch-id>
-  topic: <short-topic-slug>
-  evidence_required: yes | no
-  extra_sources: none | <list of uploaded filenames or paths>
-```
-
-Do not infer the direction from the uploaded bundle.
-
-Safe validation commands may run before this block is provided:
-
-```bash
-python -m infractl.cli profiles
-python -m infractl.cli list-batches --project <PRIVATE_PROJECT>
-python -m infractl.cli list-hooks --project <PRIVATE_PROJECT>
-python -m infractl.cli check-required-files --project <PRIVATE_PROJECT>
-python -m infractl.cli status --project <PRIVATE_PROJECT>
-```
-
-Do not run request, update, or packaging commands until the user has provided `WORKFLOW_DIRECTION`.
-
-## 1B. Missing evidence stop rule
-
-If `WORKFLOW_DIRECTION.evidence_required` is `yes`, check the expected evidence snapshot before generating any request/update pack.
-
-If any expected evidence is missing, stop and ask the user to upload the missing files or explicitly confirm continuing without evidence.
-
-For a skeleton update, expected evidence is usually:
-
-```text
-evidence_snapshots/skeleton/<batch-slug>/POSTCHECK.md
-evidence_snapshots/skeleton/<batch-slug>/INTEGRATION_REQUEST.md
-evidence_snapshots/skeleton/<batch-slug>/SMOKE_REPORT.md
-```
-
-For an organ update, expected evidence is usually:
-
-```text
-evidence_snapshots/organ/<batch-slug>/POSTCHECK.md
-evidence_snapshots/organ/<batch-slug>/INTEGRATION_REQUEST.md
-evidence_snapshots/organ/<batch-slug>/SMOKE_REPORT.md
-```
-
-The assistant must not silently continue when `evidence_required=yes` and evidence is missing.
 
 ## 2. Supported v0 profiles
 
@@ -249,7 +199,47 @@ check-evidence
 status
 ```
 
-## 4. Batch scope for v0
+## 4. Required workflow direction gate
+
+Before running any command that creates or packages an artifact, ask the user for exactly one `WORKFLOW_DIRECTION` block. Do not infer the batch, track, mode, or topic from the bundle.
+
+Required format:
+
+```text
+WORKFLOW_DIRECTION:
+  mode: request-create | request-update | package-codex-create | package-codex-update | check-evidence | status
+  track: skeleton | organ
+  batch: <batch-id>
+  topic: <short-topic-slug>
+  evidence_required: yes | no
+  extra_sources: none | <list of uploaded filenames or paths>
+```
+
+Allowed before `WORKFLOW_DIRECTION`:
+
+```text
+profiles
+list-batches
+list-hooks
+check-required-files
+status
+validate-real-layout with --allow-bundle-fallback in webchat only
+```
+
+Not allowed before `WORKFLOW_DIRECTION`:
+
+```text
+request-create
+request-update
+package-codex-create
+package-codex-update
+generating request packs
+choosing Batch 01 or any default batch automatically
+```
+
+If `evidence_required: yes` and evidence is missing, stop and ask for the missing evidence files or explicit permission to continue without evidence.
+
+## 5. Batch scope for v0
 
 v0 is active for:
 
@@ -268,7 +258,7 @@ Organ R01
 
 Do not attempt full organ execution yet.
 
-## 5. Manual workflow replacement strategy
+## 6. Manual workflow replacement strategy
 
 The old manual workflow was:
 
@@ -296,16 +286,14 @@ The v0 replacement workflow is:
 
 The CLI replaces repetitive deterministic tasks only. ChatGPT still performs reasoning, classification, and writing.
 
-## 6. Request-create flow
+## 7. Request-create flow
 
-Use `request-create` for a not-yet-run skeleton batch.
+Use `request-create` for a not-yet-run skeleton batch. Run it only after the user provides a matching `WORKFLOW_DIRECTION` with `mode: request-create`.
 
 Example:
 
-Only run the following `request-create` command after the user has provided a matching `WORKFLOW_DIRECTION`.
-
 ```bash
-cd /mnt/data/infra-skeleton-tools_real_v0
+cd /mnt/data/public_infra-skeleton-tools_v0
 
 python -m infractl.cli request-create \
   --project /mnt/data/agentfield-grn-private_real_v0 \
@@ -328,16 +316,14 @@ manifest.json
 source_bundle.zip
 ```
 
-## 7. Request-update flow
+## 8. Request-update flow
 
-Use `request-update` for already-run batches or retroactive corrections.
+Use `request-update` for already-run batches or retroactive corrections. Run it only after the user provides a matching `WORKFLOW_DIRECTION` with `mode: request-update`.
 
 Example:
 
-Only run the following `request-update` command after the user has provided a matching `WORKFLOW_DIRECTION`.
-
 ```bash
-cd /mnt/data/infra-skeleton-tools_real_v0
+cd /mnt/data/public_infra-skeleton-tools_v0
 
 python -m infractl.cli request-update \
   --project /mnt/data/agentfield-grn-private_real_v0 \
@@ -370,7 +356,7 @@ Update rules:
 - write update evidence under an updates/<update-id>/ path when Codex later executes
 ```
 
-## 8. Extra source handling
+## 9. Extra source handling
 
 Only use:
 
@@ -402,7 +388,7 @@ ChatGPT must classify whether the extra source should:
 
 No extra source is authoritative by default.
 
-## 9. Packaging ChatGPT outputs for Codex
+## 10. Packaging ChatGPT outputs for Codex
 
 Creation packs require exactly:
 
@@ -414,7 +400,7 @@ RUN_INSTRUCTIONS.md
 POSTCHECK_TEMPLATE.md
 ```
 
-Package command:
+Package command. Run it only after the user provides a matching `WORKFLOW_DIRECTION` with `mode: package-codex-create`:
 
 ```bash
 python -m infractl.cli package-codex-create \
@@ -432,7 +418,7 @@ UPDATE_RUN_INSTRUCTIONS.md
 UPDATE_POSTCHECK_TEMPLATE.md
 ```
 
-Package command:
+Package command. Run it only after the user provides a matching `WORKFLOW_DIRECTION` with `mode: package-codex-update`:
 
 ```bash
 python -m infractl.cli package-codex-update \
@@ -440,19 +426,19 @@ python -m infractl.cli package-codex-update \
   --out /path/to/generated
 ```
 
-## 10. Workspace/Codex setup
+## 11. Workspace/Codex setup
 
 Recommended real workspace placement:
 
 ```text
-/workspace/repos/infra-skeleton-tools_real_v0
+/workspace/repos/public_infra-skeleton-tools_v0
 /workspace/private/agentfield-grn-private_real_v0
 ```
 
 Run from the public tool folder:
 
 ```bash
-cd /workspace/repos/infra-skeleton-tools_real_v0
+cd /workspace/repos/public_infra-skeleton-tools_v0
 
 python -m infractl.cli list-batches \
   --project /workspace/private/agentfield-grn-private_real_v0
@@ -472,11 +458,43 @@ python -m infractl.cli validate-real-layout \
   --repo-root /mnt/ingress
 ```
 
+In strict v0, this command is the real workspace preflight gate. It reads `files.yaml`, expands each `real_path` against `--repo-root`, and must fail if any required real path is missing.
+
+Inside ChatGPT webchat only, where `/mnt/ingress/infra` is not mounted, use bundle fallback validation instead:
+
+```bash
+python -m infractl.cli validate-real-layout \
+  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --repo-root /mnt/data/agentfield-grn-private_real_v0 \
+  --allow-bundle-fallback
+```
+
 The `--repo-root` value must point to the parent folder that contains the real private `infra/` directory. For this project, use `/mnt/ingress`, because the private Infra-Skeleton planning/control tree lives at `/mnt/ingress/infra`. Keep `/workspace` free for implementation repos, experiments, runs, artifacts, and generated working code.
 
-## 11. Private bundle real-path mapping
+## 12. Private bundle real-path mapping
 
 The private bundle should use `files.yaml` to map portable source names to real repo paths.
+
+Current private YAML contract:
+
+```text
+project.yaml = project identity, profile defaults, safety boundaries, and roots
+layers.yaml  = 5-layer architecture map
+batches.yaml = skeleton/organ batch IDs, required context, expected outputs, evidence rules
+hooks.yaml   = ANX/hook routing for reusable update and creation lanes
+files.yaml   = source key -> bundle path -> real /mnt/ingress/infra path; used by validate-real-layout
+```
+
+Current `files.yaml` mapping summary:
+
+```text
+28 source keys
+11 required source keys
+17 optional source keys
+
+Required source keys:
+A0, A1, A2, NEW_CREATE, NEW_UPDATE, SPEC_L1, SPEC_L2, WF_FINAL, WF_SKELETON, WF_SMOKE, CLI_NOTES
+```
 
 Important real-path families:
 
@@ -494,7 +512,7 @@ infra/skeleton/companion/
 
 The webchat bundle may carry copied fallback files under `sources/`, but the workspace profile should validate against the real repo paths.
 
-## 12. CLI_EXTRACTION_NOTES.md rule
+## 13. CLI_EXTRACTION_NOTES.md rule
 
 Until after Skeleton Batch 04, every request pack should include a reminder to update:
 
@@ -510,7 +528,7 @@ At the end, update `CLI_EXTRACTION_NOTES.md` with only the reusable patterns fro
 
 After Batch 04, use those notes to design v1/v2 updates through `NEW_CHAT_PROMPT_update_infra.md`.
 
-## 13. What v0 must not do
+## 14. What v0 must not do
 
 v0 must not:
 
@@ -527,16 +545,16 @@ v0 must not:
 ```
 
 
-## 14. Infra/tool update line
+## 15. Infra/tool update line
 
 Use `NEW_CHAT_PROMPT_update_infra.md` when the goal is to update the public `infractl` tool, the private bundle format, or both.
 
 This update line is for producing future versions such as:
 
 ```text
-infra-skeleton-tools_real_v1.zip
+public_infra-skeleton-tools_v1.zip
 agentfield-grn-private_real_v1_bundle.zip
-infra-skeleton-tools_real_v2.zip
+public_infra-skeleton-tools_v2.zip
 agentfield-grn-private_real_v2_bundle.zip
 ```
 
@@ -571,10 +589,10 @@ Recommended starter prompt for this line:
 Follow `NEW_CHAT_PROMPT_update_infra.md`. Read the public infractl repo, then use my uploaded private codebase analysis, current private bundle, current instructions.md, and CLI_EXTRACTION_NOTES.md to create a delta plan first for the next public/private Infra-Skeleton tool version. Do not generate files until the delta plan is confirmed.
 ```
 
-## 15. New-chat starter prompt
+## 16. New-chat starter prompt
 
 Use this prompt in future chats:
 
 ```text
-Read the public `infractl` tool from https://github.com/hector-en/temp/tree/main/infra-skeleton-tools_real_v0, then ask me for my private `agentfield-grn-private_real_v0` bundle zip, validate both, and ask me for a `WORKFLOW_DIRECTION` block before running any request/update or packaging command. If required files or evidence snapshots are missing, stop and ask me to upload them or explicitly confirm continuing without them. Run only deterministic commands in `webchat-sandbox` mode, do not treat extra sources as authoritative until routed through `EXTRA_SOURCE_ROUTING.md`, and keep `CLI_EXTRACTION_NOTES.md` active until Skeleton Batch 04.
+Read the public `infractl` tool from https://github.com/hector-en/temp/tree/main/public_infra-skeleton-tools_v0. If GitHub access fails, ask me to upload `public_infra-skeleton-tools_v0.zip`. Then ask me for my private `agentfield-grn-private_real_v0_bundle.zip`. Validate both. Before running any request or packaging command, ask me for one `WORKFLOW_DIRECTION` block with mode, track, batch, topic, evidence_required, and extra_sources. Run only deterministic `infractl` commands in `webchat-sandbox` mode, do not treat extra sources as authoritative until routed through `EXTRA_SOURCE_ROUTING.md`, and keep `CLI_EXTRACTION_NOTES.md` active until Skeleton Batch 04.
 ```

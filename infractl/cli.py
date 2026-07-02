@@ -14,7 +14,7 @@ def main(argv=None):
     sub=p.add_subparsers(dest='cmd', required=True)
     sub.add_parser('profiles')
     for c in ['list-batches','list-hooks','status','check-required-files','validate-real-layout']:
-        sp=sub.add_parser(c); sp.add_argument('--project', required=True); sp.add_argument('--track'); sp.add_argument('--repo-root')
+        sp=sub.add_parser(c); sp.add_argument('--project', required=True); sp.add_argument('--track'); sp.add_argument('--repo-root'); sp.add_argument('--allow-bundle-fallback', action='store_true')
     sp=sub.add_parser('explain-batch'); sp.add_argument('--project', required=True); sp.add_argument('--track'); sp.add_argument('--batch', required=True)
     for c in ['request-create','request-update']:
         sp=sub.add_parser(c); sp.add_argument('--project', required=True); sp.add_argument('--track', required=True); sp.add_argument('--batch', required=True); sp.add_argument('--topic', default='manual'); sp.add_argument('--profile', default='webchat-sandbox'); sp.add_argument('--out', required=True); sp.add_argument('--extra-source', action='append', default=[]); sp.add_argument('--repo-root')
@@ -37,12 +37,25 @@ def main(argv=None):
             for b in batches(data,args.track):
                 for k in b.get('required_sources',[]): keys.add(k)
         else:
+            if not args.repo_root:
+                raise SystemExit('validate-real-layout requires --repo-root')
             keys=set(data.get('files',{}).get('source_keys',{}).keys())
         bad=False
+        missing_required=[]
         for k in sorted(keys):
             st=source_status(data,k,args.repo_root); print_json(st)
-            if st.get('required') and not st.get('bundle_exists'): bad=True
-        if bad: raise SystemExit(2)
+            if args.cmd=='check-required-files':
+                if st.get('required') and not st.get('bundle_exists'):
+                    bad=True; missing_required.append(k)
+            else:
+                real_ok = st.get('real_exists') is True
+                fallback_ok = bool(args.allow_bundle_fallback and st.get('bundle_exists'))
+                if st.get('required') and not (real_ok or fallback_ok):
+                    bad=True; missing_required.append(k)
+        if bad:
+            kind = 'MISSING_REQUIRED_BUNDLE_FILES' if args.cmd=='check-required-files' else 'MISSING_REQUIRED_REAL_PATHS'
+            print_json({'error': kind, 'missing_required_keys': missing_required, 'repo_root': getattr(args,'repo_root',None), 'allow_bundle_fallback': getattr(args,'allow_bundle_fallback',False)})
+            raise SystemExit(2)
     elif args.cmd in ['request-create','request-update']:
         validate_profile(args.profile); b=find_batch(data,args.batch,args.track); root,z=write_request(data,b,'create' if args.cmd=='request-create' else 'update',args.topic,args.profile,args.out,args.extra_source,args.repo_root); print(root); print(z)
     elif args.cmd=='check-evidence':
