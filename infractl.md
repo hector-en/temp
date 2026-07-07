@@ -381,6 +381,103 @@ CIP06 may apply changes only after manifest approval, live config-state snapshot
 ALLOW_CONFIG_MUTATION=no unless CIP06 and all explicit gates pass.
 ```
 
+Config-Infra source-contract rule:
+
+```text
+Do not infer CIP source-contract filenames from phase titles.
+Use the hardcoded CIP source-contract map and registry lookup.
+If a mapped file is missing, search hooks.yaml / files.yaml / candidate filenames before declaring it missing.
+Do not invent alternate filenames.
+```
+
+Config-Infra hardcoded source-contract map:
+
+```text
+CIP01:
+  phase_title: Source intake and suitability determination
+  spec_annex:
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX01_config_infra_suitability_determiner.md
+  hook:
+    sources/implementation/HOOKS/HOOK_config_infra_suitability_assessment.md
+  primary_output:
+    CONFIG_INFRA_SUITABILITY_DECISION.md
+    CONFIG_INFRA_SUITABILITY_DECISION.json
+
+CIP02:
+  phase_title: Rich integration request generation
+  spec_annex:
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX02_integration_request_schema.md
+  hook:
+    sources/implementation/HOOKS/HOOK_config_infra_rich_integration_request.md
+  primary_output:
+    INTEGRATION_REQUEST.md
+    INTEGRATION_REQUEST.json
+
+CIP03:
+  phase_title: Manifest aggregation and approval
+  spec_annex:
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX03_integration_manifest_schema.md
+  hook:
+    sources/implementation/HOOKS/HOOK_config_infra_manifest_gate.md
+  primary_output:
+    INTEGRATION_MANIFEST.md
+    INTEGRATION_MANIFEST.json
+
+CIP04:
+  phase_title: Live config-state resolution
+  spec_annex:
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX04_config_state_snapshot_schema.md
+  hook:
+    sources/implementation/HOOKS/HOOK_config_infra_live_resolution_gate.md
+  primary_output:
+    CONFIG_STATE_SNAPSHOT.md
+    CONFIG_STATE_SNAPSHOT.json
+  postcheck:
+    CIP04_POSTCHECK.md
+
+CIP05:
+  phase_title: Config implementation planning
+  spec_annex:
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX05_config_integration_plan_schema.md
+  supporting_annex:
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX06_config_patch_classes.md
+  hook:
+    sources/implementation/HOOKS/HOOK_config_infra_implementation_plan_gate.md
+  primary_output:
+    CONFIG_INTEGRATION_PLAN.md
+    CONFIG_INTEGRATION_PLAN.json
+  postcheck:
+    CIP05_POSTCHECK.md
+
+CIP06:
+  phase_title: Idempotent application and closeout
+  spec_annex:
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX06_config_patch_classes.md
+  supporting_annex:
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX07_config_integration_implementer_spec.md
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX08_config_integration_implementer_runbook.md
+    sources/specifications/annex/SPEC_config_infra_integration_pipeline-ANX09_codex_pack_template_config_integration.md
+  hook:
+    sources/implementation/HOOKS/HOOK_config_infra_closeout_snapshot_companion.md
+  primary_output:
+    CONFIG_INTEGRATION_CLOSEOUT_REPORT.md
+    CONFIG_INTEGRATION_CLOSEOUT_REPORT.json
+  postcheck:
+    CIP06_POSTCHECK.md
+```
+
+Registry lookup rule:
+
+```text
+For every CIP phase:
+1. Resolve the phase through the hardcoded CIP source-contract map.
+2. If a private bundle or real workspace is available, read hooks.yaml and files.yaml before declaring a file missing.
+3. Verify the mapped spec annex and hook exist.
+4. If a mapped file is missing, search for candidate files by CIP phase number, hook id, and output schema name.
+5. Report registry drift separately from a true missing file.
+6. Stop rather than inventing alternate filenames.
+```
+
 CIP phase inputs:
 
 ```text
@@ -390,6 +487,20 @@ CIP03: one or more INTEGRATION_REQUEST.md files plus batch/organ evidence and co
 CIP04: CIP03 INTEGRATION_MANIFEST.md/json plus current config/tooling context or target workspace access when running in Codex/WSL.
 CIP05: CIP03 INTEGRATION_MANIFEST.md/json plus CIP04 CONFIG_STATE_SNAPSHOT.md/json.
 CIP06: CIP03 manifest, CIP04 snapshot, CIP05 CONFIG_INTEGRATION_PLAN.md/json, and approved exact file touch set / confirmation context.
+```
+
+CIP04 naming guardrail:
+
+```text
+The phase title is "Live config-state resolution", but the canonical ANX file is:
+  SPEC_config_infra_integration_pipeline-ANX04_config_state_snapshot_schema.md
+and the canonical hook is:
+  HOOK_config_infra_live_resolution_gate.md
+The canonical outputs are:
+  CONFIG_STATE_SNAPSHOT.md
+  CONFIG_STATE_SNAPSHOT.json
+  CIP04_POSTCHECK.md
+Do not use LIVE_CONFIG_STATE_SNAPSHOT.* or HOOK_config_infra_live_state_resolution.md unless a future registry explicitly changes the contract.
 ```
 
 Blocking CIP rules:

@@ -260,6 +260,54 @@ CIP06 may apply changes only with:
   - passing safety gates
 ```
 
+### Config-Infra filename contract
+
+```text
+Do not infer CIP source-contract filenames from phase titles.
+Use the hardcoded CIP source-contract map and registry lookup.
+If a mapped file is missing, search hooks.yaml / files.yaml / candidate filenames before declaring it missing.
+Do not invent alternate filenames.
+```
+
+Compact canonical map:
+
+```text
+CIP01:
+  spec_annex: SPEC_config_infra_integration_pipeline-ANX01_config_infra_suitability_determiner.md
+  hook: HOOK_config_infra_suitability_assessment.md
+  outputs: CONFIG_INFRA_SUITABILITY_DECISION.md, CONFIG_INFRA_SUITABILITY_DECISION.json
+
+CIP02:
+  spec_annex: SPEC_config_infra_integration_pipeline-ANX02_integration_request_schema.md
+  hook: HOOK_config_infra_rich_integration_request.md
+  outputs: INTEGRATION_REQUEST.md, INTEGRATION_REQUEST.json
+
+CIP03:
+  spec_annex: SPEC_config_infra_integration_pipeline-ANX03_integration_manifest_schema.md
+  hook: HOOK_config_infra_manifest_gate.md
+  outputs: INTEGRATION_MANIFEST.md, INTEGRATION_MANIFEST.json
+
+CIP04:
+  spec_annex: SPEC_config_infra_integration_pipeline-ANX04_config_state_snapshot_schema.md
+  hook: HOOK_config_infra_live_resolution_gate.md
+  outputs: CONFIG_STATE_SNAPSHOT.md, CONFIG_STATE_SNAPSHOT.json, CIP04_POSTCHECK.md
+
+CIP05:
+  spec_annex: SPEC_config_infra_integration_pipeline-ANX05_config_integration_plan_schema.md
+  supporting_annex: SPEC_config_infra_integration_pipeline-ANX06_config_patch_classes.md
+  hook: HOOK_config_infra_implementation_plan_gate.md
+  outputs: CONFIG_INTEGRATION_PLAN.md, CONFIG_INTEGRATION_PLAN.json, CIP05_POSTCHECK.md
+
+CIP06:
+  spec_annex: SPEC_config_infra_integration_pipeline-ANX06_config_patch_classes.md
+  supporting_annex:
+    SPEC_config_infra_integration_pipeline-ANX07_config_integration_implementer_spec.md
+    SPEC_config_infra_integration_pipeline-ANX08_config_integration_implementer_runbook.md
+    SPEC_config_infra_integration_pipeline-ANX09_codex_pack_template_config_integration.md
+  hook: HOOK_config_infra_closeout_snapshot_companion.md
+  outputs: CONFIG_INTEGRATION_CLOSEOUT_REPORT.md, CONFIG_INTEGRATION_CLOSEOUT_REPORT.json, CIP06_POSTCHECK.md
+```
+
 ### CIP router prompt
 
 Use this when you are not sure which Config-Infra phase to run next:
@@ -343,6 +391,14 @@ infractl/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_o
 ### CIP04 — live config-state resolution
 
 Use CIP04 after CIP03 to inspect the current real config/tooling state in read-only mode. CIP04 resolves what exists now; it does not apply changes.
+
+```text
+CIP04 naming guardrail:
+The phase title is "Live config-state resolution", but the canonical ANX file is SPEC_config_infra_integration_pipeline-ANX04_config_state_snapshot_schema.md.
+The canonical hook is HOOK_config_infra_live_resolution_gate.md.
+The canonical outputs are CONFIG_STATE_SNAPSHOT.md, CONFIG_STATE_SNAPSHOT.json, and CIP04_POSTCHECK.md.
+Do not use LIVE_CONFIG_STATE_SNAPSHOT.* or HOOK_config_infra_live_state_resolution.md unless a future registry explicitly changes the contract.
+```
 
 ```text
 Use infractl.md and infractl.zip.
@@ -639,4 +695,3 @@ Use the updated public export pair together:
 infractl.md
 infractl.zip
 ```
-
