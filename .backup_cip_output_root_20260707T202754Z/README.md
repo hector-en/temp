@@ -260,57 +260,6 @@ CIP06 may apply changes only with:
   - passing safety gates
 ```
 
-### Config-Infra CIP output root rule
-
-Canonical rule:
-
-```text
-For every CIP run, use:
-/workspace/runs/cip/<slug-title>/<cip-phase>/
-```
-
-where:
-
-```text
-- <slug-title> is the CIP topic/run slug, for example batch01_config_infra_cip_alignment_manifest
-- <cip-phase> is lowercase cip01, cip02, cip03, cip04, cip05, or cip06
-```
-
-Examples:
-
-```text
-/workspace/runs/cip/batch01_config_infra_cip_alignment_manifest/cip03/INTEGRATION_MANIFEST.md
-/workspace/runs/cip/batch01_config_infra_cip_alignment_manifest/cip04/CONFIG_STATE_SNAPSHOT.md
-/workspace/runs/cip/batch01_config_infra_cip_alignment_manifest/cip05/CONFIG_INTEGRATION_PLAN.md
-/workspace/runs/cip/batch01_config_infra_cip_alignment_manifest/cip06/CONFIG_INTEGRATION_CLOSEOUT_REPORT.md
-```
-
-Variable convention:
-
-```text
-CIP_RUN_SLUG=<slug-title>
-CIP_PHASE_DIR=cip04
-CIP_RUN_ROOT=/workspace/runs/cip/${CIP_RUN_SLUG}
-OUTPUT_ROOT=${CIP_RUN_ROOT}/${CIP_PHASE_DIR}
-```
-
-Phase mapping:
-
-```text
-CIP01 -> /workspace/runs/cip/<slug-title>/cip01/
-CIP02 -> /workspace/runs/cip/<slug-title>/cip02/
-CIP03 -> /workspace/runs/cip/<slug-title>/cip03/
-CIP04 -> /workspace/runs/cip/<slug-title>/cip04/
-CIP05 -> /workspace/runs/cip/<slug-title>/cip05/
-CIP06 -> /workspace/runs/cip/<slug-title>/cip06/
-```
-
-Legacy rule:
-
-```text
-Legacy CIP artifacts may exist under /workspace/cipXX/<topic>/ or /workspace/runs/cip/cipXX/<topic>/. For new runs, addendums, and future phases, write to /workspace/runs/cip/<slug-title>/cipXX/. Existing legacy outputs should be read as inputs when needed and left in place unless an explicit migration task is approved.
-```
-
 ### Config-Infra filename contract
 
 ```text
