@@ -26,6 +26,7 @@ infractl/
   request-update-skeleton/
   request-create-organs/
   request-update-organs/
+  config-infra/
 ```
 
 ## Purpose
@@ -97,6 +98,7 @@ The model should infer values from:
 - the selected DOT filename
 - the canonical main v7 DOT
 - the uploaded zip layout
+- the selected CIP phase when MODE=config-infra and TRACK=cip
 - previously supplied operator text
 - batch mapping files if available
 - evidence paths if available
@@ -315,6 +317,91 @@ Blocking organ-update rules:
 - STOP if the operator is trying to update skeleton evidence through the organ lane.
 ```
 
+### config-infra + CIP
+
+Folder:
+
+```text
+infractl/config-infra/
+```
+
+Use this route when:
+
+```text
+MODE=config-infra
+TRACK=cip
+PHASE=CIP01|CIP02|CIP03|CIP04|CIP05|CIP06
+```
+
+Expected CIP files:
+
+```text
+CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
+CIP02_rich_integration_request_generation_infractl_prompts_only.dot
+CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
+CIP04_live_config_state_resolution_infractl_prompts_only.dot
+CIP05_config_implementation_planning_infractl_prompts_only.dot
+CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
+```
+
+Route summary:
+
+```text
+CIP01: Source intake and suitability determination.
+CIP02: Rich integration request generation or retrofit.
+CIP03: Manifest aggregation and approval.
+CIP04: Live config-state resolution.
+CIP05: Config implementation planning.
+CIP06: Idempotent application and closeout.
+```
+
+Use CIP when a batch or organ workflow produces configuration, environment, Python/lv, package-stack, bootstrap, account, mount, or workflow-integration implications that need structured handoff instead of an ad hoc note. Normal skeleton/organ create/update lanes may produce a rich `INTEGRATION_REQUEST.md`; the CIP path is the follow-on route family for deciding what to do with those requests.
+
+Typical workflow alignment:
+
+```text
+Normal batch create/update
+  -> rich INTEGRATION_REQUEST.md
+
+S-T8 / O-T8
+  -> CIP03 manifest aggregation and approval
+
+S-T9 / O-T9
+  -> CIP04 live config-state resolution
+  -> CIP05 config implementation planning
+  -> CIP06 manifest-approved application and closeout
+```
+
+CIP safety model:
+
+```text
+CIP01-CIP05 are read-only / planning-only.
+CIP06 defaults to no mutation.
+CIP06 may apply changes only after manifest approval, live config-state snapshot, implementation plan, exact file touch set, explicit confirmation, and passing safety gates.
+ALLOW_CONFIG_MUTATION=no unless CIP06 and all explicit gates pass.
+```
+
+CIP phase inputs:
+
+```text
+CIP01: raw source files, notes, config requirements, or workflow requirements.
+CIP02: CIP01 suitability decision if available, source material, or an existing thin integration request to retrofit.
+CIP03: one or more INTEGRATION_REQUEST.md files plus batch/organ evidence and context if available.
+CIP04: CIP03 INTEGRATION_MANIFEST.md/json plus current config/tooling context or target workspace access when running in Codex/WSL.
+CIP05: CIP03 INTEGRATION_MANIFEST.md/json plus CIP04 CONFIG_STATE_SNAPSHOT.md/json.
+CIP06: CIP03 manifest, CIP04 snapshot, CIP05 CONFIG_INTEGRATION_PLAN.md/json, and approved exact file touch set / confirmation context.
+```
+
+Blocking CIP rules:
+
+```text
+- STOP if a required prior CIP artifact is missing.
+- STOP if the operator asks CIP06 to mutate without manifest approval, live state snapshot, implementation plan, exact touch set, and explicit confirmation.
+- STOP if the request needs live config truth but the selected phase is CIP01, CIP02, or CIP03.
+- STOP if the selected DOT is not exactly one CIP phase DOT from infractl/config-infra/.
+- STOP if the route tries to mix CIP phases in one run.
+```
+
 ## How to ask for a run
 
 Use one of these forms.
@@ -356,6 +443,31 @@ First suggest variables and ask me to confirm.
 Do not execute until confirmed.
 ```
 
+### Run a Config-Infra CIP lane
+
+```text
+Use infractl.md and infractl.zip.
+Run Config-Infra CIP03 manifest aggregation and approval.
+
+Read infractl.md first.
+Read the root main v7 DOT next.
+Then use exactly one selected CIP DOT from:
+infractl/config-infra/
+
+Suggest the variable block first.
+Ask me to confirm or correct it.
+Do not execute until confirmed.
+```
+
+### Decide the next Config-Infra CIP phase
+
+```text
+Use infractl.md and infractl.zip.
+I need help deciding which Config-Infra CIP phase to use for this request.
+Given my current artifacts, tell me whether I should run CIP01, CIP02, CIP03, CIP04, CIP05, or CIP06 next.
+Do not execute yet. First return the recommended phase, required files, missing prerequisites, and variable block.
+```
+
 ## Phase selection table
 
 ```text
@@ -365,6 +477,13 @@ PHASE=P3  -> writing-to-package
 PHASE=P4  -> package-to-Codex/layout-gate
 PHASE=P5  -> evidence-return/snapshot/export/phase-decision
 PHASE=P6  -> next-cycle routing
+
+PHASE=CIP01 -> source intake and suitability determination
+PHASE=CIP02 -> rich integration request generation or retrofit
+PHASE=CIP03 -> manifest aggregation and approval
+PHASE=CIP04 -> live config-state resolution
+PHASE=CIP05 -> config implementation planning
+PHASE=CIP06 -> idempotent application and closeout
 ```
 
 ## Safety boundaries
@@ -378,6 +497,7 @@ NO_LIVE_INFRA=yes
 NO_MODEL_API_CALLS=yes
 NO_SMOKE_RERUN_UNLESS_EXPLICIT=yes
 NO_HISTORICAL_EVIDENCE_OVERWRITE=yes
+ALLOW_CONFIG_MUTATION=no
 ```
 
 For ChatGPT/webchat lanes, the model should generate files, instructions, commands, or validation reports in the current sandbox only.
@@ -428,6 +548,13 @@ When in doubt, upload:
 3. the public tool zip or repository access
 4. the private project bundle zip
 5. any required evidence zip/files for update lanes
+6. INTEGRATION_REQUEST.md / INTEGRATION_MANIFEST.md / CONFIG_STATE_SNAPSHOT.md / CONFIG_INTEGRATION_PLAN.md when running CIP phases
 ```
 
 Then ask for one route and one phase at a time.
+
+## Current Config-Infra note
+
+The current real `infractl.zip` includes the active `config-infra/` route family. The main DOT contains the native CIP router, while `README.md` and `prompt_guide.md` provide longer operator examples. This `infractl.md` remains the compact router and must be kept next to the zip in fresh chats.
+
+For Config-Infra work, start with the CIP router prompt unless you already know the exact CIP phase.
