@@ -2,6 +2,14 @@
 
 This file is the human-facing router for the prompt-only Infra-Skeleton workflow bundle.
 
+When operating inside `/workspace/repos/infractl-public`, read DOT files from:
+
+```text
+dots/
+```
+
+Use repo-local `dots/...` paths for Codex/WSL/local instructions. Keep `infractl.zip` upload wording for fresh webchat sessions, but do not point repo-local operators at `infractl/<lane>/...`.
+
 It is intended to be uploaded together with:
 
 ```text
@@ -46,7 +54,7 @@ Read infractl.md first.
 Then inspect infractl.zip.
 Use the root-level canonical main DOT:
 
-infractl/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
+dots/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
 
 Then choose the correct prompt-only DOT for the lane I request.
 
@@ -183,7 +191,7 @@ Legacy CIP artifacts may exist under /workspace/cipXX/<topic>/ or /workspace/run
 Folder:
 
 ```text
-infractl/zero-abc/
+dots/zero-abc/
 ```
 
 Expected files:
@@ -207,7 +215,7 @@ Use these when:
 Folder:
 
 ```text
-infractl/request-create-skeleton/
+dots/request-create-skeleton/
 ```
 
 Use this route when:
@@ -244,7 +252,7 @@ P6: Choose the next route after the completed cycle.
 Folder:
 
 ```text
-infractl/request-update-skeleton/
+dots/request-update-skeleton/
 ```
 
 Use this route when:
@@ -281,7 +289,7 @@ P6: Choose the next route after the completed update cycle.
 Folder:
 
 ```text
-infractl/request-create-organs/
+dots/request-create-organs/
 ```
 
 Use this route when:
@@ -326,7 +334,7 @@ Important organ-context rules:
 Folder:
 
 ```text
-infractl/request-update-organs/
+dots/request-update-organs/
 ```
 
 Use this route when:
@@ -372,7 +380,7 @@ Blocking organ-update rules:
 Folder:
 
 ```text
-infractl/config-infra/
+dots/config-infra/
 ```
 
 Use this route when:
@@ -559,7 +567,7 @@ Blocking CIP rules:
 - STOP if a required prior CIP artifact is missing.
 - STOP if the operator asks CIP06 to mutate without manifest approval, live state snapshot, implementation plan, exact touch set, and explicit confirmation.
 - STOP if the request needs live config truth but the selected phase is CIP01, CIP02, or CIP03.
-- STOP if the selected DOT is not exactly one CIP phase DOT from infractl/config-infra/.
+- STOP if the selected DOT is not exactly one CIP phase DOT from dots/config-infra/.
 - STOP if the route tries to mix CIP phases in one run.
 ```
 
@@ -613,7 +621,7 @@ Run Config-Infra CIP03 manifest aggregation and approval.
 Read infractl.md first.
 Read the root main v7 DOT next.
 Then use exactly one selected CIP DOT from:
-infractl/config-infra/
+dots/config-infra/
 
 Suggest the variable block first.
 Ask me to confirm or correct it.

@@ -1,0 +1,168 @@
+digraph P2_Create_Writing_Organ_Infractl_Prompts_Only {
+  graph [
+    rankdir=TB,
+    splines=ortho,
+    compound=true,
+    bgcolor="white",
+    pad="0.25",
+    nodesep="0.55",
+    ranksep="0.75",
+    fontname="Helvetica",
+    fontsize=18,
+    labelloc="t",
+    label="P2 create-writing lane: mode=request-create, track=organ — prompt-only execution DOT"
+  ];
+
+  node [shape=box, style="rounded,filled", color="#333333", fillcolor="#F8F9FA", fontname="Helvetica", fontsize=11, margin="0.12,0.08"];
+  edge [color="#6A1B9A", fontname="Helvetica", fontsize=9, arrowsize=0.7, penwidth=1.4];
+
+  start [fillcolor="#E8F0FE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>SELF-EXECUTION CONTEXT</B></TD></TR>
+    <TR><TD ALIGN="LEFT">You are a fresh ChatGPT or Codex session receiving this DOT as execution instruction. This DOT is not a drawing task. Read it as the executable prompt contract for the v7 Infra-Skeleton pipeline lane named <B>P2 create-writing</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">Canonical source of truth: <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>, the version-tag-free copy of the selected v7 main DOT. Use that file to verify the lane order and node names before acting.</TD></TR>
+    <TR><TD ALIGN="LEFT">This DOT covers one route only: <B>mode=request-create</B>, <B>track=organ</B>. It begins after P1 has produced a request folder for the organ R01 scaffold and ends when the G7 create-writing files exist and are ready for P3 packaging.</TD></TR>
+  </TABLE>
+  >];
+
+  v7map [fillcolor="#F3E8FD", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>WHERE THIS LANE SITS IN V7</B></TD></TR>
+    <TR><TD ALIGN="LEFT">P1 request-create + organ has already followed: <B>DirectionOrgan → WebchatFilesIn → CmdProfiles → CmdRequest → RequestFolder</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">This P2 lane follows the v7 request-to-writing transition: <B>RequestFolder → CodexCreateFiles</B> using <B>G7: create-files</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">The next lane after success is P3 for this same route: <B>CodexCreateFiles → CmdPackageCreate → CodexPackZip</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">Do not jump to Codex implementation, smoke, evidence return, G16, or next-cycle from this lane. Those happen later in P4/P5/P6.</TD></TR>
+  </TABLE>
+  >];
+
+  role [fillcolor="#E8F0FE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>ROLE AND GOAL</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Your role is the ChatGPT writing operator for the organ create lane. Convert the bounded P1 request folder into the exact five Codex create files required by v7 G7.</TD></TR>
+    <TR><TD ALIGN="LEFT">The output is not implementation. It is a Codex-ready writing surface for the organ scaffold. The files must tell Codex how to create or prepare the organ R01 scaffold safely, without pretending that an organ batch has already been executed.</TD></TR>
+    <TR><TD ALIGN="LEFT">Keep the organ route separate from skeleton batches. Organ starts at <B>R01</B>, not skeleton Batch 01. Do not reuse skeleton numbering, evidence paths, or smoke assumptions unless the request folder explicitly routes them as context.</TD></TR>
+  </TABLE>
+  >];
+
+  organ_context [fillcolor="#FCE8E6", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>ORGAN-SPECIFIC CONTEXT THAT MUST NOT BE LOST</B></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Why organ starts at R01:</B> the organ track is the real-organ transition lane. In real-v0 it begins with <B>R01 real-contract-audit-runtime-role-readiness</B>, not with skeleton Batch 01. R01 is a scaffold/audit readiness step that checks the real contract before deeper organ implementation.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Skeleton vs organ:</B> skeleton batches 01-04 are dummy/skeleton infrastructure progression. Organ R01 belongs to the real-organ transition path and must preserve organ naming, organ track, organ evidence expectations, and organ day-to-day routing.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Required organ transition context:</B> use <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B> when they are present in the request folder or source manifest.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Workflow context:</B> use <B>final_workflow.md</B>, <B>day_to_day_skeleton_run.md</B>, and <B>smoke_module_update_workflow.md</B> only as route/context support. The organ runbook is <B>day_to_day_organs_run.md</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Evidence expectations:</B> for request-create organ R01, prior evidence is normally not required unless the operator explicitly sets EVIDENCE_REQUIRED=yes or the request folder contains a blocking evidence check. Do not invent existing organ evidence.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Allowed actions:</B> write the five G7 create files from the request folder. Read source manifests and routing files. Prepare safe Codex instructions for the scaffold.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Disallowed actions:</B> do not run Codex, do not implement organ code, do not run smoke, do not mutate /workspace, do not write /mnt/egress, do not overwrite skeleton evidence, do not convert R01 into a skeleton batch.</TD></TR>
+  </TABLE>
+  >];
+
+  addressed [fillcolor="#FFF4CE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>ADDRESSING GATE</B></TD></TR>
+    <TR><TD ALIGN="LEFT">If you are <B>ChatGPT in webchat/sandbox</B>, you may perform this P2 writing lane after confirming the variables. You may create local generated artifacts for download.</TD></TR>
+    <TR><TD ALIGN="LEFT">If you are <B>Codex in the real workspace</B>, stop unless the operator explicitly says this DOT is being used only as a writing guide. Codex should normally consume the packaged result later in P4, not author P2 files from scratch.</TD></TR>
+    <TR><TD ALIGN="LEFT">If you are a <B>WSL operator</B>, do not improvise file contents. Use ChatGPT to write the five files, then run packaging in P3.</TD></TR>
+  </TABLE>
+  >];
+
+  prompt [fillcolor="#DFF5E1", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>EXACT OPERATOR PROMPT TO TYPE</B></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the canonical v7 main DOT and this P2 DOT. We are in P2 request-to-writing for mode=request-create, track=organ. Use the P1 request folder as the bounded input and produce the exact G7 create files for the organ R01 scaffold. Before writing anything, suggest the variable block from the request folder and prior context, label each value as user-provided, inferred, default-safe, or unknown, and ask me to confirm or correct it. Do not expose any base_format/template block. Follow only the v7 end-to-end lane and the organ-specific context in this DOT. Do not run Codex, do not run smoke, do not mutate /workspace or /mnt/egress, and do not overwrite existing outputs unless ALLOW_OVERWRITE=yes.</FONT></TD></TR>
+  </TABLE>
+  >];
+
+  variables [fillcolor="#E8F0FE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>SUGGEST VARIABLES FIRST, THEN ASK FOR CONFIRMATION</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Infer what you can from the uploaded request folder, filenames, manifests, v7 DOT, and previous lane. Do not hand the operator an empty form unless no context exists.</TD></TR>
+    <TR><TD ALIGN="LEFT">Suggest and label: <B>REQUEST_FOLDER</B>, <B>PUBLIC_TOOL_ROOT</B>, <B>PRIVATE_PROJECT_ROOT</B>, <B>MODE=request-create</B>, <B>TRACK=organ</B>, <B>BATCH_ID=R01</B>, <B>BATCH_SLUG=real-contract-audit-runtime-role-readiness</B> or the exact slug from batches.yaml, <B>TOPIC</B>, <B>EVIDENCE_REQUIRED</B>, <B>EXTRA_SOURCES</B>, <B>PROFILE=webchat-sandbox</B>, <B>OUTPUT_ROOT</B>, <B>ALLOW_OVERWRITE=no</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">For each value, mark one of: <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>. Ask only for unknown or unsafe values. Stop until the operator confirms or explicitly says to proceed with suggested values.</TD></TR>
+  </TABLE>
+  >];
+
+  inputs [fillcolor="#FFFFFF", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>INPUT CHECKLIST BEFORE WRITING</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Confirm the request folder contains or references the P1 outputs: <B>CHATGPT_REQUEST.md</B>, <B>REQUIRED_INPUTS.md</B>, <B>SELECTED_CONTEXT_MANIFEST.md</B>, <B>EXTRA_SOURCE_ROUTING.md</B> when applicable, and any evidence check file generated by P1.</TD></TR>
+    <TR><TD ALIGN="LEFT">Read the request files as bounded input. Do not use unlisted private files unless the operator provides them or the manifest routes them. If an organ transition file is required but missing, stop and ask for that file instead of filling the gap from memory.</TD></TR>
+    <TR><TD ALIGN="LEFT">Check for the organ transition files or source keys that should support R01: <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, <B>day_to_day_organs_run.md</B>, and the relevant workflow/spec context selected by the request pack.</TD></TR>
+    <TR><TD ALIGN="LEFT">If the request folder says evidence_required=yes, verify the listed evidence before writing. If evidence is missing and the request says it is blocking, stop. If evidence_required=no, state that no prior organ execution evidence is expected for initial R01 create.</TD></TR>
+  </TABLE>
+  >];
+
+  writefiles [fillcolor="#FFF4CE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>G7 CREATE FILES TO PRODUCE</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Produce exactly the create-lane file set expected by v7 G7. Names should follow the public tool/template contract for create packs, normally:</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>CODEX_PROMPT.txt</B> — the entrypoint Codex must read first. It must state this is request-create + organ R01 scaffold, not skeleton Batch 01.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PROJECT_CACHE.md</B> — bounded project context copied from the request folder, including organ transition sources and relevant v7 route notes.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>SPEC.md</B> — the concrete organ R01 scaffold specification. It must distinguish real-organ transition readiness from skeleton dummy work.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>RUN_INSTRUCTIONS.md</B> — exact Codex task sequence, safety boundaries, allowed file targets, prohibited actions, and expected evidence outputs.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>POSTCHECK_TEMPLATE.md</B> — evidence template Codex must fill after execution. For organ R01, clarify expected proof, smoke behavior, and any WARN-acceptable conditions.</TD></TR>
+  </TABLE>
+  >];
+
+  NormalizedOrganCreateEvidence [fillcolor="#FFF2CC", label=<
+  <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>Normalized organ create evidence contract</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Generated organ create files must require Codex to produce: <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>.</TD></TR>
+    <TR><TD ALIGN="LEFT">For first organ create, <FONT FACE="Courier">POSTCHECK.md</FONT> and <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT> should be full-content copies unless a later tool contract requires aliases. <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT> and <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT> should likewise be full-content copies.</TD></TR>
+    <TR><TD ALIGN="LEFT">The generated <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT> and <FONT FACE="Courier">POSTCHECK_TEMPLATE.md</FONT> must include rich integration/postcheck/changeset sections or reference colocated requirement files: <FONT FACE="Courier">INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">POSTCHECK_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>.</TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT> is read-only context. Record extraction candidates in evidence only; do not edit the ledger during organ create.</TD></TR>
+    <TR><TD ALIGN="LEFT">Keep O-T4A/O-T4B smoke separation explicit. Do not run smoke in P2 and do not instruct Codex to run smoke unless a later route explicitly authorizes it.</TD></TR>
+    <TR><TD ALIGN="LEFT">Organ create evidence roots: <FONT FACE="Courier">/mnt/egress/organs/dev-recordings/organs/&lt;organ-slug&gt;/</FONT> and private snapshot <FONT FACE="Courier">sources/evidence_snapshots/organ/&lt;organ-slug&gt;/</FONT>. Never skeleton roots.</TD></TR>
+  </TABLE>
+  >];
+
+  quality [fillcolor="#E8F0FE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>QUALITY RULES FOR ORGAN CREATE-WRITING</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Each file must be usable by a fresh Codex session without hidden chat context. Include the route identity, organ R01 scope, file boundaries, and safety rules in the files themselves.</TD></TR>
+    <TR><TD ALIGN="LEFT">Do not collapse organ into skeleton. Avoid phrases like “Batch 01” unless explicitly contrasting it with organ R01. Use <B>track=organ</B> and <B>R01</B> consistently.</TD></TR>
+    <TR><TD ALIGN="LEFT">Preserve the safe request pattern from v7: P2 writes; P3 packages; P4 validates layout and lets Codex execute; P5 returns evidence; P6 chooses next cycle. Do not include instructions that skip these phases.</TD></TR>
+    <TR><TD ALIGN="LEFT">Make the RUN_INSTRUCTIONS bounded. It should tell Codex what to inspect, what to change, what not to touch, which tests or read-only checks to run, and where evidence must be returned, but it must not ask for live infra mutation unless the request pack explicitly permits it.</TD></TR>
+  </TABLE>
+  >];
+
+  idempotent [fillcolor="#FFFFFF", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>IDEMPOTENCY AND EXISTING OUTPUT CHECKS</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Before writing, inspect OUTPUT_ROOT for an existing organ R01 create-writing folder matching the same mode, track, batch, slug, and topic. If complete and ALLOW_OVERWRITE is not yes, report it and ask whether to reuse, fork, or overwrite.</TD></TR>
+    <TR><TD ALIGN="LEFT">If partial outputs exist, do not silently repair or overwrite them. List what exists and ask the operator whether to continue in place, create a new folder, or stop.</TD></TR>
+    <TR><TD ALIGN="LEFT">Use deterministic names. The final writing folder should make the route clear, for example a path containing <B>request_create_organ_R01</B> and the topic slug.</TD></TR>
+  </TABLE>
+  >];
+
+  stop_pass [fillcolor="#FCE8E6", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>STOP / PASS CONDITIONS</B></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>STOP</B> if the request folder is missing, the canonical v7 DOT is missing, the route is not request-create + organ, R01 cannot be resolved, required organ transition context is missing, evidence is marked required but missing, variables are unconfirmed, or existing outputs would be overwritten without explicit permission.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PASS</B> when the five G7 create files exist, are internally consistent with organ R01, preserve the safety boundary, and are ready to be consumed by P3 create packaging.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>WARN</B> may be used if optional context is absent but the request folder explicitly says it is optional. Explain the impact and continue only if the bounded request remains complete.</TD></TR>
+  </TABLE>
+  >];
+
+  response [fillcolor="#DFF5E1", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>REQUIRED RESPONSE FORMAT</B></TD></TR>
+    <TR><TD ALIGN="LEFT">End with: <B>Route confirmed</B>, <B>Variable block</B>, <B>Inputs read</B>, <B>Files written</B>, <B>Idempotency result</B>, <B>Warnings</B>, <B>STOP/PASS status</B>, and <B>Next v7 lane</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">The next v7 lane after PASS is <B>P3 create-package for request-create + organ</B>. Do not package automatically unless the operator asks for the next lane.</TD></TR>
+  </TABLE>
+  >];
+
+  start -> v7map;
+  v7map -> role;
+  role -> organ_context;
+  organ_context -> addressed;
+  addressed -> prompt;
+  prompt -> variables;
+  variables -> inputs;
+  inputs -> NormalizedOrganCreateEvidence;
+  NormalizedOrganCreateEvidence -> writefiles;
+  writefiles -> quality;
+  quality -> idempotent;
+  idempotent -> stop_pass;
+  stop_pass -> response;
+}

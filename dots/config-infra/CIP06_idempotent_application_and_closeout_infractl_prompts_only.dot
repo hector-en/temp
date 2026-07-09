@@ -1,0 +1,675 @@
+digraph "CIP06_idempotent_application_and_closeout_infractl_prompts_only_v03" {
+  rankdir=TB;
+  compound=true;
+  splines=ortho;
+  nodesep=0.55;
+  ranksep=0.72;
+  pad="0.25,0.25";
+  fontname="Helvetica";
+  fontsize=10;
+  labelloc="t";
+  label="CIP06 idempotent application + closeout — prompt-only DOT v03 — full base_format";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=9, margin="0.12,0.09"];
+  edge [arrowsize=0.7, penwidth=1.25, fontname="Helvetica", fontsize=8, color="#555555"];
+  N00_Meta [label="SELF-EXECUTABLE DOT — READ THIS FIRST
+=====================================
+This is CIP06 v03. It is a full base_format prompt-only DOT, not a thin architecture sketch.
+
+It is a standalone instruction file for a fresh ChatGPT, Codex, or WSL/operator session that has:
+- infractl.md
+- the root main v7 DOT
+- this selected CIP06 DOT
+- approved INTEGRATION_MANIFEST.md
+- CONFIG_STATE_SNAPSHOT.md/json from CIP04
+- CONFIG_INTEGRATION_PLAN.md/json from CIP05
+- implementation source packs or approved patch inputs.
+
+Canonical read order:
+1. infractl.md
+2. root main v7 DOT
+3. this selected CIP06 DOT
+4. accepted CIP03 INTEGRATION_MANIFEST
+5. accepted CIP04 CONFIG_STATE_SNAPSHOT
+6. accepted CIP05 CONFIG_INTEGRATION_PLAN
+7. only then approved implementation sources.
+
+Do not run CIP06 from an unapproved plan. Do not infer approval from a request. Do not mutate anything until the user confirms the exact variable block and exact file touch set.", color="#004D40", fillcolor="#E0F2F1"];
+  N01_BaseFormat [label="base_format REQUIREMENTS APPLIED HERE
+=====================================
+This route follows the 0A/P/G prompt-only style:
+- full cold-start narrative
+- self-executable instruction file
+- required variable block before execution
+- each variable labeled user-provided, inferred, default-safe, or unknown
+- confirmation gate before execution
+- exact file touch set before mutation
+- idempotency by default
+- no overwrite unless ALLOW_OVERWRITE=yes
+- addressed-agent gate: ChatGPT / Codex / WSL operator
+- exact prompt-to-type
+- input checklist
+- explicit safe/forbidden actions
+- output contract
+- required response format
+- PASS / STOP conditions
+- re-entry guidance into the CIP and v7 pipeline.
+
+CIP06 is the only CIP phase that may apply approved config-contract changes, but its mutation default is still no.", color="#7B1FA2", fillcolor="#F3E5F5"];
+  N02_PhaseIdentity [label="PHASE IDENTITY — CIP06
+======================
+MODE=config-infra
+TRACK=cip
+PHASE=CIP06
+NAME=idempotent_application_and_closeout
+
+Purpose:
+CIP06 applies an explicitly approved CONFIG_INTEGRATION_PLAN against the actual config-infra contract, or packages a Codex/operator implementation handoff when direct application is not allowed.
+
+CIP06 answers:
+- Is this plan manifest-approved?
+- Is the live state snapshot current enough?
+- Is the chosen patch class allowed for application now?
+- What exact files may be changed?
+- Can this be applied idempotently without duplicate rows/functions/plan entries?
+- What validation, post-config smoke, evidence, snapshot, and companion/update notes must be produced?
+
+Default mutation policy:
+MUTATION DEFAULT = NO. Application requires explicit manifest approval, accepted CIP05 plan, selected CIP06 DOT, exact file touch set, explicit user confirmation, and all safety gates passing.", color="#006064", fillcolor="#E0F7FA"];
+  N03_CIPLegend [label="CIP LEGEND — FULL PIPELINE CONTEXT
+==================================
+CIP = Config-Infra Pipeline.
+
+CIP01 = source intake + suitability determination.
+CIP02 = rich INTEGRATION_REQUEST generation.
+CIP03 = manifest aggregation + approval.
+CIP04 = live config-state resolution.
+CIP05 = config implementation planning.
+CIP06 = idempotent application + verification/evidence/snapshot/companion closeout.
+
+Safety invariant:
+- CIP01-CIP05 are non-mutating planning/resolution stages.
+- CIP06 is mutation-default=no and must remain blocked unless the plan is explicitly approved.
+- Config mutation is never implied by evidence, source quality, or request existence.
+- CIP06 applies only manifest-approved changes and only through the patch class allowed by the CIP05 plan.
+
+Truth split:
+- CIP01/CIP02 record batch-time suitability/request truth.
+- CIP03 records approval/deferral/blocked truth.
+- CIP04 records live current config truth.
+- CIP05 records planned implementation truth.
+- CIP06 records applied implementation truth and closeout evidence.", color="#263238", fillcolor="#ECEFF1"];
+  N04_SourceContract [label="REQUIRED SOURCE CONTRACT — ANX06 + ANX07 + ANX08 + ANX09 + CLOSEOUT HOOK
+=======================================================================
+CIP06 must explicitly implement these accepted source materials when available:
+
+Required conceptual sources:
+- SPEC_config_infra_integration_pipeline.md
+- SPEC_config_infra_integration_pipeline-ANX06_config_patch_classes.md
+- SPEC_config_infra_integration_pipeline-ANX07_config_integration_implementer_spec.md
+- SPEC_config_infra_integration_pipeline-ANX08_config_integration_implementer_runbook.md
+- SPEC_config_infra_integration_pipeline-ANX09_codex_pack_template_config_integration.md
+- HOOK_config_infra_closeout_snapshot_companion.md
+
+Required phase inputs:
+- CIP03 INTEGRATION_MANIFEST.md/json with approved_now or equivalent explicit approval
+- CIP04 CONFIG_STATE_SNAPSHOT.md/json
+- CIP05 CONFIG_INTEGRATION_PLAN.md/json
+- exact implementation source pack or approved patch set
+
+ANX06 provides patch classes and allowed/forbidden mutation shapes.
+ANX07 defines implementer behavior and config-contract safety constraints.
+ANX08 defines runbook ordering, validation, and stop conditions.
+ANX09 defines Codex-pack structure when a patch must be delegated rather than applied directly.
+The closeout hook defines evidence, snapshot, companion, and update-note obligations.
+
+If any required source is missing, CIP06 must STOP unless the operator explicitly downgrades to a no-mutation handoff-pack generation.", color="#1A237E", fillcolor="#E8EAF6"];
+  N05_ApplicationEngine [label="CONFIG_CONTRACT_APPLICATION_ENGINE — REQUIRED CORE
+=================================================
+The application engine is the core of CIP06. It must not be replaced by a vague implementation summary.
+
+Required engine stages:
+1. Confirm approval chain: CIP03 approved item -> CIP05 planned patch class -> user confirmation.
+2. Confirm live-state currency: CIP04 snapshot exists and matches target role/surfaces.
+3. Confirm patch class is allowed for application now.
+4. Confirm exact file touch set and no broad directory mutation.
+5. Confirm idempotency strategy for each target surface.
+6. Confirm validation commands and post-config smoke commands.
+7. Apply only allowed changes, or generate a Codex handoff pack if direct apply is not allowed.
+8. Record exact diffs/changed files and skipped/no-op items.
+9. Run validation only as approved.
+10. Produce closeout artifacts, updated snapshot/export, and companion/update notes as required.
+
+CIP06 must refuse to apply if:
+- manifest approval is absent
+- plan approval is absent
+- the patch class is not allowed
+- target files are not exactly named
+- change would require credentials/secrets/live/destructive action without explicit guarded approval
+- validation or rollback/stop rules are missing.", color="#BF360C", fillcolor="#FBE9E7"];
+  N06_Variables [label="REQUIRED VARIABLE BLOCK — PROPOSE BEFORE EXECUTION
+==================================================
+The assistant must propose this variable block and stop for confirmation.
+
+MODE=config-infra
+TRACK=cip
+PHASE=CIP06
+PIPELINE_NAME=Config-Infra Pipeline
+REQUEST_ID=<stable request or manifest item id>
+MANIFEST_PATH=<path to approved INTEGRATION_MANIFEST.md/json>
+CONFIG_STATE_SNAPSHOT_PATH=<path to CIP04 CONFIG_STATE_SNAPSHOT.md/json>
+CONFIG_INTEGRATION_PLAN_PATH=<path to CIP05 CONFIG_INTEGRATION_PLAN.md/json>
+IMPLEMENTATION_SOURCE_PATHS=<approved patch pack/Codex pack/source files>
+PROJECT_ROOT=<real workspace root if Codex/operator; sandbox path if ChatGPT handoff only>
+CONFIG_ROOT=/home/vmuser/.local/etc/config-sh or unknown until live execution
+CONFIG_BIN=/home/vmuser/.local/bin/config.sh or unknown until live execution
+INSTALLERS_PATH=/home/vmuser/.local/lib/config-sh/installers.sh or unknown until live execution
+TARGET_ROLE=<researchscientist|aiengineer|publisher|vmuser/operator|mixed|unknown>
+TARGET_IDENTITY=<target user if applicable>
+PATCH_CLASSES_ALLOWED=<from manifest/plan>
+APPLICATION_MODE=no_action | no_op | verify_only | codex_pack_required | apply_low_risk_patch | apply_manifest_approved_patch
+OUTPUT_ROOT=<egress/sandbox output root>
+OUTPUT_POSTCHECK=POSTCHECK.md
+OUTPUT_SMOKE_REPORT=SMOKE_REPORT.md
+OUTPUT_CLOSEOUT_REPORT=CONFIG_INTEGRATION_CLOSEOUT_REPORT.md
+OUTPUT_SNAPSHOT=<updated private/config snapshot zip if allowed>
+ALLOW_CONFIG_MUTATION=no
+ALLOW_PUBLIC_TOOL_EDIT=no
+ALLOW_DOT_MUTATION=no
+ALLOW_EVIDENCE_MUTATION=closeout-only-if-confirmed
+ALLOW_BOOTSTRAP=no unless exact one-step approved
+ALLOW_MOUNT_PULL_PUSH=no
+ALLOW_LIVE_INFRA=no
+ALLOW_CREDENTIAL_READ=no
+ALLOW_OVERWRITE=no
+
+Each variable must be labeled:
+user-provided | inferred | default-safe | unknown.", color="#F57F17", fillcolor="#FFF8E1"];
+  N07_ExactPrompt [label="EXACT PROMPT TO TYPE
+====================
+Use infractl.md and infractl.zip.
+Run CIP06 Config-Infra Pipeline for the approved integration plan.
+
+Task:
+Apply or package the manifest-approved config-infra implementation plan idempotently, then produce validation, evidence, snapshot/export, and companion/update closeout artifacts.
+
+Required inputs:
+- INTEGRATION_MANIFEST.md/json from CIP03
+- CONFIG_STATE_SNAPSHOT.md/json from CIP04
+- CONFIG_INTEGRATION_PLAN.md/json from CIP05
+- approved implementation source pack or exact patch instructions
+
+Read infractl.md first.
+Read the root main v7 DOT next.
+Then read exactly this CIP06 DOT.
+Suggest the routing, approval-chain status, exact file touch set, and variable block first.
+Ask me to confirm or correct it.
+Do not execute until I confirm.
+
+Default to no mutation. Do not mutate config files, public tooling, DOT files, evidence, packages, envs, bootstrap, mounts, credentials, or live infra unless the manifest, plan, selected CIP06 DOT, exact touch set, and user confirmation all allow it.", color="#2E7D32", fillcolor="#E8F5E9"];
+  N08_InputChecklist [label="INPUT CHECKLIST — WHAT CIP06 MUST CONSUME
+========================================
+Required inputs:
+- selected CIP06 DOT
+- approved INTEGRATION_MANIFEST.md/json
+- CONFIG_STATE_SNAPSHOT.md/json from CIP04
+- CONFIG_INTEGRATION_PLAN.md/json from CIP05
+- implementation source pack or approved patch set
+- current config/tool/developer/workflow guidance if the plan references it
+
+Optional inputs:
+- companion guidance
+- prior POSTCHECK/SMOKE_REPORT
+- codebase report
+- private/public snapshot policy
+- Codex pack template from ANX09
+
+CIP06 must inventory:
+- approved manifest items
+- approved patch classes
+- exact config surfaces allowed
+- config surfaces forbidden
+- validation commands allowed
+- post-config smoke commands allowed
+- snapshot/export obligations
+- companion/update-note obligations
+- rollback/stop conditions
+
+If an input is missing, CIP06 must either STOP or downgrade to no-mutation handoff generation.", color="#1565C0", fillcolor="#E3F2FD"];
+  N09_ApprovalChain [label="APPROVAL CHAIN GATE
+===================
+CIP06 must complete this gate before any application.
+
+For each candidate change, verify:
+1. It appears in INTEGRATION_MANIFEST.md/json.
+2. Manifest status is approved_now or an explicitly allowed equivalent.
+3. Manifest names allowed config surfaces.
+4. Manifest names forbidden surfaces.
+5. CIP05 plan maps it to a patch class.
+6. CIP05 plan supplies exact target files and validation commands.
+7. CIP04 snapshot covers the target role and surfaces.
+8. User has confirmed the final variable block and touch set.
+
+If any link is missing:
+- no mutation allowed
+- output may be no_action, verify_only, blocked, or Codex handoff pack only.
+
+CIP06 must never treat CIP01 fate, CIP02 request, or CIP03 deferred_candidate as approval.", color="#6A1B9A", fillcolor="#F3E5F5"];
+  N10_PatchClassMatrix [label="PATCH-CLASS APPLICATION MATRIX
+==============================
+CIP06 must classify every planned item using ANX06 patch classes.
+
+Patch classes and default handling:
+- experiment_local_only: no config change; document only.
+- package_stack_extension: may be low-risk only if manifest approved and exact variable/file is named.
+- existing_managed_step_enablement: may update role plan only if step/function/allowlist already exist and manifest approves.
+- new_managed_check_step: Codex pack required unless explicit implementation approval exists.
+- new_managed_install_step: Codex pack required; trusted function + allowlist + steps.tsv + plan validation required.
+- target_env_policy_update: use only approved target env reconciliation path; no ad hoc env writes.
+- python_env_profile_update: policy-file update only if approved; no package install.
+- role_bootstrap_plan_update: plan-only if approved; no broad bootstrap.
+- workflow_alias_launcher_update: only target-role-safe command exposure; no live/provider unsafe exposure.
+- mount_share_policy_update: high-risk; normally human/Codex review required.
+- credential_workflow_update: blocked unless explicit guarded design; never read/print secrets.
+- new_role_or_account_profile: high-risk; design review and dry-run only unless explicitly approved.
+- smoke_or_health_check_update: prefer read-only check step.
+- blocked_live_or_secret_sensitive: no application.
+
+CIP06 must record why a class is applied, delegated, verified-only, no-op, or blocked.", color="#283593", fillcolor="#E8EAF6"];
+  N11_SurfaceMatrix [label="CONFIG SURFACE APPLICATION MATRIX
+=================================
+CIP06 must map every approved change to exact surfaces.
+
+For each surface, record: allowed? target path? operation? idempotency check? validation? rollback/stop rule?
+
+Surfaces:
+- accounts/profiles.tsv
+- accounts/smb-profiles.tsv
+- accounts/mount-profiles.tsv
+- targets/<user>.env
+- install/python-env-profiles.tsv
+- install/packages.env
+- bootstrap/steps.tsv
+- bootstrap/profiles/*.plan
+- /home/vmuser/.local/bin/config.sh allowlist/dispatch
+- /home/vmuser/.local/lib/config-sh/installers.sh trusted functions
+- mounts/mounts.env
+- /home/<target>/.local/state/config-sh/ markers
+- lv / conda / venv state
+- role workflow docs / aliases / launchers / health checks
+
+Important:
+CIP06 must not use broad directory mutation. It must list exact files. It must not edit prior companion outputs. It must not edit public tooling unless manifest and plan explicitly allow public-tool edit.", color="#00695C", fillcolor="#E0F2F1"];
+  N12_IdempotentRecipes [label="IDEMPOTENT PATCH RECIPES
+========================
+CIP06 must choose an idempotent recipe for every approved change.
+
+Required checks:
+- package variable exists? append only missing package names; no duplicate package tokens.
+- TSV row exists? update exact row only if stable key matches; otherwise append once.
+- bootstrap step exists? do not duplicate step name.
+- allowlist entry exists? do not duplicate dispatch/function entry.
+- trusted installer function exists? do not duplicate; if function differs, stop for human review.
+- profile plan row exists? update state/placement only if approved; no duplicate rows.
+- target env managed block exists? preserve managed-block strip/rewrite rules; mode/ownership preserved.
+- snapshot/export path exists? create versioned output unless ALLOW_OVERWRITE=yes.
+
+Every applied patch must have:
+- pre-state evidence
+- exact change description
+- post-state evidence
+- validation command/result
+- no-op/skipped reason when applicable.", color="#F9A825", fillcolor="#FFFDE7"];
+  N13_ExecutionModes [label="APPLICATION MODE DECISION
+=========================
+CIP06 must select one application mode before execution.
+
+Allowed modes:
+- no_action: nothing to apply.
+- no_op: already covered by live state; produce evidence only.
+- verify_only: run approved read-only checks; no writes.
+- codex_pack_required: produce a Codex implementation pack from ANX09; no direct writes.
+- apply_low_risk_patch: apply low-risk policy-only change with exact approval.
+- apply_manifest_approved_patch: apply approved change set with full validation and closeout.
+- blocked: stop due missing approval, missing live state, forbidden surface, credential/live/destructive risk, or unclear idempotency.
+
+Mode selection rules:
+- trusted function/config.sh edits generally require Codex pack unless explicitly approved.
+- mount/share/credential/account lifecycle changes default to blocked or human design.
+- broad bootstrap is forbidden; at most one exact managed step may run if manifest/plan/user approve.
+- package/env edits do not imply package installation.", color="#EF6C00", fillcolor="#FFF3E0"];
+  N14_ValidationPlan [label="VALIDATION AND POST-CONFIG SMOKE PLAN
+=====================================
+CIP06 must propose validation before running it.
+
+Common validation candidates, only when relevant and allowed:
+- bash --noprofile --norc -n /home/vmuser/.local/bin/config.sh
+- bash --noprofile --norc -n /home/vmuser/.local/lib/config-sh/installers.sh
+- config --target <target> config-show
+- sudo config --target <target> bootstrap status
+- config --target <target> bootstrap steps
+- lv
+- lv conda <target_env>
+- grep exact STEP_NAME/function/profile row as read-only verification
+- one exact managed step only if manifest/plan/user approve it
+
+Post-config smoke must be scoped:
+- no broad bootstrap
+- no mount/pull/push/live infra by default
+- no credential content reads
+- no package install unless explicitly approved
+- no Docker/Runpod/paid APIs unless explicit live-gated approval exists.
+
+Record every validation command, exit status, and observed result.", color="#1565C0", fillcolor="#E3F2FD"];
+  N15_CloseoutContract [label="CLOSEOUT, EVIDENCE, SNAPSHOT, COMPANION CONTRACT
+===============================================
+CIP06 closeout is mandatory even for no-op/blocked outcomes.
+
+Required outputs:
+- CONFIG_INTEGRATION_CLOSEOUT_REPORT.md
+- POSTCHECK.md
+- SMOKE_REPORT.md or VALIDATION_REPORT.md when no smoke is allowed
+- changed-files list
+- skipped/no-op list
+- validation command log
+- evidence pack or egress folder if running in real workspace
+- updated private snapshot/export if private workflow/config files changed
+- public repo snapshot only if public repo changed and explicitly allowed
+- companion/update-note input pack when changes affect developer/operator guidance
+
+The closeout must summarize:
+- manifest item ids applied/delegated/blocked
+- patch classes used
+- exact files changed
+- exact files inspected
+- safety constraints preserved
+- live actions not performed
+- next recommended route.
+
+No prior companion outputs may be mutated. New companion/update material must go into a new closeout/evidence location.", color="#2E7D32", fillcolor="#E8F5E9"];
+  N16_OutputContract [label="OUTPUT ARTIFACT CONTRACT
+========================
+Primary output artifacts:
+- CONFIG_INTEGRATION_CLOSEOUT_REPORT.md
+- POSTCHECK.md
+- SMOKE_REPORT.md or VALIDATION_REPORT.md
+- CONFIG_INTEGRATION_APPLIED_DIFF.md when changes are applied
+- CONFIG_INTEGRATION_SKIPPED_ITEMS.md when no-op/skipped/blocked items exist
+- updated snapshot/export zip when allowed and successful
+- optional Codex implementation pack when APPLICATION_MODE=codex_pack_required
+
+Required minimum fields in closeout report:
+request_id
+manifest_items
+application_mode
+approval_chain_status
+live_state_snapshot_used
+implementation_plan_used
+patch_classes
+exact_files_read
+exact_files_changed
+exact_files_created
+exact_files_skipped
+idempotency_checks
+validation_commands
+validation_results
+post_config_smoke
+safety_constraints_preserved
+forbidden_actions_not_performed
+snapshot_export
+companion_update_inputs
+next_recommended_route
+
+The output must explicitly state whether any config mutation occurred.", color="#004D40", fillcolor="#E0F2F1"];
+  N17_ReportTemplate [label="CONFIG_INTEGRATION_CLOSEOUT_REPORT.md TEMPLATE
+=============================================
+# CONFIG_INTEGRATION_CLOSEOUT_REPORT — <request_id>
+
+## Status
+Application mode:
+Result: PASS | STOP | BLOCKED | NO-OP | DELEGATED
+Config mutation occurred: yes/no
+
+## Approval chain
+Manifest path:
+Manifest items:
+Plan path:
+Snapshot path:
+User confirmation:
+
+## Patch classes
+Applied:
+Verified only:
+Delegated:
+Blocked:
+
+## File touch set
+Files read:
+Files changed:
+Files created:
+Files skipped/no-op:
+Forbidden surfaces preserved:
+
+## Idempotency checks
+Pre-state:
+Duplicate prevention:
+Post-state:
+
+## Validation
+Commands proposed:
+Commands run:
+Results:
+Errors/warnings:
+
+## Post-config smoke / validation report
+Smoke run: yes/no
+Reason if no:
+Output summary:
+
+## Evidence and snapshot
+Evidence folder:
+Evidence files:
+Snapshot/export:
+Public repo snapshot:
+
+## Companion/update notes
+Companion inputs produced:
+Prior companions mutated: no
+Update-note recommendation:
+
+## Safety statement
+List preserved safety constraints and forbidden actions not performed.
+
+## Next recommended route
+CIP complete | rerun CIP04 | rerun CIP05 | human design | Codex pack apply | companion update | 0C extraction note", color="#00695C", fillcolor="#E0F2F1"];
+  N18_JSONTemplate [label="CONFIG_INTEGRATION_CLOSEOUT_REPORT.json TEMPLATE
+================================================
+{
+  \"request_id\": \"\",
+  \"application_mode\": \"\",
+  \"result\": \"PASS|STOP|BLOCKED|NO-OP|DELEGATED\",
+  \"config_mutation_occurred\": false,
+  \"approval_chain_status\": {
+    \"manifest_path\": \"\",
+    \"manifest_items\": [],
+    \"plan_path\": \"\",
+    \"snapshot_path\": \"\",
+    \"user_confirmation\": false
+  },
+  \"patch_classes\": {
+    \"applied\": [],
+    \"verified_only\": [],
+    \"delegated\": [],
+    \"blocked\": []
+  },
+  \"files\": {
+    \"read\": [],
+    \"changed\": [],
+    \"created\": [],
+    \"skipped_noop\": [],
+    \"forbidden_preserved\": []
+  },
+  \"idempotency_checks\": [],
+  \"validation_commands\": [],
+  \"validation_results\": [],
+  \"post_config_smoke\": {
+    \"run\": false,
+    \"reason_if_no\": \"\",
+    \"summary\": \"\"
+  },
+  \"evidence\": {
+    \"folder\": \"\",
+    \"files\": [],
+    \"snapshot_export\": \"\",
+    \"public_repo_snapshot\": \"\"
+  },
+  \"companion_update_inputs\": [],
+  \"safety_constraints_preserved\": [],
+  \"forbidden_actions_not_performed\": [],
+  \"next_recommended_route\": \"\"
+}", color="#283593", fillcolor="#E8EAF6"];
+  N19_Idempotency [label="IDEMPOTENCY CHECKS BEFORE OUTPUT
+================================
+Before writing or applying:
+- check whether equivalent closeout already exists
+- check whether intended target row/function/variable/plan entry already exists
+- if equivalent state exists, prefer no-op with evidence over rewriting
+- if path exists and ALLOW_OVERWRITE=no, write versioned artifact or stop
+- no duplicate TSV rows
+- no duplicate package tokens
+- no duplicate bootstrap step names
+- no duplicate allowlist entries
+- no duplicate profile plan entries
+- no silent function replacement
+- no unmanaged target env edits that break managed block ownership/mode
+
+Same manifest + same live state + same plan should produce the same application decision and no duplicate edits.", color="#F9A825", fillcolor="#FFFDE7"];
+  N20_Safety [label="SAFE COMMANDS / FORBIDDEN ACTIONS
+=================================
+Allowed in CIP06 only after confirmation:
+- read approved manifest/snapshot/plan
+- inspect exact target files
+- apply exact approved low-risk patches
+- generate Codex pack when direct apply is not allowed
+- run syntax/read-only validation commands
+- run one exact managed step only if explicitly approved
+- produce closeout, evidence, snapshot/export artifacts
+
+Forbidden unless explicitly manifest-approved and user-confirmed:
+- config mutation
+- public tooling edit
+- DOT mutation
+- evidence mutation beyond closeout output
+- package installation
+- env creation
+- bootstrap step execution
+- mount/pull/push
+- credential read/print
+- Docker/Runpod/paid APIs/live infra
+- destructive account lifecycle
+- broad directory mutation
+- prior companion mutation
+
+Always forbidden:
+- printing secrets
+- relying on active shell Python instead of explicit target env policy
+- broad bootstrap for validation
+- claiming success without validation evidence.", color="#BF360C", fillcolor="#FBE9E7"];
+  N21_ResponseFormat [label="REQUIRED RESPONSE FORMAT
+========================
+Current phase: CIP06 idempotent application + closeout
+Selected DOT:
+Addressed role:
+Variable block proposed/confirmed:
+Approval chain status:
+Manifest items selected:
+Config state snapshot used:
+Integration plan used:
+Application mode:
+Patch classes:
+Exact files to read:
+Exact files to create/modify:
+Forbidden surfaces preserved:
+Idempotency strategy:
+Validation plan:
+Post-config smoke plan:
+Closeout artifacts planned/created:
+Snapshot/export planned/created:
+Safety status:
+Decision: PASS / STOP / BLOCKED / NO-OP / DELEGATED
+Recommended next route:", color="#37474F", fillcolor="#ECEFF1"];
+  N22_PassStop [label="PASS / STOP CONDITIONS
+======================
+PASS only if:
+- variables confirmed
+- required source contract applied or missing-source fallback explicitly approved
+- manifest approval chain verified
+- CIP04 snapshot and CIP05 plan are present and consistent
+- application mode selected
+- exact file touch set confirmed
+- idempotency checks performed
+- only approved patch classes applied or delegated
+- validation/postcheck artifacts produced
+- evidence/snapshot/closeout obligations satisfied
+- no forbidden mutation occurred.
+
+STOP if:
+- user has not confirmed
+- manifest approval is absent or ambiguous
+- CIP04 live-state snapshot is missing/stale for the planned surface
+- CIP05 plan is missing or conflicts with manifest/snapshot
+- target files are broad/unknown
+- patch class is high-risk and lacks explicit approval
+- credential/live/destructive action appears
+- overwrite would occur with ALLOW_OVERWRITE=no
+- validation plan is missing
+- implementation would require public/DOT/config mutation not allowed by variables.
+
+After PASS:
+Do not silently start another CIP phase. Recommend the next route based on result.", color="#B71C1C", fillcolor="#FFEBEE"];
+  N23_Reentry [label="RE-ENTRY INTO CIP AND V7 PIPELINE
+=================================
+If result is NO-OP:
+- preserve closeout evidence and return to operator.
+
+If result is DELEGATED:
+- run the produced Codex implementation pack in the real workspace.
+
+If result is BLOCKED:
+- return to CIP03 or human design to revise manifest approval.
+
+If result requires updated live truth:
+- rerun CIP04.
+
+If result requires replanning:
+- rerun CIP05.
+
+If config contract was changed:
+- create/update evidence snapshot/export.
+- prepare companion/update-note inputs.
+- consider 0C extraction note if repeated manual work suggests deterministic tooling.
+
+CIP06 completes the config-infra integration loop for an approved item. It does not replace normal skeleton/organ P lanes; it applies their approved config-infra handoff later and safely.", color="#333333", fillcolor="#F5F5F5"];
+  N00_Meta -> N01_BaseFormat;
+  N01_BaseFormat -> N02_PhaseIdentity;
+  N02_PhaseIdentity -> N03_CIPLegend;
+  N03_CIPLegend -> N04_SourceContract;
+  N04_SourceContract -> N05_ApplicationEngine;
+  N05_ApplicationEngine -> N06_Variables;
+  N06_Variables -> N07_ExactPrompt;
+  N07_ExactPrompt -> N08_InputChecklist;
+  N08_InputChecklist -> N09_ApprovalChain;
+  N09_ApprovalChain -> N10_PatchClassMatrix;
+  N10_PatchClassMatrix -> N11_SurfaceMatrix;
+  N11_SurfaceMatrix -> N12_IdempotentRecipes;
+  N12_IdempotentRecipes -> N13_ExecutionModes;
+  N13_ExecutionModes -> N14_ValidationPlan;
+  N14_ValidationPlan -> N15_CloseoutContract;
+  N15_CloseoutContract -> N16_OutputContract;
+  N16_OutputContract -> N17_ReportTemplate;
+  N17_ReportTemplate -> N18_JSONTemplate;
+  N18_JSONTemplate -> N19_Idempotency;
+  N19_Idempotency -> N20_Safety;
+  N20_Safety -> N21_ResponseFormat;
+  N21_ResponseFormat -> N22_PassStop;
+  N22_PassStop -> N23_Reentry;
+}

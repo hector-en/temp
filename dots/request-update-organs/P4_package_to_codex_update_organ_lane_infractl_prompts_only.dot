@@ -1,0 +1,217 @@
+digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
+  graph [
+    rankdir=TB,
+    bgcolor="white",
+    pad="0.30",
+    nodesep="0.50",
+    ranksep="0.70",
+    splines=polyline,
+    concentrate=false,
+    fontname="Arial",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="18"><B>P4 package-to-Codex + organ update — prompt-only execution lane</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="10">Final consumption DOT. Based only on canonical main pipeline: infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="10">Visible v7 route: CodexPackZip → P4 package-to-Codex → G13 pack-consumed → G14 layout-gate → CodexExec. Stop before P5 evidence-return.</FONT></TD></TR>
+      </TABLE>
+    >,
+    labelloc=t
+  ];
+
+  node [shape=plain, fontname="Arial"];
+  edge [fontname="Arial", fontsize=9, color="#555555", arrowsize=0.8];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#F3E5F5"><B>P4 / package-to-Codex for request-update + organ</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        This DOT is a self-executable prompt instruction for a fresh ChatGPT/Codex-style session. It represents the fourth lane of the <B>mode=request-update, track=organ</B> route after P3 has already created a Codex-ready organ update pack.<BR ALIGN="LEFT"/>
+        The job of this lane is to consume the P3 update pack, validate that it is route-correct and layout-safe, then hand it to Codex only after explicit operator confirmation. It is not a request-generation lane, not a writing lane, not a packaging lane, and not an evidence-return lane.<BR ALIGN="LEFT"/>
+        Because a fresh chat may receive only this DOT, keep all organ-update context explicit: this lane executes a bounded update against prior organ/R01 evidence, not a skeleton update, not an organ first scaffold, and not a historical evidence rewrite.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Canonical [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1565C0">
+      <TR><TD BGCOLOR="#E3F2FD"><B>Canonical v7 grounding</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Before acting, read the canonical main pipeline DOT: <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>, or the uploaded v7 file if that is the available name.<BR ALIGN="LEFT"/>
+        Locate the actual v7 route: <B>CodexPackZip</B> enters <B>P4 package-to-Codex</B>; the pack is consumed at <B>G13 pack-consumed</B>; the real/public-private layout is checked at <B>G14 layout-gate</B>; only then may the lane hand the pack to <B>CodexExec</B>.<BR ALIGN="LEFT"/>
+        Do not jump directly from a pack zip to evidence return. Do not skip G14. Do not run a create pack. Do not run a skeleton update pack. If v7 or the pack metadata disagrees with this route, stop and report the mismatch.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  PriorLane [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#283593">
+      <TR><TD BGCOLOR="#E8EAF6"><B>Required prior lane state</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        P3 must already have produced a readable <B>Codex update pack</B> for <B>request-update + organ</B>. The pack should normally contain the five update files: <B>CODEX_UPDATE_PROMPT.txt</B>, <B>PROJECT_UPDATE_CACHE.md</B>, <B>UPDATE_SPEC.md</B>, <B>UPDATE_RUN_INSTRUCTIONS.md</B>, and <B>UPDATE_POSTCHECK_TEMPLATE.md</B>, plus a manifest if available.<BR ALIGN="LEFT"/>
+        The pack must identify the organ route, the update topic, prior organ/R01 evidence, and a bounded Codex task. If the pack is missing, unreadable, a create pack, a skeleton update pack, or a first-run organ scaffold pack, stop and return to the correct prior lane.<BR ALIGN="LEFT"/>
+        If this lane is being run by ChatGPT only, it may validate and prepare a Codex handoff. If this lane is being run inside Codex, Codex may execute only after the operator explicitly states that the pack has passed P4 gating and should be consumed.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  OrganContext [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#4A148C">
+      <TR><TD BGCOLOR="#EDE7F6"><B>Organ-update context that must survive execution</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Organ work starts at <B>R01</B> as the transition from skeleton/dummy workflow into the real-organ workflow. R01 is not skeleton Batch 01. P4 must prevent accidental skeleton numbering, skeleton evidence paths, or skeleton-only smoke assumptions from entering the organ Codex execution.<BR ALIGN="LEFT"/>
+        A request-update + organ execution is valid only after an organ/R01 scaffold already exists and has evidence. The Codex task must operate as a delta/update against that existing organ state. It must preserve historical scaffold evidence and produce new update evidence instead of rewriting previous evidence.<BR ALIGN="LEFT"/>
+        The pack should preserve the organ transition context from <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B>. If that context is absent, stop and route back to P2/P3 rather than asking Codex to infer it from hidden chat memory.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  AgentGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#616161">
+      <TR><TD BGCOLOR="#F5F5F5"><B>Addressing gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        If you are <B>ChatGPT in webchat/sandbox</B>, inspect the pack, infer variables, ask for confirmation, and produce the exact Codex handoff prompt. You may run deterministic layout validation only when the required local paths and tools are available, and you must not mutate workspace/egress unless explicitly instructed.<BR ALIGN="LEFT"/>
+        If you are <B>Codex</B>, do not proceed merely because this DOT was uploaded. First confirm that the operator addressed Codex, provided/extracted the pack, and explicitly authorized execution after G14 layout-gate. If not, report that this is a P4 gate/handoff instruction and stop.<BR ALIGN="LEFT"/>
+        If you are the <B>WSL/operator</B>, provide the pack path, public tool root, private project root, repo root, organ evidence root, and explicit approval before Codex execution. Do not treat a layout warning as permission to execute.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ExactPrompt [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#2E7D32">
+      <TR><TD BGCOLOR="#E8F5E9"><B>Exact operator prompt to type</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" FACE="Courier">
+        Read this DOT, the canonical v7 main DOT, and the P3 organ update pack. We are in P4 package-to-Codex for mode=request-update, track=organ. Follow only the v7 G13/G14 path: consume the Codex update pack, validate the real layout, then prepare or execute the Codex handoff only after confirmation. First infer a suggested variable block from the pack manifest, filenames, private bundle metadata, organ evidence paths, v7 route, and prior operator messages. Label every value as user-provided, inferred, default-safe, or unknown, then ask me to confirm or correct it. Do not expose any internal template block. Do not skip layout validation. Do not run a create pack. Do not run skeleton update instructions. Do not run smoke. Do not overwrite historical evidence. Do not execute Codex until the operator explicitly confirms G14 passed or accepts a documented warning.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Variables [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#2E7D32">
+      <TR><TD BGCOLOR="#E8F5E9"><B>Suggest variables first, then ask for confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Do not present an empty form. Help the operator by suggesting likely values from the P3 pack path, manifest, filenames, v7 DOT, uploaded artifacts, private bundle root, public tool root, organ identifiers, and prior evidence paths.<BR ALIGN="LEFT"/>
+        Suggested variable block for this run should include: <B>CANONICAL_MAIN_DOT</B>, <B>CODEX_UPDATE_PACK</B>, <B>EXTRACTED_PACK_DIR</B>, <B>PUBLIC_TOOL_ROOT</B>, <B>PRIVATE_PROJECT_ROOT</B>, <B>REPO_ROOT</B>, <B>MODE=request-update</B>, <B>TRACK=organ</B>, <B>ORGAN_BATCH_ID</B>, <B>ORGAN_BATCH_SLUG</B>, <B>TOPIC</B>, <B>ORGAN_EVIDENCE_ROOT</B>, <B>PROFILE=webchat-sandbox</B>, <B>ALLOW_CODEX_EXECUTION</B>, <B>ALLOW_LAYOUT_WARN</B>, and <B>ALLOW_OVERWRITE=no</B>.<BR ALIGN="LEFT"/>
+        Mark each value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>. Ask only for values still unknown or unsafe to infer. Do not validate or execute until the operator confirms the block or explicitly says to proceed with the suggested values.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  PackPrecheck [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#0277BD">
+      <TR><TD BGCOLOR="#E1F5FE"><B>G13 pack-consumed precheck</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Extract or inspect the pack without overwriting existing directories. Confirm that it contains the update file set, not create files. Confirm <B>CODEX_UPDATE_PROMPT.txt</B> is the entrypoint and that <B>UPDATE_RUN_INSTRUCTIONS.md</B> names exactly one bounded organ-update task.<BR ALIGN="LEFT"/>
+        Confirm the pack metadata and internal text identify <B>mode=request-update</B> and <B>track=organ</B>. Confirm the pack references prior organ/R01 evidence and does not tell Codex to regenerate the organ scaffold from scratch.<BR ALIGN="LEFT"/>
+        Confirm the pack has no path that would write update evidence into a skeleton-only snapshot unless the operator has explicitly selected a compatible bridge/helper. If any pack file conflicts with this route, stop and return to P3 or P2.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  OrganUpdateP4FolderContract [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="980" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Organ update P4 handoff folder contract</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Use the standardized organ update handoff folder: <FONT FACE="Courier">/mnt/ingress/workspace/codex_packs/organ_&lt;RUN&gt;_update/</FONT>. For R01: <FONT FACE="Courier">/mnt/ingress/workspace/codex_packs/organ_R01_update/</FONT>. If multiple update topics must coexist, use <FONT FACE="Courier">/mnt/ingress/workspace/codex_packs/organ_R01_update/&lt;topic&gt;/</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Set explicit variables: <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>, <FONT FACE="Courier">CODEX_UPDATE_PACK=${CODEX_PACK_FOLDER}/codex_update_pack.zip</FONT>, <FONT FACE="Courier">P4_HANDOFF_PROMPT=${CODEX_PACK_FOLDER}/P4_CODEX_HANDOFF_PROMPT.md</FONT>, and <FONT FACE="Courier">PACK_EXTRACT_ROOT=${CODEX_PACK_FOLDER}</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">The handoff folder must contain: <FONT FACE="Courier">P4_CODEX_HANDOFF_PROMPT.md</FONT>, <FONT FACE="Courier">codex_update_pack.zip</FONT>, <FONT FACE="Courier">CODEX_UPDATE_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_UPDATE_CACHE.md</FONT>, <FONT FACE="Courier">UPDATE_SPEC.md</FONT>, <FONT FACE="Courier">UPDATE_RUN_INSTRUCTIONS.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK_TEMPLATE.md</FONT>, <FONT FACE="Courier">manifest.json</FONT>, <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">POSTCHECK_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">When available, also include or reference baseline <FONT FACE="Courier">evidence/POSTCHECK.md</FONT>, <FONT FACE="Courier">evidence/INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">evidence/SMOKE_REPORT.md</FONT> or <FONT FACE="Courier">SMOKE_REPORT_PATH.txt</FONT>, organ context, relevant skeleton context, and relevant Config-Infra private context.</TD></TR>
+      <TR><TD ALIGN="LEFT">Do not consume <FONT FACE="Courier">infractl.md</FONT> or <FONT FACE="Courier">infractl.zip</FONT> during Codex execution. Use the installed public CLI at <FONT FACE="Courier">/workspace/repos/infractl-public</FONT> and run <FONT FACE="Courier">python3 -m infractl.cli</FONT> from there.</TD></TR>
+      <TR><TD ALIGN="LEFT">If <FONT FACE="Courier">/workspace/repos/infractl-public</FONT> is missing, STOP and report <FONT FACE="Courier">PUBLIC_CLI_MISSING=/workspace/repos/infractl-public</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">If extracted pack files already exist in <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>, validate and use them directly. Do not require re-extraction. If neither extracted files nor zip exist, STOP and report <FONT FACE="Courier">PACK_MISSING</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Run real-layout validation from the installed public CLI. If validation is skeleton-biased or cannot validate organ update roots, STOP/WARN and record a 0C candidate instead of treating skeleton validation as organ safety proof.</TD></TR>
+    </TABLE>
+  >];
+
+  LayoutGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#0277BD">
+      <TR><TD BGCOLOR="#E1F5FE"><B>G14 layout-gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Validate the real public/private layout before Codex execution. Use the current public infractl command exposed by the tool; expected shape:<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">python3 -m infractl.cli validate-real-layout --project &lt;PRIVATE_PROJECT_ROOT&gt; --repo-root &lt;REPO_ROOT&gt;</FONT><BR ALIGN="LEFT"/>
+        Treat required missing paths as STOP. Treat optional missing paths as WARN only when they are not required by the current pack. For organ update, organ transition files, organ workflow files, prior organ evidence, and pack inputs are not optional if the update task depends on them.<BR ALIGN="LEFT"/>
+        If validate-real-layout does not yet understand organ-specific paths or evidence roots, stop or route that friction to <B>0C_cli_extraction_feedback_infractl_prompts_only.dot</B>; do not pretend skeleton-only validation proves organ readiness.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Safety [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#B71C1C">
+      <TR><TD BGCOLOR="#FFEBEE"><B>Execution safety and route gates</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        STOP if the pack is actually <B>request-create + organ</B>, <B>request-update + skeleton</B>, or any other lane. STOP if prior organ evidence cannot be found. STOP if the layout gate fails on required files. STOP if Codex instructions would overwrite historical organ scaffold evidence or skeleton evidence.<BR ALIGN="LEFT"/>
+        Do not run smoke, live services, RunPod, model APIs, Terraform, Kubernetes, containers, or infrastructure mutation in this lane. Do not broaden Codex scope beyond the one task in <B>UPDATE_RUN_INSTRUCTIONS.md</B>.<BR ALIGN="LEFT"/>
+        Codex execution must remain bounded: read the pack entrypoint, execute exactly the stated organ update task, write/update only approved output paths, and end with evidence suitable for P5.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Idempotency [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#EF6C00">
+      <TR><TD BGCOLOR="#FFF3E0"><B>Idempotency and existing-output handling</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Before extracting or handing off the pack, check whether the same pack has already been extracted, validated, or executed. Compare manifest, filenames, route metadata, and any existing P4 layout-gate report if available.<BR ALIGN="LEFT"/>
+        If extraction already exists and matches the same pack, reuse it. If it is partial or mismatched, ask the operator whether to create a new uniquely named extraction directory. Never overwrite an extraction directory, layout report, Codex workspace, or evidence output by default.<BR ALIGN="LEFT"/>
+        If Codex previously executed this pack and P5 evidence already exists, do not execute it again unless the operator explicitly confirms a rerun and the pack supports idempotent behavior.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  CodexHandoff [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#00695C">
+      <TR><TD BGCOLOR="#E0F2F1"><B>Codex handoff after confirmed G14</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        After the operator confirms the variable block and G14 result, prepare the exact Codex prompt. Do not bury the safety boundary in prose; put it directly in the prompt.<BR ALIGN="LEFT"/>
+        Required Codex handoff shape:<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">Extract or use the provided organ update pack. Read CODEX_UPDATE_PROMPT.txt as the entrypoint. Then read UPDATE_RUN_INSTRUCTIONS.md and execute exactly one bounded organ update task. Preserve prior organ/R01 evidence. Do not regenerate the scaffold. Do not touch skeleton evidence. Do not run smoke or live infrastructure unless the pack explicitly authorizes a safe local check. End with Changed files, Tests run, Update evidence, Smoke report or reused evidence, Remaining issues.</FONT><BR ALIGN="LEFT"/>
+        If this environment cannot execute Codex, output the prompt and stop with PASS-to-operator rather than pretending execution happened.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Extraction [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#455A64">
+      <TR><TD BGCOLOR="#ECEFF1"><B>0C extraction signal handling</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        If P4 reveals repeated manual behavior, missing organ-aware layout checks, unclear Codex handoff wording, missing helper support, or skeleton-only assumptions in the public tool, do not modify the tool in this lane.<BR ALIGN="LEFT"/>
+        Record a handoff to <B>0C_cli_extraction_feedback_infractl_prompts_only.dot</B> and suggest an entry for <B>CLI_EXTRACTION_NOTES.md</B>. Continue P4 only if the current pack can be gated safely without public-tool changes.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Response [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#37474F">
+      <TR><TD BGCOLOR="#ECEFF1"><B>Required response format</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Respond with: <B>Route confirmed</B>; <B>Suggested variables</B>; <B>Operator confirmations needed</B>; <B>Pack inspected</B>; <B>G13 result</B>; <B>G14 layout result</B>; <B>Codex handoff or execution status</B>; <B>0C extraction notes if any</B>; <B>PASS/WARN/STOP</B>; and <B>Next lane</B>.<BR ALIGN="LEFT"/>
+        Include exact paths for the pack, extracted directory, layout report, and any Codex handoff prompt. If stopped, identify the blocking file, missing path, route mismatch, or unsafe operation.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  StopPass [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1B5E20">
+      <TR><TD BGCOLOR="#E8F5E9"><B>PASS / WARN / STOP and re-entry</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        <B>PASS</B>: the organ update pack was consumed, route-checked, layout-gated, and either handed to Codex with an exact bounded prompt or executed by Codex with explicit authorization. The next lane is P5 evidence-return for request-update + organ.<BR ALIGN="LEFT"/>
+        <B>WARN</B>: layout or tool support has optional gaps, but the operator explicitly accepts the warning and the pack remains safe and bounded.<BR ALIGN="LEFT"/>
+        <B>STOP</B>: missing/wrong pack, missing prior organ evidence, failed required layout checks, route mismatch, unsafe overwrite, unapproved Codex execution, or any need to run smoke/live infrastructure in this lane.<BR ALIGN="LEFT"/>
+        On PASS, re-enter v7 at <B>P5 evidence-return</B> and collect G15 execution evidence.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Start -> Canonical;
+  Canonical -> PriorLane;
+  PriorLane -> OrganContext;
+  OrganContext -> AgentGate;
+  AgentGate -> ExactPrompt;
+  ExactPrompt -> Variables;
+  Variables -> PackPrecheck;
+  PackPrecheck -> OrganUpdateP4FolderContract;
+  OrganUpdateP4FolderContract -> LayoutGate;
+  LayoutGate -> Safety;
+  Safety -> Idempotency;
+  Idempotency -> CodexHandoff;
+  CodexHandoff -> Extraction;
+  Extraction -> Response;
+  Response -> StopPass;
+}

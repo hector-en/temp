@@ -4,6 +4,16 @@ This folder is a prompt-only execution library for the Infra-Skeleton workflow. 
 
 The library does **not** replace the real public `infractl` tool, the private project bundle, or required evidence files. It tells the model which prompt-only DOT file to read, how to route the task, what variables to suggest, when to ask for confirmation, and when to stop.
 
+## Repo-local DOT rule
+
+When operating inside `/workspace/repos/infractl-public`, read DOT files from:
+
+```text
+dots/
+```
+
+Use repo-local `dots/...` paths for Codex/WSL/local instructions. Keep `infractl.zip` upload wording for fresh webchat sessions, but do not point local operators at `infractl/<lane>/...`.
+
 ---
 
 ## Expected zip layout
@@ -91,7 +101,7 @@ PHASE=P1
 Read infractl.md first.
 Read the root main v7 DOT next.
 Then select the matching prompt-only DOT from:
-infractl/request-create-skeleton/
+dots/request-create-skeleton/
 
 Suggest the full variable block first.
 Ask me to confirm or correct it.
@@ -122,19 +132,19 @@ Use this table to pick the right folder and starting DOT.
 
 | What you want | MODE | TRACK | Start folder | Start DOT |
 |---|---|---|---|---|
-| Create a new skeleton batch | `request-create` | `skeleton` | `request-create-skeleton/` | `P1_request_create_skeleton_infractl_prompts_only.dot` |
-| Update an already-run skeleton batch | `request-update` | `skeleton` | `request-update-skeleton/` | `P1_request_update_skeleton_infractl_prompts_only.dot` |
-| Create the organ/R01 scaffold | `request-create` | `organ` | `request-create-organs/` | `P1_request_create_organ_infractl_prompts_only.dot` |
-| Update an already-run organ/R01 route | `request-update` | `organ` | `request-update-organs/` | `P1_request_update_organ_infractl_prompts_only.dot` |
-| Validate public/private setup | n/a | n/a | `zero-abc/` | `0A_public_private_contract_infractl_prompts_only.dot` |
-| Route new background/spec/annex material | n/a | n/a | `zero-abc/` | `0B_expansion_lane_infractl_prompts_only.dot` |
-| Record helper/CLI extraction opportunities | n/a | n/a | `zero-abc/` | `0C_cli_extraction_feedback_infractl_prompts_only.dot` |
-| Decide whether raw source/config material belongs in Config-Infra | `config-infra` | `CIP01` | `config-infra/` | `CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot` |
-| Generate or retrofit a rich integration request | `config-infra` | `CIP02` | `config-infra/` | `CIP02_rich_integration_request_generation_infractl_prompts_only.dot` |
-| Aggregate and approve integration requests | `config-infra` | `CIP03` | `config-infra/` | `CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot` |
-| Resolve current live config/tooling state read-only | `config-infra` | `CIP04` | `config-infra/` | `CIP04_live_config_state_resolution_infractl_prompts_only.dot` |
-| Plan config implementation without applying changes | `config-infra` | `CIP05` | `config-infra/` | `CIP05_config_implementation_planning_infractl_prompts_only.dot` |
-| Apply/close out manifest-approved config changes | `config-infra` | `CIP06` | `config-infra/` | `CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot` |
+| Create a new skeleton batch | `request-create` | `skeleton` | `dots/request-create-skeleton/` | `P1_request_create_skeleton_infractl_prompts_only.dot` |
+| Update an already-run skeleton batch | `request-update` | `skeleton` | `dots/request-update-skeleton/` | `P1_request_update_skeleton_infractl_prompts_only.dot` |
+| Create the organ/R01 scaffold | `request-create` | `organ` | `dots/request-create-organs/` | `P1_request_create_organ_infractl_prompts_only.dot` |
+| Update an already-run organ/R01 route | `request-update` | `organ` | `dots/request-update-organs/` | `P1_request_update_organ_infractl_prompts_only.dot` |
+| Validate public/private setup | n/a | n/a | `dots/zero-abc/` | `0A_public_private_contract_infractl_prompts_only.dot` |
+| Route new background/spec/annex material | n/a | n/a | `dots/zero-abc/` | `0B_expansion_lane_infractl_prompts_only.dot` |
+| Record helper/CLI extraction opportunities | n/a | n/a | `dots/zero-abc/` | `0C_cli_extraction_feedback_infractl_prompts_only.dot` |
+| Decide whether raw source/config material belongs in Config-Infra | `config-infra` | `CIP01` | `dots/config-infra/` | `CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot` |
+| Generate or retrofit a rich integration request | `config-infra` | `CIP02` | `dots/config-infra/` | `CIP02_rich_integration_request_generation_infractl_prompts_only.dot` |
+| Aggregate and approve integration requests | `config-infra` | `CIP03` | `dots/config-infra/` | `CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot` |
+| Resolve current live config/tooling state read-only | `config-infra` | `CIP04` | `dots/config-infra/` | `CIP04_live_config_state_resolution_infractl_prompts_only.dot` |
+| Plan config implementation without applying changes | `config-infra` | `CIP05` | `dots/config-infra/` | `CIP05_config_implementation_planning_infractl_prompts_only.dot` |
+| Apply/close out manifest-approved config changes | `config-infra` | `CIP06` | `dots/config-infra/` | `CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot` |
 
 ---
 
@@ -209,7 +219,7 @@ The `config-infra/` path is separate from the normal P1-P6 create/update lanes. 
 ### Config-Infra layout
 
 ```text
-infractl/config-infra/
+dots/config-infra/
   CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
   CIP02_rich_integration_request_generation_infractl_prompts_only.dot
   CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
@@ -380,7 +390,7 @@ Run Config-Infra CIP01 source intake and suitability determination.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP01 DOT from infractl/config-infra/.
+Then use the CIP01 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -390,7 +400,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
+dots/config-infra/CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
 ```
 
 ### CIP02 — rich integration request generation
@@ -403,7 +413,7 @@ Run Config-Infra CIP02 rich integration request generation.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP02 DOT from infractl/config-infra/.
+Then use the CIP02 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -413,7 +423,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP02_rich_integration_request_generation_infractl_prompts_only.dot
+dots/config-infra/CIP02_rich_integration_request_generation_infractl_prompts_only.dot
 ```
 
 ### CIP03 — manifest aggregation and approval
@@ -426,7 +436,7 @@ Run Config-Infra CIP03 manifest aggregation and approval.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP03 DOT from infractl/config-infra/.
+Then use the CIP03 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -436,7 +446,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
+dots/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
 ```
 
 ### CIP04 — live config-state resolution
@@ -457,7 +467,7 @@ Run Config-Infra CIP04 live config-state resolution.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP04 DOT from infractl/config-infra/.
+Then use the CIP04 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -467,7 +477,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP04_live_config_state_resolution_infractl_prompts_only.dot
+dots/config-infra/CIP04_live_config_state_resolution_infractl_prompts_only.dot
 ```
 
 ### CIP05 — config implementation planning
@@ -480,7 +490,7 @@ Run Config-Infra CIP05 config implementation planning.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP05 DOT from infractl/config-infra/.
+Then use the CIP05 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -490,7 +500,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP05_config_implementation_planning_infractl_prompts_only.dot
+dots/config-infra/CIP05_config_implementation_planning_infractl_prompts_only.dot
 ```
 
 ### CIP06 — idempotent application and closeout
@@ -503,7 +513,7 @@ Run Config-Infra CIP06 idempotent application and closeout.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP06 DOT from infractl/config-infra/.
+Then use the CIP06 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -513,7 +523,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
+dots/config-infra/CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
 ```
 
 ---
@@ -587,7 +597,7 @@ PHASE=P1
 Read infractl.md first.
 Read the root main v7 DOT next.
 Then select the matching prompt-only DOT from:
-infractl/request-create-skeleton/
+dots/request-create-skeleton/
 
 Suggest the full variable block first.
 Ask me to confirm or correct it.
@@ -613,7 +623,7 @@ EVIDENCE_REQUIRED=yes
 Read infractl.md first.
 Read the root main v7 DOT next.
 Then select the matching prompt-only DOT from:
-infractl/request-update-skeleton/
+dots/request-update-skeleton/
 
 Suggest the full variable block first.
 Ask me to confirm or correct it.
@@ -636,7 +646,7 @@ PHASE=P1
 Read infractl.md first.
 Read the root main v7 DOT next.
 Then select the matching prompt-only DOT from:
-infractl/request-create-organs/
+dots/request-create-organs/
 
 Suggest the full variable block first.
 Ask me to confirm or correct it.
@@ -660,7 +670,7 @@ EVIDENCE_REQUIRED=yes
 Read infractl.md first.
 Read the root main v7 DOT next.
 Then select the matching prompt-only DOT from:
-infractl/request-update-organs/
+dots/request-update-organs/
 
 Before continuing, verify that prior organ/R01 evidence exists.
 Suggest the full variable block first.

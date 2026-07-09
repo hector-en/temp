@@ -1,0 +1,126 @@
+digraph InfraCTL_0C_CLI_Extraction_Prompt_Only {
+  rankdir=TB;
+  compound=true;
+  splines=ortho;
+  nodesep=0.75;
+  ranksep=0.85;
+  pad="0.25,0.25";
+  fontname="Helvetica";
+  labelloc="t";
+  label="0C CLI extraction feedback lane | prompt-only execution DOT | canonical source: infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot";
+
+  node [shape=plain, fontname="Helvetica", fontsize=9];
+  edge [arrowsize=0.7, penwidth=1.4, fontname="Helvetica", fontsize=8];
+
+  SelfExecutionGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#EDE7F6"><B>0C SELF-EXECUTION GATE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Use this DOT as a standalone execution instruction in a fresh ChatGPT or Codex session when the current work exposes a reusable manual pattern, helper script, CLI friction point, Codex handoff ambiguity, or public-tool promotion candidate.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Canonical source:</B> infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot, derived from the selected v7 pipeline.<BR ALIGN="LEFT"/><B>Phase:</B> 0C CLI extraction feedback lane. In the v7 flow this corresponds to G23 extraction-reminder, G24 extraction-ledger, P9 cli-extraction-choice, and G25 public-tool-promotion.<BR ALIGN="LEFT"/><B>First action:</B> read this DOT, then read the canonical full pipeline DOT if it is available. State that you are in 0C and ask for confirmation before writing files, modifying repos, or running commands unless the operator explicitly says go.<BR ALIGN="LEFT"/><B>Missing-file rule:</B> do not invent missing files. If the canonical DOT, signal material, ledger path, repo, or private bundle is unavailable, report the exact missing item and stop or draft only from supplied text.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  RoleGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#F3E5F5"><B>ROLE AND ADDRESSING GATE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>ChatGPT is addressed when:</B> the task is to classify a signal, draft or update CLI_EXTRACTION_NOTES.md text, decide whether a helper belongs in public tooling, prepare a bounded Codex prompt, or explain the public/private boundary.<BR ALIGN="LEFT"/><B>Codex is addressed only when:</B> the operator provides a bounded implementation pack or explicitly instructs Codex to edit repo files such as infractl-public/scripts/*.sh, infractl/cli.py, tests, schemas, docs, packaging, or generated fixtures.<BR ALIGN="LEFT"/><B>WSL/operator is addressed when:</B> shell commands must be run, files must be copied under /mnt/ingress or /mnt/egress, repo status must be inspected locally, or bundle exports must be created.<BR ALIGN="LEFT"/><B>Human decision is required at P9:</B> choose notes-only, public helper candidate, formal infractl CLI candidate, defer, or no change.<BR ALIGN="LEFT"/><B>If this DOT is not addressed to your role:</B> name the correct recipient and stop. Do not perform another agent's action.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  RoutePurpose [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#FFFDE7"><B>0C ROUTE PURPOSE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">This lane prevents repeated manual work from disappearing into chat history. It turns stable workflow friction into a private extraction ledger entry first, then allows the human operator to decide whether the pattern should remain notes-only, become a reusable public helper script, become a formal infractl CLI command, be deferred until more evidence exists, or be closed as no-change.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Use 0C whenever create/update/organ execution reveals a reusable command sequence, a repeated validation/export/copy pattern, a Codex prompt ambiguity, a script that has become generally useful, or a workflow step that should eventually move from manual chat guidance into deterministic tooling.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  VariableBlock [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#FFF8E1"><B>RUN VARIABLES — SUGGEST FIRST, THEN ASK FOR CONFIRMATION</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">The model must help the operator complete this block. Do not hand back a blank form as the first response. First infer likely values from uploaded filenames, current conversation, canonical DOT content, repo paths, bundle paths, helper names, and the signal itself. For each value, label the source as user-provided, inferred, default-safe, or unknown. Ask only for values still unknown or unsafe to infer. Do not execute or write until the operator confirms the suggested variables or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Variables for this 0C run:</B><BR ALIGN="LEFT"/>CANONICAL_DOT_PATH = infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot, or uploaded v7 source if that is the available filename<BR ALIGN="LEFT"/>SIGNAL_SOURCE = CLI_EXTRACTION_REMINDER.md | Codex summary | repeated command | helper script | G16 output | 0B routing | manual transcript | other<BR ALIGN="LEFT"/>SIGNAL_TEXT_OR_PATHS = supplied text and/or exact files that caused the 0C routing<BR ALIGN="LEFT"/>PUBLIC_TOOL_ROOT = /workspace/repos/infractl-public if public-tool inspection or implementation is relevant, otherwise optional<BR ALIGN="LEFT"/>PRIVATE_PROJECT_ROOT = /workspace/private/agentfield-grn-private_real_v0, uploaded private bundle root, or unknown<BR ALIGN="LEFT"/>CLI_EXTRACTION_LEDGER_REAL_PATH = /mnt/ingress/infra/plans/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/>CLI_EXTRACTION_LEDGER_BUNDLE_PATH = sources/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/>CANDIDATE_NAME = inferred short name for the reusable pattern, helper, or CLI idea<BR ALIGN="LEFT"/>RELATED_TRACK = skeleton | organ | 0B expansion | G16 snapshot/export | public-tool | mixed | unknown<BR ALIGN="LEFT"/>RELATED_BATCH_NUMBER = infer only if the signal names a batch; otherwise unknown or n/a<BR ALIGN="LEFT"/>RELATED_BATCH_SLUG = infer from known batch mapping only after batch number is known; otherwise unknown or n/a<BR ALIGN="LEFT"/>RELATED_TOPIC = infer from the signal topic, helper name, or route; otherwise unknown<BR ALIGN="LEFT"/>PROPOSED_CLASSIFICATION = notes-only | public-helper-candidate | formal-cli-candidate | deferred | no-change | unknown<BR ALIGN="LEFT"/>ALLOW_LEDGER_WRITE = no by default; yes only if operator confirms editing/writing CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/>ALLOW_PUBLIC_TOOL_EDIT = no by default; yes only after explicit P9 approval and bounded Codex/public-tool instruction<BR ALIGN="LEFT"/>ALLOW_PRIVATE_EVIDENCE_MUTATION = no<BR ALIGN="LEFT"/>ALLOW_SMOKE_OR_LIVE_ACTIONS = no<BR ALIGN="LEFT"/>ALLOW_OVERWRITE = no</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ExactPrompt [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1B7F3A">
+      <TR><TD BGCOLOR="#E8F5E9"><B>EXACT PROMPT TO TYPE TO CHATGPT</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Read this 0C prompt-only DOT and the canonical full pipeline DOT: infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>We are in 0C: CLI extraction feedback lane. Use the run-variable block in this DOT. First suggest likely variable values and label each value as user-provided, inferred, default-safe, or unknown. Help me complete the variables; only ask for values that are still unknown or unsafe to infer. Do not write files, modify repos, run commands, or promote anything into public tooling until I confirm the variable block and the proposed classification, unless I explicitly say go.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Act as a conservative Infra-Skeleton CLI extraction steward and public/private boundary guard. Use the provided signal to decide whether it should become:<BR ALIGN="LEFT"/>- a notes-only CLI_EXTRACTION_NOTES.md entry<BR ALIGN="LEFT"/>- a public helper script candidate under infractl-public/scripts/<BR ALIGN="LEFT"/>- a formal infractl CLI command candidate under infractl.cli<BR ALIGN="LEFT"/>- a deferred candidate that needs more runs or evidence<BR ALIGN="LEFT"/>- or no change.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>The signal may come from CLI_EXTRACTION_REMINDER.md, repeated ChatGPT/Codex manual commands, a helper script such as g16_snapshot.sh, create/update/organ execution friction, 0B extra-source routing, G16 snapshot/export, validation output, or a Codex handoff ambiguity.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Before writing or finalizing anything, state the classification, target files, exact planned edits, missing inputs if any, public/private boundary risks, whether P9 approval is needed, and the next safe pipeline step.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  InputChecklist [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#F5F5F5"><B>INPUT CHECKLIST</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>Primary ledger real path:</B> /mnt/ingress/infra/plans/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/><B>Private bundle snapshot path:</B> agentfield-grn-private_real_v0/sources/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/><B>Canonical source graph:</B> infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot<BR ALIGN="LEFT"/><B>Signals that trigger 0C:</B> CLI_EXTRACTION_REMINDER.md from request packs; repeated ChatGPT/Codex manual commands; helper scripts such as scripts/g16_snapshot.sh; create/update/organ execution friction; 0B extra-source routing that changes tool behavior; prompt ambiguity that should become a reusable rule; repeated validation/export/copy commands.<BR ALIGN="LEFT"/><B>Helpful optional evidence:</B> command transcripts, Codex summaries, failed or awkward handoff prompts, helper script diff, validation logs, smoke/update evidence paths, request packs, P4 layout-gate reports, G16 snapshot/export outputs, and relevant DOT files.<BR ALIGN="LEFT"/><B>Stop if:</B> there is no extraction signal, no repeated behavior, no access to the ledger and no permission to draft a proposed entry, or the requested action bypasses P9 approval.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Classification [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#E3F2FD"><B>CLASSIFICATION AND ROUTING CHECKLIST</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>Notes-only:</B> useful observation but not stable, not repeated, too private/project-specific, or lacking a safety contract. Record the observation in CLI_EXTRACTION_NOTES.md but do not propose implementation yet.<BR ALIGN="LEFT"/><B>Public helper candidate:</B> stable workflow helper with reusable parameters, safe defaults, and clear public/private boundaries. Example: infractl-public/scripts/g16_snapshot.sh for G16 snapshot-copy/export.<BR ALIGN="LEFT"/><B>Formal infractl CLI candidate:</B> repeated across multiple tracks or batches, needs project profile/schema integration, deterministic interface, tests, docs, fixtures, and public/private boundary review. Example future form: python3 -m infractl.cli snapshot-evidence ...<BR ALIGN="LEFT"/><B>Deferred:</B> promising pattern but needs another successful run, clearer inputs/outputs, better failure handling, or a stronger safety contract.<BR ALIGN="LEFT"/><B>No change:</B> one-off operational detail that should stay in chat history or evidence, not in the extraction ledger.<BR ALIGN="LEFT"/><B>Never promote directly:</B> public-helper or CLI promotion requires P9 human approval and, for Codex edits, either a bounded pack or explicit repo-edit instruction.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  V7Position [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#EDE7F6"><B>0C POSITION IN THE V7 PIPELINE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>G23 extraction-reminder:</B> request packs, Codex notes, repeated commands, G16 helper use, and execution friction feed this lane.<BR ALIGN="LEFT"/><B>G24 extraction-ledger:</B> CLI_EXTRACTION_NOTES.md is the private ledger for stable manual patterns across create, update, organ, G16, and 0B expansion lanes.<BR ALIGN="LEFT"/><B>P9 cli-extraction-choice:</B> human decides whether the pattern stays as notes, becomes a public helper script, is promoted into a formal infractl subcommand, or is deferred.<BR ALIGN="LEFT"/><B>G25 public-tool-promotion:</B> only after the ledger proves a pattern stable should it become infractl-public/scripts/* or a formal infractl.cli command.<BR ALIGN="LEFT"/><B>Re-entry:</B> after 0C classification, return to P1 direction-gate, continue to G16 snapshot/export if the ledger must be copied into the private bundle, or enter a bounded public-tool Codex task only if the operator explicitly selects that route.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  LedgerTemplate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#FFF8E1"><B>CLI_EXTRACTION_NOTES.md ENTRY TEMPLATE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">## &lt;candidate name&gt;<BR ALIGN="LEFT"/><B>Status:</B> notes-only | public-helper-candidate | formal-cli-candidate | deferred | no-change<BR ALIGN="LEFT"/><B>Observed in:</B> &lt;track/batch/phase/chat/log/evidence&gt;<BR ALIGN="LEFT"/><B>Source signal:</B> &lt;CLI_EXTRACTION_REMINDER.md, Codex friction, repeated command, helper script, 0B routing, G16 export, etc.&gt;<BR ALIGN="LEFT"/><B>Problem:</B> &lt;manual/repeated/fragile behavior to reduce&gt;<BR ALIGN="LEFT"/><B>Current manual form:</B> &lt;commands, prompt pattern, script path, or handoff rule&gt;<BR ALIGN="LEFT"/><B>Reusable abstraction:</B> &lt;helper/script/subcommand/workflow rule&gt;<BR ALIGN="LEFT"/><B>Inputs:</B> &lt;paths, bundle root, batch slug, topic, smoke report, flags&gt;<BR ALIGN="LEFT"/><B>Outputs:</B> &lt;files, zip, notes, report, manifest&gt;<BR ALIGN="LEFT"/><B>Safety boundaries:</B> &lt;no historical evidence overwrite, no live actions, explicit confirmation, /mnt/egress writes only with flag, etc.&gt;<BR ALIGN="LEFT"/><B>Public/private boundary:</B> &lt;what can live in infractl-public vs what remains private&gt;<BR ALIGN="LEFT"/><B>Promotion decision needed:</B> keep as notes | helper | infractl CLI | defer<BR ALIGN="LEFT"/><B>Tests/evidence needed before promotion:</B> &lt;repeat count, dry-run, validation, fixture, docs&gt;<BR ALIGN="LEFT"/><B>Next action:</B> &lt;draft patch, bounded Codex pack, continue observing, or close&gt;</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  G16Example [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#D9F2DF"><B>KNOWN CURRENT CANDIDATE: G16 SNAPSHOT/EXPORT HELPER</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>Observed helper:</B> /workspace/repos/infractl-public/scripts/g16_snapshot.sh<BR ALIGN="LEFT"/><B>Purpose:</B> G16 snapshot-copy/export for completed update evidence.<BR ALIGN="LEFT"/><B>Manual behavior reduced:</B> copying canonical evidence into private bundle sources/evidence_snapshots and optionally exporting an updated private bundle zip to /mnt/egress/private-bundles.<BR ALIGN="LEFT"/><B>Typical command:</B><BR ALIGN="LEFT"/>/workspace/repos/infractl-public/scripts/g16_snapshot.sh \<BR ALIGN="LEFT"/>  /workspace/private/agentfield-grn-private_real_v0 \<BR ALIGN="LEFT"/>  &lt;batch-slug&gt; \<BR ALIGN="LEFT"/>  &lt;update-topic&gt; \<BR ALIGN="LEFT"/>  &lt;smoke-report-path&gt; \<BR ALIGN="LEFT"/>  --export-dir /mnt/egress/private-bundles \<BR ALIGN="LEFT"/>  --export-name &lt;export-name&gt;.zip<BR ALIGN="LEFT"/><B>Likely status now:</B> public-helper-candidate. Future formal CLI candidate only after repeated use and tests, for example infractl snapshot-evidence.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ExpectedOutputs [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#FFF2CC">
+      <TR><TD BGCOLOR="#FFF8E1"><B>EXPECTED OUTPUTS AFTER CONFIRMATION</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Produce only the selected extraction artifact or proposal:<BR ALIGN="LEFT"/>- a suggested variable block and classification for confirmation<BR ALIGN="LEFT"/>- a CLI_EXTRACTION_NOTES.md entry<BR ALIGN="LEFT"/>- a patch/diff for CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/>- a public-helper proposal for infractl-public/scripts/&lt;helper&gt;.sh<BR ALIGN="LEFT"/>- a formal infractl CLI proposal for infractl/cli.py plus tests/docs/schemas<BR ALIGN="LEFT"/>- a bounded Codex prompt or future pack request if the user chooses implementation<BR ALIGN="LEFT"/>- a no-change/defer note explaining why promotion is premature<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Do not write or modify public tool files unless the user explicitly moves from 0C/P9 into a bounded public-tool implementation task. Do not mutate historical evidence. Do not rerun smoke. Do not perform live infrastructure/provider actions.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ResponseFormat [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#E3F2FD"><B>REQUIRED RESPONSE FORMAT</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Current phase: 0C CLI extraction feedback lane<BR ALIGN="LEFT"/>Canonical source read: yes / no, with path<BR ALIGN="LEFT"/>Addressed role: ChatGPT / Codex / WSL operator / human-decision support / wrong-agent stop<BR ALIGN="LEFT"/>Suggested variable block with source labels:<BR ALIGN="LEFT"/>Variables confirmed by operator: yes / no<BR ALIGN="LEFT"/>Missing variables, if any:<BR ALIGN="LEFT"/>Source signal read:<BR ALIGN="LEFT"/>Existing related artifacts found:<BR ALIGN="LEFT"/>Idempotency decision: draft-only / append-only ledger update / already captured / needs P9 approval / stop<BR ALIGN="LEFT"/>Classification: notes-only / public-helper-candidate / formal-cli-candidate / deferred / no-change<BR ALIGN="LEFT"/>Target ledger/file paths:<BR ALIGN="LEFT"/>Planned edits before confirmation:<BR ALIGN="LEFT"/>Files written or draft artifacts produced, if confirmed:<BR ALIGN="LEFT"/>Public/private boundary check:<BR ALIGN="LEFT"/>P9 decision needed: yes / no, with reason<BR ALIGN="LEFT"/>Safety status: no unapproved repo edits, no historical evidence mutation, no smoke rerun, no live action<BR ALIGN="LEFT"/>Decision: PASS / STOP<BR ALIGN="LEFT"/>Next track: return to P1, enter bounded public-tool Codex task, update private bundle snapshot through G16, or defer</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  PassStop [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#FFEBEE"><B>PASS / STOP CONDITIONS</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>PASS:</B> a real extraction signal exists; relevant files are readable or sufficient text is provided; variables are confirmed or draft-only operation is requested; classification is clear; proposed ledger entry or proposal is bounded; user confirms writing or asks for draft-only output.<BR ALIGN="LEFT"/><B>STOP:</B> no signal; target ledger missing and no permission to draft; required variables remain unknown; classification would require public repo edits but no bounded Codex instruction exists; user has not confirmed writing; requested action bypasses P9; requested promotion mixes private data into public tooling; requested action involves live/mutating infrastructure work; or overwrite would be required but ALLOW_OVERWRITE is not yes.<BR ALIGN="LEFT"/><B>After PASS:</B> update or draft CLI_EXTRACTION_NOTES.md, then return to P1 or G16 snapshot/export if the private bundle must capture the ledger update. Enter public helper or infractl.cli implementation only after explicit P9 approval.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Reentry [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#F5F5F5"><B>RE-ENTER NORMAL FLOW</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">After the extraction entry or proposal is accepted:<BR ALIGN="LEFT"/>- return to P1 direction-gate when the next action is create/update/organ routing<BR ALIGN="LEFT"/>- use P2/P3/P4/P5 only when the user explicitly requests packaging/execution<BR ALIGN="LEFT"/>- use G16 when the updated private bundle must snapshot CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/>- use a bounded public-tool Codex task only after P9 chooses public-helper or formal CLI promotion<BR ALIGN="LEFT"/>- defer when more runs are needed before tooling promotion</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  SelfExecutionGate -> RoleGate [xlabel="addressing gate", color="#6A1B9A", fontcolor="#6A1B9A"];
+  RoleGate -> RoutePurpose [xlabel="if addressed", color="#6A1B9A", fontcolor="#6A1B9A"];
+  RoutePurpose -> VariableBlock [xlabel="prepare run", color="#1B7F3A", fontcolor="#1B7F3A"];
+  VariableBlock -> ExactPrompt [xlabel="suggest + confirm", color="#1B7F3A", fontcolor="#1B7F3A"];
+  ExactPrompt -> InputChecklist [xlabel="collect signal", color="#1B7F3A", fontcolor="#1B7F3A"];
+  InputChecklist -> Classification [xlabel="classify", color="#1B7F3A", fontcolor="#1B7F3A"];
+  Classification -> V7Position [xlabel="map to v7", color="#6A1B9A", fontcolor="#6A1B9A"];
+  V7Position -> LedgerTemplate [xlabel="draft ledger", color="#1B7F3A", fontcolor="#1B7F3A"];
+  LedgerTemplate -> G16Example [xlabel="candidate example", color="#1B7F3A", fontcolor="#1B7F3A"];
+  G16Example -> ExpectedOutputs [xlabel="after confirmation", color="#1B7F3A", fontcolor="#1B7F3A"];
+  ExpectedOutputs -> ResponseFormat [xlabel="report", color="#1B7F3A", fontcolor="#1B7F3A"];
+  ResponseFormat -> PassStop [xlabel="decision", color="#1B7F3A", fontcolor="#1B7F3A"];
+  PassStop -> Reentry [xlabel="next phase", color="#1B7F3A", fontcolor="#1B7F3A"];
+}

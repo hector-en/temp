@@ -1,0 +1,104 @@
+digraph P6_Next_Cycle_Organ_Lane_Infractl_Prompts_Only {
+  graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=14, labelloc="t", label="P6 next-cycle lane: after mode=request-create, track=organ — prompt-only execution DOT"];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A", fontcolor="#1B7F3A"];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#EADCF8">
+      <TR><TD><B>SELF-EXECUTION GATE — P6 next-cycle after request-create + organ</B></TD></TR>
+      <TR><TD ALIGN="LEFT">You are a fresh ChatGPT, Codex, or WSL/operator session receiving this DOT as execution instruction. Treat this DOT as the active prompt contract for the canonical v7 Infra-Skeleton lane <B>P6 next-cycle</B> after exactly one completed route: <B>mode=request-create</B>, <B>track=organ</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Canonical source of truth: read <FONT FACE="Courier">infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT> first, or the selected v7 main DOT if that is what the operator uploaded. Verify that this lane follows the v7 closeout path after <B>G17 phase-decision</B> and returns to the correct next direction gate or side lane.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane does not create a new request pack by itself. It consumes the confirmed G17 result from organ P5, decides what the next route should be, and prepares the operator to re-enter v7 cleanly. It must not silently start a new skeleton batch, replay organ R01, or run Codex without a newly selected route and confirmed variables.</TD></TR>
+    </TABLE>
+  >];
+
+  V7Map [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#F3E8FD">
+      <TR><TD><B>WHERE THIS LANE SITS IN V7</B></TD></TR>
+      <TR><TD ALIGN="LEFT">The organ route has already moved through: <B>DirectionOrgan → WebchatFilesIn → CmdProfiles → CmdRequest → RequestFolder → CodexCreateFiles → CmdPackageCreate → CodexPackZip → CmdValidateReal → CodexExec → EvidenceOut → CmdG16Snapshot → SnapshotFiles / ExportZip → NextPhase</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">This P6 lane starts at the v7 <B>NextPhase</B> decision after G17. Its job is to choose the next concrete lane: continue organ work, enter skeleton create/update, route to 0B knowledge expansion, route to 0C CLI extraction feedback, or stop until missing evidence/confirmation is provided.</TD></TR>
+      <TR><TD ALIGN="LEFT">Because P6 is a routing lane, its output is not a Codex pack. Its output is a confirmed <B>next WORKFLOW_DIRECTION</B> and the exact next prompt-only DOT file to use.</TD></TR>
+    </TABLE>
+  >];
+
+  OrganContext [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#E8F0FE">
+      <TR><TD><B>ORGAN-SPECIFIC CONTEXT THAT MUST NOT BE LOST</B></TD></TR>
+      <TR><TD ALIGN="LEFT">The completed route was <B>request-create + organ</B>. Organ work starts at <B>R01</B> or the first real-organ scaffold unit because it is the transition from skeleton/dummy batches into real organ work. The P6 decision must preserve that transition state and avoid accidentally falling back into skeleton Batch 01 semantics.</TD></TR>
+      <TR><TD ALIGN="LEFT">When deciding the next route, keep these organ transition sources in scope when available: <FONT FACE="Courier">01_B0_transition_to_real_organs_master_v2.md</FONT>, <FONT FACE="Courier">01_B1_transition_real_organs_codex_batch_plan_v2.md</FONT>, and <FONT FACE="Courier">day_to_day_organs_run.md</FONT>. They determine whether the next unit is another organ create route, an organ update route, a skeleton bridge/update route, a knowledge/spec expansion route, or a CLI-helper extraction route.</TD></TR>
+      <TR><TD ALIGN="LEFT">Do not assume organ routes use skeleton batch numbering. Do not route to <FONT FACE="Courier">request-update + skeleton</FONT> just because evidence exists. Only select a skeleton route if the G17 decision or transition files explicitly say the next action is skeleton-track work.</TD></TR>
+    </TABLE>
+  >];
+
+  AgentGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#F5F5F5">
+      <TR><TD><B>ADDRESSING GATE — decide whether this prompt is for you</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>ChatGPT/webchat:</B> you may inspect the v7 main DOT, the P5 final response, G17 decision, export paths, and uploaded transition notes; infer next-route variables; and prepare the next WORKFLOW_DIRECTION. Do not claim to inspect local paths unless files are actually available.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>WSL/operator:</B> you may run read-only existence checks for the exported private bundle, organ evidence snapshot, or public helper files after variables are confirmed. Do not start a new route until the operator confirms the next lane.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Codex:</B> you are generally not addressed by P6. Stop unless the operator explicitly asks you to interpret the G17 result without mutating files. P6 is a route-selection gate, not an implementation gate.</TD></TR>
+      <TR><TD ALIGN="LEFT">If you are the wrong agent, stop and say which actor should run the lane.</TD></TR>
+    </TABLE>
+  >];
+
+  Variables [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#D9F2DF">
+      <TR><TD><B>SUGGESTED RUN VARIABLES — infer first, then ask for confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before choosing the next route, infer a suggested variable block from the uploaded v7 main DOT, the P5 evidence-return DOT/output, the G17 phase decision, organ transition files, and any exported private bundle path. Do not give the operator an empty form. Label every value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>. Ask only for values still unknown or unsafe.</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">CANONICAL_MAIN_DOT=</FONT> uploaded clean/v7 main DOT path<BR ALIGN="LEFT"/><FONT FACE="Courier">PREVIOUS_MODE=request-create</FONT> [route-fixed]<BR ALIGN="LEFT"/><FONT FACE="Courier">PREVIOUS_TRACK=organ</FONT> [route-fixed]<BR ALIGN="LEFT"/><FONT FACE="Courier">PREVIOUS_ORGAN_UNIT=</FONT> infer from P5/G17, expected R01 or first organ scaffold unit<BR ALIGN="LEFT"/><FONT FACE="Courier">PREVIOUS_ORGAN_SLUG=</FONT> infer from P5/G17 or transition plan<BR ALIGN="LEFT"/><FONT FACE="Courier">G17_DECISION=</FONT> accept PASS, accept documented WARN, STOP, 0B, 0C, or continue route<BR ALIGN="LEFT"/><FONT FACE="Courier">UPDATED_PRIVATE_BUNDLE=</FONT> exported bundle path if G16b created one<BR ALIGN="LEFT"/><FONT FACE="Courier">NEXT_MODE=</FONT> suggest request-create, request-update, or none until confirmed<BR ALIGN="LEFT"/><FONT FACE="Courier">NEXT_TRACK=</FONT> suggest organ, skeleton, 0B, or 0C route<BR ALIGN="LEFT"/><FONT FACE="Courier">NEXT_UNIT_OR_BATCH=</FONT> suggest next organ unit or skeleton batch if known<BR ALIGN="LEFT"/><FONT FACE="Courier">NEXT_TOPIC=</FONT> infer from G17 or ask<BR ALIGN="LEFT"/><FONT FACE="Courier">EVIDENCE_REQUIRED=</FONT> infer from next route; do not assume skeleton evidence for organ<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_ROUTE_SELECTION=no</FONT> [default-safe until confirmed]<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_OVERWRITE=no</FONT> [default-safe]</TD></TR>
+      <TR><TD ALIGN="LEFT">Do not proceed to the next prompt-only DOT until the operator confirms the suggested next-route variables or explicitly says to proceed with the suggested values.</TD></TR>
+    </TABLE>
+  >];
+
+  ExactPrompt [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#FFF2CC">
+      <TR><TD><B>EXACT PROMPT TO TYPE FOR THIS LANE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the canonical v7 main DOT, the P5 evidence-return result for mode=request-create, track=organ, and the G17 phase decision. We are in P6 next-cycle after an organ create/scaffold route.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">First infer and show the suggested variable block for CANONICAL_MAIN_DOT, PREVIOUS_MODE, PREVIOUS_TRACK, PREVIOUS_ORGAN_UNIT, PREVIOUS_ORGAN_SLUG, G17_DECISION, UPDATED_PRIVATE_BUNDLE, NEXT_MODE, NEXT_TRACK, NEXT_UNIT_OR_BATCH, NEXT_TOPIC, EVIDENCE_REQUIRED, ALLOW_ROUTE_SELECTION, and ALLOW_OVERWRITE. Label each value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct variables before selecting the next route.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">After confirmation, choose the next v7 lane. If the organ scaffold was accepted and the transition plan says to continue organ work, route to the next organ prompt-only DOT. If the next action is a delta against existing organ evidence, route to request-update + organ only if that lane exists or state that it must be created. If new knowledge/spec material must be integrated, route to 0B. If helper/CLI behavior should be extracted, route to 0C. If evidence is incomplete, stop and name the missing inputs.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Do not run Codex, generate request packs, modify files, or start a new batch inside P6. End with the exact next DOT filename to upload and the WORKFLOW_DIRECTION block for that next run.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  DecisionTree [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#F3E8FD">
+      <TR><TD><B>NEXTPHASE DECISION TREE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If G17 accepted organ R01 and the next organ scaffold unit is planned:</B> choose <FONT FACE="Courier">mode=request-create</FONT>, <FONT FACE="Courier">track=organ</FONT>, next organ unit/slug, and the next organ create prompt-only DOT.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If G17 accepted organ R01 but next work is a delta/update to that organ unit:</B> choose <FONT FACE="Courier">mode=request-update</FONT>, <FONT FACE="Courier">track=organ</FONT>, and use or create the request-update + organ route DOT chain. Require evidence from the completed organ unit before update.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If G17 says skeleton work resumes:</B> choose the appropriate skeleton route, usually <FONT FACE="Courier">request-create + skeleton</FONT> or <FONT FACE="Courier">request-update + skeleton</FONT>, and use the exported private bundle from G16 as the new baseline when available.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If G17 or evidence introduced new specs/notes/background material:</B> route to <FONT FACE="Courier">0B_expansion_lane_infractl_prompts_only.dot</FONT> before creating the next batch/organ pack.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If repeated manual steps, helper limitations, command friction, or g16_snapshot organ gaps appeared:</B> route to <FONT FACE="Courier">0C_cli_extraction_feedback_infractl_prompts_only.dot</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If evidence is incomplete or route identity is ambiguous:</B> STOP and ask only for the missing evidence or phase decision needed to proceed.</TD></TR>
+    </TABLE>
+  >];
+
+  OrganCreateNextCycleEvidenceGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Organ create next-cycle evidence gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Do not route to request-update + organ until initial organ create evidence exists and has PASS or accepted documented WARN from P5/G17.</TD></TR>
+      <TR><TD ALIGN="LEFT">Accepted organ create evidence must include <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">If smoke remains next, route to O-T4A/O-T4B or a smoke-specific instruction route. If companion/index is next, route to O-T6. If organ/config integration is proposed, defer O-T8/O-T9/CIP until organ-complete evidence and prerequisites exist.</TD></TR>
+      <TR><TD ALIGN="LEFT">If G16 helper gaps or repeated manual behavior are present, route to <FONT FACE="Courier">0C_cli_extraction_feedback_infractl_prompts_only.dot</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">STOP if G17 is missing, route identity is ambiguous, evidence is incomplete, or the next step would treat skeleton evidence as organ evidence.</TD></TR>
+    </TABLE>
+  >];
+
+  Idempotency [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#FCE8E6">
+      <TR><TD><B>IDEMPOTENCY AND NO-OVERWRITE BEHAVIOR</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before recommending the next run, check whether the selected next-route request pack, writing files, Codex pack, evidence snapshot, or export zip already exists in the operator-provided context. If complete outputs already exist and <FONT FACE="Courier">ALLOW_OVERWRITE</FONT> is not exactly yes, recommend validation/reuse rather than regeneration.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the selected route is request-update, require the relevant completed evidence snapshot. If the selected route is request-create, ensure it is not accidentally regenerating an already accepted organ unit unless the operator explicitly confirms a new unit/slug or allows regeneration.</TD></TR>
+      <TR><TD ALIGN="LEFT">P6 must not write files or mutate state. It only selects and prepares the next lane.</TD></TR>
+    </TABLE>
+  >];
+
+  Output [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#E8F0FE">
+      <TR><TD><B>REQUIRED FINAL RESPONSE AND RE-ENTRY</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Final response must include: confirmed previous route, G17 decision summary, updated private bundle path if any, selected next route, suggested WORKFLOW_DIRECTION block, exact next prompt-only DOT filename, missing prerequisites if any, and whether 0B or 0C must run first.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PASS:</B> next route is selected, variables are confirmed, and the exact next DOT is named.<BR ALIGN="LEFT"/><B>WARN:</B> next route is selected but should start with a validation or 0C helper extraction because tooling/evidence shape is not fully supported.<BR ALIGN="LEFT"/><B>STOP:</B> no G17 decision, missing evidence, ambiguous organ unit, wrong track, missing exported bundle when required, unconfirmed variables, or operator has not allowed route selection.</TD></TR>
+      <TR><TD ALIGN="LEFT">Do not proceed beyond this lane. The operator should upload or open the named next DOT in a fresh ChatGPT/Codex session.</TD></TR>
+    </TABLE>
+  >];
+
+  Start -> V7Map -> OrganContext -> AgentGate -> Variables -> ExactPrompt -> OrganCreateNextCycleEvidenceGate -> DecisionTree -> Idempotency -> Output;
+}

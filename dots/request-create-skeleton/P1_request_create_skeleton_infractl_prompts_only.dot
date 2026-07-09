@@ -1,0 +1,231 @@
+digraph P1_request_create_skeleton_infractl_prompts_only {
+  graph [
+    rankdir=TB,
+    splines=ortho,
+    compound=true,
+    newrank=true,
+    bgcolor="white",
+    pad="0.25",
+    nodesep="0.65",
+    ranksep="0.85",
+    fontname="Helvetica",
+    fontsize=12,
+    labelloc="t",
+    label="P1 request-create + skeleton — prompt-only execution lane"
+  ];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#5E35B1"];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#5E35B1">
+      <TR><TD BGCOLOR="#EDE7F6"><FONT POINT-SIZE="14"><B>START — Upload this DOT into a fresh ChatGPT/Codex session</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        This DOT is a self-executable prompt-only instruction file for the canonical Infra-Skeleton pipeline.<BR ALIGN="LEFT"/>
+        It covers exactly one route from the main v7 flow:<BR ALIGN="LEFT"/>
+        <B>mode: request-create</B><BR ALIGN="LEFT"/>
+        <B>track: skeleton</B><BR ALIGN="LEFT"/>
+        Use it when you want to create the ChatGPT request pack for a not-yet-run skeleton batch.<BR ALIGN="LEFT"/>
+        Do not use this DOT for updates to already-run batches, organ/R01 work, CLI extraction, or snapshot/export.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  Canonical [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#1B5E20">
+      <TR><TD BGCOLOR="#E8F5E9"><FONT POINT-SIZE="13"><B>Canonical source requirement</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        Before acting, read the main pipeline DOT if it is available in the chat or filesystem:<BR ALIGN="LEFT"/>
+        <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B><BR ALIGN="LEFT"/>
+        This route must match the v7 end-to-end process:<BR ALIGN="LEFT"/>
+        0A public/private contract may run first if layout is unverified.<BR ALIGN="LEFT"/>
+        P1 direction gate chooses <B>request-create + skeleton</B>.<BR ALIGN="LEFT"/>
+        G1/G2 convert the direction into request-create flags.<BR ALIGN="LEFT"/>
+        G3/G4 validate inputs and required sources.<BR ALIGN="LEFT"/>
+        G5/G6 generate the bounded ChatGPT request pack in <B>webchat-sandbox</B> mode.<BR ALIGN="LEFT"/>
+        The output then re-enters the pipeline at the create-writing phase, not Codex execution.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  AddressGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#F3E5F5"><FONT POINT-SIZE="13"><B>Agent addressing gate</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        First decide who is being addressed.<BR ALIGN="LEFT"/>
+        <B>ChatGPT is addressed</B> when the user asks to read uploads, validate the public/private tool bundle, create a request pack, or produce ChatGPT-side artifacts.<BR ALIGN="LEFT"/>
+        <B>Codex is not addressed</B> unless the user provides a packaged Codex execution bundle and explicitly asks Codex to implement it.<BR ALIGN="LEFT"/>
+        <B>WSL/operator is addressed</B> only when commands must be run in the user's real workspace or on /workspace, /mnt/ingress, or /mnt/egress.<BR ALIGN="LEFT"/>
+        For this route, ChatGPT normally acts. Codex must stop and say this is a ChatGPT request-generation route unless a later codex pack is supplied.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  OperatorPrompt [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#283593">
+      <TR><TD BGCOLOR="#E8EAF6"><FONT POINT-SIZE="13"><B>Prompt for the operator to type</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">
+        Read this DOT and the canonical v7 main pipeline DOT.<BR ALIGN="LEFT"/>
+        Execute only the P1 request-create skeleton route.<BR ALIGN="LEFT"/>
+        First infer and suggest the variables needed for this run, marking each as user-provided, inferred, default-safe, or unknown.<BR ALIGN="LEFT"/>
+        Ask me to confirm or correct only the variables that are missing or unsafe to infer.<BR ALIGN="LEFT"/>
+        Do not execute until I confirm the variable block or explicitly say: go with the suggested values.<BR ALIGN="LEFT"/>
+        Use webchat-sandbox mode only.<BR ALIGN="LEFT"/>
+        Do not invoke Codex.<BR ALIGN="LEFT"/>
+        Do not run smoke.<BR ALIGN="LEFT"/>
+        Do not mutate /workspace, /mnt/ingress, or /mnt/egress.<BR ALIGN="LEFT"/>
+        If GitHub access fails for the public tool, ask me to upload the public tool zip.<BR ALIGN="LEFT"/>
+        If the private bundle is missing, ask me to upload the private bundle zip.<BR ALIGN="LEFT"/>
+        Stop if a required source from the private contract is missing.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  VariableSuggest [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#0277BD">
+      <TR><TD BGCOLOR="#E1F5FE"><FONT POINT-SIZE="13"><B>Suggested variable block before execution</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        The model must help the operator by suggesting values first, not by presenting a blank form.<BR ALIGN="LEFT"/>
+        Suggested variables for this route:<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier" POINT-SIZE="9">
+        PUBLIC_TOOL_SOURCE=&lt;GitHub URL, uploaded zip, or existing extracted public tool root&gt;<BR ALIGN="LEFT"/>
+        PUBLIC_TOOL_ROOT=&lt;suggest extracted root, usually /mnt/data/public_infra-skeleton-tools_v0&gt;<BR ALIGN="LEFT"/>
+        PRIVATE_BUNDLE_SOURCE=&lt;uploaded private bundle zip or existing extracted private root&gt;<BR ALIGN="LEFT"/>
+        PRIVATE_PROJECT_ROOT=&lt;suggest extracted root, usually /mnt/data/agentfield-grn-private_real_v0&gt;<BR ALIGN="LEFT"/>
+        MODE=request-create [route-fixed]<BR ALIGN="LEFT"/>
+        TRACK=skeleton [route-fixed]<BR ALIGN="LEFT"/>
+        BATCH_NUMBER=&lt;operator target, one of 01, 02, 03, 04 unless v7 changes&gt;<BR ALIGN="LEFT"/>
+        BATCH_SLUG=&lt;infer from batches.yaml after validation&gt;<BR ALIGN="LEFT"/>
+        TOPIC=&lt;infer from batch purpose or ask operator&gt;<BR ALIGN="LEFT"/>
+        EVIDENCE_REQUIRED=no [route default for not-yet-run create]<BR ALIGN="LEFT"/>
+        EXTRA_SOURCES=&lt;none, or uploaded note/spec/hook files if the route needs them&gt;<BR ALIGN="LEFT"/>
+        PROFILE=webchat-sandbox [route default]<BR ALIGN="LEFT"/>
+        OUTPUT_ROOT=/mnt/data/generated_real_v0 [default-safe]<BR ALIGN="LEFT"/>
+        ALLOW_OVERWRITE=no [default-safe]
+        </FONT><BR ALIGN="LEFT"/>
+        After suggesting values, ask: <B>Confirm these variables, or provide corrections.</B>
+      </TD></TR>
+    </TABLE>
+  >];
+
+  Idempotency [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#795548">
+      <TR><TD BGCOLOR="#EFEBE9"><FONT POINT-SIZE="13"><B>Idempotency and safety gate</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        Before writing any output, inspect whether a matching request pack already exists under OUTPUT_ROOT.<BR ALIGN="LEFT"/>
+        Match on mode, track, batch number, batch slug, and topic.<BR ALIGN="LEFT"/>
+        If an equivalent complete output already exists, report it and ask whether to reuse it.<BR ALIGN="LEFT"/>
+        If a partial output exists, report the files present and ask whether to clean, reuse, or write to a new output directory.<BR ALIGN="LEFT"/>
+        If ALLOW_OVERWRITE is not exactly <B>yes</B>, do not overwrite existing request-pack files.<BR ALIGN="LEFT"/>
+        Never silently change BATCH_NUMBER or BATCH_SLUG. If they disagree with batches.yaml, stop and ask for correction.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  Preflight [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#2E7D32">
+      <TR><TD BGCOLOR="#E8F5E9"><FONT POINT-SIZE="13"><B>Read-only preflight after confirmation</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        After the operator confirms variables, validate the available inputs without mutating the real workspace.<BR ALIGN="LEFT"/>
+        Safe ChatGPT-side checks include:<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier" POINT-SIZE="9">
+        cd ${PUBLIC_TOOL_ROOT}<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli profiles<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli list-batches --project ${PRIVATE_PROJECT_ROOT} --track skeleton<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli list-hooks --project ${PRIVATE_PROJECT_ROOT}<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli check-required-files --project ${PRIVATE_PROJECT_ROOT} --track skeleton<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli status --project ${PRIVATE_PROJECT_ROOT}
+        </FONT><BR ALIGN="LEFT"/>
+        If public tool access fails, ask for the public zip. If the private bundle is missing, ask for the private zip.<BR ALIGN="LEFT"/>
+        If a required source is missing, stop and report the missing key and expected path.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  RequestCreate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#1B5E20">
+      <TR><TD BGCOLOR="#C8E6C9"><FONT POINT-SIZE="13"><B>Generate the request-create skeleton pack</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        Run only the bounded request-generation command for this mode + track route.<BR ALIGN="LEFT"/>
+        Do not implement the batch. Do not package Codex files. Do not run smoke.<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier" POINT-SIZE="9">
+        python3 -m infractl.cli request-create \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--project ${PRIVATE_PROJECT_ROOT} \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--track skeleton \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--batch ${BATCH_NUMBER} \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--topic ${TOPIC} \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--profile webchat-sandbox \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;${EXTRA_SOURCE_FLAGS} \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--out ${OUTPUT_ROOT}
+        </FONT><BR ALIGN="LEFT"/>
+        EXTRA_SOURCE_FLAGS is empty when EXTRA_SOURCES=none, otherwise repeat <FONT FACE="Courier">--extra-source &lt;path&gt;</FONT> for each confirmed source.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  Outputs [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#F9A825">
+      <TR><TD BGCOLOR="#FFF9C4"><FONT POINT-SIZE="13"><B>Expected output and handoff</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        The output should be a ChatGPT request pack for the selected skeleton batch.<BR ALIGN="LEFT"/>
+        Expected contents usually include:<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier" POINT-SIZE="9">
+        CHATGPT_REQUEST.md<BR ALIGN="LEFT"/>
+        REQUIRED_INPUTS.md<BR ALIGN="LEFT"/>
+        SELECTED_CONTEXT_MANIFEST.md<BR ALIGN="LEFT"/>
+        EXTRA_SOURCE_ROUTING.md<BR ALIGN="LEFT"/>
+        CLI_EXTRACTION_REMINDER.md
+        </FONT><BR ALIGN="LEFT"/>
+        If CLI_EXTRACTION_REMINDER.md indicates a repeated manual step or helper candidate, record that as a 0C signal, but do not promote public tooling in this route.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  Response [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#455A64">
+      <TR><TD BGCOLOR="#ECEFF1"><FONT POINT-SIZE="13"><B>Required response format</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        End with this structure:<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier" POINT-SIZE="9">
+        Route: request-create + skeleton<BR ALIGN="LEFT"/>
+        Confirmed variables: ...<BR ALIGN="LEFT"/>
+        Inputs checked: ...<BR ALIGN="LEFT"/>
+        Existing outputs found: yes/no<BR ALIGN="LEFT"/>
+        Commands run: ...<BR ALIGN="LEFT"/>
+        Generated request pack: &lt;path or zip&gt;<BR ALIGN="LEFT"/>
+        Important files: ...<BR ALIGN="LEFT"/>
+        0C extraction signals: none / list<BR ALIGN="LEFT"/>
+        STOP conditions encountered: none / list<BR ALIGN="LEFT"/>
+        Next v7 re-entry: create-writing phase for this batch
+        </FONT>
+      </TD></TR>
+    </TABLE>
+  >];
+
+  StopPass [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#B71C1C">
+      <TR><TD BGCOLOR="#FFEBEE"><FONT POINT-SIZE="13"><B>PASS / STOP conditions</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        <B>PASS</B> when the request-create pack exists, variables are confirmed, required sources are present, and no unsafe mutation occurred.<BR ALIGN="LEFT"/>
+        <B>STOP</B> if public tool access fails and no public upload is provided.<BR ALIGN="LEFT"/>
+        <B>STOP</B> if the private bundle is missing or invalid.<BR ALIGN="LEFT"/>
+        <B>STOP</B> if BATCH_NUMBER is not defined in batches.yaml for track=skeleton.<BR ALIGN="LEFT"/>
+        <B>STOP</B> if required real/private sources are missing.<BR ALIGN="LEFT"/>
+        <B>STOP</B> if existing outputs would be overwritten and ALLOW_OVERWRITE is not yes.<BR ALIGN="LEFT"/>
+        <B>STOP</B> if the user asks this route to implement code, run smoke, or mutate /workspace, /mnt/ingress, or /mnt/egress.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  Reentry [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#4A148C">
+      <TR><TD BGCOLOR="#F3E5F5"><FONT POINT-SIZE="13"><B>Next v7 re-entry</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        After PASS, the next route is the create-writing lane for the same skeleton batch.<BR ALIGN="LEFT"/>
+        The operator should provide the generated request pack to ChatGPT to write the five Codex create files.<BR ALIGN="LEFT"/>
+        Do not jump directly to Codex implementation from this request-generation route.
+      </TD></TR>
+    </TABLE>
+  >];
+
+  Start -> Canonical -> AddressGate -> OperatorPrompt -> VariableSuggest -> Idempotency -> Preflight -> RequestCreate -> Outputs -> Response -> StopPass -> Reentry;
+}

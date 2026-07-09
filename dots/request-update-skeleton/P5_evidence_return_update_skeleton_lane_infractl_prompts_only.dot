@@ -1,0 +1,69 @@
+digraph P5_evidence_return_update_skeleton_lane_infractl_prompts_only {
+  graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=12, labelloc="t", label="P5 evidence-return lane — request-update + skeleton"];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A"];
+
+  Start [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#EADCF8">
+  <TR><TD><B>SELF-EXECUTION GATE — P5 evidence-return for update skeleton</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main pipeline DOT first: infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot, or the v7 version if that is the file uploaded. Use it as source of truth. This instruction DOT is not a generic template; it is the active prompt contract for exactly the route named in this file.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>This lane starts after Codex executes the bounded update pack. In v7 it covers G15 execution-evidence, G16 snapshot-copy/export, G16a bundle snapshot, G16b egress zip, and G17 phase-decision. It verifies returned update evidence, snapshots it into the private bundle, optionally exports a new private bundle zip, and records the phase decision.</TD></TR>
+</TABLE>
+>];
+
+  Agent [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#F5F5F5">
+  <TR><TD><B>Addressing gate</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Decide who is being addressed before doing anything. ChatGPT is addressed for request generation, writing-file creation, packaging/preflight, and evidence interpretation in the webchat sandbox. Codex is addressed only when a packaged Codex bundle is explicitly supplied and the operator confirms execution. The WSL/operator is addressed only for commands that must run in the real workspace or mounted paths. If you are the wrong agent for the lane, stop and state which agent should act next.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For P5, ChatGPT may inspect Codex output and guide evidence checks. WSL/operator is addressed for the real G16 snapshot/export helper command. Codex is addressed only to clarify or provide missing evidence from its just-finished run, not to broaden implementation.</TD></TR>
+</TABLE>
+>];
+
+  Vars [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>CODEX_RUN_OUTPUT=&lt;Codex final response or evidence folder&gt;<BR ALIGN="LEFT"/>PRIVATE_PROJECT_ROOT=/workspace/private/agentfield-grn-private_real_v0 [if in real workspace]<BR ALIGN="LEFT"/>BATCH_SLUG=&lt;infer from update pack/Codex output&gt;<BR ALIGN="LEFT"/>UPDATE_TOPIC=&lt;infer from update pack/Codex output&gt;<BR ALIGN="LEFT"/>SMOKE_REPORT_PATH=&lt;existing or newly produced smoke report path&gt;<BR ALIGN="LEFT"/>G16_SCRIPT=/workspace/repos/infractl-public/scripts/g16_snapshot.sh [if installed]<BR ALIGN="LEFT"/>EXPORT_DIR=/mnt/egress/private-bundles [default-safe when exporting]<BR ALIGN="LEFT"/>EXPORT_NAME=agentfield-grn-private_real_v0_${UPDATE_TOPIC}.zip [suggested]<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
+</TABLE>
+>];
+
+  Prompt [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+  <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main DOT, the Codex final response, and any returned update evidence. We are in v7 at P5 evidence-return for request-update + skeleton. First infer and show the suggested variables, then ask me to confirm. After confirmation, verify G15 evidence, run or instruct the operator to run the G16 snapshot/export helper if evidence is complete, and produce the G17 phase decision. Do not fabricate evidence, do not overwrite historical evidence, and do not proceed to the next phase until G17 is explicit.</TD></TR>
+</TABLE>
+>];
+
+  Evidence [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>G15 update evidence checklist</B></TD></TR>
+  <TR><TD ALIGN="LEFT">For update skeleton, verify returned update evidence such as UPDATE_POSTCHECK.md, UPDATE_INTEGRATION_REQUEST.md, CHANGESET_MANIFEST.md, plus referenced smoke report or accepted historical smoke report when the update did not rerun smoke. Confirm changed files, tests run, update evidence path, smoke report path, and remaining issues. Stop if Codex did not provide required evidence or if the update evidence contradicts the pack route.</TD></TR>
+</TABLE>
+>];
+
+  G16 [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>G16 snapshot/export helper command</B></TD></TR>
+  <TR><TD ALIGN="LEFT">When confirmed and evidence is complete, the real workspace command shape is:<BR ALIGN="LEFT"/>/workspace/repos/infractl-public/scripts/g16_snapshot.sh \<BR ALIGN="LEFT"/>  /workspace/private/agentfield-grn-private_real_v0 \<BR ALIGN="LEFT"/>  ${BATCH_SLUG} \<BR ALIGN="LEFT"/>  ${UPDATE_TOPIC} \<BR ALIGN="LEFT"/>  ${SMOKE_REPORT_PATH} \<BR ALIGN="LEFT"/>  --export-dir /mnt/egress/private-bundles \<BR ALIGN="LEFT"/>  --export-name ${EXPORT_NAME}<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>If the helper is missing or behaves unexpectedly, create a 0C CLI extraction signal, but do not improvise unsafe evidence movement.</TD></TR>
+</TABLE>
+>];
+
+  Idem [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
+  <TR><TD><B>Idempotency and no-overwrite behavior</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before writing or mutating anything, check whether the matching output already exists for the same mode, track, batch number, batch slug, topic, and source input. If complete output exists and ALLOW_OVERWRITE is not exactly yes, report it and offer reuse/validation. If partial output exists, report exactly what exists and ask whether to resume, regenerate missing outputs, or write to a new directory. Never silently overwrite or mix old and new artifacts.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For G16, check whether the snapshot update folder and export zip already exist. If they exist and match the same batch/topic/evidence, offer reuse. If they differ, stop and ask for operator decision.</TD></TR>
+</TABLE>
+>];
+
+  Pass [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Required final response and re-entry</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Report G15 evidence verified, G16 snapshot/export result, export zip path if created, 0C extraction signal if any, and G17 phase decision. PASS when evidence is verified and snapshot/export is complete or explicitly skipped with reason. STOP on missing evidence, unresolved smoke path, helper failure, unsafe overwrite, or missing G17 decision. Next v7 lane is P6 next-cycle.</TD></TR>
+</TABLE>
+>];
+
+  Start -> Agent;
+  Agent -> Vars;
+  Vars -> Prompt;
+  Prompt -> Evidence;
+  Evidence -> G16;
+  G16 -> Idem;
+  Idem -> Pass;
+}

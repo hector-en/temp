@@ -1,0 +1,184 @@
+digraph P1_request_create_organ_infractl_prompts_only {
+  graph [
+    rankdir=LR,
+    bgcolor="white",
+    pad="0.25",
+    nodesep="0.45",
+    ranksep="0.65",
+    splines=ortho,
+    concentrate=false,
+    fontname="Arial",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="18"><B>P1 request-create + organ — prompt-only execution lane</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="10">Final consumption DOT. Based on canonical main pipeline: infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="10">Visible lane follows v7 only: DirectionOrgan → WebchatFilesIn → CmdProfiles → CmdRequest → RequestFolder.</FONT></TD></TR>
+      </TABLE>
+    >,
+    labelloc=t
+  ];
+
+  node [shape=plain, fontname="Arial"];
+  edge [fontname="Arial", fontsize=9, color="#555555", arrowsize=0.8];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#F3E5F5"><B>P1 / G5 — direction gate: request-create + organ</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        This DOT is addressed to a fresh ChatGPT or Codex-style session that may only have this DOT and the main v7 DOT as context.<BR ALIGN="LEFT"/>
+        Treat this as the first lane for the next mode+track route after the skeleton create/update lanes.<BR ALIGN="LEFT"/>
+        The actual v7 entry is <B>DirectionOrgan</B>: mode=request-create, track=organ, batch=R01, topic=organ_r01_scaffold, evidence_required=no.<BR ALIGN="LEFT"/>
+        This lane only creates a bounded ChatGPT request pack. It does not write implementation files, run Codex, run smoke, or mutate /workspace, /mnt/ingress, or /mnt/egress.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  AgentGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1565C0">
+      <TR><TD BGCOLOR="#E3F2FD"><B>Addressing gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Before doing anything, identify whether you are ChatGPT, Codex, or the WSL/local operator.<BR ALIGN="LEFT"/>
+        <B>ChatGPT</B>: may inspect uploaded DOTs/files, suggest variables, run safe webchat-sandbox infractl commands only in the sandbox, and generate the request pack.<BR ALIGN="LEFT"/>
+        <B>Codex</B>: this lane is normally not for you. If you receive this DOT without a Codex pack, stop and say: “This is a ChatGPT request-generation lane, not a Codex execution pack.”<BR ALIGN="LEFT"/>
+        <B>WSL/local operator</B>: may run equivalent local commands only after confirming paths and variables. Do not execute commands that mutate real project state in this lane.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Prompt [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1B7F3A">
+      <TR><TD BGCOLOR="#E8F5E9"><B>Exact prompt to type into ChatGPT</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Read the canonical main pipeline DOT <B>infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot</B> and this prompt-only DOT.<BR ALIGN="LEFT"/>
+        We are executing the v7 <B>DirectionOrgan</B> lane only: <B>mode=request-create</B>, <B>track=organ</B>, <B>batch=R01</B>, <B>topic=organ_r01_scaffold</B>, <B>evidence_required=no</B>.<BR ALIGN="LEFT"/>
+        Follow the v7 end-to-end route for this lane up to <B>RequestFolder</B>. Do not continue into P2 writing until I confirm.<BR ALIGN="LEFT"/>
+        First infer and suggest the variable block from the uploaded/public/private files and the v7 DOT. Label each value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct the block before executing commands.<BR ALIGN="LEFT"/>
+        After confirmation, validate the public tool and private bundle, list profiles/batches/hooks, check required files, and run only the deterministic request-create command in webchat-sandbox mode. Stop and report missing files instead of guessing.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Variables [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#7B1FA2">
+      <TR><TD BGCOLOR="#F3E5F5"><B>Suggested variables to confirm</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Suggest these first; do not present an empty form unless nothing can be inferred.<BR ALIGN="LEFT"/>
+        PUBLIC_TOOL_SOURCE = uploaded public zip or GitHub URL, status user-provided/inferred/unknown<BR ALIGN="LEFT"/>
+        PUBLIC_TOOL_ROOT = extracted public tool root, status inferred/unknown<BR ALIGN="LEFT"/>
+        PRIVATE_BUNDLE_SOURCE = uploaded private bundle zip or existing private project root, status user-provided/inferred/unknown<BR ALIGN="LEFT"/>
+        PRIVATE_PROJECT_ROOT = extracted agentfield-grn-private_real_v0 root, status inferred/unknown<BR ALIGN="LEFT"/>
+        MODE = request-create, status fixed-by-route<BR ALIGN="LEFT"/>
+        TRACK = organ, status fixed-by-route<BR ALIGN="LEFT"/>
+        BATCH_NUMBER = R01, status fixed-by-route<BR ALIGN="LEFT"/>
+        BATCH_SLUG = real-contract-audit-runtime-role-readiness if confirmed by batches.yaml, otherwise unknown<BR ALIGN="LEFT"/>
+        TOPIC = organ_r01_scaffold, status fixed-by-v7-example unless operator overrides<BR ALIGN="LEFT"/>
+        EVIDENCE_REQUIRED = no, status fixed-by-route<BR ALIGN="LEFT"/>
+        EXTRA_SOURCES = none unless operator provides organ transition notes<BR ALIGN="LEFT"/>
+        PROFILE = webchat-sandbox, status default-safe<BR ALIGN="LEFT"/>
+        OUTPUT_ROOT = /mnt/data/generated_real_v0 or operator-provided safe output directory<BR ALIGN="LEFT"/>
+        ALLOW_OVERWRITE = no, status default-safe
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  V7Map [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#455A64">
+      <TR><TD BGCOLOR="#ECEFF1"><B>v7 lane map to follow exactly</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        DirectionOrgan is the only active direction for this DOT.<BR ALIGN="LEFT"/>
+        DirectionOrgan → WebchatFilesIn: collect public tool, private project bundle, and optional extra source if explicitly provided.<BR ALIGN="LEFT"/>
+        WebchatFilesIn → CmdProfiles: inspect profiles, batches, hooks, required files, and status before request generation.<BR ALIGN="LEFT"/>
+        DirectionOrgan → CmdRequest through <B>G5 organ-flags</B>: convert the confirmed WORKFLOW_DIRECTION into request-create flags.<BR ALIGN="LEFT"/>
+        CmdRequest → RequestFolder through <B>G6 request-folder</B>: write a bounded ChatGPT request pack for the organ R01 scaffold.<BR ALIGN="LEFT"/>
+        Stop at RequestFolder. The next lane is P2 request-to-writing, not part of this DOT.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Checks [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#EF6C00">
+      <TR><TD BGCOLOR="#FFF3E0"><B>Preflight and idempotency checks</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Confirm the private bundle contains config/files.yaml, config/batches.yaml, config/hooks.yaml, required workflow/spec/master files, and organ R01 metadata.<BR ALIGN="LEFT"/>
+        Confirm that track=organ and batch=R01 exist in batches.yaml before generating anything.<BR ALIGN="LEFT"/>
+        Because evidence_required=no, do not require prior organ evidence snapshots. If organ evidence exists, report it but do not overwrite it.<BR ALIGN="LEFT"/>
+        Inspect OUTPUT_ROOT for an existing request pack with the same mode, track, batch, and topic. If found and ALLOW_OVERWRITE is not yes, stop and ask whether to reuse, rename, or overwrite.<BR ALIGN="LEFT"/>
+        Stop on missing required public/private files. Do not substitute skeleton batch metadata for organ R01 metadata unless batches.yaml explicitly maps it.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  OrganCreateEvidenceNormalization [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="780" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Organ create evidence-normalization precheck</B></TD></TR>
+      <TR><TD ALIGN="LEFT">For request-create + organ, R01 create/scaffold does not require prior organ execution evidence unless <FONT FACE="Courier">EVIDENCE_REQUIRED=yes</FONT> is explicitly set. If prior organ evidence exists, report it as historical/read-only context and do not overwrite it.</TD></TR>
+      <TR><TD ALIGN="LEFT">Select organ transition context when present: <FONT FACE="Courier">01_B0_transition_to_real_organs_master_v2.md</FONT>, <FONT FACE="Courier">01_B1_transition_real_organs_codex_batch_plan_v2.md</FONT>, and <FONT FACE="Courier">day_to_day_organs_run.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Use skeleton dependency evidence only as context for preserving skeleton contracts. Do not treat skeleton evidence as organ evidence and do not write organ evidence under skeleton paths.</TD></TR>
+      <TR><TD ALIGN="LEFT">The P1 request pack should include or require these planning outputs when available: <FONT FACE="Courier">ORGAN_EVIDENCE_ROOT_PLAN.md</FONT>, <FONT FACE="Courier">CONFIG_INFRA_SOURCE_PRESENCE_MATRIX.md</FONT>, <FONT FACE="Courier">CLI_EXTRACTION_REFERENCE_STATUS.md</FONT>, and <FONT FACE="Courier">SKELETON_DEPENDENCY_EVIDENCE_STATUS.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Read Config-Infra SPEC/ANX and hooks as schema/context sources when present. ANX01 informs suitability classification; ANX09 is deferred future pack-shape only and never authorizes config mutation in organ create.</TD></TR>
+    </TABLE>
+  >];
+
+  Commands [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#2E7D32">
+      <TR><TD BGCOLOR="#E8F5E9"><B>Safe command shape after confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">
+        cd ${PUBLIC_TOOL_ROOT}<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli profiles<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli list-batches --project ${PRIVATE_PROJECT_ROOT} --track organ<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli list-hooks --project ${PRIVATE_PROJECT_ROOT}<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli check-required-files --project ${PRIVATE_PROJECT_ROOT} --track organ<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli status --project ${PRIVATE_PROJECT_ROOT}<BR ALIGN="LEFT"/>
+        python3 -m infractl.cli request-create \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--project ${PRIVATE_PROJECT_ROOT} \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--track organ \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--batch R01 \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--topic ${TOPIC} \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--profile webchat-sandbox \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;[--extra-source ${EXTRA_SOURCE_PATH}] \<BR ALIGN="LEFT"/>
+        &nbsp;&nbsp;--out ${OUTPUT_ROOT}
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Outputs [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#00695C">
+      <TR><TD BGCOLOR="#E0F2F1"><B>Expected RequestFolder outputs</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        A request-create organ R01 folder or zip under OUTPUT_ROOT whose name clearly encodes request_create, organ, R01, and topic.<BR ALIGN="LEFT"/>
+        Expected request-pack files may include CHATGPT_REQUEST.md, REQUIRED_INPUTS.md, SELECTED_CONTEXT_MANIFEST.md, EXTRA_SOURCE_ROUTING.md, CLI_EXTRACTION_REMINDER.md, and any v7-compatible organ scaffold notes produced by the tool.<BR ALIGN="LEFT"/>
+        The pack must be bounded: it asks ChatGPT to write the next P2 create files; it does not ask Codex to execute implementation directly.<BR ALIGN="LEFT"/>
+        If the tool emits a CLI_EXTRACTION_REMINDER.md, report whether a 0C follow-up is needed, but do not perform 0C inside this lane unless the operator explicitly switches lanes.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Response [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#37474F">
+      <TR><TD BGCOLOR="#ECEFF1"><B>Required response format</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Return:<BR ALIGN="LEFT"/>
+        1. Route confirmed: mode=request-create, track=organ, batch=R01, topic=&lt;topic&gt;.<BR ALIGN="LEFT"/>
+        2. Variable block: suggested values, labels, and operator confirmation status.<BR ALIGN="LEFT"/>
+        3. Preflight result: PASS/WARN/STOP with exact missing files or mismatches.<BR ALIGN="LEFT"/>
+        4. Commands run: list the deterministic infractl commands actually run.<BR ALIGN="LEFT"/>
+        5. Outputs created: exact paths to RequestFolder/zip and log files.<BR ALIGN="LEFT"/>
+        6. Safety: confirm no Codex execution, no smoke, no workspace/egress mutation.<BR ALIGN="LEFT"/>
+        7. Next lane: P2 create-writing for request-create + organ.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  StopPass [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#B71C1C">
+      <TR><TD BGCOLOR="#FFEBEE"><B>PASS / STOP conditions</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        <B>PASS</B>: variables confirmed, organ R01 exists in config, required files pass or only documented optional gaps appear, request-create succeeds, outputs are present, and no unsafe action was taken.<BR ALIGN="LEFT"/>
+        <B>WARN</B>: optional source gaps, optional extra source unavailable, or CLI extraction reminder exists. Continue only if request folder is complete and bounded.<BR ALIGN="LEFT"/>
+        <B>STOP</B>: missing public tool, missing private bundle/config, organ R01 not in batches.yaml, batch/topic mismatch, unconfirmed variable block, existing output with ALLOW_OVERWRITE=no, or any instruction to run Codex/smoke/live mutation in this lane.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Start -> AgentGate -> Prompt -> Variables -> V7Map -> Checks -> OrganCreateEvidenceNormalization -> Commands -> Outputs -> Response -> StopPass;
+}

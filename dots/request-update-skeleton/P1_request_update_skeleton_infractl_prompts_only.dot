@@ -1,0 +1,69 @@
+digraph P1_request_update_skeleton_infractl_prompts_only {
+  graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=12, labelloc="t", label="P1 request-update + skeleton — prompt-only execution lane"];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A"];
+
+  Start [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#EADCF8">
+  <TR><TD><B>SELF-EXECUTION GATE — P1 request-update + skeleton</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main pipeline DOT first: infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot, or the v7 version if that is the file uploaded. Use it as source of truth. This instruction DOT is not a generic template; it is the active prompt contract for exactly the route named in this file.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>We are entering the v7 direction route: mode=request-update and track=skeleton. Use this when an already-run skeleton batch needs a bounded delta/update request. This is not a create route, not an organ route, not a Codex implementation route, and not a smoke route. The output of this lane is a ChatGPT request-update pack that later feeds P2 update-writing.</TD></TR>
+</TABLE>
+>];
+
+  Agent [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#F5F5F5">
+  <TR><TD><B>Addressing gate</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Decide who is being addressed before doing anything. ChatGPT is addressed for request generation, writing-file creation, packaging/preflight, and evidence interpretation in the webchat sandbox. Codex is addressed only when a packaged Codex bundle is explicitly supplied and the operator confirms execution. The WSL/operator is addressed only for commands that must run in the real workspace or mounted paths. If you are the wrong agent for the lane, stop and state which agent should act next.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For this P1 route, ChatGPT is normally addressed. Codex must stop unless the operator has explicitly provided a later Codex update pack. WSL/operator may only provide paths, uploaded zips, or command output.</TD></TR>
+</TABLE>
+>];
+
+  Vars [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables for this route:<BR ALIGN="LEFT"/>CANONICAL_MAIN_DOT=infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot [default-safe if uploaded]<BR ALIGN="LEFT"/>PUBLIC_TOOL_SOURCE=&lt;GitHub URL, uploaded public zip, or existing public tool root&gt;<BR ALIGN="LEFT"/>PUBLIC_TOOL_ROOT=&lt;extracted infractl-public root&gt;<BR ALIGN="LEFT"/>PRIVATE_BUNDLE_SOURCE=&lt;uploaded private bundle zip or existing private root&gt;<BR ALIGN="LEFT"/>PRIVATE_PROJECT_ROOT=&lt;extracted agentfield-grn-private_real_v0 root&gt;<BR ALIGN="LEFT"/>MODE=request-update [route-fixed]<BR ALIGN="LEFT"/>TRACK=skeleton [route-fixed]<BR ALIGN="LEFT"/>BATCH_NUMBER=&lt;operator target already-run skeleton batch&gt;<BR ALIGN="LEFT"/>BATCH_SLUG=&lt;infer from batches.yaml after validation&gt;<BR ALIGN="LEFT"/>TOPIC=&lt;operator update topic&gt;<BR ALIGN="LEFT"/>EVIDENCE_REQUIRED=yes [route default]<BR ALIGN="LEFT"/>EXTRA_SOURCES=&lt;none or bounded uploaded notes/specs/hooks&gt;<BR ALIGN="LEFT"/>PROFILE=webchat-sandbox [route default]<BR ALIGN="LEFT"/>OUTPUT_ROOT=/mnt/data/generated_real_v0 [default-safe]<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
+</TABLE>
+>];
+
+  Prompt [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+  <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read this DOT and the canonical v7 main pipeline DOT. Execute only P1 request-update + skeleton. First infer and show the suggested variable block for the run, labeling every value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct the variables before execution. After confirmation, validate the public tool and private bundle in webchat-sandbox mode only, check required existing evidence for the selected skeleton batch, and generate the bounded request-update pack. Do not invoke Codex, do not run smoke, do not mutate /workspace, /mnt/ingress, or /mnt/egress, and do not continue into P2 unless I explicitly ask.</TD></TR>
+</TABLE>
+>];
+
+  Evidence [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
+  <TR><TD><B>Existing evidence gate for request-update</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Because this is request-update, evidence_required normally stays yes. Verify that the selected batch has POSTCHECK.md, INTEGRATION_REQUEST.md, and SMOKE_REPORT.md under evidence_snapshots/skeleton/${BATCH_SLUG}/ or in uploaded evidence. If any required evidence is missing, stop and report the exact missing file. Do not synthesize evidence and do not downgrade evidence_required to no unless the operator explicitly changes route semantics.</TD></TR>
+</TABLE>
+>];
+
+  Cmd [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Safe P1 command shape after confirmation</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Run only deterministic infractl request generation in the sandbox. Command shape:<BR ALIGN="LEFT"/>python3 -m infractl.cli request-update \<BR ALIGN="LEFT"/>  --project ${PRIVATE_PROJECT_ROOT} \<BR ALIGN="LEFT"/>  --track skeleton \<BR ALIGN="LEFT"/>  --batch ${BATCH_NUMBER} \<BR ALIGN="LEFT"/>  --topic ${TOPIC} \<BR ALIGN="LEFT"/>  --profile webchat-sandbox \<BR ALIGN="LEFT"/>  [--extra-source ${EXTRA_SOURCE}] \<BR ALIGN="LEFT"/>  --out ${OUTPUT_ROOT}<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>If GitHub access fails, ask for the public tool zip. If the private bundle is missing, ask for the private bundle zip. If existing output is detected, apply the idempotency gate before writing.</TD></TR>
+</TABLE>
+>];
+
+  Idem [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
+  <TR><TD><B>Idempotency and no-overwrite behavior</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before writing or mutating anything, check whether the matching output already exists for the same mode, track, batch number, batch slug, topic, and source input. If complete output exists and ALLOW_OVERWRITE is not exactly yes, report it and offer reuse/validation. If partial output exists, report exactly what exists and ask whether to resume, regenerate missing outputs, or write to a new directory. Never silently overwrite or mix old and new artifacts.</TD></TR>
+</TABLE>
+>];
+
+  Pass [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Required final response and re-entry</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Report variables used, evidence checked, request-update pack location, files created, logs, and any 0C CLI extraction signal. PASS when a complete request-update pack exists for the confirmed skeleton batch/topic. STOP on wrong route, missing variables, missing evidence, unsafe overwrite, inconsistent batch mapping, or unconfirmed variables. Next v7 lane after PASS is P2 update-writing / G8 update-files.</TD></TR>
+</TABLE>
+>];
+
+  Start -> Agent;
+  Agent -> Vars;
+  Vars -> Prompt;
+  Prompt -> Evidence;
+  Evidence -> Cmd;
+  Cmd -> Idem;
+  Idem -> Pass;
+}

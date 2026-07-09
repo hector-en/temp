@@ -1,0 +1,158 @@
+digraph P2_update_writing_organ_lane_infractl_prompts_only {
+  graph [
+    rankdir=TB,
+    bgcolor="white",
+    pad="0.25",
+    nodesep="0.45",
+    ranksep="0.55",
+    splines=ortho,
+    concentrate=false,
+    fontname="Arial",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="18"><B>P2 update-writing + organ — prompt-only execution lane</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="10">Final consumption DOT. Based only on canonical main pipeline: infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="10">Visible v7 route: RequestFolder → P2 request-to-writing → G8 update-files → CodexUpdateFiles. Stop before P3 packaging.</FONT></TD></TR>
+      </TABLE>
+    >,
+    labelloc=t
+  ];
+
+  node [shape=box, style="rounded,filled", color="#777777", fillcolor="white", fontname="Arial", fontsize=10, margin="0.12,0.08"];
+  edge [fontname="Arial", fontsize=9, color="#555555", arrowsize=0.8];
+
+  Start [fillcolor="#F3E5F5", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>P2 / update-writing lane for organ updates</B></TD></TR>
+    <TR><TD ALIGN="LEFT">This DOT is a self-executable prompt instruction for a fresh ChatGPT/Codex-style session. It represents <B>P2 request-to-writing</B> after P1 has already produced a bounded <B>request-update + organ</B> request folder.</TD></TR>
+    <TR><TD ALIGN="LEFT">The route identity is fixed: <B>mode=request-update</B>, <B>track=organ</B>, <B>batch=&lt;organ batch such as R01 or later organ id&gt;</B>, <B>topic=&lt;organ update topic&gt;</B>, <B>evidence_required=yes</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">This lane converts the P1 request folder into the exact G8 update-writing files. It must not package the files, execute Codex, run smoke, or mutate live workspace/egress state.</TD></TR>
+  </TABLE>
+  >];
+
+  Canonical [fillcolor="#E3F2FD", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Canonical v7 grounding</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Before acting, read the canonical main pipeline DOT: <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>, or the uploaded v7 file if that is the available name.</TD></TR>
+    <TR><TD ALIGN="LEFT">In v7, this lane sits after <B>RequestFolder</B> and before <B>P3 writing-to-package</B>. The update-writing branch is <B>G8 update-files</B>, not G7 create-files. If the canonical DOT route disagrees with this instruction DOT, stop and report the mismatch.</TD></TR>
+    <TR><TD ALIGN="LEFT">Keep the organ update lane separate from the skeleton update lane. Do not reuse skeleton Batch 01 assumptions, skeleton smoke semantics, or skeleton evidence paths unless v7/private bundle explicitly routes them as comparison context.</TD></TR>
+  </TABLE>
+  >];
+
+  OrganContext [fillcolor="#EDE7F6", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Organ-update context that must be preserved in every G8 file</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Organ work starts at <B>R01</B> because it is the transition from the skeleton/dummy implementation track into the real-organ track. It is not skeleton Batch 01, and it must not be numbered or reasoned about as a skeleton batch unless explicitly comparing tracks.</TD></TR>
+    <TR><TD ALIGN="LEFT">A request-update + organ run assumes a prior organ scaffold or organ execution exists. P2 must preserve that historical organ evidence and write a delta/update pack, not a first-run scaffold pack.</TD></TR>
+    <TR><TD ALIGN="LEFT">The writing context should normally include the organ transition files: <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B>. These explain organ-specific execution, evidence, routing, and non-goals.</TD></TR>
+    <TR><TD ALIGN="LEFT">If the P1 request folder or selected context lacks required organ transition context, stop and ask for it. Do not fill organ-specific gaps from memory or from skeleton-only workflow files.</TD></TR>
+  </TABLE>
+  >];
+
+  AgentGate [fillcolor="#F5F5F5", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Addressing gate</B></TD></TR>
+    <TR><TD ALIGN="LEFT">If you are <B>ChatGPT in webchat/sandbox</B>, you may read the P1 request folder, infer variables, ask for confirmation, and generate local downloadable G8 update-writing files.</TD></TR>
+    <TR><TD ALIGN="LEFT">If you are <B>Codex</B>, stop unless the operator explicitly says this DOT is being used as a writing guide only. Codex should normally consume the packaged update pack later in P4, not author the P2 files from scratch.</TD></TR>
+    <TR><TD ALIGN="LEFT">If you are the <B>WSL/operator</B>, provide missing paths, evidence locations, request-folder contents, or confirmation. Do not improvise file contents manually; this P2 lane is for ChatGPT-authored update files.</TD></TR>
+    <TR><TD ALIGN="LEFT">If the wrong agent is addressed, say which agent should act next and stop.</TD></TR>
+  </TABLE>
+  >];
+
+  ExactPrompt [fillcolor="#DFF5E1", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Exact operator prompt to type</B></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read this DOT, the canonical v7 main DOT, and the P1 request-update + organ request folder. We are in P2 request-to-writing for mode=request-update, track=organ. Follow only the v7 G8 update-files lane. Before writing, infer a suggested variable block from the request folder, filenames, manifests, evidence paths, and prior context. Label every value as user-provided, inferred, default-safe, or unknown, then ask me to confirm or correct it. After confirmation, produce the exact organ update-writing file set. Do not expose any base_format/template block. Do not run Codex, do not package, do not run smoke, do not mutate /workspace, /mnt/ingress, or /mnt/egress, and do not overwrite existing outputs unless ALLOW_OVERWRITE=yes.</FONT></TD></TR>
+  </TABLE>
+  >];
+
+  Variables [fillcolor="#E8F5E9", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Suggest variables first, then ask for confirmation</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Do not present a blank form. Infer likely values from the P1 request folder, request filenames, selected context manifest, canonical v7 DOT, private bundle metadata, organ evidence snapshot, and operator messages. Mark each value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">Suggested variable block for this route should include: <B>CANONICAL_MAIN_DOT</B>, <B>REQUEST_FOLDER</B>, <B>PUBLIC_TOOL_ROOT</B>, <B>PRIVATE_PROJECT_ROOT</B>, <B>MODE=request-update</B>, <B>TRACK=organ</B>, <B>ORGAN_BATCH_ID</B>, <B>ORGAN_BATCH_SLUG</B>, <B>TOPIC</B>, <B>ORGAN_EVIDENCE_ROOT</B>, <B>EVIDENCE_REQUIRED=yes</B>, <B>EXTRA_SOURCES</B>, <B>PROFILE=webchat-sandbox</B>, <B>OUTPUT_ROOT</B>, and <B>ALLOW_OVERWRITE=no</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">Ask only for values that remain unknown or unsafe to infer. Stop until the operator confirms the block or explicitly says to proceed with the suggested values.</TD></TR>
+  </TABLE>
+  >];
+
+  InputChecklist [fillcolor="#FFFFFF", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Input checklist before writing</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Confirm the P1 request folder exists and belongs to <B>mode=request-update, track=organ</B>. It should contain or reference <B>CHATGPT_REQUEST.md</B>, <B>REQUIRED_INPUTS.md</B>, <B>SELECTED_CONTEXT_MANIFEST.md</B>, <B>EXTRA_SOURCE_ROUTING.md</B>, and an evidence check such as <B>EXISTING_EVIDENCE_CHECK.md</B> when evidence_required=yes.</TD></TR>
+    <TR><TD ALIGN="LEFT">Read those request files as the bounded source of truth. Do not use unlisted private files unless the selected context manifest routes them or the operator provides them.</TD></TR>
+    <TR><TD ALIGN="LEFT">Verify that the request is for an already-run organ batch/update. Confirm prior organ evidence exists and is not merely skeleton evidence. If evidence is missing, skeleton-only, or ambiguous, stop before writing G8 files.</TD></TR>
+    <TR><TD ALIGN="LEFT">Check that organ transition context is available or explicitly optional: <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B>.</TD></TR>
+  </TABLE>
+  >];
+
+  Classification [fillcolor="#FFF8E1", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Classify the organ update before writing</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Classify the requested change as one or more of: <B>organ evidence reconciliation</B>, <B>organ workflow/documentation correction</B>, <B>organ scaffold source delta</B>, <B>organ config/routing delta</B>, <B>organ test/smoke readiness delta</B>, or <B>public-tool extraction signal</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">The classification determines how strong the P4/P5 evidence requirements become. Evidence reconciliation may produce update evidence only; source deltas require concrete changed-file boundaries and postcheck instructions.</TD></TR>
+    <TR><TD ALIGN="LEFT">If the request is actually about repeated manual tooling, helper scripts, CLI friction, or extraction into infractl-public, route the signal to <B>0C CLI extraction feedback</B> while still completing this lane if the organ update remains valid.</TD></TR>
+  </TABLE>
+  >];
+
+  NormalizedOrganUpdateEvidence [fillcolor="#FFF2CC", label=<
+  <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Normalized organ update evidence contract</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Generated organ update files must require Codex to produce exactly the normalized update evidence set unless the selected route explicitly requires optional evidence: <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>.</TD></TR>
+    <TR><TD ALIGN="LEFT">If smoke is explicitly run or reused, the update evidence must also produce or reference <FONT FACE="Courier">SMOKE_REPORT.md</FONT> or an exact accepted smoke-report path.</TD></TR>
+    <TR><TD ALIGN="LEFT">Original organ <FONT FACE="Courier">POSTCHECK.md</FONT> and <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT> are read-only baseline evidence and must not be overwritten by normal organ updates. Compatibility aliases must not be written in update roots unless explicitly required by the selected route.</TD></TR>
+    <TR><TD ALIGN="LEFT">The generated <FONT FACE="Courier">UPDATE_RUN_INSTRUCTIONS.md</FONT> and <FONT FACE="Courier">UPDATE_POSTCHECK_TEMPLATE.md</FONT> must include rich organ update integration/postcheck/changeset sections or reference colocated requirement files: <FONT FACE="Courier">INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">POSTCHECK_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>.</TD></TR>
+    <TR><TD ALIGN="LEFT">Include baseline organ evidence, relevant skeleton contract evidence, <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT> as read-only context, Config-Infra context when relevant, organ update evidence roots, and no-overwrite safety boundaries.</TD></TR>
+    <TR><TD ALIGN="LEFT">Organ update evidence roots: <FONT FACE="Courier">/mnt/egress/organs/dev-recordings/organs/&lt;organ-slug&gt;/updates/&lt;topic&gt;/</FONT> and private snapshot <FONT FACE="Courier">sources/evidence_snapshots/organ/&lt;organ-slug&gt;/updates/&lt;topic&gt;/</FONT>. Never skeleton roots.</TD></TR>
+  </TABLE>
+  >];
+
+  WriteFiles [fillcolor="#FFF4CE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>G8 update files to produce</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Produce the exact update-lane file set expected by v7 G8. For this project, the established update-writing set is:</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>CODEX_UPDATE_PROMPT.txt</B> — entrypoint for Codex after packaging. It must state request-update + organ, the organ batch id/slug, the topic, and the bounded task. It must not tell Codex to regenerate R01 or treat the update as skeleton Batch 01.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PROJECT_UPDATE_CACHE.md</B> — bounded project context from the request folder, including organ transition files, existing organ evidence summary, selected context manifest, and route constraints.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>UPDATE_SPEC.md</B> — the concrete delta/update specification, including classification, scope, allowed targets, non-goals, and organ-vs-skeleton protections.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>UPDATE_RUN_INSTRUCTIONS.md</B> — exact Codex task sequence, safe commands, permitted reads/writes, tests/checks, evidence outputs, and stop conditions.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>UPDATE_POSTCHECK_TEMPLATE.md</B> — evidence format Codex must fill after execution, including organ evidence path, changed files, tests, smoke/reuse policy, warnings, and remaining issues.</TD></TR>
+  </TABLE>
+  >];
+
+  QualityRules [fillcolor="#E8F0FE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Quality rules for organ update-writing</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Every G8 file must be usable by a fresh Codex session without hidden chat context. Repeat the route identity, organ batch id/slug, topic, evidence requirement, safety boundaries, and expected outputs inside the files.</TD></TR>
+    <TR><TD ALIGN="LEFT">Preserve historical organ evidence. Do not overwrite prior organ evidence, do not overwrite skeleton evidence, and do not rewrite the original R01 create history unless the operator explicitly asks for a new update topic that does so.</TD></TR>
+    <TR><TD ALIGN="LEFT">Use organ terminology consistently. Do not write “Batch 01” as a synonym for R01. If skeleton files are referenced, frame them as historical substrate context or comparison context, not as the current execution track.</TD></TR>
+    <TR><TD ALIGN="LEFT">Keep the v7 phase boundary intact: P2 writes files only; P3 packages; P4 validates layout and hands to Codex; P5 collects evidence; P6 chooses next cycle.</TD></TR>
+  </TABLE>
+  >];
+
+  Idempotency [fillcolor="#FFFFFF", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Idempotency and no-overwrite checks</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Before writing, inspect OUTPUT_ROOT for an existing organ update-writing folder matching the same mode, track, organ batch id/slug, and topic. If complete and ALLOW_OVERWRITE is not yes, report it and ask whether to reuse, fork, or overwrite.</TD></TR>
+    <TR><TD ALIGN="LEFT">If partial outputs exist, do not silently repair or overwrite them. List what exists and ask whether to continue in place, create a new folder, or stop.</TD></TR>
+    <TR><TD ALIGN="LEFT">Use deterministic naming. The output folder should make the route clear, for example a path containing <B>request_update_organ_&lt;batch&gt;_&lt;topic&gt;</B>.</TD></TR>
+  </TABLE>
+  >];
+
+  StopPass [fillcolor="#FCE8E6", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>STOP / WARN / PASS conditions</B></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>STOP</B> if the canonical v7 DOT is missing, the P1 request folder is missing, the route is not request-update + organ, prior organ evidence is absent, only skeleton evidence is available, organ transition context is required but missing, variables are unconfirmed, or existing outputs would be overwritten without explicit permission.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>WARN</B> if optional context is absent but the request folder marks it optional, or if smoke can only be reused rather than rerun. Explain the impact and continue only if the update remains bounded.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PASS</B> when all five G8 update files exist, match the organ update route, preserve historical evidence, include Codex-safe boundaries, and are ready for P3 update packaging.</TD></TR>
+  </TABLE>
+  >];
+
+  Response [fillcolor="#DFF5E1", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="980">
+    <TR><TD ALIGN="LEFT"><B>Required response format</B></TD></TR>
+    <TR><TD ALIGN="LEFT">End with: <B>Route confirmed</B>, <B>Variable block</B>, <B>Inputs read</B>, <B>Classification</B>, <B>Files written</B>, <B>Idempotency result</B>, <B>Warnings</B>, <B>STOP/WARN/PASS status</B>, and <B>Next v7 lane</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">The next v7 lane after PASS is <B>P3 update-package for request-update + organ</B>. Do not package automatically unless the operator asks for the next lane.</TD></TR>
+  </TABLE>
+  >];
+
+  Start -> Canonical -> OrganContext -> AgentGate -> ExactPrompt -> Variables -> InputChecklist -> Classification -> NormalizedOrganUpdateEvidence -> WriteFiles -> QualityRules -> Idempotency -> StopPass -> Response;
+}

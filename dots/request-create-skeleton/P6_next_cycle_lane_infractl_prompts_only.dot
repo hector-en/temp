@@ -1,0 +1,103 @@
+digraph P6_next_cycle_lane_infractl_prompts_only {
+  graph [
+    label="P6 next-cycle lane — infractl prompts only — canonical v7 route",
+    labelloc=t,
+    fontsize=20,
+    rankdir=LR,
+    bgcolor="white",
+    pad=0.35,
+    nodesep=0.7,
+    ranksep=0.9
+  ];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=10, margin="0.12,0.10", color="#333333", fillcolor="#F8F8F8"];
+  edge [fontname="Arial", fontsize=9, color="#555555", arrowsize=0.8];
+
+  Start [fillcolor="#EADCF8", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="450">
+      <TR><TD><B>P6: next-cycle lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT">This prompt-only DOT is for the canonical v7 lane after P5 evidence-return has completed or stopped with a clear decision.</TD></TR>
+      <TR><TD ALIGN="LEFT">Visible v7 route: <B>NextPhase → DirectionCreate</B>, with optional <B>NextPhase → DirectionKnowledge</B> when returned evidence or notes should enter the knowledge loop.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane does not implement code, does not package a Codex pack, and does not run smoke. It decides the next safe workflow direction from the recorded evidence state.</TD></TR>
+    </TABLE>
+  >];
+
+  AddressGate [fillcolor="#FFF7D6", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="500">
+      <TR><TD><B>Agent-addressing gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT">If you are ChatGPT: read this DOT and the canonical main DOT, infer the current post-P5 state, suggest the next-cycle variables, and ask the operator to confirm the next direction before generating a new request.</TD></TR>
+      <TR><TD ALIGN="LEFT">If you are Codex in /workspace: do not start a new batch or update from this DOT. You may only report the final execution/evidence state that P6 should use.</TD></TR>
+      <TR><TD ALIGN="LEFT">If you are a WSL/operator shell: do not run infractl commands until ChatGPT has selected one confirmed WORKFLOW_DIRECTION.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Stop</B> if P5 has not produced a PASS/STOP decision, if G17 was not recorded, or if the latest private bundle snapshot/export path is unknown.</TD></TR>
+    </TABLE>
+  >];
+
+  Prompt [fillcolor="#E8F0FE", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="600">
+      <TR><TD><B>Exact prompt to type into the addressed session</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">Read the attached prompt-only DOT and the canonical main pipeline DOT <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>. Treat this as P6 next-cycle for the v7 process.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">First summarize the last completed lane, the latest evidence/export state, and the last G17 decision. Then infer and suggest the variable block for the next cycle. Label every value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct the next WORKFLOW_DIRECTION before creating any new request pack.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">Follow v7 exactly: if the next action is another skeleton batch or skeleton update, re-enter DirectionCreate through P1. If returned notes or new files must be classified first, route to 0B/P7 knowledge expansion. If repeated manual behavior or helper friction was discovered, route to 0C before promotion.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Variables [fillcolor="#D9F2DF", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="560">
+      <TR><TD><B>Suggested variable block for P6</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">CANONICAL_MAIN_DOT=infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">LATEST_PRIVATE_BUNDLE=&lt;latest G16 exported zip or private project root&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">LAST_TRACK=&lt;skeleton or organ, inferred from P5/G17&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">LAST_BATCH_NUMBER=&lt;last completed batch number or organ id&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">LAST_BATCH_SLUG=&lt;last completed batch slug&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">LAST_TOPIC=&lt;last create/update topic, if any&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">LAST_G17_DECISION=&lt;accepted / accepted documented WARN / stopped / needs rerun&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">NEXT_MODE=&lt;request-create or request-update or knowledge-expansion or organ-scaffold&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">NEXT_TRACK=&lt;skeleton or organ, inferred from batch map and operator goal&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">NEXT_BATCH_NUMBER=&lt;02, 03, 04, R01, or existing batch to update&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">NEXT_BATCH_SLUG=&lt;infer from batches.yaml when possible&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">NEXT_TOPIC=&lt;short slug for the concrete next job&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">EVIDENCE_REQUIRED=&lt;yes for update/already-run state; no for new create/scaffold unless v7 says otherwise&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">EXTRA_SOURCES=&lt;none or listed uploaded files requiring 0B routing&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">ALLOW_OVERWRITE=no</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Decision [fillcolor="#F3E5F5", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="560">
+      <TR><TD><B>Next-cycle decision according to v7</B></TD></TR>
+      <TR><TD ALIGN="LEFT">If the last G17 decision is PASS or accepted documented WARN, choose the next planned batch/update from the batch map and the operator goal.</TD></TR>
+      <TR><TD ALIGN="LEFT">For skeleton create progression, use Skeleton 01 → 02 → 03 → 04. Do not skip forward unless the operator confirms that intermediate evidence exists or is intentionally out of scope.</TD></TR>
+      <TR><TD ALIGN="LEFT">After skeleton 04, route to organ R01 scaffold if the operator is transitioning to real organs and v7 prerequisites are satisfied.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the operator supplies new source files, notes, papers, specs, or prompt/hook material, route to 0B/P7 before creating a normal request pack.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the last run exposed a reusable manual pattern, helper-script need, or infractl friction, route to 0C/P9 before changing public tooling.</TD></TR>
+    </TABLE>
+  >];
+
+  Output [fillcolor="#E8F0FE", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="540">
+      <TR><TD><B>Required response format</B></TD></TR>
+      <TR><TD ALIGN="LEFT">1. Current lane: P6 next-cycle.</TD></TR>
+      <TR><TD ALIGN="LEFT">2. Last completed lane and G17 decision.</TD></TR>
+      <TR><TD ALIGN="LEFT">3. Latest private bundle/evidence state.</TD></TR>
+      <TR><TD ALIGN="LEFT">4. Suggested next variable block with labels.</TD></TR>
+      <TR><TD ALIGN="LEFT">5. Unknown or unsafe values needing operator input.</TD></TR>
+      <TR><TD ALIGN="LEFT">6. Proposed next DOT / lane to use.</TD></TR>
+      <TR><TD ALIGN="LEFT">7. Confirmation question before entering the next P1, 0B, or 0C lane.</TD></TR>
+    </TABLE>
+  >];
+
+  Finish [fillcolor="#EADCF8", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="500">
+      <TR><TD><B>PASS / STOP and v7 re-entry</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PASS</B>: one next route is selected, variables are confirmed, and the operator knows which prompt-only DOT to upload or execute next.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>STOP</B>: missing G17 decision, missing/latest private bundle ambiguity, unresolved failed evidence, unclassified extra sources, or unclear next batch/update intent.</TD></TR>
+      <TR><TD ALIGN="LEFT">After PASS, re-enter v7 at the confirmed route: <B>P1 request-create skeleton</B>, <B>P1 request-update skeleton</B>, <B>P1 request-create organ</B>, <B>0B expansion lane</B>, or <B>0C CLI extraction feedback</B>.</TD></TR>
+    </TABLE>
+  >];
+
+  Start -> AddressGate [label="read gate"];
+  AddressGate -> Prompt [label="if addressed"];
+  Prompt -> Variables [label="suggest first"];
+  Variables -> Decision [label="operator confirms/corrects"];
+  Decision -> Output [label="select next route"];
+  Output -> Finish [label="handoff"];
+}

@@ -1,0 +1,204 @@
+digraph P1_request_update_organ_infractl_prompts_only {
+  graph [
+    rankdir=LR,
+    bgcolor="white",
+    pad="0.25",
+    nodesep="0.55",
+    ranksep="0.85",
+    splines=ortho,
+    concentrate=false,
+    fontname="Arial",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="18"><B>P1 request-update + organ — prompt-only execution lane</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="10">Final consumption DOT. Based only on canonical main pipeline: infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="10">Visible v7 route: NextPhase → DirectionOrgan/update decision → WebchatFilesIn → CmdProfiles → CmdRequest → RequestFolder. Stop before P2.</FONT></TD></TR>
+      </TABLE>
+    >,
+    labelloc=t
+  ];
+
+  node [shape=plain, fontname="Arial"];
+  edge [fontname="Arial", fontsize=9, color="#555555", arrowsize=0.8];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#F3E5F5"><B>P1 / organ update direction gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        This DOT is a self-executable prompt instruction for a fresh ChatGPT/Codex-style session.<BR ALIGN="LEFT"/>
+        It represents the conditional organ update entry lane in the canonical v7 pipeline. Use it only after an organ scaffold has already run and produced organ evidence.<BR ALIGN="LEFT"/>
+        The intended v7 direction is: <B>mode=request-update</B>, <B>track=organ</B>, <B>batch=&lt;organ batch such as R01&gt;</B>, <B>topic=&lt;organ update topic&gt;</B>, <B>evidence_required=yes</B>, and <B>extra_sources=none or bounded organ notes</B>.<BR ALIGN="LEFT"/>
+        This lane creates a bounded request-update folder only. It does not create P2 writing files, package a Codex pack, execute Codex, run smoke, or mutate /workspace, /mnt/ingress, or /mnt/egress.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Canonical [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1565C0">
+      <TR><TD BGCOLOR="#E3F2FD"><B>Canonical v7 grounding</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Before acting, read the canonical main pipeline DOT: <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>, or the uploaded v7 file if that is the available name.<BR ALIGN="LEFT"/>
+        In v7, organ creation is represented explicitly as <B>DirectionOrgan</B> with <B>request-create + organ + R01</B>. Organ updates are not a first-run scaffold lane; they are selected after <B>P6 next-cycle</B> once organ evidence exists.<BR ALIGN="LEFT"/>
+        Use the v7 mode semantics: request-update builds a request pack for an already-run batch or retroactive correction. Track=organ means the real-organ transition lane, not skeleton batches 01-04.<BR ALIGN="LEFT"/>
+        If the uploaded main DOT disagrees with this instruction DOT, stop and report the mismatch instead of guessing.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  OrganContext [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#4A148C">
+      <TR><TD BGCOLOR="#EDE7F6"><B>Organ-update context that must not be lost</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Organ R01 is the bridge from the skeleton/dummy implementation track into the real-organ transition track. It starts at R01 because organ work is not a continuation of skeleton Batch 01 numbering.<BR ALIGN="LEFT"/>
+        A request-update + organ run is only valid when there is already prior organ/R01 scaffold evidence to update. It is not the route for creating the first organ scaffold; that route is request-create + organ.<BR ALIGN="LEFT"/>
+        Required organ transition context normally includes <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B>. These explain how organ execution differs from skeleton execution and how the real-organ transition should be staged.<BR ALIGN="LEFT"/>
+        Do not substitute skeleton batch evidence, skeleton numbering, skeleton-only smoke assumptions, or skeleton update topics for organ evidence. If the only evidence available is under evidence_snapshots/skeleton/, stop and ask for the real organ evidence location.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  AgentGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#616161">
+      <TR><TD BGCOLOR="#F5F5F5"><B>Addressing gate: decide who is being asked to act</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        If you are ChatGPT, you may inspect uploaded files, validate the public/private bundle in sandbox-safe ways, suggest variables, check the organ evidence contract from uploaded or mounted files, and generate the P1 request-update folder.<BR ALIGN="LEFT"/>
+        If you are Codex, stop unless the operator has provided a later packaged Codex update pack and explicitly addressed Codex. This P1 lane is not a Codex execution lane.<BR ALIGN="LEFT"/>
+        If you are the WSL/operator, provide filesystem paths, uploaded zips, command output, or confirmation. Do not infer that ChatGPT has access to private workspace paths unless they are uploaded or explicitly mounted in the current session.<BR ALIGN="LEFT"/>
+        If the wrong agent is addressed, say which agent should act next and stop.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Variables [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#2E7D32">
+      <TR><TD BGCOLOR="#E8F5E9"><B>Suggested variables first, then operator confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Do not present a blank form. Infer likely values from uploaded filenames, the canonical v7 DOT, the private bundle, batches.yaml, files.yaml, evidence snapshots, and prior operator messages. Label every value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>.<BR ALIGN="LEFT"/>
+        Suggested variable block for this route:<BR ALIGN="LEFT"/>
+        CANONICAL_MAIN_DOT=infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot [default-safe if uploaded]<BR ALIGN="LEFT"/>
+        PUBLIC_TOOL_SOURCE=&lt;GitHub URL, uploaded public zip, or existing public tool root&gt;<BR ALIGN="LEFT"/>
+        PUBLIC_TOOL_ROOT=&lt;extracted infractl-public root&gt;<BR ALIGN="LEFT"/>
+        PRIVATE_BUNDLE_SOURCE=&lt;uploaded private bundle zip or existing private root&gt;<BR ALIGN="LEFT"/>
+        PRIVATE_PROJECT_ROOT=&lt;extracted agentfield-grn-private_real_v0 root&gt;<BR ALIGN="LEFT"/>
+        MODE=request-update [route-fixed]<BR ALIGN="LEFT"/>
+        TRACK=organ [route-fixed]<BR ALIGN="LEFT"/>
+        BATCH_NUMBER=&lt;organ id, normally R01 unless v7/private bundle defines another organ batch&gt;<BR ALIGN="LEFT"/>
+        BATCH_SLUG=&lt;infer from batches.yaml; for R01 use the real organ slug from the private bundle&gt;<BR ALIGN="LEFT"/>
+        TOPIC=&lt;operator organ update topic, e.g. organ_r01_scaffold_delta, organ_contract_fix, organ_evidence_reconciliation&gt;<BR ALIGN="LEFT"/>
+        EVIDENCE_REQUIRED=yes [route default for request-update]<BR ALIGN="LEFT"/>
+        ORGAN_EVIDENCE_ROOT=&lt;prior organ evidence snapshot or exported organ evidence path&gt;<BR ALIGN="LEFT"/>
+        EXTRA_SOURCES=&lt;none or bounded uploaded organ notes/specs/hooks&gt;<BR ALIGN="LEFT"/>
+        PROFILE=webchat-sandbox [route default]<BR ALIGN="LEFT"/>
+        OUTPUT_ROOT=/mnt/data/generated_real_v0 [default-safe]<BR ALIGN="LEFT"/>
+        ALLOW_OVERWRITE=no [default-safe]<BR ALIGN="LEFT"/>
+        Ask the operator to confirm or correct the suggested values. Only ask about values that remain unknown or unsafe. Do not execute until the variable block is confirmed or the operator explicitly says to proceed with the suggested values.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ExactPrompt [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#F9A825">
+      <TR><TD BGCOLOR="#FFF8E1"><B>Exact operator prompt for this lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Read this DOT and the canonical v7 main pipeline DOT. Execute only P1 for <B>mode=request-update, track=organ</B>. First infer and show the suggested variable block, labeling every value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct the variables before execution.<BR ALIGN="LEFT"/>
+        After confirmation, validate the public tool and private bundle in webchat-sandbox mode only. Confirm that prior organ/R01 evidence exists and belongs to the organ lane, not the skeleton lane. Then generate a bounded request-update folder for the selected organ batch and update topic.<BR ALIGN="LEFT"/>
+        Do not invoke Codex. Do not generate P2 writing files. Do not package a Codex pack. Do not run smoke. Do not mutate /workspace, /mnt/ingress, or /mnt/egress. Stop after the P1 RequestFolder and report the next expected lane.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  EvidenceGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#B71C1C">
+      <TR><TD BGCOLOR="#FFEBEE"><B>Blocking organ evidence gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        This is the strongest gate in the route. Because request-update depends on prior execution state, <B>evidence_required=yes</B> is the default and should remain yes.<BR ALIGN="LEFT"/>
+        PASS only if prior organ evidence exists for the selected organ batch, for example under <B>sources/evidence_snapshots/organ/&lt;batch-slug&gt;/</B> or a supplied equivalent. The evidence should demonstrate that request-create + organ / R01 scaffold already ran.<BR ALIGN="LEFT"/>
+        STOP if no prior organ evidence exists. STOP if only skeleton evidence exists. STOP if R01 scaffold has not been completed. STOP if the operator is trying to update skeleton evidence through the organ lane. STOP if the organ batch id and batch slug cannot be resolved from batches.yaml or explicit operator input.<BR ALIGN="LEFT"/>
+        Do not synthesize evidence, do not copy skeleton evidence into organ evidence paths, and do not silently downgrade this route to request-create.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  OrganUpdateEvidenceGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Organ update evidence-normalization gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT">For request-update + organ, prior organ evidence is mandatory. Resolve <FONT FACE="Courier">ORGAN_RUN</FONT> and <FONT FACE="Courier">ORGAN_SLUG</FONT> from <FONT FACE="Courier">batches.yaml</FONT> or explicit operator input before writing the update request.</TD></TR>
+      <TR><TD ALIGN="LEFT">Required baseline for a normal update: baseline organ <FONT FACE="Courier">POSTCHECK.md</FONT>, baseline organ <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, a latest relevant <FONT FACE="Courier">SMOKE_REPORT.md</FONT> path if available or accepted as deferred, and relevant skeleton companion/evidence only when preserving a skeleton contract is part of the update topic.</TD></TR>
+      <TR><TD ALIGN="LEFT">STOP if no prior organ evidence exists, only skeleton evidence exists, R01 scaffold has not completed, organ id/slug cannot be resolved, the update topic is unknown/unsafe to infer, or the operator is trying to update skeleton evidence through the organ lane.</TD></TR>
+      <TR><TD ALIGN="LEFT">Classify the update topic as evidence-reconciliation, smoke reconciliation, workflow delta, companion/index delta, instruction-contract update, or other explicit organ update class. If strong proof of an organ run exists but canonical baseline evidence is incomplete/misplaced, classify as evidence-reconciliation and do not invent original results.</TD></TR>
+      <TR><TD ALIGN="LEFT">Read organ transition context when present, including <FONT FACE="Courier">01_B0_transition_to_real_organs_master_v2.md</FONT>, <FONT FACE="Courier">01_B1_transition_real_organs_codex_batch_plan_v2.md</FONT>, and <FONT FACE="Courier">day_to_day_organs_run.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Read Config-Infra SPEC/ANX and hooks as schema/context sources when relevant. ANX01 informs suitability classification; ANX09 is deferred future pack-shape only and never authorizes config mutation in organ update.</TD></TR>
+      <TR><TD ALIGN="LEFT">Route new source material to 0B and repeated tooling/helper gaps to 0C. Stop before P2 after producing the request/precheck output.</TD></TR>
+    </TABLE>
+  >];
+
+  CommandShape [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#00695C">
+      <TR><TD BGCOLOR="#E0F2F1"><B>Safe P1 request-update command shape</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Use the actual public tool interface from the validated infractl version. The expected v7 shape is:<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">python3 -m infractl.cli request-update \</FONT><BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">  --project &lt;PRIVATE_PROJECT_ROOT&gt; \</FONT><BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">  --track organ \</FONT><BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">  --batch &lt;BATCH_NUMBER&gt; \</FONT><BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">  --topic &lt;TOPIC&gt; \</FONT><BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">  --profile webchat-sandbox \</FONT><BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">  [--extra-source &lt;bounded organ source&gt;] \</FONT><BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">  --out &lt;OUTPUT_ROOT&gt;</FONT><BR ALIGN="LEFT"/>
+        If the current CLI uses a different flag name, adapt only after reading the public tool help. Stay read-only except for writing the output folder under OUTPUT_ROOT.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Idempotency [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#EF6C00">
+      <TR><TD BGCOLOR="#FFF3E0"><B>Idempotency and no-overwrite behavior</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        Before generating anything, inspect OUTPUT_ROOT for an existing request-update organ folder matching the same track, batch, slug, and topic. If a complete matching folder already exists, report it and ask whether to reuse it. If a partial folder exists, report the partial state and stop unless ALLOW_OVERWRITE=yes.<BR ALIGN="LEFT"/>
+        Never overwrite existing request packs, historical organ evidence, exported bundles, or operator-provided source files unless ALLOW_OVERWRITE=yes is explicitly confirmed. Prefer creating a unique output folder or reusing a complete existing one after confirmation.<BR ALIGN="LEFT"/>
+        If the operator changes variables after generation, treat it as a new run and re-check for collisions.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Outputs [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#0D47A1">
+      <TR><TD BGCOLOR="#E3F2FD"><B>Expected P1 outputs</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        A successful P1 request-update + organ run should produce a bounded RequestFolder under OUTPUT_ROOT. Expected contents should mirror the v7 request-folder pattern and include files such as CHATGPT_REQUEST.md, REQUIRED_INPUTS.md, SELECTED_CONTEXT_MANIFEST.md, EXTRA_SOURCE_ROUTING.md, CLI_EXTRACTION_REMINDER.md, and an organ-aware evidence/precheck file if supported by the CLI.<BR ALIGN="LEFT"/>
+        The request folder should clearly state mode=request-update, track=organ, selected organ batch, selected topic, evidence_required=yes, and the prior organ evidence location. It should not contain skeleton batch metadata except as negative context or cross-reference.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  StopPass [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1B5E20">
+      <TR><TD BGCOLOR="#E8F5E9"><B>Required response format, PASS/WARN/STOP, and re-entry</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        End with:<BR ALIGN="LEFT"/>
+        1. Confirmed variables and their labels.<BR ALIGN="LEFT"/>
+        2. Validation performed.<BR ALIGN="LEFT"/>
+        3. Organ evidence gate result.<BR ALIGN="LEFT"/>
+        4. Generated RequestFolder path, or exact reason for STOP.<BR ALIGN="LEFT"/>
+        5. Files produced.<BR ALIGN="LEFT"/>
+        6. Remaining issues.<BR ALIGN="LEFT"/>
+        7. Next v7 lane.<BR ALIGN="LEFT"/>
+        PASS means the P1 RequestFolder exists and is organ-update scoped. WARN means the folder exists but optional organ context or helper extraction should be handled through 0B/0C before P2. STOP means missing variables, missing prior organ evidence, route mismatch, unsafe overwrite, missing required files, or tool validation failure.<BR ALIGN="LEFT"/>
+        On PASS, re-enter v7 at <B>P2 update-writing for request-update + organ</B>. Do not continue automatically unless the operator explicitly asks.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Extraction [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#455A64">
+      <TR><TD BGCOLOR="#ECEFF1"><B>0B / 0C handoff when needed</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
+        If the run reveals new organ knowledge, new organ source routing, missing organ evidence conventions, or repeated manual helper behavior, do not hide it in the request folder. Mark it for 0B knowledge expansion or 0C CLI extraction feedback.<BR ALIGN="LEFT"/>
+        Examples: organ-capable G16 snapshot/export helper needed, organ evidence path not supported by current CLI, request-update organ flags missing, or repeated operator commands that should become public tooling.<BR ALIGN="LEFT"/>
+        This P1 lane may record the signal, but it must not implement public-tool changes itself.
+      </FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Start -> Canonical -> OrganContext -> AgentGate -> Variables -> ExactPrompt -> EvidenceGate -> OrganUpdateEvidenceGate -> CommandShape -> Idempotency -> Outputs -> StopPass -> Extraction;
+}

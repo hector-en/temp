@@ -1,0 +1,173 @@
+digraph P3_Create_Package_Organ_Infractl_Prompts_Only {
+  graph [
+    rankdir=TB,
+    splines=ortho,
+    compound=true,
+    bgcolor="white",
+    pad="0.25",
+    nodesep="0.55",
+    ranksep="0.75",
+    fontname="Helvetica",
+    fontsize=18,
+    labelloc="t",
+    label="P3 create-package lane: mode=request-create, track=organ — prompt-only execution DOT"
+  ];
+
+  node [shape=box, style="rounded,filled", color="#333333", fillcolor="#F8F9FA", fontname="Helvetica", fontsize=11, margin="0.12,0.08"];
+  edge [color="#6A1B9A", fontname="Helvetica", fontsize=9, arrowsize=0.7, penwidth=1.4];
+
+  start [fillcolor="#E8F0FE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>SELF-EXECUTION CONTEXT</B></TD></TR>
+    <TR><TD ALIGN="LEFT">You are a fresh ChatGPT or Codex session receiving this DOT as execution instruction. This DOT is not a drawing task. Read it as the executable prompt contract for the v7 Infra-Skeleton pipeline lane named <B>P3 create-package</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">Canonical source of truth: <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>, the version-tag-free copy of the selected v7 main DOT. Use that file to verify the lane order and node names before acting.</TD></TR>
+    <TR><TD ALIGN="LEFT">This DOT covers one route only: <B>mode=request-create</B>, <B>track=organ</B>. It begins after P2 has produced the organ R01 G7 create-writing files and ends when a Codex-ready create pack zip exists for P4 layout validation and Codex handoff.</TD></TR>
+  </TABLE>
+  >];
+
+  v7map [fillcolor="#F3E8FD", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>WHERE THIS LANE SITS IN V7</B></TD></TR>
+    <TR><TD ALIGN="LEFT">The organ route has already followed: <B>DirectionOrgan → WebchatFilesIn → CmdProfiles → CmdRequest → RequestFolder → CodexCreateFiles</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">This P3 lane follows the v7 writing-to-package transition for create flows: <B>CodexCreateFiles → CmdPackageCreate → CodexPackZip</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">The numbered nodes are <B>G9: create-package-input</B> and <B>G11: create-pack</B>. Do not use the update packaging branch <B>G10/G12</B> for this route.</TD></TR>
+    <TR><TD ALIGN="LEFT">The next lane after success is <B>P4 package-to-Codex / G13-G14</B> for the same route. P4 validates real layout and controls Codex execution. P3 only packages; it does not execute Codex.</TD></TR>
+  </TABLE>
+  >];
+
+  role [fillcolor="#E8F0FE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>ROLE AND GOAL</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Your role is the ChatGPT packaging operator for the organ create lane. Package the P2 G7 create-writing files into the deterministic Codex create pack expected by v7.</TD></TR>
+    <TR><TD ALIGN="LEFT">The goal is not to improve the content, implement the organ scaffold, run smoke, or write evidence. The goal is to verify the create-writing inputs and produce a clean pack zip that P4 can validate before Codex consumes it.</TD></TR>
+    <TR><TD ALIGN="LEFT">Preserve the organ route identity throughout packaging: <B>track=organ</B>, <B>mode=request-create</B>, <B>R01</B> scaffold/readiness context. Do not rename the route into skeleton Batch 01 and do not package it through update-lane commands.</TD></TR>
+  </TABLE>
+  >];
+
+  organ_context [fillcolor="#FCE8E6", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>ORGAN-SPECIFIC CONTEXT THAT MUST REMAIN VISIBLE</B></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Why organ starts at R01:</B> the organ track is the real-organ transition lane. In real-v0 it begins with <B>R01 real-contract-audit-runtime-role-readiness</B>, a readiness/scaffold step, not skeleton Batch 01.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Skeleton vs organ:</B> skeleton batches are dummy/skeleton infrastructure progression. Organ R01 is the bridge into real-organ contract readiness. The packaged Codex pack must retain organ terminology and organ runbook assumptions.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Required organ transition references:</B> the P2 files should already include or route <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B> where applicable. P3 verifies these references are present in the packaged context; it does not invent missing context.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Organ evidence expectation:</B> initial request-create organ R01 normally does not require prior execution evidence. The pack may define future postcheck evidence, but it must not claim existing organ evidence unless P1/P2 actually provided it.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Allowed actions:</B> inspect P2 files, verify route consistency, run deterministic packaging only, and emit the Codex create pack zip.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Disallowed actions:</B> do not run Codex, do not run smoke, do not mutate /workspace implementation files, do not write /mnt/egress evidence, do not overwrite existing packs without confirmation, and do not switch to update packaging.</TD></TR>
+  </TABLE>
+  >];
+
+  addressed [fillcolor="#FFF4CE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>ADDRESSING GATE</B></TD></TR>
+    <TR><TD ALIGN="LEFT">If you are <B>ChatGPT in webchat/sandbox</B>, you may perform this P3 packaging lane after confirming variables. You may create local generated artifacts for download.</TD></TR>
+    <TR><TD ALIGN="LEFT">If you are <B>Codex in the real workspace</B>, stop unless the operator explicitly says this DOT is being used as a packaging guide. Codex normally consumes the resulting pack later in P4 after layout validation.</TD></TR>
+    <TR><TD ALIGN="LEFT">If you are a <B>WSL operator</B>, run only the packaging command after ChatGPT has produced or verified the exact command. Do not edit pack contents manually unless the operator sends you back to P2.</TD></TR>
+  </TABLE>
+  >];
+
+  prompt [fillcolor="#DFF5E1", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>EXACT OPERATOR PROMPT TO TYPE</B></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the canonical v7 main DOT and this P3 DOT. We are in P3 writing-to-package for mode=request-create, track=organ. Use the P2 create-writing folder as the bounded input and package it through the v7 create branch: G9 create-package-input and G11 create-pack. Before packaging, suggest the variable block from the P2 folder, filenames, manifests, and prior route context; label each value as user-provided, inferred, default-safe, or unknown; then ask me to confirm or correct it. Do not expose any base_format/template block. Follow only the v7 end-to-end lane and the organ-specific context in this DOT. Do not run Codex, do not run smoke, do not mutate implementation files, do not write evidence, and do not overwrite existing pack outputs unless ALLOW_OVERWRITE=yes.</FONT></TD></TR>
+  </TABLE>
+  >];
+
+  variables [fillcolor="#E8F0FE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>SUGGEST VARIABLES FIRST, THEN ASK FOR CONFIRMATION</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Infer what you can from the P2 create-writing folder, file names, v7 DOT, request folder manifest, and prior route context. Do not present an empty form if route information is available.</TD></TR>
+    <TR><TD ALIGN="LEFT">Suggest and label: <B>P2_CREATE_WRITING_DIR</B>, <B>PUBLIC_TOOL_ROOT</B>, <B>PRIVATE_PROJECT_ROOT</B>, <B>MODE=request-create</B>, <B>TRACK=organ</B>, <B>BATCH_ID=R01</B>, <B>BATCH_SLUG=real-contract-audit-runtime-role-readiness</B> or the exact slug from batches.yaml, <B>TOPIC</B>, <B>PROFILE=webchat-sandbox</B>, <B>OUTPUT_ROOT</B>, <B>PACK_NAME</B>, <B>ALLOW_OVERWRITE=no</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">For each value, mark one of: <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>. Ask only for unknown or unsafe values. Stop until the operator confirms or explicitly says to proceed with suggested values.</TD></TR>
+  </TABLE>
+  >];
+
+  g9 [fillcolor="#FFFFFF", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>G9 CREATE-PACKAGE-INPUT CHECKLIST</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Confirm the P2 folder is complete and belongs to this route. It must contain the create-lane file set expected by the public tool contract, normally <B>CODEX_PROMPT.txt</B>, <B>PROJECT_CACHE.md</B>, <B>SPEC.md</B>, <B>RUN_INSTRUCTIONS.md</B>, and <B>POSTCHECK_TEMPLATE.md</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">Verify that the files say <B>mode=request-create</B>, <B>track=organ</B>, and <B>R01</B> or the exact organ batch identifier. Stop if they identify the route as request-update, skeleton, or Batch 01.</TD></TR>
+    <TR><TD ALIGN="LEFT">Verify that organ transition references are present where required: <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B>. If a required reference is absent, stop and route back to P2 rather than packaging an incomplete pack.</TD></TR>
+    <TR><TD ALIGN="LEFT">Check that the files are self-contained enough for P4/Codex: route identity, scope, allowed changes, disallowed actions, evidence template, and command/test expectations must be visible inside the pack.</TD></TR>
+  </TABLE>
+  >];
+
+  idempotent [fillcolor="#FFF4CE", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>IDEMPOTENCY AND EXISTING OUTPUT CHECKS</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Before packaging, inspect OUTPUT_ROOT for an existing pack matching the same mode, track, batch identifier, slug, and topic. If a complete pack already exists and ALLOW_OVERWRITE is not yes, report it and ask whether to reuse, fork, or overwrite.</TD></TR>
+    <TR><TD ALIGN="LEFT">If partial packaging outputs exist, do not silently repair or overwrite them. List what exists, identify whether the previous run reached G11, and ask the operator how to proceed.</TD></TR>
+    <TR><TD ALIGN="LEFT">Use deterministic, route-visible names. The output folder and zip should contain or clearly imply <B>request_create_organ_R01</B> and the topic slug.</TD></TR>
+  </TABLE>
+  >];
+
+  OrganCreatePackageValidation [label=<
+  <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+    <TR><TD ALIGN="LEFT"><B>Organ create package validation additions</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Validate route identity: <FONT FACE="Courier">MODE=request-create</FONT>, <FONT FACE="Courier">TRACK=organ</FONT>, <FONT FACE="Courier">ORGAN_RUN=R01</FONT> or confirmed organ run, and <FONT FACE="Courier">ORGAN_SLUG=real-contract-audit-runtime-role-readiness</FONT> for R01.</TD></TR>
+    <TR><TD ALIGN="LEFT">Validate the five create-writing files: <FONT FACE="Courier">CODEX_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_CACHE.md</FONT>, <FONT FACE="Courier">SPEC.md</FONT>, <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT>, and <FONT FACE="Courier">POSTCHECK_TEMPLATE.md</FONT>.</TD></TR>
+    <TR><TD ALIGN="LEFT">If supported by pack format, include or validate colocated requirement files: <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">POSTCHECK_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">ORGAN_CREATE_EVIDENCE_ROOT_CONTRACT.md</FONT>.</TD></TR>
+    <TR><TD ALIGN="LEFT">If requirement files cannot be embedded in the pack, P3 must record that P4 must colocate them in the handoff folder before Codex execution.</TD></TR>
+    <TR><TD ALIGN="LEFT">The package manifest must state that the eventual evidence set is <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>.</TD></TR>
+  </TABLE>
+  >];
+
+  command [fillcolor="#DFF5E1", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>SAFE PACKAGING COMMAND SHAPE</B></TD></TR>
+    <TR><TD ALIGN="LEFT">Use the public tool create-packaging command shape from the actual repository. The expected intent is:</TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT FACE="Courier">python3 -m infractl.cli package-codex-create --input &lt;P2_CREATE_WRITING_DIR&gt; --output-root &lt;OUTPUT_ROOT&gt; --profile webchat-sandbox</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">If the installed public tool uses a slightly different flag name, inspect help first and adapt only the flags, not the route semantics. Do not substitute <B>package-codex-update</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">Run only deterministic packaging and read-only validation checks. Do not run Codex, smoke, tests that mutate the workspace, or any command that writes canonical evidence.</TD></TR>
+  </TABLE>
+  >];
+
+  g11 [fillcolor="#FFFFFF", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>G11 CREATE-PACK OUTPUT VALIDATION</B></TD></TR>
+    <TR><TD ALIGN="LEFT">After packaging, verify that the Codex pack zip exists and contains the expected create-lane files with their route identity preserved.</TD></TR>
+    <TR><TD ALIGN="LEFT">Open or list the pack manifest if present. Confirm it records or implies <B>mode=request-create</B>, <B>track=organ</B>, <B>R01</B>, and the correct topic. Stop if the manifest points to skeleton or update.</TD></TR>
+    <TR><TD ALIGN="LEFT">Confirm that the entrypoint tells Codex what to read first and that file-order instructions are not contradictory. If contradictions appear, report them and either patch via P2 or give the operator a safe handoff clarification.</TD></TR>
+    <TR><TD ALIGN="LEFT">Confirm the pack is ready for P4 layout validation, not direct execution. P4 decides when and how Codex consumes it.</TD></TR>
+  </TABLE>
+  >];
+
+  extraction [fillcolor="#F3E8FD", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>0C EXTRACTION SIGNAL HANDLING</B></TD></TR>
+    <TR><TD ALIGN="LEFT">If packaging reveals repeated manual steps, missing infractl helper behavior, confusing flag names, file-order ambiguity, or a reusable command pattern, do not implement tool changes in P3. Record the signal and route it to <B>0C CLI extraction feedback</B> after this lane.</TD></TR>
+    <TR><TD ALIGN="LEFT">Examples: create-pack command needs a clearer alias, organ pack naming is not deterministic, manifest validation needs a helper, or P2/P3 handoff requires repeated manual patching.</TD></TR>
+  </TABLE>
+  >];
+
+  stop_pass [fillcolor="#FCE8E6", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>STOP / WARN / PASS CONDITIONS</B></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>STOP</B> if the canonical v7 DOT is missing, P2 create-writing folder is missing, required files are absent, the route is not request-create + organ, R01 cannot be resolved, organ transition context is required but absent, existing outputs would be overwritten without permission, or the packaging command would use the update branch.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>WARN</B> if optional context is absent but P2 clearly marks it optional, or if the public tool has minor flag-name differences that can be resolved by help output without changing route semantics.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PASS</B> when a deterministic Codex create pack zip exists, contains the expected files, preserves organ R01 semantics, and is ready for P4 package-to-Codex layout-gate.</TD></TR>
+  </TABLE>
+  >];
+
+  response [fillcolor="#DFF5E1", label=<
+  <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
+    <TR><TD ALIGN="LEFT"><B>REQUIRED RESPONSE FORMAT</B></TD></TR>
+    <TR><TD ALIGN="LEFT">End with: <B>Route confirmed</B>, <B>Variable block</B>, <B>Inputs checked</B>, <B>Packaging command</B>, <B>Pack outputs</B>, <B>Manifest/contents validation</B>, <B>Idempotency result</B>, <B>Warnings</B>, <B>STOP/PASS status</B>, and <B>Next v7 lane</B>.</TD></TR>
+    <TR><TD ALIGN="LEFT">The next v7 lane after PASS is <B>P4 package-to-Codex for request-create + organ</B>. Do not proceed to P4 automatically unless the operator asks for the next lane.</TD></TR>
+  </TABLE>
+  >];
+
+  start -> v7map;
+  v7map -> role;
+  role -> organ_context;
+  organ_context -> addressed;
+  addressed -> prompt;
+  prompt -> variables;
+  variables -> g9;
+  g9 -> idempotent;
+  idempotent -> OrganCreatePackageValidation;
+  OrganCreatePackageValidation -> command;
+  command -> g11;
+  g11 -> extraction;
+  extraction -> stop_pass;
+  stop_pass -> response;
+}

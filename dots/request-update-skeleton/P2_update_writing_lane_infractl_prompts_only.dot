@@ -1,0 +1,69 @@
+digraph P2_update_writing_lane_infractl_prompts_only {
+  graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=12, labelloc="t", label="P2 update-writing lane — request-update + skeleton"];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A"];
+
+  Start [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#EADCF8">
+  <TR><TD><B>SELF-EXECUTION GATE — P2 update-writing</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main pipeline DOT first: infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot, or the v7 version if that is the file uploaded. Use it as source of truth. This instruction DOT is not a generic template; it is the active prompt contract for exactly the route named in this file.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>This lane starts after P1 request-update + skeleton has produced a bounded request-update pack. In v7 this is G8: update-files. The lane converts the request-update pack into exactly five update files for later Codex packaging. It does not package, run Codex, run smoke, or mutate real mounted paths.</TD></TR>
+</TABLE>
+>];
+
+  Agent [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#F5F5F5">
+  <TR><TD><B>Addressing gate</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Decide who is being addressed before doing anything. ChatGPT is addressed for request generation, writing-file creation, packaging/preflight, and evidence interpretation in the webchat sandbox. Codex is addressed only when a packaged Codex bundle is explicitly supplied and the operator confirms execution. The WSL/operator is addressed only for commands that must run in the real workspace or mounted paths. If you are the wrong agent for the lane, stop and state which agent should act next.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For P2, ChatGPT is addressed to write files from the request pack. Codex is not addressed yet. WSL/operator may only move files if asked after ChatGPT output exists.</TD></TR>
+</TABLE>
+>];
+
+  Vars [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>CANONICAL_MAIN_DOT=&lt;uploaded clean/v7 main DOT&gt;<BR ALIGN="LEFT"/>REQUEST_UPDATE_PACK_SOURCE=&lt;folder or zip from P1 request-update skeleton&gt;<BR ALIGN="LEFT"/>MODE=request-update [route-fixed]<BR ALIGN="LEFT"/>TRACK=skeleton [route-fixed]<BR ALIGN="LEFT"/>BATCH_NUMBER=&lt;infer from CHATGPT_REQUEST.md / manifest&gt;<BR ALIGN="LEFT"/>BATCH_SLUG=&lt;infer from request pack or batches.yaml&gt;<BR ALIGN="LEFT"/>TOPIC=&lt;infer from WORKFLOW_DIRECTION topic&gt;<BR ALIGN="LEFT"/>CHATGPT_OUTPUT_DIR=&lt;safe folder for five update files&gt;<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
+</TABLE>
+>];
+
+  Prompt [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+  <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main DOT and the P1 request-update skeleton request pack. We are in v7 at P2 request-to-writing / G8 update-files. First infer and show the suggested variables, then ask me to confirm. After confirmation, create exactly these five update files: CODEX_UPDATE_PROMPT.txt, PROJECT_UPDATE_CACHE.md, UPDATE_SPEC.md, UPDATE_RUN_INSTRUCTIONS.md, and UPDATE_POSTCHECK_TEMPLATE.md. Use only the request pack as bounded input. Do not package, do not run Codex, do not mutate /workspace, /mnt/ingress, or /mnt/egress, and do not run smoke.</TD></TR>
+</TABLE>
+>];
+
+  Inputs [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Input checklist from v7 RequestFolder</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Use CHATGPT_REQUEST.md, REQUIRED_INPUTS.md, EXISTING_EVIDENCE_CHECK.md, SELECTED_CONTEXT_MANIFEST.md, EXTRA_SOURCE_ROUTING.md, CLI_EXTRACTION_REMINDER.md, manifest.json, and source_bundle content if present. For update skeleton, EXISTING_EVIDENCE_CHECK.md must confirm or identify required evidence. Stop if the request pack is not mode=request-update and track=skeleton.</TD></TR>
+</TABLE>
+>];
+
+  Files [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+  <TR><TD><B>Write exactly the v7 G8 update files</B></TD></TR>
+  <TR><TD ALIGN="LEFT">CODEX_UPDATE_PROMPT.txt: entrypoint prompt for Codex update execution.<BR ALIGN="LEFT"/>PROJECT_UPDATE_CACHE.md: compact bounded project/evidence/update context.<BR ALIGN="LEFT"/>UPDATE_SPEC.md: delta/update specification; it must distinguish documentation/evidence reconciliation from source-changing implementation.<BR ALIGN="LEFT"/>UPDATE_RUN_INSTRUCTIONS.md: exact bounded task list for Codex, including no historical evidence overwrite.<BR ALIGN="LEFT"/>UPDATE_POSTCHECK_TEMPLATE.md: evidence template Codex must fill after update execution.</TD></TR>
+</TABLE>
+>];
+
+  Idem [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
+  <TR><TD><B>Idempotency and no-overwrite behavior</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before writing or mutating anything, check whether the matching output already exists for the same mode, track, batch number, batch slug, topic, and source input. If complete output exists and ALLOW_OVERWRITE is not exactly yes, report it and offer reuse/validation. If partial output exists, report exactly what exists and ask whether to resume, regenerate missing outputs, or write to a new directory. Never silently overwrite or mix old and new artifacts.</TD></TR>
+</TABLE>
+>];
+
+  Pass [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Required final response and re-entry</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Report confirmed variables, files created or validated, request-pack identity, no-overwrite result, and any CLI extraction signal. PASS when the five update files exist for the confirmed request-update skeleton batch/topic. STOP on missing request pack, route mismatch, unresolved variables, partial unsafe output, or unconfirmed variables. Next v7 lane is P3 update-package / G10 update-package-input and G12 update-pack.</TD></TR>
+</TABLE>
+>];
+
+  Start -> Agent;
+  Agent -> Vars;
+  Vars -> Prompt;
+  Prompt -> Inputs;
+  Inputs -> Files;
+  Files -> Idem;
+  Idem -> Pass;
+}

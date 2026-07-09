@@ -1,0 +1,61 @@
+digraph P6_next_cycle_update_skeleton_lane_infractl_prompts_only {
+  graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=12, labelloc="t", label="P6 next-cycle lane — after request-update + skeleton"];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A"];
+
+  Start [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#EADCF8">
+  <TR><TD><B>SELF-EXECUTION GATE — P6 next-cycle after update skeleton</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main pipeline DOT first: infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot, or the v7 version if that is the file uploaded. Use it as source of truth. This instruction DOT is not a generic template; it is the active prompt contract for exactly the route named in this file.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>This lane starts after P5 has a G17 phase decision. It decides the next v7 route after a request-update + skeleton cycle. It does not generate files by itself unless the operator chooses a next route. It is a routing and readiness lane.</TD></TR>
+</TABLE>
+>];
+
+  Agent [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#F5F5F5">
+  <TR><TD><B>Addressing gate</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Decide who is being addressed before doing anything. ChatGPT is addressed for request generation, writing-file creation, packaging/preflight, and evidence interpretation in the webchat sandbox. Codex is addressed only when a packaged Codex bundle is explicitly supplied and the operator confirms execution. The WSL/operator is addressed only for commands that must run in the real workspace or mounted paths. If you are the wrong agent for the lane, stop and state which agent should act next.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For P6, ChatGPT is addressed to interpret the G17 decision and suggest next route variables. Codex is not addressed unless a new Codex pack is explicitly supplied. WSL/operator may provide the updated private bundle zip or workspace status.</TD></TR>
+</TABLE>
+>];
+
+  Vars [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Suggested next-cycle variables — infer first, then ask for confirmation</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>PREVIOUS_MODE=request-update<BR ALIGN="LEFT"/>PREVIOUS_TRACK=skeleton<BR ALIGN="LEFT"/>PREVIOUS_BATCH_SLUG=&lt;from G17&gt;<BR ALIGN="LEFT"/>PREVIOUS_TOPIC=&lt;from G17&gt;<BR ALIGN="LEFT"/>UPDATED_PRIVATE_BUNDLE=&lt;G16 export zip or updated private root&gt;<BR ALIGN="LEFT"/>NEXT_MODE=&lt;suggest request-create, request-update, request-create organ/R01, 0B expansion, or 0C extraction&gt;<BR ALIGN="LEFT"/>NEXT_TRACK=&lt;suggest skeleton or organ&gt;<BR ALIGN="LEFT"/>NEXT_BATCH_NUMBER=&lt;infer from batches.yaml / mapping report&gt;<BR ALIGN="LEFT"/>NEXT_TOPIC=&lt;operator goal or inferred next planned task&gt;<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
+</TABLE>
+>];
+
+  Prompt [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+  <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main DOT and the G17 phase-decision from the completed request-update + skeleton cycle. We are in v7 at P6 next-cycle. First infer and show the suggested next-cycle variables, then ask me to confirm. Use the updated private bundle from G16 as the baseline. Decide whether the next route is another request-update skeleton, a request-create skeleton batch, a knowledge expansion 0B lane, a CLI extraction 0C lane, or an organ/R01 route. Do not execute the next route until I confirm it.</TD></TR>
+</TABLE>
+>];
+
+  Decision [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Route selection from v7 NextPhase</B></TD></TR>
+  <TR><TD ALIGN="LEFT">If G17 says accepted and ready for next planned batch, suggest request-create + skeleton for the next not-yet-run batch. If G17 says accepted but new knowledge/spec/hook is needed first, suggest 0B expansion. If G17 identifies repeated helper/script/manual patterns, suggest 0C extraction. If organ transition prerequisites are satisfied, suggest organ/R01 scaffold route. If G17 is missing, ambiguous, or rejected, stop and ask for a clear phase decision.</TD></TR>
+</TABLE>
+>];
+
+  Idem [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
+  <TR><TD><B>Idempotency and no-overwrite behavior</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before writing or mutating anything, check whether the matching output already exists for the same mode, track, batch number, batch slug, topic, and source input. If complete output exists and ALLOW_OVERWRITE is not exactly yes, report it and offer reuse/validation. If partial output exists, report exactly what exists and ask whether to resume, regenerate missing outputs, or write to a new directory. Never silently overwrite or mix old and new artifacts.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Do not reuse stale private bundle roots when a newer G16 export exists. If multiple candidate bundles exist, suggest the newest by filename/timestamp but ask operator confirmation before using it.</TD></TR>
+</TABLE>
+>];
+
+  Pass [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Required final response and re-entry</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Report previous route status, updated baseline bundle, suggested next route, variables needing confirmation, and exact next prompt-only DOT to upload/use. PASS when a next route is chosen and variables are ready for operator confirmation. STOP on missing G17, missing updated bundle, ambiguous next route, or operator does not confirm. Re-enter v7 at the chosen direction gate or 0A/0B/0C as appropriate.</TD></TR>
+</TABLE>
+>];
+
+  Start -> Agent;
+  Agent -> Vars;
+  Vars -> Prompt;
+  Prompt -> Decision;
+  Decision -> Idem;
+  Idem -> Pass;
+}

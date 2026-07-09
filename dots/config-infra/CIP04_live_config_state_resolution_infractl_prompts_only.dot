@@ -1,0 +1,618 @@
+digraph "CIP04_live_config_state_resolution_infractl_prompts_only_v03" {
+  rankdir=TB;
+  compound=true;
+  splines=ortho;
+  nodesep=0.55;
+  ranksep=0.72;
+  pad="0.25,0.25";
+  fontname="Helvetica";
+  fontsize=10;
+  labelloc="t";
+  label="CIP04 live config-state resolution — prompt-only DOT v03 — full base_format";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=9, margin="0.12,0.09"];
+  edge [arrowsize=0.7, penwidth=1.25, fontname="Helvetica", fontsize=8, color="#555555"];
+  N00_Meta [label="SELF-EXECUTABLE DOT — READ THIS FIRST
+=====================================
+This is CIP04 v03. It is a full base_format prompt-only DOT, not a thin architecture sketch.
+
+It is a standalone instruction file for a fresh ChatGPT, Codex, or WSL/operator session that has:
+- infractl.md
+- the root main v7 DOT
+- this selected CIP04 DOT
+- an approved or draft INTEGRATION_MANIFEST from CIP03, or an explicit operator request for read-only live config inventory
+- access to the real workspace only if the operator confirms that read-only inspection is allowed.
+
+Canonical read order:
+1. infractl.md
+2. root main v7 DOT
+3. this selected CIP04 DOT
+4. accepted config-infra SPEC/ANX material, especially ANX04
+5. input manifest/request material named in the variable block.
+
+Do not mix lanes. Do not perform CIP05 planning or CIP06 application unless CIP04 reaches PASS and the operator explicitly starts the next phase.", color="#004D40", fillcolor="#E0F2F1"];
+  N01_BaseFormat [label="base_format REQUIREMENTS APPLIED HERE
+=====================================
+This route follows the 0A/P/G prompt-only style and uses CIP01 v03 as the master template.
+
+It includes:
+- full cold-start narrative
+- self-executable instruction file
+- required variable block before execution
+- each variable labeled user-provided, inferred, default-safe, or unknown
+- confirmation gate before execution
+- idempotency by default
+- no overwrite unless ALLOW_OVERWRITE=yes
+- addressed-agent gate: ChatGPT / Codex / WSL operator
+- exact prompt-to-type
+- input checklist
+- explicit safe/forbidden actions
+- output artifact contract
+- Markdown and JSON output templates
+- required response format
+- PASS / STOP conditions
+- re-entry guidance into CIP05 and v7.", color="#7B1FA2", fillcolor="#F3E5F5"];
+  N02_PhaseIdentity [label="PHASE IDENTITY — CIP04
+======================
+MODE=config-infra
+TRACK=cip
+PHASE=CIP04
+NAME=live_config_state_resolution
+
+Purpose:
+CIP04 resolves integration-time live config truth by performing a read-only inventory of the actual vmuser config/lv/workstation contract.
+
+CIP04 answers:
+- What config profiles actually exist now?
+- What target env policy actually exists now?
+- What Python/lv envs are visible now?
+- What package stacks, bootstrap steps, plan rows, trusted functions, and state markers exist now?
+- Which manifest-approved requests are already covered, missing, stale, blocked, or need planning?
+
+Default mutation policy:
+READ-ONLY / RESOLUTION-ONLY. No config write, no public tooling edit, no DOT mutation, no package installation, no bootstrap execution, no mount/pull/push, no live infrastructure action.", color="#006064", fillcolor="#E0F7FA"];
+  N03_CIPLegend [label="CIP LEGEND — FULL PIPELINE CONTEXT
+==================================
+CIP = Config-Infra Pipeline.
+
+CIP01 = source intake + CONFIG_INFRA_SUITABILITY_DETERMINER.
+CIP02 = rich INTEGRATION_REQUEST generation.
+CIP03 = manifest aggregation + approval.
+CIP04 = live config-state resolution.
+CIP05 = config implementation planning.
+CIP06 = idempotent application + verification/evidence/snapshot/companion closeout.
+
+Truth split:
+- CIP01/CIP02 capture batch-time suitability truth.
+- CIP03 records manifest approval truth.
+- CIP04 is the first phase that resolves live current config truth.
+- CIP05 plans against both manifest approval and live truth.
+- CIP06 applies only if explicit approval and safety gates permit.
+
+Safety invariant:
+CIP04 may inspect. CIP04 must not apply.", color="#263238", fillcolor="#ECEFF1"];
+  N04_SourceContract [label="REQUIRED SOURCE CONTRACT — ANX04 + LIVE RESOLUTION HOOK
+=====================================================
+CIP04 must explicitly implement these accepted source materials when available:
+
+Required conceptual sources:
+- SPEC_config_infra_integration_pipeline.md
+- SPEC_config_infra_integration_pipeline-ANX04_config_state_snapshot_schema.md
+- HOOK_config_infra_live_resolution_gate.md
+- INTEGRATION_MANIFEST.md from CIP03, when resolving approved manifest items
+- optional INTEGRATION_REQUEST.md files and CIP01/CIP02 decisions for traceability
+
+ANX04 provides:
+- CONFIG_STATE_SNAPSHOT schema
+- live-state inventory categories
+- config-surface inventory requirements
+- read-only resolution rules
+- missing/stale/blocked state fields.
+
+The live-resolution hook provides:
+- the rule that current environment truth is resolved here, not in CIP01/CIP02
+- the requirement to inspect before planning
+- the prohibition on applying changes during resolution.
+
+If ANX04 or the live-resolution hook is missing, CIP04 must STOP unless the selected DOT contains sufficient fallback schema and the operator confirms fallback execution.", color="#1A237E", fillcolor="#E8EAF6"];
+  N05_ResolutionEngine [label="LIVE CONFIG-STATE RESOLUTION ENGINE — REQUIRED
+=============================================
+CIP04 must not be a narrative summary. It must produce a structured live-state snapshot.
+
+Required resolution axes:
+1. Config tool entrypoints present
+2. Account profile state
+3. SMB profile state
+4. Mount profile and mounts policy state
+5. Target env file state
+6. Python env profile policy state
+7. Package policy state
+8. Bootstrap step registry state
+9. Role bootstrap plan state
+10. Trusted installer function state
+11. config.sh allowlist / dispatch state
+12. lv / conda / venv state
+13. Target state markers
+14. Existing evidence/snapshot/export state, if relevant
+15. Manifest item resolution status
+16. Safety and blocked-surface status
+
+CIP04 may say what exists, what is missing, what is unreadable, what is inconsistent, and what needs CIP05 planning.
+
+CIP04 must not decide to edit files or perform implementation.", color="#BF360C", fillcolor="#FBE9E7"];
+  N06_Variables [label="REQUIRED VARIABLE BLOCK — PROPOSE BEFORE EXECUTION
+==================================================
+The assistant must propose this variable block and stop for confirmation.
+
+MODE=config-infra
+TRACK=cip
+PHASE=CIP04
+PIPELINE_NAME=Config-Infra Pipeline
+MANIFEST_PATH=<INTEGRATION_MANIFEST.md/json or none>
+REQUEST_SET_PATHS=<optional INTEGRATION_REQUEST files>
+CONFIG_TARGET_HINT=researchscientist | aiengineer | publisher | vmuser/operator | mixed | unknown
+TARGET_USER_HINT=<target username if known>
+CONFIG_ROOT=/home/vmuser/.local/etc/config-sh
+CONFIG_BIN=/home/vmuser/.local/bin/config or /home/vmuser/.local/bin/config.sh
+INSTALLERS_SH=/home/vmuser/.local/lib/config-sh/installers.sh
+LV_BIN=/home/vmuser/.local/bin/lv.sh or lv
+OUTPUT_ROOT=<sandbox/egress/report dir>
+OUTPUT_SNAPSHOT_MD=CONFIG_STATE_SNAPSHOT.md
+OUTPUT_SNAPSHOT_JSON=CONFIG_STATE_SNAPSHOT.json
+ALLOW_READ_ONLY_LIVE_INSPECTION=<yes/no>
+ALLOW_SUDO_READ_ONLY_STATUS=<yes/no>
+ALLOW_CONFIG_MUTATION=no
+ALLOW_PUBLIC_TOOL_EDIT=no
+ALLOW_DOT_MUTATION=no
+ALLOW_EVIDENCE_MUTATION=no
+ALLOW_BOOTSTRAP_EXECUTION=no
+ALLOW_MOUNT_PULL_PUSH=no
+ALLOW_PACKAGE_INSTALL=no
+ALLOW_LIVE_INFRA=no
+ALLOW_OVERWRITE=no
+
+Each variable must be labeled:
+user-provided | inferred | default-safe | unknown.", color="#F57F17", fillcolor="#FFF8E1"];
+  N07_ExactPrompt [label="EXACT PROMPT TO TYPE
+====================
+Use infractl.md and infractl.zip.
+Run CIP04 Config-Infra Pipeline for read-only live config-state resolution.
+
+Task:
+Resolve current live config truth for the approved Config-Infra manifest/request set. Produce CONFIG_STATE_SNAPSHOT.md and, when useful, CONFIG_STATE_SNAPSHOT.json.
+
+Do not create an implementation plan yet unless CIP04 reaches PASS and I explicitly start CIP05.
+Do not apply any config changes.
+
+Read infractl.md first.
+Read the root main v7 DOT next.
+Then read exactly this CIP04 DOT.
+Suggest the routing and variable block first.
+Ask me to confirm or correct it.
+Do not execute until I confirm.
+
+Forbidden:
+config mutation, public tooling edits, DOT edits, package installs, bootstrap execution, mount/pull/push, live infra, credential reads/prints, destructive lifecycle actions.", color="#2E7D32", fillcolor="#E8F5E9"];
+  N08_InputChecklist [label="INPUT CHECKLIST — WHAT CIP04 MAY CONSUME
+========================================
+CIP04 may consume:
+- INTEGRATION_MANIFEST.md/json from CIP03
+- source INTEGRATION_REQUEST.md/json files
+- CIP01 suitability decisions
+- CIP02 rich request outputs
+- accepted SPEC/ANX/hook material
+- CONFIG_TOOL.md
+- config workflow/developer guides
+- prior codebase reports
+- operator-provided current workspace/config path hints.
+
+CIP04 may inspect live files only after confirmation.
+
+CIP04 must record:
+- present inputs
+- missing inputs
+- stale inputs
+- unresolved manifest items
+- targets not inspectable
+- commands not available
+- permission restrictions
+- any path that could not be read.", color="#1565C0", fillcolor="#E3F2FD"];
+  N09_LiveSurfaceMatrix [label="LIVE CONFIG SURFACE INVENTORY MATRIX
+====================================
+CIP04 must inspect or mark unresolved for each surface:
+
+Account profiles:
+  /home/vmuser/.local/etc/config-sh/accounts/profiles.tsv
+
+SMB profiles:
+  /home/vmuser/.local/etc/config-sh/accounts/smb-profiles.tsv
+
+Mount profiles:
+  /home/vmuser/.local/etc/config-sh/accounts/mount-profiles.tsv
+  /home/vmuser/.local/etc/config-sh/mounts/mounts.env
+
+Target env files:
+  /home/vmuser/.local/etc/config-sh/targets/<user>.env
+
+Python env profiles:
+  /home/vmuser/.local/etc/config-sh/install/python-env-profiles.tsv
+
+Package policy:
+  /home/vmuser/.local/etc/config-sh/install/packages.env
+  versions.env and repos.env when relevant
+
+Bootstrap registry and plans:
+  /home/vmuser/.local/etc/config-sh/bootstrap/steps.tsv
+  /home/vmuser/.local/etc/config-sh/bootstrap/profiles/*.plan
+
+Execution surfaces:
+  /home/vmuser/.local/bin/config.sh
+  /home/vmuser/.local/lib/config-sh/installers.sh
+  mounts.sh, lv.sh, credential helpers as read-only references
+
+State markers:
+  /home/<target>/.local/state/config-sh/
+
+Python/lv state:
+  lv inventory, conda envs, venv paths.", color="#004D40", fillcolor="#E0F2F1"];
+  N10_SafeInspection [label="SAFE INSPECTION PLAN — PROPOSE BEFORE RUNNING
+============================================
+CIP04 must propose exact commands or file reads before executing live inspection.
+
+Usually safe read-only commands, if available and confirmed:
+- config --target <user> config-show
+- config --target <user> bootstrap steps
+- sudo config --target <user> bootstrap status   # only if ALLOW_SUDO_READ_ONLY_STATUS=yes
+- config profiles
+- config help profiles
+- config help mount
+- lv
+- lv conda <name>
+- lv venv <name>
+- grep/list exact manifest step names in steps.tsv, plans, config.sh, installers.sh
+- test -f /path and stat/head/sed read-only snippets as needed.
+
+Rules:
+- Never run bootstrap step execution.
+- Never run config mount/pull/push.
+- Never print credential contents.
+- Never install packages.
+- Never change account lifecycle.
+- Prefer file reads and read-only status commands.
+- If a command could mutate or is uncertain, STOP and ask.", color="#6A1B9A", fillcolor="#F3E5F5"];
+  N11_TargetResolution [label="TARGET / ROLE RESOLUTION RULES
+==============================
+CIP04 must resolve targets conservatively.
+
+For each manifest item:
+- requested role owner
+- target identity expected
+- target work identity
+- config-side operator identity
+- account profile expected
+- Python env expected
+- mount/share expectation
+- package/step/workflow expectation
+
+Resolution statuses:
+- present_verified
+- present_but_unverified
+- missing
+- not_applicable
+- inconsistent
+- permission_blocked
+- ambiguous
+- stale_or_conflicting
+- unsafe_to_inspect
+
+CIP04 may map expected items to live surfaces, but must not update those surfaces.
+
+If target identity is unknown or mixed, CIP04 must either inventory all relevant configured targets or STOP for operator clarification.", color="#00838F", fillcolor="#E0F7FA"];
+  N12_ManifestResolution [label="MANIFEST ITEM RESOLUTION MATRIX
+===============================
+For each CIP03 manifest item, CIP04 must produce a resolution row:
+
+item_id:
+source_request_id:
+approved_status:
+approved_fate_or_patch_class:
+target_role:
+target_identity:
+allowed_surfaces:
+forbidden_surfaces:
+required_live_checks:
+checks_performed:
+checks_skipped:
+live_state_summary:
+already_covered:
+missing_surfaces:
+conflicts:
+blocked_reasons:
+needs_CIP05_plan: yes/no
+recommended_CIP05_focus:
+
+CIP04 does not re-approve manifest decisions. It resolves whether the approved/blocked/deferred item matches current live state and what facts CIP05 must use.", color="#283593", fillcolor="#E8EAF6"];
+  N13_StateClassification [label="LIVE STATE CLASSIFICATION VOCABULARY
+====================================
+Use these values consistently:
+
+Surface state:
+- exists_readable
+- exists_unreadable
+- missing
+- generated_but_stale
+- present_unknown_format
+- duplicate_or_conflicting
+- not_applicable
+
+Config relation:
+- already_covered
+- partially_covered
+- missing_policy
+- missing_execution_surface
+- missing_plan_row
+- missing_state_marker
+- blocked_by_permission
+- blocked_by_safety
+- requires_human_design
+
+Implementation readiness:
+- ready_for_noop_confirmation
+- ready_for_CIP05_plan
+- needs_more_evidence
+- blocked_do_not_plan
+- needs_operator_clarification
+
+These classifications are inputs to CIP05. They are not permission to mutate.", color="#5D4037", fillcolor="#EFEBE9"];
+  N14_OutputContract [label="OUTPUT ARTIFACT CONTRACT
+========================
+Primary output artifacts:
+- CONFIG_STATE_SNAPSHOT.md
+- CONFIG_STATE_SNAPSHOT.json when machine-readable planning is useful or requested
+
+Required minimum fields:
+snapshot_id
+source_manifest
+source_requests
+inspection_context
+operator_identity
+inspection_time_or_context
+config_roots
+commands_proposed
+commands_executed
+commands_skipped
+permissions
+account_profiles
+smb_profiles
+mount_profiles
+target_env_files
+python_env_profiles
+package_policy
+bootstrap_steps
+bootstrap_profile_plans
+trusted_functions
+config_allowlist
+lv_state
+target_state_markers
+manifest_item_resolution_matrix
+already_covered_items
+missing_items
+conflicts
+blocked_items
+safety_findings
+recommended_next_route
+stop_conditions
+safety_statement
+
+The output must explicitly state:
+CIP04 resolved live config truth read-only.
+CIP04 did not mutate config or run implementation.
+CIP05 is required before any application planning is considered complete.", color="#2E7D32", fillcolor="#E8F5E9"];
+  N15_MDTemplate [label="CONFIG_STATE_SNAPSHOT.md TEMPLATE
+=================================
+# CONFIG_STATE_SNAPSHOT — <snapshot_id>
+
+## Snapshot identity
+Snapshot ID:
+Source manifest:
+Source requests:
+Target roles/users:
+Operator/context:
+
+## Inspection safety
+Allowed live read-only inspection:
+Sudo read-only status allowed:
+Commands proposed:
+Commands executed:
+Commands skipped:
+Permission restrictions:
+Safety statement:
+
+## Config roots and entrypoints
+Config root:
+Config CLI:
+config.sh:
+installers.sh:
+lv:
+mounts helper:
+
+## Surface inventory
+Account profiles:
+SMB profiles:
+Mount profiles:
+Target env files:
+Python env profiles:
+Package policy:
+Bootstrap steps:
+Bootstrap profile plans:
+Trusted functions:
+Config allowlist/dispatch:
+lv / conda / venv state:
+Target state markers:
+
+## Manifest item resolution matrix
+<one row per manifest item with live checks, already-covered/missing/conflict/blocked status>
+
+## Findings
+Already covered:
+Partially covered:
+Missing:
+Conflicts:
+Blocked:
+Needs operator clarification:
+
+## Recommended next route
+Recommended next route:
+CIP05 planning focus:
+Stop conditions:
+
+## Safety statement
+CIP04 performed read-only live-state resolution only. No config files, public tooling, DOT files, package installs, bootstrap steps, mounts, pull/push, credentials, or live infrastructure were mutated.", color="#00695C", fillcolor="#E0F2F1"];
+  N16_JSONTemplate [label="CONFIG_STATE_SNAPSHOT.json TEMPLATE
+===================================
+{
+  \"snapshot_id\": \"\",
+  \"source_manifest\": \"\",
+  \"source_requests\": [],
+  \"inspection_context\": {
+    \"operator_identity\": \"vmuser/operator\",
+    \"targets\": [],
+    \"allow_read_only_live_inspection\": false,
+    \"allow_sudo_read_only_status\": false
+  },
+  \"config_roots\": {},
+  \"commands_proposed\": [],
+  \"commands_executed\": [],
+  \"commands_skipped\": [],
+  \"permissions\": {},
+  \"surfaces\": {
+    \"account_profiles\": {},
+    \"smb_profiles\": {},
+    \"mount_profiles\": {},
+    \"target_env_files\": {},
+    \"python_env_profiles\": {},
+    \"package_policy\": {},
+    \"bootstrap_steps\": {},
+    \"bootstrap_profile_plans\": {},
+    \"trusted_functions\": {},
+    \"config_allowlist\": {},
+    \"lv_state\": {},
+    \"target_state_markers\": {}
+  },
+  \"manifest_item_resolution_matrix\": [],
+  \"already_covered_items\": [],
+  \"missing_items\": [],
+  \"conflicts\": [],
+  \"blocked_items\": [],
+  \"safety_findings\": [],
+  \"recommended_next_route\": \"\",
+  \"stop_conditions\": [],
+  \"safety_statement\": \"CIP04 resolved live state read-only and performed no config/public/DOT/package/bootstrap/mount/live mutation.\"
+}", color="#283593", fillcolor="#E8EAF6"];
+  N17_Idempotency [label="IDEMPOTENCY CHECKS BEFORE OUTPUT
+================================
+Before writing outputs:
+- check whether a snapshot for the same manifest/target/context already exists
+- if it exists and ALLOW_OVERWRITE=no, create a versioned snapshot or stop for confirmation
+- same manifest plus same live state should produce same snapshot classification
+- if live state changed, record the observed difference
+- do not merge stale snapshots silently
+- do not overwrite prior CONFIG_STATE_SNAPSHOT artifacts.
+
+CIP04 may compare with a prior snapshot only as read-only evidence.", color="#F9A825", fillcolor="#FFFDE7"];
+  N18_Safety [label="SAFE COMMANDS / FORBIDDEN ACTIONS
+=================================
+Allowed in CIP04 after confirmation:
+- read provided manifest/request/spec/hook files
+- read exact config policy files
+- run read-only config status/list/show/help commands
+- run lv inventory/status commands
+- grep exact names in config.sh/installers.sh/steps/plans
+- inspect target state marker directories without changing them
+- produce snapshot artifacts.
+
+Forbidden in CIP04:
+- edit config files
+- edit public tooling
+- edit main DOT or CIP DOT files
+- mutate private evidence or companion outputs
+- run bootstrap step execution
+- run mount, pull, push
+- install packages or create envs
+- read or print credential contents
+- expire/remove/create accounts unless explicitly in later approved CIP06
+- start Docker, Runpod, paid APIs, or live infra
+- claim a planned change is safe to apply without CIP05/CIP06.", color="#BF360C", fillcolor="#FBE9E7"];
+  N19_ResponseFormat [label="REQUIRED RESPONSE FORMAT
+========================
+Current phase: CIP04 live config-state resolution
+Selected DOT:
+Addressed role:
+Variable block proposed/confirmed:
+Source manifest read:
+Source requests read:
+Required source contract status:
+Targets inspected:
+Commands proposed/executed/skipped:
+Config surfaces inspected:
+Manifest item resolution summary:
+Already covered:
+Missing/conflicting/blocked:
+Recommended CIP05 planning focus:
+Outputs created/proposed:
+Safety status:
+Decision: PASS / STOP
+Recommended next route:", color="#37474F", fillcolor="#ECEFF1"];
+  N20_PassStop [label="PASS / STOP CONDITIONS
+======================
+PASS only if:
+- variables confirmed
+- manifest/request source status recorded
+- ANX04/hook source contract applied or fallback noted
+- read-only live inspection was explicitly allowed, or unavailable state was recorded honestly
+- exact commands/file reads were proposed before execution
+- config surfaces were inspected or marked unresolved
+- manifest items were resolved into already-covered/missing/conflict/blocked/needs-plan classes
+- CONFIG_STATE_SNAPSHOT.md/json contract satisfied or proposed
+- no forbidden mutation occurred.
+
+STOP if:
+- user has not confirmed
+- live inspection permission is not granted and no offline snapshot is available
+- a command may mutate or is uncertain
+- credentials would be read or printed
+- requested action is config write, package install, bootstrap execution, mount/pull/push, live infra, public edit, DOT edit, evidence mutation, or destructive lifecycle
+- output would overwrite existing artifact with ALLOW_OVERWRITE=no.
+
+After PASS:
+Do not silently run CIP05. Recommend CIP05 only when a CONFIG_INTEGRATION_PLAN should be generated.", color="#B71C1C", fillcolor="#FFEBEE"];
+  N21_Reentry [label="RE-ENTRY INTO CIP AND V7 PIPELINE
+=================================
+If all manifest items are already covered, CIP04 may recommend CIP05 no-op planning or direct closeout planning, but must not skip the operator decision.
+
+If items are missing, partial, conflicting, or blocked, the normal next route is CIP05 for CONFIG_INTEGRATION_PLAN generation.
+
+If live inspection is blocked, return STOP with required operator action.
+
+CIP04 does not replace skeleton/organ P lanes. It is the bridge between approved config-infra intent and live vmuser config-state truth.", color="#333333", fillcolor="#F5F5F5"];
+  N00_Meta -> N01_BaseFormat;
+  N01_BaseFormat -> N02_PhaseIdentity;
+  N02_PhaseIdentity -> N03_CIPLegend;
+  N03_CIPLegend -> N04_SourceContract;
+  N04_SourceContract -> N05_ResolutionEngine;
+  N05_ResolutionEngine -> N06_Variables;
+  N06_Variables -> N07_ExactPrompt;
+  N07_ExactPrompt -> N08_InputChecklist;
+  N08_InputChecklist -> N09_LiveSurfaceMatrix;
+  N09_LiveSurfaceMatrix -> N10_SafeInspection;
+  N10_SafeInspection -> N11_TargetResolution;
+  N11_TargetResolution -> N12_ManifestResolution;
+  N12_ManifestResolution -> N13_StateClassification;
+  N13_StateClassification -> N14_OutputContract;
+  N14_OutputContract -> N15_MDTemplate;
+  N15_MDTemplate -> N16_JSONTemplate;
+  N16_JSONTemplate -> N17_Idempotency;
+  N17_Idempotency -> N18_Safety;
+  N18_Safety -> N19_ResponseFormat;
+  N19_ResponseFormat -> N20_PassStop;
+  N20_PassStop -> N21_Reentry;
+}

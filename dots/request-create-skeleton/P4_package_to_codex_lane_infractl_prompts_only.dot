@@ -1,0 +1,133 @@
+digraph P4_package_to_codex_lane_infractl_prompts_only {
+  graph [
+    rankdir=TB,
+    splines=ortho,
+    nodesep=0.55,
+    ranksep=0.78,
+    pad="0.2,0.2",
+    bgcolor="white",
+    fontname="Helvetica",
+    fontsize=11,
+    labelloc="t",
+    label="P4 package-to-Codex lane prompts only: validated pack -> real-layout gate -> bounded Codex execution"
+  ];
+  node [shape=plain, fontname="Helvetica", fontsize=9];
+  edge [fontname="Helvetica", fontsize=8, arrowsize=0.75, penwidth=1.5, color="#6A1B9A", fontcolor="#6A1B9A"];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#EADCF8">
+      <TR><TD><B>SELF-EXECUTION GATE — P4 package-to-Codex lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT">You are reading this DOT as an execution instruction. This DOT is not a diagram to summarize. Treat it as the active prompt contract for the canonical v7 pipeline lane <B>[P4: package-to-codex]</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane starts only after P3 has produced a validated Codex pack zip and manifest/log. For the current end-to-end create-skeleton route, the prior lane was <B>P3 create-package</B>, so the expected input is a <B>create Codex pack</B>, not loose P2 files and not an update pack unless the operator explicitly says the active route is update.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane bridges from the packaging environment into the real workspace/Codex execution environment. It performs two v7 jobs: <B>[G13: pack-consumed]</B> and <B>[G14: layout-gate]</B>. It must validate the real private tree with <FONT FACE="Courier">validate-real-layout</FONT> before any Codex execution happens.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Canonical source:</B> read <FONT FACE="Courier">infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT> first, or the canonical v7 DOT if the versioned file is what the operator uploaded. Verify that the active edge is <B>CodexPackZip -&gt; CmdValidateReal -&gt; CodexExec</B>.</TD></TR>
+    </TABLE>
+  >];
+
+  AgentGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#F5F5F5">
+      <TR><TD><B>Addressing gate: decide whether this prompt is for you</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Codex in the real workspace:</B> you are addressed only after the operator provides or confirms the Codex pack zip path and allows P4. You must first validate the real layout, then consume exactly one pack as the bounded instruction source.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>WSL/operator or local shell-capable agent:</B> you may stage the pack and run the read-only <FONT FACE="Courier">validate-real-layout</FONT> command after confirmation. Do not implement the pack yourself unless you are the actual Codex/real-workspace execution agent and the operator confirms execution.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>ChatGPT webchat without real workspace access:</B> you are addressed for planning and handoff text only. Infer and suggest the variable block, prepare exact commands and the Codex handoff prompt, but do not claim that you validated <FONT FACE="Courier">/mnt/ingress</FONT> or executed the pack unless you actually have that filesystem and the operator confirmed execution.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If you are the wrong agent:</B> stop, state that this is the P4 package-to-Codex / layout-gate lane, and name the correct actor.</TD></TR>
+    </TABLE>
+  >];
+
+  Variables [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#D9F2DF">
+      <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before staging, validating, or executing anything, construct a suggested variable block from the uploaded main DOT, the P3 pack name, prior context, and available paths. Do not present an empty form unless inference is impossible. Label every value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>. Then ask the operator to confirm or correct the block.</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">CANONICAL_MAIN_DOT=</FONT> uploaded clean/v7 main DOT path, usually <FONT FACE="Courier">infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">PUBLIC_TOOL_ROOT=</FONT> public tool root in the real workspace, for example <FONT FACE="Courier">/workspace/repos/infractl-public</FONT> or the actual public tool checkout containing <FONT FACE="Courier">infractl/cli.py</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">PRIVATE_PROJECT_ROOT=</FONT> extracted private project root in the real workspace, usually <FONT FACE="Courier">/workspace/private/agentfield-grn-private_real_v0</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">REPO_ROOT=</FONT> real private filesystem root used by <FONT FACE="Courier">files.yaml.real_path</FONT>, usually <FONT FACE="Courier">/mnt/ingress</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">CODEX_PACK_ZIP=</FONT> validated pack zip produced by P3<BR ALIGN="LEFT"/><FONT FACE="Courier">PACK_EXTRACT_DIR=</FONT> safe extraction/staging directory for exactly this pack<BR ALIGN="LEFT"/><FONT FACE="Courier">MODE=</FONT> infer from pack manifest, expected <FONT FACE="Courier">request-create</FONT> for the current route<BR ALIGN="LEFT"/><FONT FACE="Courier">TRACK=</FONT> infer from pack manifest, expected <FONT FACE="Courier">skeleton</FONT> for the current route<BR ALIGN="LEFT"/><FONT FACE="Courier">BATCH_NUMBER=</FONT> infer from pack manifest or request context<BR ALIGN="LEFT"/><FONT FACE="Courier">BATCH_SLUG=</FONT> infer from pack manifest or request context<BR ALIGN="LEFT"/><FONT FACE="Courier">TOPIC=</FONT> infer from pack manifest or request context<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_PACK_EXECUTION=no</FONT> unless the operator explicitly confirms Codex execution<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_OVERWRITE=no</FONT> unless the operator explicitly changes it</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Confirmation rule:</B> Ask only for values still unknown or unsafe to infer. Do not extract, validate, or execute until the operator confirms the suggested variables or explicitly says to proceed with suggested values.</TD></TR>
+    </TABLE>
+  >];
+
+  Prompt [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the uploaded canonical main DOT. We are in the v7 pipeline at P4 package-to-Codex: CodexPackZip into CmdValidateReal and CodexExec, with G13 pack-consumed and G14 layout-gate.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">First infer and show the suggested variable block for PUBLIC_TOOL_ROOT, PRIVATE_PROJECT_ROOT, REPO_ROOT, CODEX_PACK_ZIP, PACK_EXTRACT_DIR, MODE, TRACK, BATCH_NUMBER, BATCH_SLUG, TOPIC, ALLOW_PACK_EXECUTION, and ALLOW_OVERWRITE. Label each value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct variables before doing anything.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">After confirmation, verify that CODEX_PACK_ZIP is the single validated pack produced by P3 for the confirmed route. Do not use loose P2 files. Do not mix create and update packs. Extract or inspect the pack only into the confirmed staging directory, unless it is already extracted and complete.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Then run validate-real-layout with the public infractl tool against the confirmed PRIVATE_PROJECT_ROOT and REPO_ROOT. If required real paths are missing, stop and report exactly what is missing. If only optional real paths are missing, report them clearly and ask whether execution may continue under the pack rules.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Only after the layout gate passes and the operator explicitly confirms ALLOW_PACK_EXECUTION=yes may Codex execute exactly one task from the pack instructions. Do not broaden scope, do not run live APIs unless the pack explicitly allows it, and do not run smoke unless the pack says so.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  PackCheck [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#D9F2DF">
+      <TR><TD><B>G13 pack-consumed checklist</B></TD></TR>
+      <TR><TD ALIGN="LEFT">The input must be exactly one validated Codex pack zip from P3. The pack should include a manifest/log and the route-specific implementation instructions. For create-skeleton, the pack should contain create-lane files such as <FONT FACE="Courier">CODEX_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_CACHE.md</FONT>, <FONT FACE="Courier">SPEC.md</FONT>, <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT>, and <FONT FACE="Courier">POSTCHECK_TEMPLATE.md</FONT> inside the package structure.</TD></TR>
+      <TR><TD ALIGN="LEFT">Stop if the operator provides multiple packs without selecting one. Stop if the selected pack does not match the confirmed mode, track, batch, slug, or topic. Stop if the pack is an update pack while this route is the create-skeleton route.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the pack is already extracted, inspect the extracted directory for completeness before re-extracting. If the extracted directory is partial or stale and <FONT FACE="Courier">ALLOW_OVERWRITE=no</FONT>, stop and ask whether to delete/recreate, choose a new staging directory, or use an existing complete extraction.</TD></TR>
+    </TABLE>
+  >];
+
+  CreateCodexPackFolderContract [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+      <TR><TD><B>Skeleton create P4 Codex-pack folder contract</B></TD></TR>
+      <TR><TD ALIGN="LEFT">For skeleton create, the real-workspace handoff folder must be deterministic:</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">CODEX_PACK_FOLDER=/mnt/ingress/workspace/codex_packs/batch&lt;##&gt;_create</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">CODEX_CREATE_PACK=${CODEX_PACK_FOLDER}/codex_create_pack.zip</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">P4_HANDOFF_PROMPT=${CODEX_PACK_FOLDER}/P4_CODEX_HANDOFF_PROMPT.md</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">PACK_EXTRACT_ROOT=${CODEX_PACK_FOLDER}</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Required handoff folder files:</B> <FONT FACE="Courier">P4_CODEX_HANDOFF_PROMPT.md</FONT>, <FONT FACE="Courier">codex_create_pack.zip</FONT>, <FONT FACE="Courier">CODEX_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_CACHE.md</FONT>, <FONT FACE="Courier">SPEC.md</FONT>, <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT>, <FONT FACE="Courier">POSTCHECK_TEMPLATE.md</FONT>, <FONT FACE="Courier">manifest.json</FONT>, <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">POSTCHECK_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Do not consume router files during Codex execution:</B> Codex must not consume <FONT FACE="Courier">infractl.md</FONT> or <FONT FACE="Courier">infractl.zip</FONT>. For real-workspace validation, use <FONT FACE="Courier">/workspace/repos/infractl-public</FONT> and run <FONT FACE="Courier">python3 -m infractl.cli</FONT> from that directory. If it is missing, STOP with <FONT FACE="Courier">PUBLIC_CLI_MISSING=/workspace/repos/infractl-public</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Extracted-pack rule:</B> if the pack zip is already extracted into <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>, use extracted files directly after validating the expected file list. If extracted files are missing, extract the zip into <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>. If neither extracted files nor zip exist, STOP with <FONT FACE="Courier">PACK_MISSING</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Evidence expectations to pass to Codex:</B> require <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>. Smoke remains skipped unless explicit.</TD></TR>
+    </TABLE>
+  >];
+
+  LayoutGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#CFEFD0">
+      <TR><TD><B>G14 layout-gate command after confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Use the actual confirmed paths. The v7 main DOT shows the command shape as <FONT FACE="Courier">validate-real-layout --project ... --repo-root /mnt/ingress</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">cd "$PUBLIC_TOOL_ROOT"</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">python3 -m infractl.cli validate-real-layout \</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">  --project "$PRIVATE_PROJECT_ROOT" \</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">  --repo-root "$REPO_ROOT"</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">This command is a layout validation gate, not an implementation step. Required files from <FONT FACE="Courier">files.yaml</FONT> must exist at their real paths. Optional missing files must be reported but do not automatically fail unless the selected pack needs them.</TD></TR>
+    </TABLE>
+  >];
+
+  ExecutionGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#FCE8E6">
+      <TR><TD><B>Execution gate: Codex may run only after layout PASS and operator confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT">If <FONT FACE="Courier">ALLOW_PACK_EXECUTION=no</FONT>, stop after preparing the handoff and layout report. Do not execute the pack.</TD></TR>
+      <TR><TD ALIGN="LEFT">If execution is confirmed, Codex must read the pack entrypoint first, then follow the pack's own file order. Execute exactly one task from <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT> for create packs or <FONT FACE="Courier">UPDATE_RUN_INSTRUCTIONS.md</FONT> for update packs. For the current create-skeleton route, expect <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Codex must not use private config internals as implementation instructions unless the pack explicitly includes bounded references. Codex must not regenerate earlier packs, must not edit historical evidence, and must not mutate unrelated branches/batches.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the pack asks for smoke, run only the smoke it explicitly permits. If the pack forbids smoke or live actions, do not run them. If the pack is ambiguous, ask before execution.</TD></TR>
+    </TABLE>
+  >];
+
+  Handoff [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Codex handoff prompt after G13/G14 are confirmed</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Use the confirmed extracted Codex pack as your only implementation instruction source. Read the pack entrypoint first. For this create-skeleton route, execute exactly one task from RUN_INSTRUCTIONS.md. Use PROJECT_CACHE.md and SPEC.md only as bounded support. Use POSTCHECK_TEMPLATE.md for the evidence format.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Do not regenerate the pack. Do not broaden scope. Do not modify historical evidence. Do not run live APIs or smoke unless the pack explicitly allows it. Before writing, inspect whether the target files already contain the requested changes and report idempotent no-op status if they do.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">End with: Changed files, Tests run, Evidence produced, Smoke report if applicable, Remaining issues, and whether P5 evidence-return can proceed.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Idempotency [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#FCE8E6">
+      <TR><TD><B>Idempotency and overwrite behavior</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before extracting, staging, or executing, inspect whether the pack has already been consumed for the same route. If an existing extracted directory, layout report, or prior Codex evidence exists, report it and ask whether to continue, resume, or stop. Do not overwrite existing staged pack contents unless <FONT FACE="Courier">ALLOW_OVERWRITE=yes</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the real workspace already contains the intended implementation changes, Codex should report an idempotent no-op and still produce/confirm the required evidence format if the pack requires evidence.</TD></TR>
+      <TR><TD ALIGN="LEFT">If a previous execution produced evidence, do not replace it silently. Route evidence handling to P5/G15 and then G16 snapshot/export.</TD></TR>
+    </TABLE>
+  >];
+
+  OutputCheck [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#D9F2DF">
+      <TR><TD><B>Expected output from P4</B></TD></TR>
+      <TR><TD ALIGN="LEFT">A successful P4 run has: confirmed variables, a single selected pack, pack-consumed status, layout-gate result, and either a prepared Codex handoff prompt or a confirmed Codex execution start.</TD></TR>
+      <TR><TD ALIGN="LEFT">If Codex executes, the next visible artifact is not another pack. The next v7 lane is <B>P5 evidence-return</B>, where Codex returns <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">SMOKE_REPORT.md</FONT> if required, and update manifests if this were an update lane.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the layout gate fails on required files, P4 stops and the operator must fix the real private tree or supply a refreshed private bundle/workspace before retrying.</TD></TR>
+    </TABLE>
+  >];
+
+  StopPass [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="930" BGCOLOR="#E8F0FE">
+      <TR><TD><B>Required final response for this lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Variables:</B> confirmed values used, with user-provided/inferred/default-safe/unknown notes.<BR ALIGN="LEFT"/><B>Pack:</B> selected pack zip and extraction/staging status.<BR ALIGN="LEFT"/><B>Layout:</B> validate-real-layout command and PASS/WARN/FAIL result, including required vs optional missing real paths.<BR ALIGN="LEFT"/><B>Execution:</B> whether Codex execution was merely prepared or actually started, and which pack entrypoint/task is in scope.<BR ALIGN="LEFT"/><B>Idempotency:</B> existing extraction/layout/evidence detected and overwrite/resume decision.<BR ALIGN="LEFT"/><B>0C signals:</B> note any CLI extraction pattern, or say none.<BR ALIGN="LEFT"/><B>Next v7 lane:</B> P5 evidence-return / G15 execution-evidence.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PASS:</B> one confirmed pack is consumed, required real layout checks pass, and Codex handoff/execution is bounded to the confirmed pack.<BR ALIGN="LEFT"/><B>STOP:</B> wrong agent, missing or ambiguous variables, missing pack, pack/route mismatch, required real-layout failure, unsafe overwrite, no execution confirmation, or ambiguous pack instructions.</TD></TR>
+    </TABLE>
+  >];
+
+  Start -> AgentGate -> Variables -> Prompt -> PackCheck -> CreateCodexPackFolderContract -> LayoutGate -> ExecutionGate -> Handoff -> Idempotency -> OutputCheck -> StopPass;
+}

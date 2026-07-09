@@ -1,0 +1,125 @@
+digraph P5_evidence_return_lane_infractl_prompts_only {
+  graph [
+    label="P5 evidence-return lane — infractl prompts only — canonical v7 route",
+    labelloc=t,
+    fontsize=20,
+    rankdir=LR,
+    bgcolor="white",
+    pad=0.35,
+    nodesep=0.7,
+    ranksep=0.9
+  ];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=10, margin="0.12,0.10", color="#333333", fillcolor="#F8F8F8"];
+  edge [fontname="Arial", fontsize=9, color="#555555", arrowsize=0.8];
+
+  Start [fillcolor="#EADCF8", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="430">
+      <TR><TD><B>P5: evidence-return lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT">This prompt-only DOT is for the canonical v7 lane after Codex has executed exactly one create/update pack and has produced evidence.</TD></TR>
+      <TR><TD ALIGN="LEFT">Visible v7 route: <B>CodexExec → EvidenceOut → CmdG16Snapshot</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane does not create a new request pack, does not package a Codex pack, and does not re-run Codex. It collects, verifies, and returns execution evidence into the private-bundle snapshot path.</TD></TR>
+    </TABLE>
+  >];
+
+  AddressGate [fillcolor="#FFF7D6", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="470">
+      <TR><TD><B>Agent-addressing gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT">If you are ChatGPT: read this DOT and the canonical main DOT, infer the current P5 variables, suggest them to the operator, and ask for confirmation before any action.</TD></TR>
+      <TR><TD ALIGN="LEFT">If you are Codex in /workspace: you may inspect evidence paths and run read-only checks. You may write/copy only if the operator explicitly confirms the destination and overwrite policy.</TD></TR>
+      <TR><TD ALIGN="LEFT">If you are a WSL/operator shell: run only the commands that ChatGPT/Codex has explicitly prepared for this P5 lane.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Stop</B> if this session is still in P4, if Codex has not executed the pack, or if the evidence output paths are unknown.</TD></TR>
+    </TABLE>
+  >];
+
+  Prompt [fillcolor="#E8F0FE", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="560">
+      <TR><TD><B>Exact prompt to type into the addressed session</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">Read the attached prompt-only DOT and the canonical main pipeline DOT <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>. Treat this as P5 evidence-return for the v7 route.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">First infer and suggest the variable block for this run from the pack output, Codex final message, evidence paths, filenames, and prior lane context. Label every value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct the variables before you execute any copy/export step.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">After confirmation, verify that Codex produced the required evidence, then prepare the G16 snapshot/export command or the exact manual copy steps. Do not overwrite historical evidence unless ALLOW_OVERWRITE=yes. Do not re-run smoke unless the executed pack explicitly required it and the operator confirms that this is still in scope.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Variables [fillcolor="#D9F2DF", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="530">
+      <TR><TD><B>Suggested variable block for P5</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">CANONICAL_MAIN_DOT=infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">MODE=&lt;request-create or request-update, inferred from pack&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">TRACK=&lt;skeleton or organ, inferred from pack/evidence path&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">BATCH_NUMBER=&lt;batch number, inferred if possible&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">BATCH_SLUG=&lt;batch slug, inferred from evidence path or batch mapping&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">TOPIC=&lt;update topic or create topic; use none for plain create if not applicable&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">PRIVATE_PROJECT_ROOT=/workspace/private/agentfield-grn-private_real_v0</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">EVIDENCE_SOURCE_ROOT=&lt;Codex produced evidence folder or /mnt/egress/dev-recordings/...&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">SMOKE_REPORT_PATH=&lt;actual SMOKE_REPORT.md path, or none if not required&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">G16_SCRIPT=/workspace/repos/infractl-public/scripts/g16_snapshot.sh</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">EXPORT_DIR=/mnt/egress/private-bundles</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">EXPORT_NAME=&lt;private bundle export zip name&gt;</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">ALLOW_OVERWRITE=no</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Checks [fillcolor="#F5F5F5", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="520">
+      <TR><TD><B>Read-only checks before copying</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Confirm that the final Codex answer includes changed files, tests run, evidence produced, smoke report status, and remaining issues.</TD></TR>
+      <TR><TD ALIGN="LEFT">For skeleton create lanes, expect POSTCHECK.md, INTEGRATION_REQUEST.md, UPDATE_POSTCHECK.md, UPDATE_INTEGRATION_REQUEST.md, and CHANGESET_MANIFEST.md. POSTCHECK.md and UPDATE_POSTCHECK.md may be identical full-content copies for the initial create run; INTEGRATION_REQUEST.md and UPDATE_INTEGRATION_REQUEST.md may also be identical full-content copies. If smoke was explicitly run or reused, require SMOKE_REPORT.md or an exact accepted smoke-report path.</TD></TR>
+      <TR><TD ALIGN="LEFT">For update lanes, expect UPDATE_POSTCHECK.md, UPDATE_INTEGRATION_REQUEST.md, CHANGESET_MANIFEST.md, and an accepted or newly produced SMOKE_REPORT.md when required.</TD></TR>
+      <TR><TD ALIGN="LEFT">Check whether destination snapshot files already exist. If they exist and ALLOW_OVERWRITE is not yes, stop and ask the operator whether this is a rerun, a correction, or a new export name.</TD></TR>
+    </TABLE>
+  >];
+
+  CreateEvidenceNormalizationCheck [fillcolor="#E8F0FE", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="560">
+      <TR><TD><B>Skeleton create evidence normalization check</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before G16 snapshot/export, verify that create evidence contains canonical and normalized evidence: <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Verify the integration request includes ANX01-based suitability classification and does not treat ANX09 as permission to execute config integration.</TD></TR>
+      <TR><TD ALIGN="LEFT">If any normalized create evidence file is missing, STOP unless the operator explicitly classifies the run as a legacy evidence-reconciliation case. Do not overwrite historical evidence when <FONT FACE="Courier">ALLOW_OVERWRITE</FONT> is not <FONT FACE="Courier">yes</FONT>.</TD></TR>
+    </TABLE>
+  >];
+
+  Command [fillcolor="#CFEFD0", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="600">
+      <TR><TD><B>G16 snapshot/export command after confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">/workspace/repos/infractl-public/scripts/g16_snapshot.sh \</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  /workspace/private/agentfield-grn-private_real_v0 \</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  &lt;batch-slug&gt; \</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  &lt;update-topic-or-none&gt; \</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  &lt;smoke-report-path&gt; \</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  --export-dir /mnt/egress/private-bundles \</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  --export-name &lt;export-name&gt;.zip</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">If this is a create lane without an update topic, the addressed agent must adapt only if the actual helper supports that mode. If not, stop and provide manual snapshot-copy steps or route to 0C for a helper-improvement extraction note.</TD></TR>
+    </TABLE>
+  >];
+
+  Response [fillcolor="#E8F0FE", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="520">
+      <TR><TD><B>Required response format</B></TD></TR>
+      <TR><TD ALIGN="LEFT">1. Current lane: P5 evidence-return.</TD></TR>
+      <TR><TD ALIGN="LEFT">2. Inferred variable block with labels.</TD></TR>
+      <TR><TD ALIGN="LEFT">3. Missing or unsafe variables needing operator input.</TD></TR>
+      <TR><TD ALIGN="LEFT">4. Evidence found and evidence missing.</TD></TR>
+      <TR><TD ALIGN="LEFT">5. Proposed G16 command or manual copy/export plan.</TD></TR>
+      <TR><TD ALIGN="LEFT">6. Confirmation question before execution.</TD></TR>
+      <TR><TD ALIGN="LEFT">7. After execution: copied files, export zip path, PASS/STOP status, and next re-entry lane.</TD></TR>
+    </TABLE>
+  >];
+
+  Finish [fillcolor="#EADCF8", label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="470">
+      <TR><TD><B>PASS / STOP and v7 re-entry</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PASS</B>: required evidence exists, snapshot copy completed, export zip created if requested, and operator records G17 phase decision.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>STOP</B>: missing evidence, ambiguous batch/track/topic, failed smoke without accepted WARN, helper incompatible with this route, or overwrite would occur without permission.</TD></TR>
+      <TR><TD ALIGN="LEFT">After PASS, re-enter v7 at <B>NextPhase → DirectionCreate</B>, or route to <B>0C</B> if the G16 process revealed a reusable helper/CLI extraction improvement.</TD></TR>
+    </TABLE>
+  >];
+
+  Start -> AddressGate [label="read gate"];
+  AddressGate -> Prompt [label="if addressed"];
+  Prompt -> Variables [label="suggest first"];
+  Variables -> Checks [label="after confirmation"];
+  Checks -> CreateEvidenceNormalizationCheck [label="normalize create evidence"];
+  CreateEvidenceNormalizationCheck -> Command [label="prepare copy/export"];
+  Command -> Response [label="report"];
+  Response -> Finish [label="decision"];
+}

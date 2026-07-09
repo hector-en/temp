@@ -1,0 +1,69 @@
+digraph P4_package_to_codex_update_skeleton_lane_infractl_prompts_only {
+  graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=12, labelloc="t", label="P4 package-to-Codex lane — request-update + skeleton"];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A"];
+
+  Start [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#EADCF8">
+  <TR><TD><B>SELF-EXECUTION GATE — P4 package-to-Codex for update skeleton</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main pipeline DOT first: infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot, or the v7 version if that is the file uploaded. Use it as source of truth. This instruction DOT is not a generic template; it is the active prompt contract for exactly the route named in this file.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>This lane starts after P3 created a validated Codex update pack zip. In v7 it covers G13 pack-consumed and G14 layout-gate. It prepares the pack for Codex and validates real layout before any implementation execution. It must not bypass layout validation and must not execute without explicit operator confirmation.</TD></TR>
+</TABLE>
+>];
+
+  Agent [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#F5F5F5">
+  <TR><TD><B>Addressing gate</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Decide who is being addressed before doing anything. ChatGPT is addressed for request generation, writing-file creation, packaging/preflight, and evidence interpretation in the webchat sandbox. Codex is addressed only when a packaged Codex bundle is explicitly supplied and the operator confirms execution. The WSL/operator is addressed only for commands that must run in the real workspace or mounted paths. If you are the wrong agent for the lane, stop and state which agent should act next.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For P4, ChatGPT may inspect the pack and produce the exact Codex handoff prompt. WSL/operator may copy/unzip the pack into the real workspace. Codex is addressed only after the operator provides the pack and explicitly asks Codex to execute the bounded update task.</TD></TR>
+</TABLE>
+>];
+
+  Vars [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>CODEX_UPDATE_PACK_ZIP=&lt;zip produced by P3&gt;<BR ALIGN="LEFT"/>CODEX_WORK_DIR=&lt;target extracted folder, usually under /workspace or /mnt/ingress batch folder&gt;<BR ALIGN="LEFT"/>PUBLIC_TOOL_ROOT=&lt;real or sandbox infractl-public root&gt;<BR ALIGN="LEFT"/>PRIVATE_PROJECT_ROOT=&lt;real private project root&gt;<BR ALIGN="LEFT"/>REPO_ROOT=/mnt/ingress [default for validate-real-layout]<BR ALIGN="LEFT"/>MODE=request-update [route identity]<BR ALIGN="LEFT"/>TRACK=skeleton [route-fixed]<BR ALIGN="LEFT"/>BATCH_NUMBER=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>BATCH_SLUG=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>TOPIC=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
+</TABLE>
+>];
+
+  Prompt [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+  <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main DOT and the Codex update pack manifest. We are in v7 at P4 package-to-Codex for request-update + skeleton, covering G13 pack-consumed and G14 layout-gate. First infer and show the suggested variables, then ask me to confirm. After confirmation, validate the pack layout and real project layout before Codex execution. Prepare the exact Codex handoff prompt. Do not execute Codex unless I explicitly address Codex and confirm execution after layout-gate PASS.</TD></TR>
+</TABLE>
+>];
+
+  Layout [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>G14 real-layout gate</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Run or request the read-only layout validation before Codex execution. Command shape:<BR ALIGN="LEFT"/>python3 -m infractl.cli validate-real-layout \<BR ALIGN="LEFT"/>  --project ${PRIVATE_PROJECT_ROOT} \<BR ALIGN="LEFT"/>  --repo-root ${REPO_ROOT}<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Required real paths must pass. Optional paths may be reported as optional gaps. If a path is referenced by the update task, treat it as required for that task and stop if missing.</TD></TR>
+</TABLE>
+>];
+
+  CodexPrompt [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+  <TR><TD><B>Codex handoff after confirmed layout PASS</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Codex handoff must say: extract the codex update pack; read CODEX_UPDATE_PROMPT.txt as entrypoint; execute exactly the bounded update task from UPDATE_RUN_INSTRUCTIONS.md; use PROJECT_UPDATE_CACHE.md and UPDATE_SPEC.md only as bounded support; use UPDATE_POSTCHECK_TEMPLATE.md for evidence; do not regenerate the original batch; do not overwrite historical evidence; do not run live/mutating actions unless the pack explicitly permits them; end with changed files, tests run, update evidence, smoke report, and remaining issues.</TD></TR>
+</TABLE>
+>];
+
+  Idem [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
+  <TR><TD><B>Idempotency and no-overwrite behavior</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before writing or mutating anything, check whether the matching output already exists for the same mode, track, batch number, batch slug, topic, and source input. If complete output exists and ALLOW_OVERWRITE is not exactly yes, report it and offer reuse/validation. If partial output exists, report exactly what exists and ask whether to resume, regenerate missing outputs, or write to a new directory. Never silently overwrite or mix old and new artifacts.</TD></TR>
+</TABLE>
+>];
+
+  Pass [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Required final response and re-entry</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Report confirmed variables, pack consumed path, layout-gate result, Codex handoff prompt, and any blockers. PASS when the pack is validated and Codex has either received a confirmed handoff or is ready for the operator to run. STOP on missing pack, manifest mismatch, layout failure, wrong agent, unsafe overwrite, or missing confirmation. Next v7 lane is P5 evidence-return / G15 execution-evidence.</TD></TR>
+</TABLE>
+>];
+
+  Start -> Agent;
+  Agent -> Vars;
+  Vars -> Prompt;
+  Prompt -> Layout;
+  Layout -> CodexPrompt;
+  CodexPrompt -> Idem;
+  Idem -> Pass;
+}

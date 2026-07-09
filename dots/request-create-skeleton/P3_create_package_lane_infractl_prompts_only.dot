@@ -1,0 +1,112 @@
+digraph P3_create_package_lane_infractl_prompts_only {
+  graph [
+    rankdir=TB,
+    splines=ortho,
+    nodesep=0.55,
+    ranksep=0.78,
+    pad="0.2,0.2",
+    bgcolor="white",
+    fontname="Helvetica",
+    fontsize=11,
+    labelloc="t",
+    label="P3 create-package lane prompts only: ChatGPT create files -> validated Codex create pack"
+  ];
+  node [shape=plain, fontname="Helvetica", fontsize=9];
+  edge [fontname="Helvetica", fontsize=8, arrowsize=0.75, penwidth=1.5, color="#6A1B9A", fontcolor="#6A1B9A"];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#EADCF8">
+      <TR><TD><B>SELF-EXECUTION GATE — P3 create-package lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT">You are reading this DOT as an execution instruction. This DOT is not a diagram to summarize. Treat it as the active prompt contract for the canonical v7 pipeline lane <B>[P3: writing-to-package]</B>, specifically the create side of the lane: <B>[G9: create-package-input]</B> into <B>[G11: create-pack]</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane starts only after P2 has produced the five ChatGPT-authored create files for <B>mode: request-create</B> and <B>track: skeleton</B>: <FONT FACE="Courier">CODEX_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_CACHE.md</FONT>, <FONT FACE="Courier">SPEC.md</FONT>, <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT>, and <FONT FACE="Courier">POSTCHECK_TEMPLATE.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane packages and validates those files with the public <FONT FACE="Courier">infractl</FONT> tool. It does <B>not</B> execute Codex, does <B>not</B> implement the batch, does <B>not</B> run smoke, and does <B>not</B> write returned evidence. The next real lane after this is P4 package-to-Codex / layout-gate.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Canonical source:</B> read <FONT FACE="Courier">infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT> first, or the canonical v7 DOT if the versioned source is what the operator uploaded. Use the main DOT to verify that the active edge is <B>CodexCreateFiles -&gt; CmdPackageCreate -&gt; CodexPackZip</B>.</TD></TR>
+    </TABLE>
+  >];
+
+  AgentGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#F5F5F5">
+      <TR><TD><B>Addressing gate: decide whether this prompt is for you</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>WSL/operator or local shell-capable agent:</B> you are addressed after the operator confirms variables. You may run the safe local packaging command in the public tool repo and write the generated pack into the confirmed output directory.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>ChatGPT webchat without shell access:</B> you are addressed for planning and command preparation only. Suggest the variable block, verify file expectations from uploaded artifacts, and give the exact command. Do not claim that you ran local packaging unless you actually have a local execution tool and the operator confirmed execution.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Codex:</B> you are normally not addressed by this lane. Codex should not implement from the five loose files. Codex is addressed later only after P3 creates the pack and P4 validates the real layout/package handoff.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If you are the wrong agent:</B> stop, state that this is the P3 packaging lane, and name the correct next actor.</TD></TR>
+    </TABLE>
+  >];
+
+  Variables [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+      <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before running or preparing any command, construct a suggested variable block. Do not present an empty form unless inference is impossible. Label every value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>. Then ask the operator to confirm or correct it.</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">CANONICAL_MAIN_DOT=</FONT> uploaded clean/v7 main DOT path, usually <FONT FACE="Courier">infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">PUBLIC_TOOL_ROOT=</FONT> local public tool root containing <FONT FACE="Courier">infractl/cli.py</FONT>, for example <FONT FACE="Courier">/workspace/repos/infractl-public</FONT> or <FONT FACE="Courier">~/repos/public_infra-skeleton-tools_v0</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">CHATGPT_CREATE_FILES_DIR=</FONT> folder produced by P2 containing the five create files<BR ALIGN="LEFT"/><FONT FACE="Courier">MODE=request-create</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">TRACK=skeleton</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">BATCH_NUMBER=</FONT> infer from P2 outputs/request context if possible<BR ALIGN="LEFT"/><FONT FACE="Courier">BATCH_SLUG=</FONT> infer from P2 outputs/request context if possible<BR ALIGN="LEFT"/><FONT FACE="Courier">TOPIC=</FONT> infer from P2 outputs/request context if possible<BR ALIGN="LEFT"/><FONT FACE="Courier">PACK_OUTPUT_ROOT=</FONT> safe generated output directory, for example <FONT FACE="Courier">/mnt/data/generated_real_v0</FONT> in webchat-sandbox or <FONT FACE="Courier">~/generated_real_v0</FONT> in WSL/local<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_OVERWRITE=no</FONT> unless the operator explicitly changes it</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Confirmation rule:</B> Ask only for values still unknown or unsafe to infer. Do not execute packaging until the operator confirms the suggested variables or explicitly says to proceed with suggested values.</TD></TR>
+    </TABLE>
+  >];
+
+  Prompt [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the uploaded canonical main DOT. We are in the v7 pipeline at P3 writing-to-package, create side: G9 create-package-input into G11 create-pack.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Use only the confirmed P2 create-writing output directory as input. First infer and show the suggested variable block for PUBLIC_TOOL_ROOT, CHATGPT_CREATE_FILES_DIR, MODE, TRACK, BATCH_NUMBER, BATCH_SLUG, TOPIC, PACK_OUTPUT_ROOT, and ALLOW_OVERWRITE. Label each value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct variables before packaging.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">After confirmation, verify that the input directory contains exactly the required create files: CODEX_PROMPT.txt, PROJECT_CACHE.md, SPEC.md, RUN_INSTRUCTIONS.md, and POSTCHECK_TEMPLATE.md. Then run package-codex-create with the public infractl tool to validate and bundle those files into a Codex create pack zip plus manifest/log.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Do not run Codex. Do not execute RUN_INSTRUCTIONS.md. Do not mutate project implementation files. Do not run smoke. Do not write /mnt/egress evidence. If packaging reveals a repeated manual workaround or missing CLI feature, record that as a 0C CLI extraction signal, but do not implement public-tool changes in this lane.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  InputCheck [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+      <TR><TD><B>Input checklist from v7 CodexCreateFiles</B></TD></TR>
+      <TR><TD ALIGN="LEFT">The input directory must contain the five P2 create files and they must belong to the same confirmed route identity: <FONT FACE="Courier">mode=request-create</FONT>, <FONT FACE="Courier">track=skeleton</FONT>, confirmed batch number, batch slug, and topic.</TD></TR>
+      <TR><TD ALIGN="LEFT">Required files: <FONT FACE="Courier">CODEX_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_CACHE.md</FONT>, <FONT FACE="Courier">SPEC.md</FONT>, <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT>, <FONT FACE="Courier">POSTCHECK_TEMPLATE.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Stop if update-lane files are present instead, such as <FONT FACE="Courier">CODEX_UPDATE_PROMPT.txt</FONT> or <FONT FACE="Courier">UPDATE_RUN_INSTRUCTIONS.md</FONT>. That is the sibling P3 update-package lane, not this lane.</TD></TR>
+      <TR><TD ALIGN="LEFT">Stop if the files are incomplete, inconsistent with each other, or appear to target a different batch/topic than the confirmed variables.</TD></TR>
+    </TABLE>
+  >];
+
+  Idempotency [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
+      <TR><TD><B>Idempotency and overwrite gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before packaging, inspect <FONT FACE="Courier">PACK_OUTPUT_ROOT</FONT> for an existing create pack, manifest, or log for the same mode/track/batch/slug/topic. If a complete matching package already exists and <FONT FACE="Courier">ALLOW_OVERWRITE=no</FONT>, stop and report that P3 appears complete. Offer to proceed to P4 validation/handoff, but do not overwrite.</TD></TR>
+      <TR><TD ALIGN="LEFT">If partial outputs exist, report exactly what exists and ask whether to resume, choose a new output directory, or overwrite. Do not silently mix old package outputs with new files.</TD></TR>
+      <TR><TD ALIGN="LEFT">If input files changed since the previous pack, report that this is a repack decision and require explicit confirmation before overwriting or creating a second pack.</TD></TR>
+    </TABLE>
+  >];
+
+  CreateEvidenceRequirementFiles [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#E8F0FE">
+      <TR><TD><B>Create-pack requirement files and manifest metadata</B></TD></TR>
+      <TR><TD ALIGN="LEFT">The create pack is still validated from the five ChatGPT-authored create files. In addition, the P3 output or the later P4 handoff folder must carry these first-class requirement files beside the pack: <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">POSTCHECK_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Manifest metadata:</B> the package manifest must state <FONT FACE="Courier">MODE=request-create</FONT>, <FONT FACE="Courier">TRACK=skeleton</FONT>, <FONT FACE="Courier">BATCH_NUMBER</FONT>, <FONT FACE="Courier">BATCH_SLUG</FONT>, expected evidence files, and the fact that <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT> is required even for create runs.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Read-only context:</B> <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT> is copied or referenced as read-only context only. P3 must not modify the ledger.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Compatibility rule:</B> if the current pack format cannot embed the requirement files directly, P3 must record that P4 is responsible for colocating them in <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>. Do not silently drop the requirement files.</TD></TR>
+    </TABLE>
+  >];
+
+  Command [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#CFEFD0">
+      <TR><TD><B>Safe packaging command after confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Use the actual confirmed paths. The v7 main DOT shows the command shape as <FONT FACE="Courier">package-codex-create --input ... --out ...</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">cd "$PUBLIC_TOOL_ROOT"</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">python3 -m infractl.cli package-codex-create \</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">  --input "$CHATGPT_CREATE_FILES_DIR" \</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">  --out "$PACK_OUTPUT_ROOT"</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">If the installed public tool uses slightly different path conventions, adapt only the path values, not the lane semantics. Do not switch to <FONT FACE="Courier">package-codex-update</FONT> for this route.</TD></TR>
+    </TABLE>
+  >];
+
+  OutputCheck [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+      <TR><TD><B>Expected v7 G11 output</B></TD></TR>
+      <TR><TD ALIGN="LEFT">A successful P3 create-package lane emits a validated Codex create pack zip plus a manifest/log in the confirmed output root. The pack is the artifact that moves to P4 package-to-Codex / layout-gate.</TD></TR>
+      <TR><TD ALIGN="LEFT">The output should contain the five create files inside the package and enough manifest information to confirm route identity. Do not treat a loose folder of P2 files as the final P3 output.</TD></TR>
+      <TR><TD ALIGN="LEFT">If packaging fails validation, do not patch implementation files. Report the exact validation failure and route back to P2 create-writing lane if one of the five files must be corrected.</TD></TR>
+    </TABLE>
+  >];
+
+  StopPass [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+      <TR><TD><B>Required final response for this lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Variables:</B> confirmed values used, with note of inferred/user-provided/default-safe values.<BR ALIGN="LEFT"/><B>Input files:</B> confirm the five create files and their directory.<BR ALIGN="LEFT"/><B>Command:</B> show the exact packaging command used or prepared.<BR ALIGN="LEFT"/><B>Outputs:</B> list the Codex create pack zip, manifest, and log paths or sandbox links.<BR ALIGN="LEFT"/><B>Checks:</B> package validation result and idempotency/no-overwrite result.<BR ALIGN="LEFT"/><B>0C signals:</B> note any CLI extraction pattern, or say none.<BR ALIGN="LEFT"/><B>Next v7 lane:</B> P4 package-to-Codex / G13 pack-consumed / G14 layout-gate.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PASS:</B> a validated Codex create pack zip plus manifest/log exists for the confirmed request-create skeleton route, or a matching complete existing pack is detected and accepted by the operator.<BR ALIGN="LEFT"/><B>STOP:</B> wrong agent, wrong route, missing variables, missing or inconsistent P2 files, unsafe overwrite, packaging validation failure, or operator does not confirm.</TD></TR>
+    </TABLE>
+  >];
+
+  Start -> AgentGate -> Variables -> Prompt -> InputCheck -> Idempotency -> CreateEvidenceRequirementFiles -> Command -> OutputCheck -> StopPass;
+}

@@ -24,6 +24,16 @@ infractl.zip
 
 The root DOT file is the canonical main pipeline. The folders contain prompt-only DOTs for the actual route you want to run.
 
+## Repo-local DOT rule
+
+When operating inside `/workspace/repos/infractl-public`, read DOT files from:
+
+```text
+dots/
+```
+
+Use repo-local `dots/...` paths for Codex/WSL/local instructions. Keep `infractl.zip` upload wording for fresh webchat sessions, but do not point local operators at `infractl/<lane>/...`.
+
 ## General rule
 
 In a fresh chat, upload:
@@ -48,8 +58,8 @@ The model should read:
 
 ```text
 1. infractl.md
-2. infractl/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
-3. the selected prompt-only DOT for the route and phase, or the selected CIP DOT from `infractl/config-infra/`
+2. dots/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
+3. the selected prompt-only DOT for the route and phase, or the selected CIP DOT from `dots/config-infra/`
 ```
 
 ---
@@ -79,7 +89,7 @@ Run 0A public/private contract preflight.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the 0A DOT from infractl/zero-abc/.
+Then use the 0A DOT from dots/zero-abc/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -89,7 +99,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/zero-abc/0A_public_private_contract_infractl_prompts_only.dot
+dots/zero-abc/0A_public_private_contract_infractl_prompts_only.dot
 ```
 
 ## 0B — expansion lane
@@ -112,7 +122,7 @@ Run 0B expansion lane for the uploaded source files.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the 0B DOT from infractl/zero-abc/.
+Then use the 0B DOT from dots/zero-abc/.
 
 Suggest the routing and variable block first.
 Ask me to confirm or correct it.
@@ -122,7 +132,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/zero-abc/0B_expansion_lane_infractl_prompts_only.dot
+dots/zero-abc/0B_expansion_lane_infractl_prompts_only.dot
 ```
 
 ## 0C — CLI extraction feedback
@@ -145,7 +155,7 @@ Run 0C CLI extraction feedback for this helper/script/workflow issue.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the 0C DOT from infractl/zero-abc/.
+Then use the 0C DOT from dots/zero-abc/.
 
 Suggest the extraction note first.
 Ask me to confirm or correct it.
@@ -155,7 +165,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/zero-abc/0C_cli_extraction_feedback_infractl_prompts_only.dot
+dots/zero-abc/0C_cli_extraction_feedback_infractl_prompts_only.dot
 ```
 
 ---
@@ -164,10 +174,10 @@ infractl/zero-abc/0C_cli_extraction_feedback_infractl_prompts_only.dot
 
 Use these routes when a batch or organ workflow needs structured config/lv/environment integration instead of an ad hoc handoff.
 
-The real uploaded `infractl.zip` includes this folder:
+The real uploaded `infractl.zip` includes this folder under the zip root:
 
 ```text
-infractl/config-infra/
+config-infra/
   CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
   CIP02_rich_integration_request_generation_infractl_prompts_only.dot
   CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
@@ -337,7 +347,7 @@ Run Config-Infra CIP01 source intake and suitability determination.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP01 DOT from infractl/config-infra/.
+Then use the CIP01 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -347,7 +357,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
+dots/config-infra/CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
 ```
 
 ## CIP02 — rich integration request generation
@@ -371,7 +381,7 @@ Run Config-Infra CIP02 rich integration request generation.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP02 DOT from infractl/config-infra/.
+Then use the CIP02 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -381,7 +391,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP02_rich_integration_request_generation_infractl_prompts_only.dot
+dots/config-infra/CIP02_rich_integration_request_generation_infractl_prompts_only.dot
 ```
 
 ## CIP03 — manifest aggregation and approval
@@ -405,7 +415,7 @@ Run Config-Infra CIP03 manifest aggregation and approval.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP03 DOT from infractl/config-infra/.
+Then use the CIP03 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -415,7 +425,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
+dots/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
 ```
 
 ## CIP04 — live config-state resolution
@@ -447,7 +457,7 @@ Run Config-Infra CIP04 live config-state resolution.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP04 DOT from infractl/config-infra/.
+Then use the CIP04 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -457,7 +467,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP04_live_config_state_resolution_infractl_prompts_only.dot
+dots/config-infra/CIP04_live_config_state_resolution_infractl_prompts_only.dot
 ```
 
 ## CIP05 — config implementation planning
@@ -481,7 +491,7 @@ Run Config-Infra CIP05 config implementation planning.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP05 DOT from infractl/config-infra/.
+Then use the CIP05 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -491,7 +501,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP05_config_implementation_planning_infractl_prompts_only.dot
+dots/config-infra/CIP05_config_implementation_planning_infractl_prompts_only.dot
 ```
 
 ## CIP06 — idempotent application and closeout
@@ -517,7 +527,7 @@ Run Config-Infra CIP06 idempotent application and closeout.
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the CIP06 DOT from infractl/config-infra/.
+Then use the CIP06 DOT from dots/config-infra/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -527,7 +537,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/config-infra/CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
+dots/config-infra/CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
 ```
 
 ---
@@ -566,7 +576,7 @@ BATCH_NUMBER=02
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P1 DOT from infractl/request-create-skeleton/.
+Then use the P1 DOT from dots/request-create-skeleton/.
 
 Suggest the full variable block first.
 Ask me to confirm or correct it.
@@ -576,7 +586,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-skeleton/P1_request_create_skeleton_infractl_prompts_only.dot
+dots/request-create-skeleton/P1_request_create_skeleton_infractl_prompts_only.dot
 ```
 
 ## P2 — create-writing skeleton
@@ -603,7 +613,7 @@ BATCH_NUMBER=02
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P2 DOT from infractl/request-create-skeleton/.
+Then use the P2 DOT from dots/request-create-skeleton/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -613,7 +623,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-skeleton/P2_create_writing_lane_infractl_prompts_only.dot
+dots/request-create-skeleton/P2_create_writing_lane_infractl_prompts_only.dot
 ```
 
 ## P3 — create-package skeleton
@@ -640,7 +650,7 @@ BATCH_NUMBER=02
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P3 DOT from infractl/request-create-skeleton/.
+Then use the P3 DOT from dots/request-create-skeleton/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -650,7 +660,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-skeleton/P3_create_package_lane_infractl_prompts_only.dot
+dots/request-create-skeleton/P3_create_package_lane_infractl_prompts_only.dot
 ```
 
 ## P4 — package-to-Codex skeleton create
@@ -677,7 +687,7 @@ BATCH_NUMBER=02
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P4 DOT from infractl/request-create-skeleton/.
+Then use the P4 DOT from dots/request-create-skeleton/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -687,7 +697,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-skeleton/P4_package_to_codex_lane_infractl_prompts_only.dot
+dots/request-create-skeleton/P4_package_to_codex_lane_infractl_prompts_only.dot
 ```
 
 ## P5 — evidence-return skeleton create
@@ -715,7 +725,7 @@ BATCH_NUMBER=02
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P5 DOT from infractl/request-create-skeleton/.
+Then use the P5 DOT from dots/request-create-skeleton/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -725,7 +735,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-skeleton/P5_evidence_return_lane_infractl_prompts_only.dot
+dots/request-create-skeleton/P5_evidence_return_lane_infractl_prompts_only.dot
 ```
 
 ## P6 — next-cycle skeleton create
@@ -753,7 +763,7 @@ BATCH_NUMBER=02
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P6 DOT from infractl/request-create-skeleton/.
+Then use the P6 DOT from dots/request-create-skeleton/.
 
 Suggest the next route first.
 Ask me to confirm or correct it.
@@ -763,7 +773,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-skeleton/P6_next_cycle_lane_infractl_prompts_only.dot
+dots/request-create-skeleton/P6_next_cycle_lane_infractl_prompts_only.dot
 ```
 
 ---
@@ -808,7 +818,7 @@ EVIDENCE_REQUIRED=yes
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P1 DOT from infractl/request-update-skeleton/.
+Then use the P1 DOT from dots/request-update-skeleton/.
 
 Suggest the full variable block first.
 Ask me to confirm or correct it.
@@ -818,7 +828,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-skeleton/P1_request_update_skeleton_infractl_prompts_only.dot
+dots/request-update-skeleton/P1_request_update_skeleton_infractl_prompts_only.dot
 ```
 
 ## P2 — update-writing skeleton
@@ -847,7 +857,7 @@ TOPIC=workflow_smoke_automation
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P2 DOT from infractl/request-update-skeleton/.
+Then use the P2 DOT from dots/request-update-skeleton/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -857,7 +867,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-skeleton/P2_update_writing_lane_infractl_prompts_only.dot
+dots/request-update-skeleton/P2_update_writing_lane_infractl_prompts_only.dot
 ```
 
 ## P3 — update-package skeleton
@@ -885,7 +895,7 @@ TOPIC=workflow_smoke_automation
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P3 DOT from infractl/request-update-skeleton/.
+Then use the P3 DOT from dots/request-update-skeleton/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -895,7 +905,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-skeleton/P3_update_package_lane_infractl_prompts_only.dot
+dots/request-update-skeleton/P3_update_package_lane_infractl_prompts_only.dot
 ```
 
 ## P4 — package-to-Codex skeleton update
@@ -923,7 +933,7 @@ TOPIC=workflow_smoke_automation
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P4 DOT from infractl/request-update-skeleton/.
+Then use the P4 DOT from dots/request-update-skeleton/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -933,7 +943,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-skeleton/P4_package_to_codex_update_skeleton_lane_infractl_prompts_only.dot
+dots/request-update-skeleton/P4_package_to_codex_update_skeleton_lane_infractl_prompts_only.dot
 ```
 
 ## P5 — evidence-return skeleton update
@@ -962,7 +972,7 @@ TOPIC=workflow_smoke_automation
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P5 DOT from infractl/request-update-skeleton/.
+Then use the P5 DOT from dots/request-update-skeleton/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -972,7 +982,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-skeleton/P5_evidence_return_update_skeleton_lane_infractl_prompts_only.dot
+dots/request-update-skeleton/P5_evidence_return_update_skeleton_lane_infractl_prompts_only.dot
 ```
 
 ## P6 — next-cycle skeleton update
@@ -1001,7 +1011,7 @@ TOPIC=workflow_smoke_automation
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P6 DOT from infractl/request-update-skeleton/.
+Then use the P6 DOT from dots/request-update-skeleton/.
 
 Suggest the next route first.
 Ask me to confirm or correct it.
@@ -1011,7 +1021,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-skeleton/P6_next_cycle_update_skeleton_lane_infractl_prompts_only.dot
+dots/request-update-skeleton/P6_next_cycle_update_skeleton_lane_infractl_prompts_only.dot
 ```
 
 ---
@@ -1051,7 +1061,7 @@ ORGAN_RUN=R01
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P1 DOT from infractl/request-create-organs/.
+Then use the P1 DOT from dots/request-create-organs/.
 
 Suggest the full variable block first.
 Ask me to confirm or correct it.
@@ -1061,7 +1071,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-organs/P1_request_create_organ_infractl_prompts_only.dot
+dots/request-create-organs/P1_request_create_organ_infractl_prompts_only.dot
 ```
 
 ## P2 — create-writing organ
@@ -1089,7 +1099,7 @@ ORGAN_RUN=R01
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P2 DOT from infractl/request-create-organs/.
+Then use the P2 DOT from dots/request-create-organs/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -1099,7 +1109,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-organs/P2_create_writing_organ_lane_infractl_prompts_only.dot
+dots/request-create-organs/P2_create_writing_organ_lane_infractl_prompts_only.dot
 ```
 
 ## P3 — create-package organ
@@ -1126,7 +1136,7 @@ ORGAN_RUN=R01
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P3 DOT from infractl/request-create-organs/.
+Then use the P3 DOT from dots/request-create-organs/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -1136,7 +1146,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-organs/P3_create_package_organ_lane_infractl_prompts_only.dot
+dots/request-create-organs/P3_create_package_organ_lane_infractl_prompts_only.dot
 ```
 
 ## P4 — package-to-Codex organ create
@@ -1163,7 +1173,7 @@ ORGAN_RUN=R01
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P4 DOT from infractl/request-create-organs/.
+Then use the P4 DOT from dots/request-create-organs/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -1173,7 +1183,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-organs/P4_package_to_codex_organ_lane_infractl_prompts_only.dot
+dots/request-create-organs/P4_package_to_codex_organ_lane_infractl_prompts_only.dot
 ```
 
 ## P5 — evidence-return organ create
@@ -1201,7 +1211,7 @@ ORGAN_RUN=R01
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P5 DOT from infractl/request-create-organs/.
+Then use the P5 DOT from dots/request-create-organs/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -1211,7 +1221,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-organs/P5_evidence_return_organ_lane_infractl_prompts_only.dot
+dots/request-create-organs/P5_evidence_return_organ_lane_infractl_prompts_only.dot
 ```
 
 ## P6 — next-cycle organ create
@@ -1239,7 +1249,7 @@ ORGAN_RUN=R01
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P6 DOT from infractl/request-create-organs/.
+Then use the P6 DOT from dots/request-create-organs/.
 
 Suggest the next route first.
 Ask me to confirm or correct it.
@@ -1249,7 +1259,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-create-organs/P6_next_cycle_organ_lane_infractl_prompts_only.dot
+dots/request-create-organs/P6_next_cycle_organ_lane_infractl_prompts_only.dot
 ```
 
 ---
@@ -1290,7 +1300,7 @@ EVIDENCE_REQUIRED=yes
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P1 DOT from infractl/request-update-organs/.
+Then use the P1 DOT from dots/request-update-organs/.
 
 Suggest the full variable block first.
 Ask me to confirm or correct it.
@@ -1300,7 +1310,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-organs/P1_request_update_organ_infractl_prompts_only.dot
+dots/request-update-organs/P1_request_update_organ_infractl_prompts_only.dot
 ```
 
 ## P2 — update-writing organ
@@ -1329,7 +1339,7 @@ TOPIC=<TOPIC>
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P2 DOT from infractl/request-update-organs/.
+Then use the P2 DOT from dots/request-update-organs/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -1339,7 +1349,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-organs/P2_update_writing_organ_lane_infractl_prompts_only.dot
+dots/request-update-organs/P2_update_writing_organ_lane_infractl_prompts_only.dot
 ```
 
 ## P3 — update-package organ
@@ -1367,7 +1377,7 @@ TOPIC=<TOPIC>
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P3 DOT from infractl/request-update-organs/.
+Then use the P3 DOT from dots/request-update-organs/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -1377,7 +1387,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-organs/P3_update_package_organ_lane_infractl_prompts_only.dot
+dots/request-update-organs/P3_update_package_organ_lane_infractl_prompts_only.dot
 ```
 
 ## P4 — package-to-Codex organ update
@@ -1405,7 +1415,7 @@ TOPIC=<TOPIC>
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P4 DOT from infractl/request-update-organs/.
+Then use the P4 DOT from dots/request-update-organs/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -1415,7 +1425,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-organs/P4_package_to_codex_update_organ_lane_infractl_prompts_only.dot
+dots/request-update-organs/P4_package_to_codex_update_organ_lane_infractl_prompts_only.dot
 ```
 
 ## P5 — evidence-return organ update
@@ -1444,7 +1454,7 @@ TOPIC=<TOPIC>
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P5 DOT from infractl/request-update-organs/.
+Then use the P5 DOT from dots/request-update-organs/.
 
 Suggest the variable block first.
 Ask me to confirm or correct it.
@@ -1454,7 +1464,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-organs/P5_evidence_return_update_organ_lane_infractl_prompts_only.dot
+dots/request-update-organs/P5_evidence_return_update_organ_lane_infractl_prompts_only.dot
 ```
 
 ## P6 — next-cycle organ update
@@ -1483,7 +1493,7 @@ TOPIC=<TOPIC>
 
 Read infractl.md first.
 Read the root main v7 DOT next.
-Then use the P6 DOT from infractl/request-update-organs/.
+Then use the P6 DOT from dots/request-update-organs/.
 
 Suggest the next route first.
 Ask me to confirm or correct it.
@@ -1493,7 +1503,7 @@ Do not execute until I confirm.
 Use DOT:
 
 ```text
-infractl/request-update-organs/P6_next_cycle_update_organ_lane_infractl_prompts_only.dot
+dots/request-update-organs/P6_next_cycle_update_organ_lane_infractl_prompts_only.dot
 ```
 
 ---

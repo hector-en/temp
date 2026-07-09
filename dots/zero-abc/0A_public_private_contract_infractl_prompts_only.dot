@@ -1,0 +1,135 @@
+digraph "0A_public_private_contract_infractl_prompts_only_v2" {
+  rankdir=TB;
+  compound=true;
+  splines=ortho;
+  nodesep=0.64;
+  ranksep=0.78;
+  pad="0.25,0.25";
+  fontname="Helvetica";
+  fontsize=10;
+  labelloc="t";
+  label="0A public/private contract preflight — infractl prompts only v2 — base_format, idempotent, v7 grounded";
+
+  node [shape=plain, fontname="Helvetica", fontsize=9];
+  edge [arrowsize=0.7, penwidth=1.35, fontname="Helvetica", fontsize=8, color="#555555"];
+
+  Meta [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#EDE7F6"><B>SELF-EXECUTABLE DOT — READ THIS FIRST</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">This DOT is a standalone execution instruction for the <B>0A public/private contract preflight</B> route of the Infra-Skeleton / infractl pipeline.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>It must be used in the same narrative style as the accepted 0B prompt-only DOT and the base_format route template. The goal is not to be terse. The goal is to let a fresh ChatGPT, Codex, or WSL operator session understand the current pipeline phase, ask for missing variables, avoid unsafe execution, and produce a deterministic 0A contract status.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Canonical pipeline source:</B> infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot. Always base interpretation on that v7 DOT if it is provided. If it is not provided, ask for it or proceed only with this 0A DOT as a bounded fallback and clearly say that v7 was not available.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  BaseFormat [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#FFF8E1"><B>base_format REQUIREMENTS APPLIED HERE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">This route must follow the project baseline note tagged <B>base_format</B>:<BR ALIGN="LEFT"/>- full cold-start narrative style, not compressed hybrid style<BR ALIGN="LEFT"/>- self-executable for a fresh ChatGPT/Codex session<BR ALIGN="LEFT"/>- idempotent by default<BR ALIGN="LEFT"/>- REQUIRED VARIABLE BLOCK before execution<BR ALIGN="LEFT"/>- ask for missing variables before execution<BR ALIGN="LEFT"/>- inspect existing outputs before writing or declaring pass<BR ALIGN="LEFT"/>- no overwrite or mutation unless ALLOW_OVERWRITE=yes and the route explicitly permits writing<BR ALIGN="LEFT"/>- explicit ChatGPT / Codex / WSL operator addressing gates<BR ALIGN="LEFT"/>- safe-action boundaries<BR ALIGN="LEFT"/>- required response format<BR ALIGN="LEFT"/>- PASS / STOP conditions<BR ALIGN="LEFT"/>- next-step re-entry into the v7 end-to-end pipeline</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  PhaseIdentity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#EDE7F6"><B>PHASE IDENTITY — 0A</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>Phase:</B> 0A public/private contract in the current filesystem.<BR ALIGN="LEFT"/><B>V7 label:</B> 0A. Public/private contract in the current filesystem [ChatGPT/WSL2 preflight, not Codex implementation].<BR ALIGN="LEFT"/><B>Purpose:</B> confirm that the public tool and private project bundle fit the public/private contract before any P1 direction-gate route is executed.<BR ALIGN="LEFT"/><B>Normal next phase after PASS:</B> P1 direction-gate for the chosen mode + track route, such as request-create + skeleton or request-update + skeleton.<BR ALIGN="LEFT"/><B>This phase is not:</B> batch creation, batch update, Codex implementation, smoke execution, RunPod launch, API call, real infrastructure mutation, or evidence rewriting.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  AddressingGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#EDE7F6"><B>ADDRESSING GATE — WHO IS BEING ASKED TO ACT?</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>ChatGPT addressed:</B> inspect uploaded files, read the canonical v7 DOT, explain checks, generate safe commands, validate uploaded public/private zips in the webchat sandbox if possible, and summarize PASS / STOP. ChatGPT must not claim it changed /workspace, /mnt/ingress, or /mnt/egress unless it actually did so in an available runtime and the route allowed it.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Codex addressed:</B> stop unless the user explicitly provides a workspace and asks for read-only validation. Codex may run only read-only 0A commands after confirmation. Codex must not implement, patch, smoke-test, or write evidence during 0A.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>WSL operator addressed:</B> present the exact commands to run locally and ask the operator to paste results. Do not invent results.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Wrong-agent rule:</B> if this DOT is uploaded to the wrong agent for the requested action, stop and say which agent should handle the next step.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  VariableBlock [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#FFF2CC">
+      <TR><TD BGCOLOR="#FFF8E1"><B>REQUIRED VARIABLE BLOCK — OPERATOR FILLS BEFORE EXECUTION</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">The operator should provide or confirm these variables. If any required value is missing, ask for it before executing commands. Defaults may be proposed, but do not silently assume values that affect paths, mutation, or phase routing.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>CANONICAL_DOT_PATH = infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot<BR ALIGN="LEFT"/>PUBLIC_TOOL_SOURCE = GitHub URL, uploaded zip, or existing workspace path<BR ALIGN="LEFT"/>PUBLIC_TOOL_ROOT = path to unpacked or cloned infractl public tool, usually /workspace/repos/infractl-public or a webchat sandbox path<BR ALIGN="LEFT"/>PRIVATE_BUNDLE_SOURCE = uploaded private bundle zip or existing workspace path<BR ALIGN="LEFT"/>PRIVATE_PROJECT_ROOT = path to unpacked private project, usually /workspace/private/agentfield-grn-private_real_v0 or a webchat sandbox path<BR ALIGN="LEFT"/>REPO_ROOT = /mnt/ingress for real-layout validation, or the operator-provided repo-root equivalent<BR ALIGN="LEFT"/>PROFILE = webchat-sandbox for ChatGPT-side validation unless explicitly doing read-only WSL validation<BR ALIGN="LEFT"/>OUTPUT_ROOT = location for any 0A validation logs or reports, if logs are written in sandbox<BR ALIGN="LEFT"/>ALLOW_OVERWRITE = no by default<BR ALIGN="LEFT"/>STRICT_REQUIRED_REAL_PATHS = yes by default<BR ALIGN="LEFT"/>OPTIONAL_GAPS_POLICY = list-and-continue by default<BR ALIGN="LEFT"/>INTENDED_NEXT_ROUTE = optional, such as request-create+skeleton or request-update+skeleton</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ExactPrompt [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1B7F3A">
+      <TR><TD BGCOLOR="#E8F5E9"><B>EXACT PROMPT TO TYPE TO CHATGPT OR CODEX</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Read this 0A prompt-only DOT and the canonical v7 pipeline DOT: infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>We are in <B>0A public/private contract preflight</B>. Use the REQUIRED VARIABLE BLOCK below and do not execute anything until you have checked whether variables are missing and asked for confirmation, unless I explicitly say <B>go</B>.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Confirm that the public/private contract is valid before any P1 create/update/organ route. Check the public tool for infractl, schemas, templates, examples, README/instructions, scripts, and any CLI extraction hooks. Check the private bundle for project.yaml, layers.yaml, batches.yaml, hooks.yaml, files.yaml, sources/, sources/workflow/CLI_EXTRACTION_NOTES.md if present, evidence_snapshots/ if present, and generated/ if present.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For real-layout validation, use files.yaml as the source of truth for required and optional real paths. Required paths must pass if STRICT_REQUIRED_REAL_PATHS=yes. Optional gaps must be listed separately and must not be misreported as required failures.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Do not run Codex implementation. Do not run smoke. Do not call model APIs. Do not launch RunPod. Do not mutate /workspace, /mnt/ingress, /mnt/egress, or private evidence. Tell me exactly what you will inspect or run, then ask for confirmation unless I already said go.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  InputChecklist [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#E3F2FD"><B>INPUT CHECKLIST — PUBLIC TOOL AND PRIVATE BUNDLE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>Public tool should expose reusable, non-private machinery:</B><BR ALIGN="LEFT"/>- infractl package or CLI entrypoint<BR ALIGN="LEFT"/>- schemas and validation logic<BR ALIGN="LEFT"/>- templates and examples<BR ALIGN="LEFT"/>- README / operator instructions<BR ALIGN="LEFT"/>- scripts directory, including reusable helpers when they exist<BR ALIGN="LEFT"/>- no private evidence, secrets, or private research payloads<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Private bundle should expose project-specific state:</B><BR ALIGN="LEFT"/>- project.yaml: identity, profiles, roots<BR ALIGN="LEFT"/>- layers.yaml: five-layer scope map<BR ALIGN="LEFT"/>- batches.yaml: skeleton and organ batch contracts<BR ALIGN="LEFT"/>- hooks.yaml: annex and hook registry<BR ALIGN="LEFT"/>- files.yaml: source-key to bundle_path / real_path / required mapping<BR ALIGN="LEFT"/>- sources/: webchat fallback copies of planning/spec/workflow files<BR ALIGN="LEFT"/>- sources/workflow/CLI_EXTRACTION_NOTES.md if already created by 0C<BR ALIGN="LEFT"/>- evidence_snapshots/: returned proof cache, if present<BR ALIGN="LEFT"/>- generated/: request/output staging, if present</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  V7Mapping [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#E3F2FD"><B>V7 PIPELINE MAPPING FOR 0A</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">In canonical v7, 0A is a pre-P1 contract lane. It proves that the public tool and private bundle can be interpreted together before selecting a direction route.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Relevant v7 facts to preserve:</B><BR ALIGN="LEFT"/>- files.yaml is the bridge file between private bundle paths and real paths.<BR ALIGN="LEFT"/>- validate-real-layout uses files.yaml.real_path against REPO_ROOT, normally /mnt/ingress.<BR ALIGN="LEFT"/>- required real paths fail strict v0 if missing.<BR ALIGN="LEFT"/>- optional real paths are recorded as gaps but do not automatically block continuation.<BR ALIGN="LEFT"/>- CLI_NOTES / CLI_EXTRACTION_NOTES.md is now part of the v7 pipeline and may be used by 0C.<BR ALIGN="LEFT"/>- after 0A PASS, the operator should enter P1 direction-gate and choose exactly one mode + track route.<BR ALIGN="LEFT"/>- do not infer mode, batch, topic, or evidence behavior from 0A alone.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  IdempotencyChecks [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#FFF2CC">
+      <TR><TD BGCOLOR="#FFF8E1"><B>IDEMPOTENCY CHECKS BEFORE ANY WRITE OR DECLARATION</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">0A is normally read-only. Still, the model must behave idempotently:<BR ALIGN="LEFT"/>1. Confirm whether a 0A validation report or log already exists in OUTPUT_ROOT.<BR ALIGN="LEFT"/>2. If a matching 0A report exists and ALLOW_OVERWRITE=no, do not overwrite it. Summarize it or propose a versioned output filename.<BR ALIGN="LEFT"/>3. If PUBLIC_TOOL_ROOT or PRIVATE_PROJECT_ROOT already exists, inspect rather than re-unpack unless the user explicitly asks to refresh it.<BR ALIGN="LEFT"/>4. If uploaded zip and existing workspace path both exist, ask which source is authoritative before mixing them.<BR ALIGN="LEFT"/>5. If GitHub access fails, ask for the public tool zip instead of fabricating repository contents.<BR ALIGN="LEFT"/>6. If required files are missing, stop and report exact missing filenames and paths.<BR ALIGN="LEFT"/>7. If optional paths are missing, list them as optional gaps and ask whether to continue to P1.<BR ALIGN="LEFT"/>8. Do not treat stale prior outputs as current unless their paths, timestamps, and variable block match the current run.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  SafeCommands [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#CFEFD0">
+      <TR><TD BGCOLOR="#E8F5E9"><B>SAFE READ-ONLY COMMANDS AFTER CONFIRMATION — TEMPLATE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Use only commands that match the current agent and filesystem. Substitute variables. Do not write to /mnt/egress or mutate private evidence during 0A.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Basic public/private inspection:</B><BR ALIGN="LEFT"/>test -d ${PUBLIC_TOOL_ROOT} &amp;&amp; find ${PUBLIC_TOOL_ROOT} -maxdepth 3 -type f | sort | sed -n '1,160p'<BR ALIGN="LEFT"/>test -d ${PRIVATE_PROJECT_ROOT} &amp;&amp; find ${PRIVATE_PROJECT_ROOT} -maxdepth 3 -type f | sort | sed -n '1,200p'<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Public tool CLI discovery:</B><BR ALIGN="LEFT"/>cd ${PUBLIC_TOOL_ROOT}<BR ALIGN="LEFT"/>python3 -m infractl.cli --help<BR ALIGN="LEFT"/>python3 -m infractl.cli profiles || true<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Private bundle structural checks:</B><BR ALIGN="LEFT"/>test -f ${PRIVATE_PROJECT_ROOT}/project.yaml<BR ALIGN="LEFT"/>test -f ${PRIVATE_PROJECT_ROOT}/layers.yaml<BR ALIGN="LEFT"/>test -f ${PRIVATE_PROJECT_ROOT}/batches.yaml<BR ALIGN="LEFT"/>test -f ${PRIVATE_PROJECT_ROOT}/hooks.yaml<BR ALIGN="LEFT"/>test -f ${PRIVATE_PROJECT_ROOT}/files.yaml<BR ALIGN="LEFT"/>test -d ${PRIVATE_PROJECT_ROOT}/sources<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Optional real-layout validation in real workspace:</B><BR ALIGN="LEFT"/>cd ${PUBLIC_TOOL_ROOT}<BR ALIGN="LEFT"/>python3 -m infractl.cli validate-real-layout \<BR ALIGN="LEFT"/>  --project ${PRIVATE_PROJECT_ROOT} \<BR ALIGN="LEFT"/>  --repo-root ${REPO_ROOT}<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>If this command is unavailable in the current public tool, report that accurately and fall back to reading files.yaml manually. Do not pretend validation ran.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ExpectedOutcome [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#FFF2CC">
+      <TR><TD BGCOLOR="#FFF8E1"><B>EXPECTED 0A OUTCOME</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">A successful 0A run produces a contract status, not a batch pack. The answer should clearly state:<BR ALIGN="LEFT"/>- canonical v7 DOT read: yes/no, filename<BR ALIGN="LEFT"/>- public tool source and root used<BR ALIGN="LEFT"/>- private bundle source and root used<BR ALIGN="LEFT"/>- whether public tool contents are present<BR ALIGN="LEFT"/>- whether private bundle required metadata files are present<BR ALIGN="LEFT"/>- whether files.yaml exists and can be interpreted<BR ALIGN="LEFT"/>- required real-path status from validate-real-layout, if run<BR ALIGN="LEFT"/>- optional real-path gaps, separately from required failures<BR ALIGN="LEFT"/>- whether CLI_EXTRACTION_NOTES.md exists and whether 0C is needed<BR ALIGN="LEFT"/>- recommended next route, normally P1 direction-gate with a specific mode + track chosen by the operator</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  CLIExtractionSignal [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#F5F5F5"><B>0C / CLI EXTRACTION SIGNAL FROM 0A</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">0A may reveal public-tool friction. If it does, do not implement a fix inside 0A. Instead, flag a 0C finding for CLI_EXTRACTION_NOTES.md.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Examples that should signal 0C:<BR ALIGN="LEFT"/>- validate-real-layout has confusing output or missing flags<BR ALIGN="LEFT"/>- repeated manual path checks are needed every run<BR ALIGN="LEFT"/>- helper scripts such as g16_snapshot.sh should be promoted or documented<BR ALIGN="LEFT"/>- public zip/GitHub fallback behavior needs a stable command<BR ALIGN="LEFT"/>- missing or ambiguous files.yaml source keys repeatedly confuse ChatGPT/Codex<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>The 0A result may recommend 0C, but must not perform public-tool promotion unless the user explicitly starts the 0C route.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ResponseFormat [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#E3F2FD"><B>REQUIRED RESPONSE FORMAT</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Current phase: 0A public/private contract preflight<BR ALIGN="LEFT"/>Canonical DOT read: yes/no, filename<BR ALIGN="LEFT"/>Addressed role: ChatGPT / Codex / WSL operator / wrong-agent stop<BR ALIGN="LEFT"/>Variable block received:<BR ALIGN="LEFT"/>Missing variables:<BR ALIGN="LEFT"/>Confirmation status: confirmed / not confirmed / user said go<BR ALIGN="LEFT"/>Idempotency checks run:<BR ALIGN="LEFT"/>Existing 0A outputs found: yes/no, paths<BR ALIGN="LEFT"/>Public tool source/root:<BR ALIGN="LEFT"/>Public tool contents status:<BR ALIGN="LEFT"/>Private bundle source/root:<BR ALIGN="LEFT"/>Private bundle required files status:<BR ALIGN="LEFT"/>files.yaml status:<BR ALIGN="LEFT"/>validate-real-layout run: yes/no, command or reason not run<BR ALIGN="LEFT"/>Required real paths: PASS / FAIL / not checked<BR ALIGN="LEFT"/>Optional real-path gaps:<BR ALIGN="LEFT"/>CLI_EXTRACTION_NOTES.md status:<BR ALIGN="LEFT"/>0C extraction signal: yes/no, reason<BR ALIGN="LEFT"/>Safety status: read-only 0A; no Codex implementation; no smoke; no APIs; no live actions; no evidence mutation<BR ALIGN="LEFT"/>Decision: PASS / STOP<BR ALIGN="LEFT"/>Recommended next route: P1 mode + track route, or STOP with exact missing inputs</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  PassStop [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#FFEBEE"><B>PASS / STOP CONDITIONS</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>PASS:</B> required variables are confirmed; public tool is readable; private project bundle is readable; project.yaml, layers.yaml, batches.yaml, hooks.yaml, files.yaml, and sources/ are present; files.yaml can be interpreted; required real paths pass if validate-real-layout is run in a real workspace; optional gaps are listed separately; no forbidden execution occurred; and the operator has a clear next P1 route.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>STOP:</B> canonical v7 is required but missing; required variables are missing; GitHub/public source is unavailable and no zip was provided; private bundle is unavailable; required private metadata files are missing; files.yaml is missing or unreadable; required real paths fail under STRICT_REQUIRED_REAL_PATHS=yes; the user has not confirmed execution; prompt is addressed to Codex for implementation; or any step would mutate real workspace/evidence during 0A.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>After PASS:</B> stop at the contract status. Do not generate request packs, Codex packs, smoke reports, or evidence updates. Wait for the operator to select a P1 mode + track route.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Reentry [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#F5F5F5"><B>RE-ENTRY INTO THE V7 PIPELINE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">If 0A passes, the next real pipeline step is <B>P1 direction-gate</B>. The operator must choose one actual mode + track route instead of asking for a generic P1 overview.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Common next route DOTs:<BR ALIGN="LEFT"/>- P1_request_create_skeleton_infractl_prompts_only_v3 or later<BR ALIGN="LEFT"/>- P1_request_update_skeleton_infractl_prompts_only_v2 or later<BR ALIGN="LEFT"/>- P1_request_create_organ_infractl_prompts_only_v1 or later<BR ALIGN="LEFT"/>- P1_request_update_organ_infractl_prompts_only_v1 or later, when organ evidence exists<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>If 0A reveals new source material or background notes, route to 0B first. If 0A reveals repeated CLI/manual friction, route to 0C before public-tool promotion.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Meta -> BaseFormat;
+  BaseFormat -> PhaseIdentity;
+  PhaseIdentity -> AddressingGate;
+  AddressingGate -> VariableBlock;
+  VariableBlock -> ExactPrompt;
+  ExactPrompt -> InputChecklist;
+  InputChecklist -> V7Mapping;
+  V7Mapping -> IdempotencyChecks;
+  IdempotencyChecks -> SafeCommands;
+  SafeCommands -> ExpectedOutcome;
+  ExpectedOutcome -> CLIExtractionSignal;
+  CLIExtractionSignal -> ResponseFormat;
+  ResponseFormat -> PassStop;
+  PassStop -> Reentry;
+}

@@ -1,0 +1,69 @@
+digraph P3_update_package_lane_infractl_prompts_only {
+  graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=12, labelloc="t", label="P3 update-package lane — request-update + skeleton"];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A"];
+
+  Start [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#EADCF8">
+  <TR><TD><B>SELF-EXECUTION GATE — P3 update-package</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main pipeline DOT first: infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot, or the v7 version if that is the file uploaded. Use it as source of truth. This instruction DOT is not a generic template; it is the active prompt contract for exactly the route named in this file.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>This lane starts after P2 created the five update files. In v7 it covers G10 update-package-input and G12 update-pack. It packages the update files into a validated Codex update pack zip. It does not run Codex, does not execute update tasks, does not run smoke, and does not copy returned evidence.</TD></TR>
+</TABLE>
+>];
+
+  Agent [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#F5F5F5">
+  <TR><TD><B>Addressing gate</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Decide who is being addressed before doing anything. ChatGPT is addressed for request generation, writing-file creation, packaging/preflight, and evidence interpretation in the webchat sandbox. Codex is addressed only when a packaged Codex bundle is explicitly supplied and the operator confirms execution. The WSL/operator is addressed only for commands that must run in the real workspace or mounted paths. If you are the wrong agent for the lane, stop and state which agent should act next.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For P3, ChatGPT can package/validate inside sandbox if the public infractl tool is available. WSL/operator may run the same packaging command in the real public tool checkout if needed. Codex is not addressed.</TD></TR>
+</TABLE>
+>];
+
+  Vars [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>PUBLIC_TOOL_ROOT=&lt;infractl-public root containing python3 -m infractl.cli&gt;<BR ALIGN="LEFT"/>UPDATE_FILES_DIR=&lt;folder containing the five update files from P2&gt;<BR ALIGN="LEFT"/>MODE=package-codex-update [v7 packaging mode]<BR ALIGN="LEFT"/>TRACK=skeleton [route-fixed]<BR ALIGN="LEFT"/>BATCH_NUMBER=&lt;infer from update files&gt;<BR ALIGN="LEFT"/>BATCH_SLUG=&lt;infer from update files/request pack&gt;<BR ALIGN="LEFT"/>TOPIC=&lt;infer from update files&gt;<BR ALIGN="LEFT"/>PACK_OUTPUT_DIR=&lt;safe output folder&gt;<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
+</TABLE>
+>];
+
+  Prompt [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
+  <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main DOT and the P2 update files. We are in v7 at P3 writing-to-package for request-update + skeleton, covering G10 update-package-input and G12 update-pack. First infer and show the suggested variables, then ask me to confirm. After confirmation, validate that the five update files are present and internally consistent, then run the deterministic package-codex-update flow to create a Codex update pack zip and manifest/log. Do not run Codex. Do not run smoke. Do not mutate /workspace, /mnt/ingress, or /mnt/egress.</TD></TR>
+</TABLE>
+>];
+
+  Inputs [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
+  <TR><TD><B>Update package input checklist</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Require exactly: CODEX_UPDATE_PROMPT.txt, PROJECT_UPDATE_CACHE.md, UPDATE_SPEC.md, UPDATE_RUN_INSTRUCTIONS.md, UPDATE_POSTCHECK_TEMPLATE.md. Confirm they describe the same mode, track, batch, slug, and topic. Stop if create-file names are supplied instead of update-file names, or if the task drifts into implementation.</TD></TR>
+</TABLE>
+>];
+
+  Cmd [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Safe P3 command shape after confirmation</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Command shape:<BR ALIGN="LEFT"/>python3 -m infractl.cli package-codex-update \<BR ALIGN="LEFT"/>  --input ${UPDATE_FILES_DIR} \<BR ALIGN="LEFT"/>  --out ${PACK_OUTPUT_DIR}<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>The exact flags may be adjusted to match the installed infractl CLI help, but the semantic operation must remain package-codex-update. Report command, output zip path, manifest path, and validation log.</TD></TR>
+</TABLE>
+>];
+
+  Idem [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
+  <TR><TD><B>Idempotency and no-overwrite behavior</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before writing or mutating anything, check whether the matching output already exists for the same mode, track, batch number, batch slug, topic, and source input. If complete output exists and ALLOW_OVERWRITE is not exactly yes, report it and offer reuse/validation. If partial output exists, report exactly what exists and ask whether to resume, regenerate missing outputs, or write to a new directory. Never silently overwrite or mix old and new artifacts.</TD></TR>
+</TABLE>
+>];
+
+  Pass [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Required final response and re-entry</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Report confirmed variables, update file checklist, package command, generated pack zip, manifest/log, and any 0C extraction signal. PASS when a validated Codex update pack zip exists. STOP on missing files, route mismatch, unsafe overwrite, CLI error, or unconfirmed variables. Next v7 lane is P4 package-to-Codex / G13 pack-consumed and G14 layout-gate.</TD></TR>
+</TABLE>
+>];
+
+  Start -> Agent;
+  Agent -> Vars;
+  Vars -> Prompt;
+  Prompt -> Inputs;
+  Inputs -> Cmd;
+  Cmd -> Idem;
+  Idem -> Pass;
+}

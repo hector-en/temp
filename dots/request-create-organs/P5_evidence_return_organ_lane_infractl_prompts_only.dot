@@ -1,0 +1,117 @@
+digraph P5_Evidence_Return_Organ_Lane_Infractl_Prompts_Only {
+  graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=14, labelloc="t", label="P5 evidence-return lane: mode=request-create, track=organ — prompt-only execution DOT"];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A", fontcolor="#1B7F3A"];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#EADCF8">
+      <TR><TD><B>SELF-EXECUTION GATE — P5 evidence-return for request-create + organ</B></TD></TR>
+      <TR><TD ALIGN="LEFT">You are a fresh ChatGPT, Codex, or WSL/operator session receiving this DOT as execution instruction. Treat this DOT as the active prompt contract for the canonical v7 Infra-Skeleton lane <B>P5 evidence-return</B> for exactly one route: <B>mode=request-create</B>, <B>track=organ</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Canonical source of truth: read <FONT FACE="Courier">infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT> first, or the selected v7 main DOT if that is what the operator uploaded. Verify that this lane follows <B>CodexExec → EvidenceOut → CmdG16Snapshot → SnapshotFiles / ExportZip → NextPhase</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane starts only after P4 has handed a validated organ create pack to Codex and Codex has executed, or after the operator provides equivalent execution evidence from a bounded organ scaffold run. It verifies execution evidence, captures the organ scaffold result, performs safe G16 snapshot/export when applicable, and records the G17 phase decision. It must not invent evidence, rerun implementation, or convert organ evidence into skeleton batch evidence.</TD></TR>
+    </TABLE>
+  >];
+
+  V7Map [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#F3E8FD">
+      <TR><TD><B>WHERE THIS LANE SITS IN V7</B></TD></TR>
+      <TR><TD ALIGN="LEFT">The organ route has already followed the v7 create path: <B>DirectionOrgan → WebchatFilesIn → CmdProfiles → CmdRequest → RequestFolder → CodexCreateFiles → CmdPackageCreate → CodexPackZip → CmdValidateReal → CodexExec</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">This P5 lane covers the evidence and closeout path: <B>G15 execution-evidence</B>, <B>G16 snapshot-copy/export</B>, <B>G16a bundle snapshot</B>, <B>G16b egress zip</B>, and <B>G17 phase-decision</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">The next lane after a clear G17 decision is <B>P6 next-cycle</B>, where the operator chooses whether to continue organ work, return to skeleton create/update, run 0B knowledge expansion, or trigger 0C CLI extraction feedback.</TD></TR>
+    </TABLE>
+  >];
+
+  OrganContext [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#E8F0FE">
+      <TR><TD><B>ORGAN-SPECIFIC CONTEXT THAT MUST NOT BE LOST</B></TD></TR>
+      <TR><TD ALIGN="LEFT">The organ route starts at <B>R01</B> or the first real-organ scaffold unit because it is the transition from skeleton/dummy batches into real organ work. This lane closes out that scaffold execution, not a skeleton batch replay.</TD></TR>
+      <TR><TD ALIGN="LEFT">Keep the organ transition sources in scope when interpreting evidence: <FONT FACE="Courier">01_B0_transition_to_real_organs_master_v2.md</FONT>, <FONT FACE="Courier">01_B1_transition_real_organs_codex_batch_plan_v2.md</FONT>, and <FONT FACE="Courier">day_to_day_organs_run.md</FONT>. These sources explain how organ evidence differs from skeleton batch evidence, what an organ scaffold is allowed to produce, and how the next organ cycle should be selected.</TD></TR>
+      <TR><TD ALIGN="LEFT">Do not label organ evidence as skeleton Batch 01 evidence. Do not use skeleton slug conventions if the organ pack or transition plan provides an organ-specific unit/slug. Do not snapshot into skeleton evidence paths unless the pack explicitly describes a skeleton-compatible bridge and the operator confirms that routing.</TD></TR>
+    </TABLE>
+  >];
+
+  AgentGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#F5F5F5">
+      <TR><TD><B>ADDRESSING GATE — decide whether this prompt is for you</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>ChatGPT/webchat:</B> you may inspect the main DOT, P4/Codex final response, and uploaded evidence; infer variables; classify PASS/WARN/STOP; prepare G16 commands; and write the final phase decision. Do not claim to inspect <FONT FACE="Courier">/workspace</FONT>, <FONT FACE="Courier">/mnt/ingress</FONT>, or <FONT FACE="Courier">/mnt/egress</FONT> unless the files are actually available in your environment.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>WSL/operator or shell-capable agent:</B> you may run read-only checks and the G16 snapshot/export helper after the variable block is confirmed and evidence is complete. Do not mutate historical evidence or overwrite an export zip unless explicitly allowed.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Codex:</B> you are addressed in P5 only to provide, clarify, or repair missing evidence from the just-finished bounded organ run. You are not being asked to broaden implementation or start a second organ task unless P6 later selects that route.</TD></TR>
+      <TR><TD ALIGN="LEFT">If you are the wrong agent, stop. State that this is P5 evidence-return for request-create + organ and name the correct actor.</TD></TR>
+    </TABLE>
+  >];
+
+  Variables [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#D9F2DF">
+      <TR><TD><B>SUGGESTED RUN VARIABLES — infer first, then ask for confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before checking, copying, exporting, or deciding anything, infer a suggested variable block from the uploaded main DOT, P4 output, Codex final response, evidence paths, organ pack manifest, and prior route context. Do not give the operator an empty form. Label each value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>. Ask only for values that remain unknown or unsafe to infer.</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">CANONICAL_MAIN_DOT=</FONT> uploaded clean/v7 main DOT path<BR ALIGN="LEFT"/><FONT FACE="Courier">MODE=request-create</FONT> [route-fixed]<BR ALIGN="LEFT"/><FONT FACE="Courier">TRACK=organ</FONT> [route-fixed]<BR ALIGN="LEFT"/><FONT FACE="Courier">ORGAN_UNIT=</FONT> infer from pack/Codex output, expected R01 or first organ scaffold unit<BR ALIGN="LEFT"/><FONT FACE="Courier">ORGAN_SLUG=</FONT> infer from organ transition plan or pack manifest<BR ALIGN="LEFT"/><FONT FACE="Courier">TOPIC=</FONT> infer from pack/Codex output<BR ALIGN="LEFT"/><FONT FACE="Courier">CODEX_RUN_OUTPUT=</FONT> Codex final response or evidence folder<BR ALIGN="LEFT"/><FONT FACE="Courier">PRIVATE_PROJECT_ROOT=</FONT> private bundle/project root, often <FONT FACE="Courier">/workspace/private/agentfield-grn-private_real_v0</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">ORGAN_EVIDENCE_ROOT=</FONT> organ evidence path produced by Codex or selected by transition plan<BR ALIGN="LEFT"/><FONT FACE="Courier">SMOKE_REPORT_PATH=</FONT> new or accepted report path, or <FONT FACE="Courier">not-run</FONT> with reason if scaffold did not require smoke<BR ALIGN="LEFT"/><FONT FACE="Courier">G16_SCRIPT=</FONT> usually <FONT FACE="Courier">/workspace/repos/infractl-public/scripts/g16_snapshot.sh</FONT> if compatible; otherwise mark unknown/needs 0C<BR ALIGN="LEFT"/><FONT FACE="Courier">EXPORT_DIR=</FONT> usually <FONT FACE="Courier">/mnt/egress/private-bundles</FONT> [default-safe when exporting]<BR ALIGN="LEFT"/><FONT FACE="Courier">EXPORT_NAME=</FONT> suggested organ baseline zip name from organ unit/topic<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_SNAPSHOT=no</FONT> [default-safe until confirmed]<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_EXPORT=no</FONT> [default-safe until confirmed]<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_OVERWRITE=no</FONT> [default-safe]</TD></TR>
+      <TR><TD ALIGN="LEFT">Do not proceed until the operator confirms these variables or explicitly says to proceed with the suggested values.</TD></TR>
+    </TABLE>
+  >];
+
+  ExactPrompt [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#FFF2CC">
+      <TR><TD><B>EXACT PROMPT TO TYPE FOR THIS LANE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the canonical v7 main DOT, the P4/Codex final response, and any returned evidence. We are in P5 evidence-return for mode=request-create, track=organ, covering G15 execution-evidence, G16 snapshot-copy/export, G16a bundle snapshot, G16b egress zip, and G17 phase-decision.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">First infer and show the suggested variable block for CANONICAL_MAIN_DOT, MODE, TRACK, ORGAN_UNIT, ORGAN_SLUG, TOPIC, CODEX_RUN_OUTPUT, PRIVATE_PROJECT_ROOT, ORGAN_EVIDENCE_ROOT, SMOKE_REPORT_PATH, G16_SCRIPT, EXPORT_DIR, EXPORT_NAME, ALLOW_SNAPSHOT, ALLOW_EXPORT, and ALLOW_OVERWRITE. Label each value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct variables before doing anything.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">After confirmation, verify the G15 organ scaffold evidence. Confirm changed files, tests run, evidence files, smoke/report status, remaining issues, and route identity. Do not fabricate evidence. Do not treat organ R01 as skeleton Batch 01. Do not overwrite historical evidence.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">If evidence is complete and I confirm ALLOW_SNAPSHOT or ALLOW_EXPORT, prepare or run the correct G16 snapshot/export command for the organ route. If the available G16 helper only supports skeleton-style batch/update evidence, stop and create a 0C CLI extraction signal instead of forcing organ evidence into the wrong structure. End with a clear G17 phase decision and the next v7 re-entry lane.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  EvidenceCheck [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#D9F2DF">
+      <TR><TD><B>G15 ORGAN EXECUTION-EVIDENCE CHECKLIST</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Verify the Codex output belongs to <B>request-create + organ</B>. It should identify the organ unit or scaffold target, changed files, tests/checks run, created evidence, smoke status or reason smoke was not run, remaining issues, and any next-step recommendation.</TD></TR>
+      <TR><TD ALIGN="LEFT">Expected evidence shape may differ from skeleton update evidence. For organ create, look for scaffold postcheck/integration/evidence records named by the organ transition plan or pack. Do not require <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT> unless the pack explicitly produced an update-style organ delta. Do not require skeleton <FONT FACE="Courier">evidence_snapshots/skeleton/&lt;batch&gt;</FONT> paths unless the transition plan says so.</TD></TR>
+      <TR><TD ALIGN="LEFT">Evidence must be consistent with <FONT FACE="Courier">01_B0_transition_to_real_organs_master_v2.md</FONT>, <FONT FACE="Courier">01_B1_transition_real_organs_codex_batch_plan_v2.md</FONT>, and <FONT FACE="Courier">day_to_day_organs_run.md</FONT> when those files are available. Stop if the evidence contradicts those organ-routing files or appears to have been generated from a skeleton lane by mistake.</TD></TR>
+    </TABLE>
+  >];
+
+  OrganCreateEvidenceReturnContract [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Organ create evidence return contract</B></TD></TR>
+      <TR><TD ALIGN="LEFT">P5 must expect organ create G15 evidence: <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>, and <FONT FACE="Courier">SMOKE_REPORT.md</FONT> only if smoke was run or reused.</TD></TR>
+      <TR><TD ALIGN="LEFT">Verify route identity is organ create and that evidence identifies <FONT FACE="Courier">ORGAN_RUN</FONT> and <FONT FACE="Courier">ORGAN_SLUG</FONT>. Reject skeleton-only evidence as organ create evidence.</TD></TR>
+      <TR><TD ALIGN="LEFT">Snapshot organ evidence under <FONT FACE="Courier">/workspace/private/agentfield-grn-private_real_v0/sources/evidence_snapshots/organ/&lt;organ-slug&gt;/</FONT>. Never copy organ create evidence into <FONT FACE="Courier">sources/evidence_snapshots/skeleton/</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the current G16 helper cannot represent organ evidence roots safely, STOP or WARN according to evidence completeness and create a 0C CLI extraction candidate for organ-safe snapshot/export support. Do not force skeleton helper parameters onto organ evidence.</TD></TR>
+      <TR><TD ALIGN="LEFT">G17 PASS requires complete normalized evidence and safe snapshot/export or an explicitly documented accepted deferral. WARN if optional smoke/export/helper gaps remain. STOP if route identity is wrong, normalized evidence is missing, snapshot would write to skeleton roots, or unsafe overwrite is requested.</TD></TR>
+    </TABLE>
+  >];
+
+  SnapshotGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#E8F0FE">
+      <TR><TD><B>G16 SNAPSHOT-COPY / EXPORT DECISION FOR ORGAN ROUTE</B></TD></TR>
+      <TR><TD ALIGN="LEFT">In v7, G16 snapshots completed evidence into the private bundle and optionally exports a new private bundle zip. For skeleton update, the known helper was <FONT FACE="Courier">g16_snapshot.sh</FONT>. For organ create, first verify whether the helper and private bundle layout support organ evidence paths. Do not force organ evidence through a skeleton-only argument model such as <FONT FACE="Courier">batch_slug + update_topic</FONT> if that would mislabel the result.</TD></TR>
+      <TR><TD ALIGN="LEFT">If the helper supports organ evidence, construct the command with organ-aware variables and ask for operator confirmation before running. If it does not, report the mismatch and create a 0C extraction signal recommending an organ-capable G16 helper or <FONT FACE="Courier">infractl snapshot-evidence</FONT> promotion.</TD></TR>
+      <TR><TD ALIGN="LEFT">A safe organ snapshot should preserve transition files, organ evidence, run reports, and any new private-bundle baseline without overwriting older skeleton evidence. Export names should identify the organ unit/topic and should not reuse a skeleton update export name.</TD></TR>
+    </TABLE>
+  >];
+
+  Idempotency [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#FCE8E6">
+      <TR><TD><B>IDEMPOTENCY AND NO-OVERWRITE BEHAVIOR</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before writing or copying anything, check whether matching organ evidence snapshots or export zips already exist for the same mode, track, organ unit, organ slug, topic, pack identity, and private bundle baseline. If complete outputs exist and <FONT FACE="Courier">ALLOW_OVERWRITE</FONT> is not exactly yes, report them and offer reuse/validation. If partial outputs exist, report exactly what exists and ask whether to resume, regenerate missing outputs, or write to a new directory.</TD></TR>
+      <TR><TD ALIGN="LEFT">Never silently overwrite historical evidence. Never mix skeleton and organ artifacts. Never run G16 export before G15 evidence is complete. Never proceed to P6 without an explicit G17 decision.</TD></TR>
+    </TABLE>
+  >];
+
+  G17 [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#F3E8FD">
+      <TR><TD><B>G17 PHASE DECISION</B></TD></TR>
+      <TR><TD ALIGN="LEFT">After evidence is verified and snapshot/export is complete or intentionally skipped with a reason, produce a clear phase decision. Examples: accept organ R01 scaffold with PASS; accept documented WARN with named remaining host/provider gap; stop because evidence is incomplete; route to 0B because new organ knowledge/specs must be integrated; route to 0C because helper/CLI extraction is needed.</TD></TR>
+      <TR><TD ALIGN="LEFT">The decision must name the next v7 lane: <B>P6 next-cycle for request-create + organ</B>, 0B expansion lane, 0C CLI extraction feedback, or a STOP state awaiting missing evidence.</TD></TR>
+    </TABLE>
+  >];
+
+  StopPass [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="960" BGCOLOR="#E8F0FE">
+      <TR><TD><B>REQUIRED FINAL RESPONSE, PASS/WARN/STOP, AND RE-ENTRY</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Final response must include: confirmed variables, G15 evidence summary, organ/skeleton mismatch checks, tests/smoke status, G16 snapshot/export result or reason skipped, export path if created, 0B/0C handoff if any, and the explicit G17 decision.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PASS:</B> organ create evidence is complete, route identity is consistent, snapshot/export is complete or intentionally deferred, and G17 names the next lane.<BR ALIGN="LEFT"/><B>WARN:</B> evidence is complete but optional smoke/provider/tooling gaps remain, or snapshot/export requires a follow-up helper enhancement.<BR ALIGN="LEFT"/><B>STOP:</B> missing Codex output, wrong route, skeleton/organ mismatch, incomplete evidence, unresolved smoke/report path, unsafe overwrite, wrong agent, missing confirmation, or G16 helper cannot safely represent organ evidence.</TD></TR>
+      <TR><TD ALIGN="LEFT">After PASS or accepted WARN, re-enter v7 at <B>P6 next-cycle for request-create + organ</B>.</TD></TR>
+    </TABLE>
+  >];
+
+  Start -> V7Map -> OrganContext -> AgentGate -> Variables -> ExactPrompt -> EvidenceCheck -> OrganCreateEvidenceReturnContract -> SnapshotGate -> Idempotency -> G17 -> StopPass;
+}

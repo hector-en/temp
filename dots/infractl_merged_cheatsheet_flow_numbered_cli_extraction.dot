@@ -1,0 +1,666 @@
+digraph InfraCTL_Merged_Cheatsheet_Flow {
+  compound=true;
+  newrank=true;
+  rankdir=TB;
+  splines=ortho;
+  forcelabels=true;
+  nodesep=0.55;
+  ranksep=0.85;
+  pad="0.2,0.2";
+  fontname="Helvetica";
+  fontsize=10;
+  labelloc="t";
+  label="Infra-Skeleton infractl: Daily Cheatsheet Flow + Public/Private Contract + CLI Extraction Notes + G16 Snapshot Export + Config-Infra CIP Router (proposed)";
+
+  node [shape=plain, fontname="Helvetica", fontsize=9, color="black"];
+  edge [arrowsize=0.7, penwidth=1.5, fontname="Helvetica", fontsize=8, labelfloat=true, decorate=false, labeldistance=1.6, labelangle=0];
+
+  // Palette:
+  // Purple = workflow/control arrows.
+  // Green  = artifact/context/file arrows.
+  // Grey   = command -> command details.
+  // Blue   = Config-Infra Pipeline (CIP) router and phase arrows.
+  // Lavender = direction blocks.
+  // Green fill = files/artifacts.
+  // Pale green = command.
+  // Grey fill = command details / validation.
+  // Yellow fill = ChatGPT-authored Codex files.
+
+  // --- LEGEND / NOTES -------------------------------------------------------
+  subgraph cluster_notes {
+    label="Legend: numbered edge tags";
+    style="dashed,rounded";
+    color="#777777";
+    fontsize=14;
+    rankdir=TB;
+
+    Note [shape=plain, label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2" WIDTH="980">
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>Purple tags</B></FONT> use their own numbering series: P1, P2, P3...</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>Green tags</B></FONT> use a separate numbering series: G1, G2, G3...</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Stop rule</B>: if <I>evidence_required: yes</I> and evidence is missing, stop and ask for the missing evidence or explicit approval to continue without it.</TD></TR>
+        <TR><TD ALIGN="LEFT"> </TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P1: direction-gate]</B></FONT> Choose exactly one WORKFLOW_DIRECTION. Do not infer mode, batch, topic, or evidence behavior automatically.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P2: request-to-writing]</B></FONT> Use the generated request pack as the bounded input for ChatGPT to write exact Codex create/update files.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P3: writing-to-package]</B></FONT> Move the ChatGPT-authored create/update files into the WSL2/local packaging step.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P4: package-to-codex]</B></FONT> Hand the validated Codex pack to the real workspace/Codex execution environment.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P5: evidence-return]</B></FONT> Return POSTCHECK, INTEGRATION_REQUEST, smoke reports, and update manifests from execution.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P6: next-cycle]</B></FONT> Use returned evidence to choose the next create/update/knowledge/organ cycle.</TD></TR>
+        <TR><TD ALIGN="LEFT"> </TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G1: inputs-preflight]</B></FONT> Public tool, private bundle, evidence snapshots, and optional extra files feed safe validation.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G2: create-flags]</B></FONT> Skeleton create direction becomes request-create flags.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G3: update-flags]</B></FONT> Skeleton update direction becomes request-update flags and evidence checks.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G4: extra-source]</B></FONT> Knowledge-expansion direction passes uploaded notes/specs as candidate extra sources.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G5: organ-flags]</B></FONT> Organ R01 scaffold direction switches track/batch while preserving the same safe request pattern.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G6: request-pack]</B></FONT> infractl emits CHATGPT_REQUEST, manifests, routing notes, evidence check, and source bundle.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G7: create-files]</B></FONT> Request pack produces CODEX_PROMPT, PROJECT_CACHE, SPEC, RUN_INSTRUCTIONS, and POSTCHECK_TEMPLATE.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G8: update-files]</B></FONT> Request pack produces CODEX_UPDATE_PROMPT, PROJECT_UPDATE_CACHE, UPDATE_SPEC, UPDATE_RUN_INSTRUCTIONS, and UPDATE_POSTCHECK_TEMPLATE.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G9: create-package-input]</B></FONT> Creation files are consumed by package-codex-create.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G10: update-package-input]</B></FONT> Update files are consumed by package-codex-update.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G11: create-pack]</B></FONT> package-codex-create emits a validated create pack zip plus manifest/log.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G12: update-pack]</B></FONT> package-codex-update emits a validated update pack zip plus manifest/log.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G13: pack-consumed]</B></FONT> Codex consumes the pack zip as its bounded implementation instruction source.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G14: layout-gate]</B></FONT> validate-real-layout checks real paths under /mnt/ingress before execution.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G15: execution-evidence]</B></FONT> Codex execution produces POSTCHECK, INTEGRATION_REQUEST, smoke report, and update manifest when required.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G16: snapshot-copy/export]</B></FONT> Returned evidence is copied into sources/evidence_snapshots/ and the updated private bundle can be zipped to /mnt/egress/private-bundles.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G17: phase-decision]</B></FONT> Snapshot state determines whether the next batch/update can proceed or must ask for missing files.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G18: knowledge-loop]</B></FONT> Returned notes and new files can become an extra-source direction for knowledge expansion.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P7: expansion-choice]</B></FONT> Choose whether the new source is a batch update, SPEC/ANX update, hook update, prompt update, or future CLI extraction candidate.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P8: re-enter-cycle]</B></FONT> After private system files are updated, re-enter the normal direction gate for the next request pack or update pack.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G19: public-private-contract]</B></FONT> Public files provide reusable tooling; private bundle files provide project maps, context, evidence, and generated outputs.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G20: files-yaml-mapping]</B></FONT> files.yaml connects portable private-bundle source names to real paths under /mnt/ingress/infra.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G21: route-extra-source]</B></FONT> EXTRA_SOURCE_ROUTING.md classifies the uploaded source before any SPEC, ANX, hook, prompt, or CLI behavior changes.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G22: private-file-update]</B></FONT> The expansion lane produces private system files such as SPEC_Layer*, ANX files, BATCH_*_ANX hooks, and NEW_CHAT_PROMPT updates.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P9: cli-extraction-choice]</B></FONT> Human decides whether repeated manual behavior stays as notes, becomes a public helper script, or is promoted into an infractl subcommand.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G23: extraction-reminder]</B></FONT> CLI_EXTRACTION_REMINDER.md, Codex notes, and repeated commands feed CLI_EXTRACTION_NOTES.md.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G24: extraction-ledger]</B></FONT> CLI_EXTRACTION_NOTES.md is the private ledger for stable manual patterns across create, update, organ, G16, and 0B expansion lanes.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G25: public-tool-promotion]</B></FONT> Only after the ledger proves a pattern stable should it become infractl-public/scripts/* or a formal infractl.cli command.</TD></TR>
+
+        <TR><TD ALIGN="LEFT"> </TD></TR>
+
+        <TR><TD ALIGN="LEFT"> </TD></TR>
+        <TR><TD ALIGN="LEFT"><B>WORKFLOW_DIRECTION field guide</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>mode</B>: choose the operation family. <I>request-create</I> builds a ChatGPT request pack for a new not-yet-run batch. <I>request-update</I> builds a request pack for an already-run batch or retroactive correction. <I>package-codex-create</I> validates/bundles the five create files after ChatGPT writes them. <I>package-codex-update</I> validates/bundles the five update files after ChatGPT writes them. <I>check-evidence</I> checks expected evidence for one batch. <I>status</I> is read-only inventory/preflight.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>track</B>: choose the phase lane. <I>skeleton</I> is the current active lane for Batches 01-04. <I>organ</I> is the real-organ transition lane; in v0 it is scaffold-only, starting with R01.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>batch</B>: choose the exact batch id. Available v0 skeleton ids: <I>01 runtime-substrate</I>, <I>02 research-workspace</I>, <I>03 ai-engineer-workspaces</I>, <I>04 pkm-skeleton</I>. Available v0 organ id: <I>R01 real-contract-audit-runtime-role-readiness</I>.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>topic</B>: short slug for the concrete job, for example <I>workflow_smoke_automation</I>, <I>batch02_creation</I>, <I>workspace_boundary_update</I>, or <I>create_or_update_spec_annex</I>. It becomes part of generated folder/request identity.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>evidence_required</B>: choose <I>yes</I> for updates to already-run batches or anything that depends on prior execution state. Choose <I>no</I> for a brand-new create request or early organ scaffold where prior evidence is not expected yet.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>extra_sources</B>: choose <I>none</I> for ordinary batch create/update. Add uploaded files only when expanding knowledge or routing new material. Extra sources are candidate context only until EXTRA_SOURCE_ROUTING.md classifies them.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>profile</B>: use <I>webchat-sandbox</I> inside ChatGPT. Use <I>cli-dry-run</I> for local preview. Use <I>codex-pack</I> when validating/bundling ChatGPT outputs. Use <I>workspace</I> only inside the real workspace/Codex environment.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>out</B>: generated artifact root. In ChatGPT use <I>/mnt/data/generated_real_v0</I>. In WSL2/local use your local generated folder. In workspace use the private bundle's generated area.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Command intention box (companion-dev reading)</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>profiles / list / status</B>: preflight only. Use it to prove the public CLI and private bundle are readable, see available tracks/batches/hooks, and avoid choosing a job blindly.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>request-create/update</B>: request-factory. Use it to turn one WORKFLOW_DIRECTION into a bounded ChatGPT request pack. It selects context, records evidence state, and creates the safe writing surface. It does not implement anything.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>package-codex-create</B>: creation-pack validator. Use it after ChatGPT has written the five create files. It checks shape and bundles them for Codex.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>package-codex-update</B>: update-pack validator. Use it after ChatGPT has written the five update files. It keeps retroactive fixes separate from original batch evidence.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>validate-real-layout</B>: workspace gate. Use it in Codex/real workspace to prove the private infra tree is where files.yaml says it is before execution touches real paths.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Codex executes pack</B>: implementation phase. Codex consumes only the validated pack, applies the requested change, and returns evidence. This is not an infractl command.</TD></TR>
+
+        <TR><TD ALIGN="LEFT"> </TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Public/private contract box (companion-dev reading)</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Public tool</B>: reusable engine only. It contains infractl code, schemas, templates, examples, README, instructions, and update prompt. It may be pushed to GitHub.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Private bundle</B>: portable project control plane. It contains YAML maps, selected private source copies, evidence snapshots, generated request packs, and source inventory. It is uploaded to ChatGPT but not pushed publicly.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Real private filesystem</B>: authoritative planning/control tree at /mnt/ingress/infra. files.yaml maps portable bundle paths back to these real paths.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Workspace</B>: execution and implementation surface. Keep /workspace for repos, experiments, runs, artifacts, models, and generated working code; do not treat it as the private planning source.</TD></TR>
+
+        <TR><TD ALIGN="LEFT"> </TD></TR>
+
+        <TR><TD ALIGN="LEFT"> </TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Current private bundle mapping files (actual real-v0 bundle)</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>project.yaml 1.6 KB</B>: project id <I>agentfield-grn</I>, version <I>real-v0-batch04</I>, supported profiles, source/generated/evidence roots, safety flags, and workflow notes. It says what project this bundle controls.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>layers.yaml 0.9 KB</B>: five-layer orientation map. Layer 01 owns Batch 01; Layer 02 owns Batches 02-04 and future Batch 05; Layers 03-05 activate later. It keeps batch numbers tied to architecture layers.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>batches.yaml 6.6 KB</B>: active batch contract map. It defines skeleton 01-04 plus organ R01, with slug, layer, scope, required_sources, required_hooks, expected Codex pack shape, evidence_contract, smoke domains, and must_not rules.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>hooks.yaml 1.0 KB</B>: ANX registry. Current hooks: <I>workflow_smoke_automation</I> / ANX04 applies to skeleton 01-04 and organ R01; <I>workspace_boundaries</I> / ANX01 applies to skeleton 02.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>files.yaml 7.0 KB</B>: main bridge file. It has <B>28 source_keys</B>: <B>11 required</B> and <B>17 optional</B>. Each key has bundle_path, real_path, and required=true/false. It is what validate-real-layout uses against /mnt/ingress.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Required source keys</B>: A0, A1, A2, NEW_CREATE, NEW_UPDATE, SPEC_L1, SPEC_L2, WF_FINAL, WF_SKELETON, WF_SMOKE, CLI_NOTES.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Real-path families covered by files.yaml</B>: infra/plans/implementation (13 keys), infra/plans/specifications (7 keys), infra/plans/workflow (7 keys), infra/skeleton/1_chatgpt_batch_creation (1 key).</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>sources/</B>: copied fallback context for ChatGPT webchat when /mnt/ingress/infra is not mounted. check-required-files validates these bundle copies.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>evidence_snapshots/</B>: copied POSTCHECK, INTEGRATION_REQUEST, SMOKE_REPORT, and update evidence used by request-update/check-evidence.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>generated/</B>: request packs and generated outputs produced by infractl/ChatGPT. It is staging, not authoritative source.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Expansion lane box (companion-dev reading)</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>New knowledge</B>: enter it as extra_sources. The request pack must route it through EXTRA_SOURCE_ROUTING.md before treating it as authoritative.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>New SPEC/ANX/hook files</B>: create or update private files first, for example SPEC_LayerXX_...md, SPEC_LayerXX_...-ANX##...md, BATCH_CREATION_ANX##...md, or BATCH_UPDATE_ANX##...md.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Prompt changes</B>: update NEW_CHAT_PROMPT_batch_creation.md, NEW_CHAT_PROMPT_batch_update.md, or NEW_CHAT_PROMPT_update_infra.md only when the new pattern should change future ChatGPT/Codex behavior.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>CLI changes</B>: only promote repeated manual behavior into infractl after CLI_EXTRACTION_NOTES.md shows the pattern is stable.</TD></TR>
+      </TABLE>
+    >];
+  }
+
+
+  // --- STANDALONE ARCHITECTURE BOXES ---------------------------------------
+  subgraph cluster_contract_arch {
+    label="0A. Public/private contract in the current filesystem [ChatGPT/WSL2 preflight, not Codex implementation]";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=TB;
+
+    PublicContract [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#E8F0FE">
+        <TR><TD><B>Public tool: reusable, safe to push</B></TD></TR>
+        <TR><TD ALIGN="LEFT">GitHub / public_infra-skeleton-tools_v0/<BR ALIGN="LEFT"/>README.md + instructions.md<BR ALIGN="LEFT"/>NEW_CHAT_PROMPT_update_infra.md<BR ALIGN="LEFT"/>infractl/cli.py project.py render.py pack.py<BR ALIGN="LEFT"/>infractl/evidence.py profiles.py<BR ALIGN="LEFT"/>schemas/ templates/ examples/</TD></TR>
+      </TABLE>
+    >];
+
+    PrivateContract [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#FCE8E6">
+        <TR><TD><B>Private bundle: project control plane</B></TD></TR>
+        <TR><TD ALIGN="LEFT">agentfield-grn-private_real_v0/<BR ALIGN="LEFT"/>project.yaml 1.6 KB = identity/profiles/roots<BR ALIGN="LEFT"/>layers.yaml 0.9 KB = 5-layer scope map<BR ALIGN="LEFT"/>batches.yaml 6.6 KB = batch contracts<BR ALIGN="LEFT"/>hooks.yaml 1.0 KB = ANX/hook registry<BR ALIGN="LEFT"/>files.yaml 7.0 KB = 28 source-key real-path map<BR ALIGN="LEFT"/>sources/ = webchat fallback copies<BR ALIGN="LEFT"/>sources/workflow/CLI_EXTRACTION_NOTES.md = extraction ledger<BR ALIGN="LEFT"/>evidence_snapshots/ = returned proof cache<BR ALIGN="LEFT"/>generated/ = request/output staging</TD></TR>
+      </TABLE>
+    >];
+
+
+    ActualYamlMap [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#FCE8E6">
+        <TR><TD><B>Actual YAML map status</B></TD></TR>
+        <TR><TD ALIGN="LEFT">files.yaml: 28 source_keys<BR ALIGN="LEFT"/>CLI_NOTES required source key<BR ALIGN="LEFT"/>required: 11 / optional: 17<BR ALIGN="LEFT"/>batches.yaml: skeleton 01-04 + organ R01<BR ALIGN="LEFT"/>hooks.yaml: ANX04 smoke + ANX01 workspace<BR ALIGN="LEFT"/>validate-real-layout reads files.yaml.real_path<BR ALIGN="LEFT"/>strict v0 fails if required real_path missing</TD></TR>
+      </TABLE>
+    >];
+
+    RealContract [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#FCE8E6">
+        <TR><TD><B>Real private tree: authoritative source</B></TD></TR>
+        <TR><TD ALIGN="LEFT">/mnt/ingress/infra/<BR ALIGN="LEFT"/>plans/implementation/ = master plans/prompts<BR ALIGN="LEFT"/>plans/implementation/HOOKS/ = ANX hooks<BR ALIGN="LEFT"/>plans/specifications/ = layer specs<BR ALIGN="LEFT"/>plans/specifications/annex/ = SPEC annexes<BR ALIGN="LEFT"/>plans/workflow/ = workflow rules<BR ALIGN="LEFT"/>batches/skeleton/ + companions = execution evidence</TD></TR>
+      </TABLE>
+    >];
+
+    WorkspaceContract [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#F5F5F5">
+        <TR><TD><B>Workspace: execution surface</B></TD></TR>
+        <TR><TD ALIGN="LEFT">/workspace/repos/public tool<BR ALIGN="LEFT"/>/workspace/private/private bundle<BR ALIGN="LEFT"/>/workspace/data runs artifacts models checkpoints<BR ALIGN="LEFT"/>validate-real-layout uses files.yaml<BR ALIGN="LEFT"/>--repo-root /mnt/ingress means check /mnt/ingress/infra/...</TD></TR>
+      </TABLE>
+    >];
+
+    PublicContract -> PrivateContract -> ActualYamlMap -> RealContract -> WorkspaceContract [style=invis, weight=40];
+  }
+
+  subgraph cluster_expansion_arch {
+    label="0B. Example expansion lane: create/update SPEC, ANX, hook, or prompt [ChatGPT webchat planning/writing]";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=TB;
+
+    ExpansionInput [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Consumes new knowledge</B></TD></TR>
+        <TR><TD ALIGN="LEFT">uploaded note / paper summary / codebase analysis<BR ALIGN="LEFT"/>existing SPEC_Layer*.md<BR ALIGN="LEFT"/>existing BATCH_*_ANX*.md<BR ALIGN="LEFT"/>CLI_EXTRACTION_NOTES.md if CLI pattern emerges</TD></TR>
+      </TABLE>
+    >];
+
+    ExpansionDirection [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#EADCF8">
+        <TR><TD><B>Direction example</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">WORKFLOW_DIRECTION:<BR ALIGN="LEFT"/>  mode: request-update<BR ALIGN="LEFT"/>  track: skeleton<BR ALIGN="LEFT"/>  batch: 02<BR ALIGN="LEFT"/>  topic: create_or_update_spec_annex<BR ALIGN="LEFT"/>  evidence_required: yes<BR ALIGN="LEFT"/>  extra_sources:<BR ALIGN="LEFT"/>    - /mnt/data/new_knowledge.md</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    ExpansionRouting [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Route before editing</B></TD></TR>
+        <TR><TD ALIGN="LEFT">EXTRA_SOURCE_ROUTING.md decides:<BR ALIGN="LEFT"/>update current batch<BR ALIGN="LEFT"/>create/update SPEC annex<BR ALIGN="LEFT"/>create/update creation/update hook<BR ALIGN="LEFT"/>update future prompt<BR ALIGN="LEFT"/>ignore or ask for more files</TD></TR>
+      </TABLE>
+    >];
+
+    ExpansionOutputs [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#FFF2CC">
+        <TR><TD><B>Produces private system files</B></TD></TR>
+        <TR><TD ALIGN="LEFT">SPEC_LayerXX_...md<BR ALIGN="LEFT"/>SPEC_LayerXX_...-ANX##_...md<BR ALIGN="LEFT"/>BATCH_CREATION_ANX##_...md<BR ALIGN="LEFT"/>BATCH_UPDATE_ANX##_...md<BR ALIGN="LEFT"/>NEW_CHAT_PROMPT_batch_creation/update.md<BR ALIGN="LEFT"/>NEW_CHAT_PROMPT_update_infra.md if tool behavior changes</TD></TR>
+      </TABLE>
+    >];
+
+    ExpansionInput -> ExpansionDirection -> ExpansionRouting -> ExpansionOutputs [style=invis, weight=40];
+  }
+
+  subgraph cluster_cli_extraction {
+    label="0C. CLI extraction feedback lane: repeated manual behavior -> CLI_EXTRACTION_NOTES.md -> public helper or infractl command";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=TB;
+
+    ExtractionSignal [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="430" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Extraction signal can come from any lane</B></TD></TR>
+        <TR><TD ALIGN="LEFT">CLI_EXTRACTION_REMINDER.md from request packs<BR ALIGN="LEFT"/>repeated ChatGPT/Codex manual commands<BR ALIGN="LEFT"/>new helper scripts such as scripts/g16_snapshot.sh<BR ALIGN="LEFT"/>create/update/organ execution friction<BR ALIGN="LEFT"/>0B extra-source routing that changes tool behavior</TD></TR>
+      </TABLE>
+    >];
+
+    CLIExtractionNotes [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="430" BGCOLOR="#FCE8E6">
+        <TR><TD><B>Required extraction ledger</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Real path:<BR ALIGN="LEFT"/>/mnt/ingress/infra/plans/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Private bundle snapshot:<BR ALIGN="LEFT"/>sources/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Purpose: record repeated, stable manual behavior before public-tool promotion.</TD></TR>
+      </TABLE>
+    >];
+
+    ExtractionDecision [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="430" BGCOLOR="#EADCF8">
+        <TR><TD><B>Human decision: promote or keep as notes?</B></TD></TR>
+        <TR><TD ALIGN="LEFT">keep as private workflow note<BR ALIGN="LEFT"/>make public helper script under infractl-public/scripts/<BR ALIGN="LEFT"/>promote to python3 -m infractl.cli subcommand<BR ALIGN="LEFT"/>defer until pattern repeats in more batches/tracks</TD></TR>
+      </TABLE>
+    >];
+
+    ExtractionOutputs [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="430" BGCOLOR="#FFF2CC">
+        <TR><TD><B>Possible outputs</B></TD></TR>
+        <TR><TD ALIGN="LEFT">private: updated CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/>public helper: infractl-public/scripts/&lt;helper&gt;.sh<BR ALIGN="LEFT"/>public CLI: infractl/cli.py + tests/docs/schemas as needed<BR ALIGN="LEFT"/>request packs continue to emit CLI_EXTRACTION_REMINDER.md</TD></TR>
+      </TABLE>
+    >];
+
+    ExtractionSignal -> CLIExtractionNotes -> ExtractionDecision -> ExtractionOutputs [style=invis, weight=40];
+  }
+
+  // --- REGION 1: DIRECTION --------------------------------------------------
+  subgraph cluster_direction {
+    label="1. Direction gate: choose exactly one job";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=TB;
+
+    DirectionCreate [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="300" BGCOLOR="#EADCF8">
+        <TR><TD><B>1A. WORKFLOW_DIRECTION: create skeleton</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">mode: request-create<BR ALIGN="LEFT"/>track: skeleton<BR ALIGN="LEFT"/>batch: 02<BR ALIGN="LEFT"/>topic: batch02_creation<BR ALIGN="LEFT"/>evidence_required: no<BR ALIGN="LEFT"/>extra_sources: none</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    DirectionUpdate [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="300" BGCOLOR="#EADCF8">
+        <TR><TD><B>1B. WORKFLOW_DIRECTION: update skeleton</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">mode: request-update<BR ALIGN="LEFT"/>track: skeleton<BR ALIGN="LEFT"/>batch: 01<BR ALIGN="LEFT"/>topic: workflow_smoke_automation<BR ALIGN="LEFT"/>evidence_required: yes<BR ALIGN="LEFT"/>extra_sources: none</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    DirectionKnowledge [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="300" BGCOLOR="#EADCF8">
+        <TR><TD><B>1C. WORKFLOW_DIRECTION: expand knowledge</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">mode: request-update<BR ALIGN="LEFT"/>track: skeleton<BR ALIGN="LEFT"/>batch: 02<BR ALIGN="LEFT"/>topic: workspace_boundary_update<BR ALIGN="LEFT"/>evidence_required: yes<BR ALIGN="LEFT"/>extra_sources:<BR ALIGN="LEFT"/>  - /mnt/data/new_note_or_spec.md</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    DirectionOrgan [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="300" BGCOLOR="#EADCF8">
+        <TR><TD><B>1D. WORKFLOW_DIRECTION: organ R01 scaffold</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">mode: request-create<BR ALIGN="LEFT"/>track: organ<BR ALIGN="LEFT"/>batch: R01<BR ALIGN="LEFT"/>topic: organ_r01_scaffold<BR ALIGN="LEFT"/>evidence_required: no<BR ALIGN="LEFT"/>extra_sources: none</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    DirectionCreate -> DirectionUpdate -> DirectionKnowledge -> DirectionOrgan [style=invis, weight=50];
+  }
+
+  // --- REGION 2: WEBCHAT INFRACTL -----------------------------------------
+  subgraph cluster_webchat {
+    label="2. ChatGPT webchat container: validate inputs and generate one request";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=TB;
+
+    WebchatFilesIn [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="330" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Consumes files</B></TD></TR>
+        <TR><TD ALIGN="LEFT">public_infra-skeleton-tools_v0/<BR ALIGN="LEFT"/>agentfield-grn-private_real_v0/<BR ALIGN="LEFT"/>evidence_snapshots/ if evidence_required=yes<BR ALIGN="LEFT"/>extra source file if provided</TD></TR>
+      </TABLE>
+    >];
+
+    CmdPreflight [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="250" BGCOLOR="#CFEFD0">
+        <TR><TD><B>profiles / list / status</B></TD></TR>
+      </TABLE>
+    >];
+
+    DetailPreflight [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" WIDTH="360" BGCOLOR="#F5F5F5">
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Runs in ChatGPT container:<BR ALIGN="LEFT"/>cd /mnt/data/public_infra-skeleton-tools_v0<BR ALIGN="LEFT"/>python3 -m infractl.cli profiles<BR ALIGN="LEFT"/>python3 -m infractl.cli list-batches --project /mnt/data/agentfield-grn-private_real_v0 --track skeleton<BR ALIGN="LEFT"/>python3 -m infractl.cli list-hooks --project /mnt/data/agentfield-grn-private_real_v0<BR ALIGN="LEFT"/>python3 -m infractl.cli check-required-files --project /mnt/data/agentfield-grn-private_real_v0 --track skeleton<BR ALIGN="LEFT"/>python3 -m infractl.cli status --project /mnt/data/agentfield-grn-private_real_v0</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    CmdRequest [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="250" BGCOLOR="#CFEFD0">
+        <TR><TD><B>request-create/update</B></TD></TR>
+      </TABLE>
+    >];
+
+    DetailRequest [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" WIDTH="360" BGCOLOR="#F5F5F5">
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Runs in ChatGPT container:<BR ALIGN="LEFT"/>python3 -m infractl.cli request-create|request-update \<BR ALIGN="LEFT"/>  --project /mnt/data/agentfield-grn-private_real_v0 \<BR ALIGN="LEFT"/>  --track skeleton|organ \<BR ALIGN="LEFT"/>  --batch 01|02|R01 \<BR ALIGN="LEFT"/>  --topic &lt;WORKFLOW_DIRECTION.topic&gt; \<BR ALIGN="LEFT"/>  --profile webchat-sandbox \<BR ALIGN="LEFT"/>  [--extra-source /mnt/data/file.md] \<BR ALIGN="LEFT"/>  --out /mnt/data/generated_real_v0</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    RequestFolder [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="330" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Produces [12]</B></TD></TR>
+        <TR><TD ALIGN="LEFT">CHATGPT_REQUEST.md<BR ALIGN="LEFT"/>REQUIRED_INPUTS.md<BR ALIGN="LEFT"/>SELECTED_CONTEXT_MANIFEST.md<BR ALIGN="LEFT"/>EXISTING_EVIDENCE_CHECK.md for updates<BR ALIGN="LEFT"/>EXTRA_SOURCE_ROUTING.md<BR ALIGN="LEFT"/>CLI_EXTRACTION_REMINDER.md<BR ALIGN="LEFT"/>manifest.json<BR ALIGN="LEFT"/>source_bundle.zip</TD></TR>
+      </TABLE>
+    >];
+
+    CmdPreflight -> DetailPreflight [color="#777777", arrowhead="none"];
+    CmdRequest -> DetailRequest [color="#777777", arrowhead="none"];
+    WebchatFilesIn -> CmdPreflight -> CmdRequest -> RequestFolder [style=invis, weight=60];
+  }
+
+  // --- REGION 3: CHATGPT WRITING -------------------------------------------
+  subgraph cluster_writing {
+    label="3. ChatGPT writing: request pack becomes exact Codex files";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=LR;
+
+    CodexCreateFiles [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="320" BGCOLOR="#FFF2CC">
+        <TR><TD><B>Create output files</B></TD></TR>
+        <TR><TD ALIGN="LEFT">CODEX_PROMPT.txt<BR ALIGN="LEFT"/>PROJECT_CACHE.md<BR ALIGN="LEFT"/>SPEC.md<BR ALIGN="LEFT"/>RUN_INSTRUCTIONS.md<BR ALIGN="LEFT"/>POSTCHECK_TEMPLATE.md</TD></TR>
+      </TABLE>
+    >];
+
+    CodexUpdateFiles [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="320" BGCOLOR="#FFF2CC">
+        <TR><TD><B>Update output files</B></TD></TR>
+        <TR><TD ALIGN="LEFT">CODEX_UPDATE_PROMPT.txt<BR ALIGN="LEFT"/>PROJECT_UPDATE_CACHE.md<BR ALIGN="LEFT"/>UPDATE_SPEC.md<BR ALIGN="LEFT"/>UPDATE_RUN_INSTRUCTIONS.md<BR ALIGN="LEFT"/>UPDATE_POSTCHECK_TEMPLATE.md</TD></TR>
+      </TABLE>
+    >];
+
+    CodexCreateFiles -> CodexUpdateFiles [style=invis, weight=40];
+  }
+
+  // --- REGION 4: WSL2 CLI --------------------------------------------------
+  subgraph cluster_wsl2 {
+    label="4. WSL2 / local CLI: package ChatGPT files for Codex";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=TB;
+
+    CmdPackageCreate [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="250" BGCOLOR="#CFEFD0">
+        <TR><TD><B>package-codex-create</B></TD></TR>
+      </TABLE>
+    >];
+
+    DetailPackageCreate [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" WIDTH="360" BGCOLOR="#F5F5F5">
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Runs in WSL2/local CLI:<BR ALIGN="LEFT"/>cd ~/repos/public_infra-skeleton-tools_v0<BR ALIGN="LEFT"/>python3 -m infractl.cli package-codex-create \<BR ALIGN="LEFT"/>  --input ~/chatgpt_outputs/batch02_create \<BR ALIGN="LEFT"/>  --out ~/generated_real_v0</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    CmdPackageUpdate [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="250" BGCOLOR="#CFEFD0">
+        <TR><TD><B>package-codex-update</B></TD></TR>
+      </TABLE>
+    >];
+
+    DetailPackageUpdate [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" WIDTH="360" BGCOLOR="#F5F5F5">
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Runs in WSL2/local CLI:<BR ALIGN="LEFT"/>cd ~/repos/public_infra-skeleton-tools_v0<BR ALIGN="LEFT"/>python3 -m infractl.cli package-codex-update \<BR ALIGN="LEFT"/>  --input ~/chatgpt_outputs/batch01_update \<BR ALIGN="LEFT"/>  --out ~/generated_real_v0</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    CodexPackZip [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="320" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Produces Codex pack</B></TD></TR>
+        <TR><TD ALIGN="LEFT">&lt;create-codex-pack&gt;.zip<BR ALIGN="LEFT"/>&lt;update-codex-pack&gt;.zip<BR ALIGN="LEFT"/>pack manifest<BR ALIGN="LEFT"/>validation log</TD></TR>
+      </TABLE>
+    >];
+
+    CmdPackageCreate -> DetailPackageCreate [color="#777777", arrowhead="none"];
+    CmdPackageUpdate -> DetailPackageUpdate [color="#777777", arrowhead="none"];
+    CmdPackageCreate -> CmdPackageUpdate -> CodexPackZip [style=invis, weight=50];
+  }
+
+  // --- REGION 5: CODEX WORKSPACE -------------------------------------------
+  subgraph cluster_codex {
+    label="5. Codex / real workspace: validate layout and execute one pack";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=TB;
+
+    CmdValidateReal [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="250" BGCOLOR="#CFEFD0">
+        <TR><TD><B>validate-real-layout</B></TD></TR>
+      </TABLE>
+    >];
+
+    DetailValidateReal [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" WIDTH="360" BGCOLOR="#F5F5F5">
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Runs in Codex/real workspace:<BR ALIGN="LEFT"/>cd /workspace/repos/infra-skeleton-tools_real_v0<BR ALIGN="LEFT"/>python3 -m infractl.cli validate-real-layout \<BR ALIGN="LEFT"/>  --project /workspace/private/agentfield-grn-private_real_v0 \<BR ALIGN="LEFT"/>  --repo-root /mnt/ingress</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    CodexExec [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="320" BGCOLOR="#CFEFD0">
+        <TR><TD><B>Codex executes pack</B></TD></TR>
+        <TR><TD ALIGN="LEFT">RUN_INSTRUCTIONS.md or<BR ALIGN="LEFT"/>UPDATE_RUN_INSTRUCTIONS.md<BR ALIGN="LEFT"/>no config internals<BR ALIGN="LEFT"/>no live APIs unless explicitly allowed<BR ALIGN="LEFT"/>no smoke unless pack says so</TD></TR>
+      </TABLE>
+    >];
+
+    EvidenceOut [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="320" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Produces evidence</B></TD></TR>
+        <TR><TD ALIGN="LEFT">POSTCHECK.md<BR ALIGN="LEFT"/>INTEGRATION_REQUEST.md<BR ALIGN="LEFT"/>SMOKE_REPORT.md if required<BR ALIGN="LEFT"/>CHANGESET_MANIFEST.md for updates if required</TD></TR>
+      </TABLE>
+    >];
+
+    CmdValidateReal -> DetailValidateReal [color="#777777", arrowhead="none"];
+    CmdValidateReal -> CodexExec -> EvidenceOut [style=invis, weight=50];
+  }
+
+  // --- REGION 6: RETURN / NEXT CYCLE ---------------------------------------
+  subgraph cluster_return {
+    label="6. Return evidence into private bundle, then choose the next phase";
+    style="rounded";
+    color="#333333";
+    fontsize=16;
+    rankdir=LR;
+
+    CmdG16Snapshot [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="520" BGCOLOR="#CFEFD0">
+        <TR><TD><B>G16 snapshot/export helper</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">/workspace/repos/infractl-public/scripts/g16_snapshot.sh \<BR ALIGN="LEFT"/>  /workspace/private/agentfield-grn-private_real_v0 \<BR ALIGN="LEFT"/>  &lt;batch-slug&gt; \<BR ALIGN="LEFT"/>  &lt;update-topic&gt; \<BR ALIGN="LEFT"/>  &lt;smoke-report-path&gt; \<BR ALIGN="LEFT"/>  --export-dir /mnt/egress/private-bundles \<BR ALIGN="LEFT"/>  --export-name &lt;export-name&gt;.zip</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    SnapshotFiles [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="400" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Copy into private bundle snapshot</B></TD></TR>
+        <TR><TD ALIGN="LEFT">sources/workflow/update_workflow.md<BR ALIGN="LEFT"/>sources/evidence_snapshots/skeleton/&lt;batch-slug&gt;/POSTCHECK.md<BR ALIGN="LEFT"/>sources/evidence_snapshots/skeleton/&lt;batch-slug&gt;/INTEGRATION_REQUEST.md<BR ALIGN="LEFT"/>sources/evidence_snapshots/skeleton/&lt;batch-slug&gt;/SMOKE_REPORT.md<BR ALIGN="LEFT"/>sources/evidence_snapshots/skeleton/&lt;batch-slug&gt;/updates/&lt;update-topic&gt;/<BR ALIGN="LEFT"/>sources/evidence_snapshots/organ/&lt;batch-slug&gt;/</TD></TR>
+      </TABLE>
+    >];
+
+    ExportZip [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="380" BGCOLOR="#D9F2DF">
+        <TR><TD><B>Export updated private bundle</B></TD></TR>
+        <TR><TD ALIGN="LEFT">/mnt/egress/private-bundles/&lt;export-name&gt;.zip<BR ALIGN="LEFT"/>contains private bundle + G16 evidence snapshot</TD></TR>
+      </TABLE>
+    >];
+
+    NextPhase [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="360" BGCOLOR="#EADCF8">
+        <TR><TD><B>Next phase</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Skeleton 01 &rarr; 02 &rarr; 03 &rarr; 04<BR ALIGN="LEFT"/>then Organ R01 scaffold<BR ALIGN="LEFT"/>then organ updates when evidence exists<BR ALIGN="LEFT"/>new knowledge enters as extra_sources</TD></TR>
+      </TABLE>
+    >];
+
+    CmdG16Snapshot -> SnapshotFiles -> NextPhase [style=invis, weight=40];
+    CmdG16Snapshot -> ExportZip [style=invis, weight=30];
+  }
+
+  // --- MAIN WORKFLOW ARROWS (PURPLE) ---------------------------------------
+  DirectionCreate -> WebchatFilesIn [ltail=cluster_direction, lhead=cluster_webchat, color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P1: direction-gate]</FONT>>];
+  RequestFolder -> CodexCreateFiles [ltail=cluster_webchat, lhead=cluster_writing, color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P2: request-to-writing]</FONT>>];
+  CodexCreateFiles -> CmdPackageCreate [ltail=cluster_writing, lhead=cluster_wsl2, color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P3: writing-to-package]</FONT>>];
+  CodexPackZip -> CmdValidateReal [ltail=cluster_wsl2, lhead=cluster_codex, color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P4: package-to-codex]</FONT>>];
+  EvidenceOut -> CmdG16Snapshot [ltail=cluster_codex, lhead=cluster_return, color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P5: evidence-return]</FONT>>];
+  NextPhase -> DirectionCreate [ltail=cluster_return, lhead=cluster_direction, color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P6: next-cycle]</FONT>>];
+
+  // --- ARTIFACT / CONTEXT ARROWS (GREEN) -----------------------------------
+  WebchatFilesIn -> CmdPreflight [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G1: inputs-preflight]</FONT>>];
+  DirectionCreate -> CmdRequest [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G2: create-flags]</FONT>>];
+  DirectionUpdate -> CmdRequest [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G3: update-flags]</FONT>>];
+  DirectionKnowledge -> CmdRequest [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G4: extra-source]</FONT>>];
+  DirectionOrgan -> CmdRequest [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G5: organ-flags]</FONT>>];
+  CmdRequest -> RequestFolder [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G6: request-pack]</FONT>>];
+  RequestFolder -> CodexCreateFiles [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G7: create-files]</FONT>>];
+  RequestFolder -> CodexUpdateFiles [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G8: update-files]</FONT>>];
+  CodexCreateFiles -> CmdPackageCreate [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G9: create-package-input]</FONT>>];
+  CodexUpdateFiles -> CmdPackageUpdate [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G10: update-package-input]</FONT>>];
+  CmdPackageCreate -> CodexPackZip [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G11: create-pack]</FONT>>];
+  CmdPackageUpdate -> CodexPackZip [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G12: update-pack]</FONT>>];
+  CodexPackZip -> CodexExec [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G13: pack-consumed]</FONT>>];
+  CmdValidateReal -> CodexExec [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G14: layout-gate]</FONT>>];
+  CodexExec -> EvidenceOut [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G15: execution-evidence]</FONT>>];
+  EvidenceOut -> CmdG16Snapshot [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G16: snapshot-copy/export]</FONT>>];
+  CmdG16Snapshot -> SnapshotFiles [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G16a: bundle snapshot]</FONT>>];
+  CmdG16Snapshot -> ExportZip [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G16b: egress zip]</FONT>>];
+  SnapshotFiles -> NextPhase [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G17: phase-decision]</FONT>>];
+  ExportZip -> NextPhase [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.2, style="dashed"];
+  NextPhase -> DirectionKnowledge [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G18: knowledge-loop]</FONT>>];
+
+
+  // --- STANDALONE CONTRACT / EXPANSION FLOWS -------------------------------
+  PublicContract -> PrivateContract [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G19: public-private-contract]</FONT>>];
+  PrivateContract -> RealContract [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G20: files-yaml-mapping]</FONT>>];
+  ExpansionInput -> ExpansionDirection [color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P7: expansion-choice]</FONT>>];
+  ExpansionDirection -> ExpansionRouting [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G21: route-extra-source]</FONT>>];
+  ExpansionRouting -> ExpansionOutputs [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G22: private-file-update]</FONT>>];
+  ExpansionOutputs -> DirectionKnowledge [color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P8: re-enter-cycle]</FONT>>];
+
+
+  // --- CLI EXTRACTION FEEDBACK EDGES ----------------------------------------
+  RequestFolder -> ExtractionSignal [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.6, style="dashed", xlabel=<<FONT COLOR="#1B7F3A">[G23: extraction-reminder]</FONT>>];
+  EvidenceOut -> ExtractionSignal [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.6, style="dashed", xlabel=<<FONT COLOR="#1B7F3A">[G23: execution friction]</FONT>>];
+  CmdG16Snapshot -> ExtractionSignal [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.6, style="dashed", xlabel=<<FONT COLOR="#1B7F3A">[G23: helper candidate]</FONT>>];
+  ExpansionRouting -> ExtractionSignal [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.6, style="dashed", xlabel=<<FONT COLOR="#1B7F3A">[G23: tool-behavior source]</FONT>>];
+  ExtractionSignal -> CLIExtractionNotes [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G24: extraction-ledger]</FONT>>];
+  CLIExtractionNotes -> ExtractionDecision [color="#6A1B9A", fontcolor="#6A1B9A", penwidth=2.2, xlabel=<<FONT COLOR="#6A1B9A">[P9: cli-extraction-choice]</FONT>>];
+  ExtractionDecision -> ExtractionOutputs [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.8, xlabel=<<FONT COLOR="#1B7F3A">[G25: public-tool-promotion]</FONT>>];
+  ExtractionOutputs -> PublicContract [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.4, style="dashed"];
+  ExtractionOutputs -> PrivateContract [color="#1B7F3A", fontcolor="#1B7F3A", penwidth=1.4, style="dashed"];
+
+
+
+  // --- CONFIG-INFRA PIPELINE ROUTER PREVIEW (CIP, BLUE) --------------------
+  // Proposed main-DOT extension only. Adds a native prompt-only route family
+  // under dots/config-infra/. Blue arrows are reserved for the CIP pipeline.
+
+  subgraph cluster_cip_legend {
+    label="CIP. Config-Infra Pipeline details legend [blue route family, prompt-only until applied]";
+    style="rounded,dashed";
+    color="#1565C0";
+    fontsize=16;
+    rankdir=TB;
+
+    CIPLegend [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="1040" BGCOLOR="#E3F2FD">
+        <TR><TD><B><FONT COLOR="#0D47A1">CIP route family: MODE=config-infra, TRACK=cip, PHASE=CIP01..CIP06</FONT></B></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Purpose</B>: decide whether research, platform, batch, organ, package, role, workflow, or operator requests belong in the vmuser config/lv/workstation contract, then route approved changes through manifest, live-state resolution, planning, and guarded application.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Core truth split</B>: CIP01-CIP03 use batch-time/request-time suitability truth. CIP04 is the first live config-state truth phase. CIP05 plans from manifest plus live snapshot. CIP06 is the first possible application phase and remains mutation-default=no.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Read order for every CIP phase</B>: infractl.md -&gt; root main v7 DOT -&gt; exactly one selected CIP DOT -&gt; matching SPEC/ANX plus hook source contract -&gt; phase inputs -&gt; propose variables -&gt; wait for confirmation.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Config contract surfaces</B>: accounts/profiles.tsv, accounts/smb-profiles.tsv, accounts/mount-profiles.tsv, targets/&lt;user&gt;.env, install/python-env-profiles.tsv, install/packages.env, bootstrap/steps.tsv, bootstrap/profiles/*.plan, config.sh allowlist/dispatch, installers.sh trusted functions, mounts/mounts.env, /home/&lt;target&gt;/.local/state/config-sh/, lv/conda/venv state.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>CIP01</B>: source intake plus CONFIG_INFRA_SUITABILITY_DETERMINER. Produces CONFIG_INFRA_SUITABILITY_DECISION.md/json. Must include evidence strength, recurrence, role fit, config contract fit matrix, risk boundary, fate vocabulary, manifest eligibility, and next route. Does not resolve live config truth.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>CIP02</B>: rich INTEGRATION_REQUEST generation. Converts a CIP01 decision plus evidence into INTEGRATION_REQUEST.md/json with rich infra intent, likely later config surfaces, safety boundaries, and explicit note that live state is unresolved until CIP04.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>CIP03</B>: manifest aggregation and approval. Aggregates one or more requests into INTEGRATION_MANIFEST.md/json, classifies approved/deferred/blocked/duplicate/already-covered/rejected, and records allowed/forbidden surfaces and required CIP04 live checks.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>CIP04</B>: live config-state resolution. Read-only inspection of the current vmuser config system and lv state. Produces CONFIG_STATE_SNAPSHOT.md/json. It resolves what actually exists now, but does not plan or apply implementation.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>CIP05</B>: config implementation planning. Uses CIP03 manifest plus CIP04 snapshot to produce CONFIG_INTEGRATION_PLAN.md/json, selects ANX06 patch classes, exact files/surfaces, validation plan, smoke plan, application mode, and blocked/human-design cases. No mutation.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>CIP06</B>: idempotent application and closeout. May apply only manifest-approved, plan-approved, exact-touch-set-confirmed work. Mutation default is no. Requires explicit confirmation and safety gates. Produces closeout report, validation/postcheck/smoke evidence, skipped/no-op record, and snapshot/companion handoff if applicable.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Blue arrow rule</B>: all CIP router and CIP phase edges use blue. Existing purple/green P/G route meanings remain unchanged.</TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_cip_router {
+    label="Config-Infra Pipeline router: native prompt-only route family [repo-local dots/config-infra/]";
+    style="rounded";
+    color="#1565C0";
+    fontsize=16;
+    rankdir=TB;
+
+    CIPDirection [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="470" BGCOLOR="#BBDEFB">
+        <TR><TD><B>New direction family</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">MODE=config-infra<BR ALIGN="LEFT"/>TRACK=cip<BR ALIGN="LEFT"/>PHASE=CIP01|CIP02|CIP03|CIP04|CIP05|CIP06<BR ALIGN="LEFT"/>topic=&lt;config-infra request slug&gt;<BR ALIGN="LEFT"/>profile=webchat-sandbox or real-workspace as selected<BR ALIGN="LEFT"/>ALLOW_CONFIG_MUTATION=no by default</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    CIPRouterGate [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="470" BGCOLOR="#E3F2FD">
+        <TR><TD><B>Router gate</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Accept only MODE=config-infra plus TRACK=cip.<BR ALIGN="LEFT"/>Select exactly one CIP phase DOT.<BR ALIGN="LEFT"/>Never mix CIP phases in one run.<BR ALIGN="LEFT"/>Return variable block and wait for confirmation.<BR ALIGN="LEFT"/>Reject config mutation unless selected CIP06 and explicit gates allow it.</TD></TR>
+      </TABLE>
+    >];
+
+    CIP01 [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="470" BGCOLOR="#E3F2FD">
+        <TR><TD><B>CIP01 — Source intake plus suitability determination</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Required engine: CONFIG_INFRA_SUITABILITY_DETERMINER.<BR ALIGN="LEFT"/>Sources: ANX01 plus ANX06 plus suitability hook.<BR ALIGN="LEFT"/>Output: CONFIG_INFRA_SUITABILITY_DECISION.md/json.<BR ALIGN="LEFT"/>Fate examples: experiment_local_only, manifest_candidate, package_stack_extension, existing_step_enablement, new_role_or_account_profile, blocked_live_or_secret_sensitive.<BR ALIGN="LEFT"/>No live config truth resolution.</TD></TR>
+      </TABLE>
+    >];
+
+    CIP02 [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="470" BGCOLOR="#E3F2FD">
+        <TR><TD><B>CIP02 — Rich INTEGRATION_REQUEST generation</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Sources: ANX02 plus rich request hook plus CIP01 decision.<BR ALIGN="LEFT"/>Output: INTEGRATION_REQUEST.md/json.<BR ALIGN="LEFT"/>Captures role owner, target identity, workspace roots, package/env/bootstrap/workflow implications, likely later config surfaces, and safety boundaries.<BR ALIGN="LEFT"/>Still batch-time truth only.</TD></TR>
+      </TABLE>
+    >];
+
+    CIP03 [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="470" BGCOLOR="#E3F2FD">
+        <TR><TD><B>CIP03 — Manifest aggregation plus approval</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Sources: ANX03 plus manifest gate hook plus one or more requests.<BR ALIGN="LEFT"/>Output: INTEGRATION_MANIFEST.md/json.<BR ALIGN="LEFT"/>Classifies approved, deferred, blocked, duplicate, already-covered, rejected.<BR ALIGN="LEFT"/>Records allowed/forbidden surfaces and required CIP04 live checks.</TD></TR>
+      </TABLE>
+    >];
+
+    CIP04 [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="470" BGCOLOR="#E3F2FD">
+        <TR><TD><B>CIP04 — Live config-state resolution</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Sources: ANX04 plus live resolution hook plus CIP03 manifest.<BR ALIGN="LEFT"/>Output: CONFIG_STATE_SNAPSHOT.md/json.<BR ALIGN="LEFT"/>Read-only live inspection of config files, targets, plans, markers, lv/conda/venv state.<BR ALIGN="LEFT"/>First live-truth phase. No planning or mutation.</TD></TR>
+      </TABLE>
+    >];
+
+    CIP05 [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="470" BGCOLOR="#E3F2FD">
+        <TR><TD><B>CIP05 — Config implementation planning</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Sources: ANX05 plus ANX06 plus plan gate hook plus CIP03 manifest plus CIP04 snapshot.<BR ALIGN="LEFT"/>Output: CONFIG_INTEGRATION_PLAN.md/json.<BR ALIGN="LEFT"/>Selects patch classes, application mode, exact surfaces, validations, post-config smoke, no-op/skipped/blocked/human-design cases.<BR ALIGN="LEFT"/>No mutation.</TD></TR>
+      </TABLE>
+    >];
+
+    CIP06 [shape=plain, label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="470" BGCOLOR="#E3F2FD">
+        <TR><TD><B>CIP06 — Idempotent application plus closeout</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Sources: ANX06-ANX09 plus closeout hook plus manifest plus snapshot plus plan.<BR ALIGN="LEFT"/>Output: CONFIG_INTEGRATION_CLOSEOUT_REPORT.md/json, POSTCHECK, validation/smoke report, optional diff/snapshot.<BR ALIGN="LEFT"/>Mutation-default=no. Applies only manifest-approved, plan-approved, exact-touch-set-confirmed changes after explicit confirmation.</TD></TR>
+      </TABLE>
+    >];
+
+    CIPDirection -> CIPRouterGate -> CIP01 -> CIP02 -> CIP03 -> CIP04 -> CIP05 -> CIP06 [style=invis, weight=50];
+  }
+
+  // --- CONFIG-INFRA PIPELINE EDGES (BLUE) ----------------------------------
+  ExpansionOutputs -> CIPDirection [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, style="dashed", xlabel=<<FONT COLOR="#1565C0">[C0: hook/spec seed]</FONT>>];
+  EvidenceOut -> CIPDirection [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, style="dashed", xlabel=<<FONT COLOR="#1565C0">[C0: evidence source]</FONT>>];
+  CIPDirection -> CIPRouterGate [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, xlabel=<<FONT COLOR="#1565C0">[C1: select CIP phase]</FONT>>];
+  CIPRouterGate -> CIP01 [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, xlabel=<<FONT COLOR="#1565C0">[CIP01]</FONT>>];
+  CIP01 -> CIP02 [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, xlabel=<<FONT COLOR="#1565C0">[C2: decision to request]</FONT>>];
+  CIP02 -> CIP03 [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, xlabel=<<FONT COLOR="#1565C0">[C3: request to manifest]</FONT>>];
+  CIP03 -> CIP04 [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, xlabel=<<FONT COLOR="#1565C0">[C4: approved manifest to live snapshot]</FONT>>];
+  CIP04 -> CIP05 [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, xlabel=<<FONT COLOR="#1565C0">[C5: live truth to plan]</FONT>>];
+  CIP05 -> CIP06 [color="#1565C0", fontcolor="#1565C0", penwidth=2.4, xlabel=<<FONT COLOR="#1565C0">[C6: plan to guarded apply]</FONT>>];
+  CIP06 -> CmdG16Snapshot [color="#1565C0", fontcolor="#1565C0", penwidth=2.0, style="dashed", xlabel=<<FONT COLOR="#1565C0">[C7: closeout/snapshot]</FONT>>];
+  CIP06 -> NextPhase [color="#1565C0", fontcolor="#1565C0", penwidth=2.0, style="dashed", xlabel=<<FONT COLOR="#1565C0">[C8: return to cycle]</FONT>>];
+
+
+  // --- BALANCED LAYOUT HELPERS ---------------------------------------------
+  {rank=same; PublicContract; ExpansionInput; ExtractionSignal;}
+  {rank=same; PrivateContract; ExpansionDirection; CLIExtractionNotes;}
+  {rank=same; RealContract; ExpansionRouting; ExtractionDecision;}
+  {rank=same; WorkspaceContract; ExpansionOutputs; ExtractionOutputs;}
+  {rank=same; DirectionCreate; DirectionUpdate; DirectionKnowledge; DirectionOrgan;}
+  {rank=same; WebchatFilesIn; CmdPreflight; CmdRequest; RequestFolder;}
+  {rank=same; DetailPreflight; DetailRequest;}
+  {rank=same; CodexCreateFiles; CodexUpdateFiles;}
+  {rank=same; CmdPackageCreate; CmdPackageUpdate; CodexPackZip;}
+  {rank=same; DetailPackageCreate; DetailPackageUpdate;}
+  {rank=same; CmdValidateReal; CodexExec; EvidenceOut;}
+  {rank=same; SnapshotFiles; NextPhase;}
+}

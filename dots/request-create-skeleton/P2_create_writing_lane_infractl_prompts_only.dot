@@ -1,0 +1,105 @@
+digraph P2_create_writing_lane_infractl_prompts_only {
+  graph [
+    rankdir=TB,
+    splines=ortho,
+    nodesep=0.55,
+    ranksep=0.75,
+    pad="0.2,0.2",
+    bgcolor="white",
+    fontname="Helvetica",
+    fontsize=11,
+    labelloc="t",
+    label="P2 create-writing lane prompts only: request pack -> exact Codex create files"
+  ];
+  node [shape=plain, fontname="Helvetica", fontsize=9];
+  edge [fontname="Helvetica", fontsize=8, arrowsize=0.75, penwidth=1.5, color="#6A1B9A", fontcolor="#6A1B9A"];
+
+  Start [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#EADCF8">
+      <TR><TD><B>SELF-EXECUTION GATE — P2 create-writing lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT">You are reading this DOT as an execution instruction. This DOT is not a diagram to summarize. Treat it as the active prompt contract for the canonical v7 pipeline lane <B>[P2: request-to-writing]</B> with green artifact step <B>[G7: create-files]</B>.</TD></TR>
+      <TR><TD ALIGN="LEFT">This lane starts only after a <B>request-create + skeleton</B> request pack already exists from P1/G2/G6. It converts that bounded request pack into exactly five Codex create files. It does not package, execute, mutate /workspace, run smoke, or write returned evidence.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Canonical source:</B> read <FONT FACE="Courier">infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT> first, or the canonical v7 DOT if the versioned source is what the operator uploaded. Use the main DOT to confirm that this lane is after RequestFolder and before package-codex-create.</TD></TR>
+    </TABLE>
+  >];
+
+  AgentGate [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#F5F5F5">
+      <TR><TD><B>Addressing gate: decide whether this prompt is for you</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>ChatGPT webchat / ChatGPT file-writing session:</B> you are addressed. You may read uploaded request-pack files and author the five create files in the current sandbox or as downloadable artifacts.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Codex:</B> you are not addressed unless the operator explicitly says they want Codex to inspect the ChatGPT-generated writing files. Do not implement the batch from this DOT. The Codex implementation step comes later, after P3/P4 packaging.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>WSL/operator:</B> you are addressed only for local file movement after ChatGPT produces files. Do not invent file contents. Your next real command lane is P3 package-codex-create.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>If you are the wrong agent:</B> stop and say which agent should handle this lane next.</TD></TR>
+    </TABLE>
+  >];
+
+  Variables [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#D9F2DF">
+      <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before doing any writing, construct a suggested variable block. Do not present an empty form unless inference is impossible. Label every value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>, then ask the operator to confirm or correct it.</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">CANONICAL_MAIN_DOT=</FONT> uploaded main v7/clean DOT path, usually <FONT FACE="Courier">infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">REQUEST_PACK_SOURCE=</FONT> path or uploaded zip/folder produced by P1 request-create skeleton<BR ALIGN="LEFT"/><FONT FACE="Courier">MODE=request-create</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">TRACK=skeleton</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">BATCH_NUMBER=</FONT> infer from request pack, such as <FONT FACE="Courier">02</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">BATCH_SLUG=</FONT> infer from batches.yaml or request pack, such as <FONT FACE="Courier">02-research-workspace</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">TOPIC=</FONT> infer from WORKFLOW_DIRECTION/topic in CHATGPT_REQUEST.md<BR ALIGN="LEFT"/><FONT FACE="Courier">CHATGPT_OUTPUT_DIR=</FONT> suggested safe folder for the five files<BR ALIGN="LEFT"/><FONT FACE="Courier">ALLOW_OVERWRITE=no</FONT> unless the operator explicitly changes it</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Confirmation rule:</B> If any variable is unknown or unsafe, ask only for that missing value. Do not execute until the operator confirms the suggested block or explicitly says to proceed with suggested values.</TD></TR>
+    </TABLE>
+  >];
+
+  Prompt [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Exact prompt to type into ChatGPT for this lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the uploaded canonical main DOT and the P1 request-create skeleton request pack. We are in the v7 pipeline at P2 request-to-writing / G7 create-files.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Use only the request pack as bounded input. First infer and show the suggested variable block for MODE, TRACK, BATCH_NUMBER, BATCH_SLUG, TOPIC, REQUEST_PACK_SOURCE, CHATGPT_OUTPUT_DIR, and ALLOW_OVERWRITE. Label each value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct the variables before writing files.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">After confirmation, create exactly these five Codex create files: CODEX_PROMPT.txt, PROJECT_CACHE.md, SPEC.md, RUN_INSTRUCTIONS.md, and POSTCHECK_TEMPLATE.md. Keep them aligned with CHATGPT_REQUEST.md, REQUIRED_INPUTS.md, SELECTED_CONTEXT_MANIFEST.md, EXTRA_SOURCE_ROUTING.md, CLI_EXTRACTION_REMINDER.md, and source_bundle content from the request pack.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Do not run Codex. Do not package the files. Do not mutate /workspace, /mnt/ingress, or /mnt/egress. Do not run smoke. Do not broaden scope beyond request-create + skeleton for the confirmed batch/topic. If a CLI extraction signal appears, record it as a 0C handoff note but do not implement public-tool changes in this lane.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ReadPack [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#D9F2DF">
+      <TR><TD><B>Input checklist from v7 RequestFolder</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Read and use: <FONT FACE="Courier">CHATGPT_REQUEST.md</FONT>, <FONT FACE="Courier">REQUIRED_INPUTS.md</FONT>, <FONT FACE="Courier">SELECTED_CONTEXT_MANIFEST.md</FONT>, <FONT FACE="Courier">EXTRA_SOURCE_ROUTING.md</FONT>, <FONT FACE="Courier">CLI_EXTRACTION_REMINDER.md</FONT>, <FONT FACE="Courier">manifest.json</FONT>, and source files from <FONT FACE="Courier">source_bundle.zip</FONT> if present.</TD></TR>
+      <TR><TD ALIGN="LEFT">For create skeleton, <FONT FACE="Courier">EXISTING_EVIDENCE_CHECK.md</FONT> may be absent or non-blocking because <FONT FACE="Courier">evidence_required: no</FONT>. Do not require previous evidence for a not-yet-run skeleton batch unless the request pack explicitly says otherwise.</TD></TR>
+      <TR><TD ALIGN="LEFT">Stop if the request pack is missing, internally inconsistent, or not actually <FONT FACE="Courier">mode: request-create</FONT> and <FONT FACE="Courier">track: skeleton</FONT>.</TD></TR>
+    </TABLE>
+  >];
+
+  OutputFiles [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#FFF2CC">
+      <TR><TD><B>Write exactly the v7 G7 create files</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>CODEX_PROMPT.txt</B>: entrypoint prompt for Codex. It must tell Codex the exact task, allowed workspace, forbidden actions, required evidence, and final response format.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PROJECT_CACHE.md</B>: compact bounded project context extracted from the request pack. It should contain only relevant project, layer, batch, hook, and workflow context.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>SPEC.md</B>: implementation-facing specification for this create batch. It must not invent scope outside the request pack.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>RUN_INSTRUCTIONS.md</B>: exact task list Codex should execute later. Include safety boundaries and expected files/tests/evidence.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>POSTCHECK_TEMPLATE.md</B>: evidence template Codex must fill after execution.</TD></TR>
+    </TABLE>
+  >];
+
+  NormalizedEvidenceContract [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#E8F0FE">
+      <TR><TD><B>Skeleton create normalized evidence contract — required in generated files</B></TD></TR>
+      <TR><TD ALIGN="LEFT">The P2 lane still writes exactly five Codex create authoring files: <FONT FACE="Courier">CODEX_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_CACHE.md</FONT>, <FONT FACE="Courier">SPEC.md</FONT>, <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT>, and <FONT FACE="Courier">POSTCHECK_TEMPLATE.md</FONT>. Those files must now require Codex to produce both canonical create evidence and normalized first-delta evidence after execution.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Required execution evidence for skeleton create:</B> <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>. If smoke is explicitly run or reused, also require <FONT FACE="Courier">SMOKE_REPORT.md</FONT> or an exact accepted smoke-report path.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Full-copy default:</B> for initial create runs, <FONT FACE="Courier">POSTCHECK.md</FONT> and <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT> should be identical full-content copies unless a later route explicitly requires aliases. <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT> and <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT> should likewise be identical full-content copies.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Rich request/postcheck schemas:</B> generated <FONT FACE="Courier">RUN_INSTRUCTIONS.md</FONT> and <FONT FACE="Courier">POSTCHECK_TEMPLATE.md</FONT> must include the rich integration request sections, rich postcheck sections, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT> sections from the create-lane evidence-normalization addendum.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>ANX role split:</B> use Config-Infra ANX01 only for suitability classification in <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT> / <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>. Use ANX09 only to describe a deferred future config-integration Codex pack shape after manifest/live-state/plan gates. Do not use ANX09 as permission to execute config integration.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>CLI extraction:</B> generated files may record CLI extraction candidates, but <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT> is read-only context in ordinary create execution and must not be edited by Codex.</TD></TR>
+    </TABLE>
+  >];
+
+  Idempotency [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#FCE8E6">
+      <TR><TD><B>Idempotency and overwrite gate</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Before writing, inspect <FONT FACE="Courier">CHATGPT_OUTPUT_DIR</FONT>. If files already exist, compare route identity: mode, track, batch, slug, topic, and source request-pack manifest.</TD></TR>
+      <TR><TD ALIGN="LEFT">If matching complete outputs already exist and <FONT FACE="Courier">ALLOW_OVERWRITE=no</FONT>, stop and report that the lane appears complete. Offer to validate or package next, but do not rewrite.</TD></TR>
+      <TR><TD ALIGN="LEFT">If partial outputs exist, report exactly which of the five files exist and ask whether to resume, regenerate missing only, or overwrite. Do not silently mix old and new files.</TD></TR>
+    </TABLE>
+  >];
+
+  StopPass [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="860" BGCOLOR="#E8F0FE">
+      <TR><TD><B>Required final response for this lane</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>Variables:</B> confirmed values used, with note of inferred/user-provided/default-safe values.<BR ALIGN="LEFT"/><B>Files created:</B> list the five create files with paths or sandbox links.<BR ALIGN="LEFT"/><B>Checks:</B> request-pack identity, file completeness, no-overwrite/idempotency result.<BR ALIGN="LEFT"/><B>0C signals:</B> note any CLI extraction pattern, or say none.<BR ALIGN="LEFT"/><B>Next v7 lane:</B> P3 writing-to-package / G9 create-package-input using package-codex-create.</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PASS:</B> exactly five create files are created or validated as already complete for the confirmed request-create skeleton batch.<BR ALIGN="LEFT"/><B>STOP:</B> wrong route, missing request pack, unresolved variables, inconsistent batch/topic, unsafe overwrite, or operator does not confirm.</TD></TR>
+    </TABLE>
+  >];
+
+  Start -> AgentGate -> Variables -> Prompt -> ReadPack -> OutputFiles -> NormalizedEvidenceContract -> Idempotency -> StopPass;
+}

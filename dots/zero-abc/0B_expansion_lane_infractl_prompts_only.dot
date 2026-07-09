@@ -1,0 +1,127 @@
+digraph "0B_expansion_lane_infractl_prompts_only" {
+  rankdir=TB;
+  compound=true;
+  splines=ortho;
+  nodesep=0.64;
+  ranksep=0.78;
+  pad="0.25,0.25";
+  fontname="Helvetica";
+  fontsize=10;
+  labelloc="t";
+  label="0B expansion lane — infractl prompts only — base_format, idempotent, v7 grounded";
+
+  node [shape=plain, fontname="Helvetica", fontsize=9];
+  edge [arrowsize=0.7, penwidth=1.35, fontname="Helvetica", fontsize=8, color="#555555"];
+
+  Meta [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#EDE7F6"><B>SELF-EXECUTABLE DOT — READ THIS FIRST</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">This DOT is a standalone execution instruction for the <B>0B knowledge expansion lane</B> of the Infra-Skeleton / infractl pipeline.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>It must be used in the accepted <B>base_format</B> narrative style: enough context for a cold-start ChatGPT, Codex, or WSL operator session to understand the phase, determine whether it is being addressed, ask for missing variables, avoid unsafe execution, and route new knowledge into the correct private system artifact.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Canonical pipeline source:</B> infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot. Always base interpretation on that v7 DOT if it is provided. If it is not provided, ask for it or proceed only with this 0B DOT as a bounded fallback and clearly say that v7 was not available.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  BaseFormat [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#FFF8E1"><B>base_format REQUIREMENTS APPLIED HERE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">This route follows the project baseline note tagged <B>base_format</B>:<BR ALIGN="LEFT"/>- full cold-start narrative style, not compressed hybrid style<BR ALIGN="LEFT"/>- self-executable for a fresh ChatGPT/Codex session<BR ALIGN="LEFT"/>- idempotent by default<BR ALIGN="LEFT"/>- REQUIRED VARIABLE BLOCK before execution<BR ALIGN="LEFT"/>- ask for missing variables before execution<BR ALIGN="LEFT"/>- inspect existing outputs before writing or declaring pass<BR ALIGN="LEFT"/>- no overwrite or mutation unless ALLOW_OVERWRITE=yes and the route explicitly permits writing<BR ALIGN="LEFT"/>- explicit ChatGPT / Codex / WSL operator addressing gates<BR ALIGN="LEFT"/>- safe-action boundaries<BR ALIGN="LEFT"/>- required response format<BR ALIGN="LEFT"/>- PASS / STOP conditions<BR ALIGN="LEFT"/>- next-step re-entry into the v7 end-to-end pipeline</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  PhaseIdentity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#EDE7F6"><B>PHASE IDENTITY — 0B</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>Phase:</B> 0B knowledge expansion lane.<BR ALIGN="LEFT"/><B>V7 role:</B> side lane before or alongside P1 when new notes, specs, workflow observations, codebase analysis, paper summaries, or project requirements must be routed into the private system before create/update execution begins.<BR ALIGN="LEFT"/><B>Purpose:</B> classify new knowledge and decide whether it should become a SPEC update, SPEC annex, batch creation hook, batch update hook, NEW_CHAT_PROMPT update, CLI extraction ledger entry, future batch context, or no change.<BR ALIGN="LEFT"/><B>Normal next phase after PASS:</B> return to P1 direction-gate with the correct mode + track route, or enter 0C first if the source indicates repeated manual behavior, reusable helper scripts, Codex friction, or infractl/public-tool promotion.<BR ALIGN="LEFT"/><B>This phase is not:</B> Codex implementation, smoke execution, evidence mutation, RunPod launch, live API call, Terraform/Kubernetes action, or direct public-tool patching.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  AddressingGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#EDE7F6"><B>ADDRESSING GATE — WHO IS BEING ASKED TO ACT?</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>ChatGPT addressed:</B> read the uploaded source material and relevant existing private system files; classify the new knowledge; draft new or updated markdown artifacts; produce patch text or downloadable files; and clearly state routing, missing inputs, and next phase.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Codex addressed:</B> stop unless the user provides a packaged execution bundle that explicitly names files to edit. This 0B DOT alone is not enough authority for Codex to edit a repo, write evidence, or run tests.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>WSL operator addressed:</B> run only read-only file listing or inspection commands unless a later packaged phase explicitly approves writes. Paste outputs back to ChatGPT/Codex rather than inventing results.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Wrong-agent rule:</B> if this DOT is uploaded to the wrong agent for the requested action, stop and say which agent should handle the next step.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  VariableBlock [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#FFF2CC">
+      <TR><TD BGCOLOR="#FFF8E1"><B>REQUIRED VARIABLE BLOCK — OPERATOR FILLS BEFORE EXECUTION</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">The operator should provide or confirm these values. If a required value is missing, ask for it before drafting final files or running commands. Defaults may be proposed, but do not silently assume values that determine ownership, target files, mutation, or route selection.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>CANONICAL_DOT_PATH = infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot<BR ALIGN="LEFT"/>NEW_SOURCE_PATHS = paths or uploads containing the new notes/specs/background/code-analysis/workflow observation<BR ALIGN="LEFT"/>SOURCE_SUMMARY = short human description of why the new material was supplied<BR ALIGN="LEFT"/>PUBLIC_TOOL_ROOT = optional, usually /workspace/repos/infractl-public if tool extraction behavior is relevant<BR ALIGN="LEFT"/>PRIVATE_PROJECT_ROOT = optional, usually /workspace/private/agentfield-grn-private_real_v0 if local private files are available<BR ALIGN="LEFT"/>PRIVATE_BUNDLE_SOURCE = optional uploaded private bundle zip if workspace paths are not available<BR ALIGN="LEFT"/>TARGET_LAYER = optional Layer01 / Layer02 / Layer03 / Layer04 / Layer05 if known<BR ALIGN="LEFT"/>TARGET_BATCH_NUMBER = optional batch number that owns the change, if already known<BR ALIGN="LEFT"/>TARGET_BATCH_SLUG = optional batch slug that owns the change, if already known<BR ALIGN="LEFT"/>TARGET_TOPIC = optional short topic slug, such as workflow_smoke_automation or anx##_topic<BR ALIGN="LEFT"/>INTENDED_ROUTE = optional: SPEC update / SPEC annex / creation hook / update hook / prompt update / CLI extraction / future context / unknown<BR ALIGN="LEFT"/>EVIDENCE_REQUIRED = yes by default if the source changes an already-run batch or execution workflow<BR ALIGN="LEFT"/>EXTRA_SOURCES = list of source files that should travel forward into P1/P2/P3 if execution packaging is later needed<BR ALIGN="LEFT"/>PROFILE = webchat-sandbox for ChatGPT-side drafting unless explicitly using read-only WSL inspection<BR ALIGN="LEFT"/>OUTPUT_ROOT = where generated private markdown drafts or patch files should be created, if this session can create artifacts<BR ALIGN="LEFT"/>ALLOW_OVERWRITE = no by default<BR ALIGN="LEFT"/>ALLOW_CODE_OR_EVIDENCE_MUTATION = no for 0B<BR ALIGN="LEFT"/>CLI_EXTRACTION_ALLOWED = yes for ledger drafting only, no public-tool implementation in 0B</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ExactPrompt [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#1B7F3A">
+      <TR><TD BGCOLOR="#E8F5E9"><B>EXACT PROMPT TO TYPE TO CHATGPT</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Read this 0B prompt-only DOT and the canonical v7 pipeline DOT: infractl_merged_cheatsheet_flow_numbered_v7_cli_extraction.dot.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>We are in <B>0B: knowledge expansion lane</B>. Use the REQUIRED VARIABLE BLOCK below. Do not write final files, mutate evidence, run Codex, or execute implementation commands until you have checked whether variables are missing and asked for confirmation, unless I explicitly say <B>go</B>.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Act as a conservative Infra-Skeleton knowledge-router and private-system-file editor. Use the uploaded extra source material to decide whether it should become:<BR ALIGN="LEFT"/>- a SPEC_Layer update<BR ALIGN="LEFT"/>- a SPEC_Layer...ANX annex<BR ALIGN="LEFT"/>- a BATCH_CREATION_ANX hook<BR ALIGN="LEFT"/>- a BATCH_UPDATE_ANX hook<BR ALIGN="LEFT"/>- a NEW_CHAT_PROMPT update<BR ALIGN="LEFT"/>- a CLI_EXTRACTION_NOTES.md entry for repeated/manual/public-tool behavior<BR ALIGN="LEFT"/>- a future infractl CLI extraction candidate<BR ALIGN="LEFT"/>- future batch context<BR ALIGN="LEFT"/>- or no change.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Before writing or finalizing anything, state the classification, target files, exact planned edits, missing inputs if any, and whether 0C is needed. If the source belongs to an already-run batch, prepare the appropriate request-update direction. If it belongs to future work, name the future create lane that should consume it. If the source implies public-tool/helper/CLI promotion, create or update the CLI extraction ledger first instead of jumping straight to implementation.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  InputChecklist [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#E3F2FD"><B>INPUT CHECKLIST — WHAT TO READ BEFORE CLASSIFYING</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>New source material may be:</B> uploaded note, research paper summary, codebase analysis, workflow observation, Codex friction report, manual command sequence, new project requirement, annex background material, batch update description, or helper-script behavior.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Existing private context to inspect when available:</B> SPEC_Layer<#>_*.md; existing SPEC_Layer...ANX*.md; BATCH_CREATION_ANX*.md; BATCH_UPDATE_ANX*.md; NEW_CHAT_PROMPT_batch_creation.md; NEW_CHAT_PROMPT_batch_update.md; NEW_CHAT_PROMPT_update_specs.md; NEW_CHAT_PROMPT_implement_in_codex.md; day_to_day_skeleton_run.md; day_to_day_organs_run.md; smoke_module_update_workflow.md; final_workflow.md; update_workflow.md; CLI_EXTRACTION_NOTES.md if present.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Public-tool context to inspect only when relevant:</B> scripts/; infractl.cli; templates/; schemas/; examples/; README or usage docs; generated CLI_EXTRACTION_REMINDER.md files from prior packs.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>Missing source rule:</B> if required source files are missing or unreadable, stop and list exact missing files instead of guessing.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  IdempotencyGate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#C62828">
+      <TR><TD BGCOLOR="#FFEBEE"><B>IDEMPOTENCY GATE — CHECK BEFORE WRITING</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Before producing final files or patch text, inspect whether matching artifacts already exist in the provided workspace, bundle, or uploaded context.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Check for existing target SPEC/ANX/hook/prompt files, existing topic-specific update hooks, existing CLI_EXTRACTION_NOTES.md entries, and existing generated artifacts for the same TARGET_BATCH_NUMBER / TARGET_BATCH_SLUG / TARGET_TOPIC.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>If a matching artifact already exists and ALLOW_OVERWRITE is not yes, do not overwrite. Instead report one of: already satisfied; needs append-only delta; needs new topic; needs user approval to replace; or ambiguous ownership.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>If partial outputs exist, preserve them as historical context and propose a deterministic continuation rather than regenerating blindly.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  RoutingChecklist [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#E3F2FD"><B>ROUTING CHECKLIST — CHOOSE ONE PRIMARY ROUTE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>Route before editing:</B> create EXTRA_SOURCE_ROUTING.md-style reasoning even if the final deliverable is only a private markdown draft.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>SPEC update:</B> use when the source changes an existing layer-level contract, scope, architecture, or invariant.<BR ALIGN="LEFT"/><B>SPEC annex:</B> use when the source adds focused domain content under an existing layer without rewriting the whole layer.<BR ALIGN="LEFT"/><B>BATCH_CREATION_ANX hook:</B> use when future batch creation chats must consume the new source at specific batch numbers or routes.<BR ALIGN="LEFT"/><B>BATCH_UPDATE_ANX hook:</B> use when already-run batches need a controlled delta/update lane for this topic.<BR ALIGN="LEFT"/><B>NEW_CHAT_PROMPT update:</B> use when the reusable chat entry protocol itself needs new instructions or source requirements.<BR ALIGN="LEFT"/><B>CLI extraction ledger:</B> use when the source describes repeated manual behavior, helper scripts, command friction, Codex handoff problems, or behavior that should later become public tooling.<BR ALIGN="LEFT"/><B>Future context:</B> use when the source is valid but belongs to a future create lane, not the current batch.<BR ALIGN="LEFT"/><B>No change:</B> use when the source is redundant, superseded, or outside the Infra-Skeleton scope, and explain why.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  WorkflowDirection [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#6A1B9A">
+      <TR><TD BGCOLOR="#EDE7F6"><B>WORKFLOW_DIRECTION WHEN ROUTING THROUGH INFRACTL</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">If the source must enter an infractl route later, produce or update a WORKFLOW_DIRECTION block instead of jumping to Codex.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For an already-run skeleton batch:<BR ALIGN="LEFT"/>WORKFLOW_DIRECTION:<BR ALIGN="LEFT"/>  mode: request-update<BR ALIGN="LEFT"/>  track: skeleton<BR ALIGN="LEFT"/>  batch: &lt;batch-id-or-number-that-owns-the-change&gt;<BR ALIGN="LEFT"/>  topic: &lt;short_update_topic&gt;<BR ALIGN="LEFT"/>  evidence_required: yes<BR ALIGN="LEFT"/>  extra_sources:<BR ALIGN="LEFT"/>    - &lt;path-to-uploaded-source&gt;<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>For future skeleton work, route to mode: request-create, track: skeleton, with the target batch number/slug if known.<BR ALIGN="LEFT"/>For organ transition work, route to mode: request-create or request-update, track: organ, only when the organ lane is the correct owner.<BR ALIGN="LEFT"/>If the source changes public tool behavior, also route through 0C by drafting a CLI_EXTRACTION_NOTES.md entry.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ExpectedOutputs [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#FFF2CC">
+      <TR><TD BGCOLOR="#FFF8E1"><B>EXPECTED OUTPUTS AFTER CONFIRMATION</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Produce only the selected private system artifacts or patch text, for example:<BR ALIGN="LEFT"/>- SPEC_LayerXX_...md<BR ALIGN="LEFT"/>- SPEC_LayerXX_...-ANX##_...md<BR ALIGN="LEFT"/>- BATCH_CREATION_ANX##_...md<BR ALIGN="LEFT"/>- BATCH_UPDATE_ANX##_...md<BR ALIGN="LEFT"/>- NEW_CHAT_PROMPT_batch_creation.md patch text<BR ALIGN="LEFT"/>- NEW_CHAT_PROMPT_batch_update.md patch text<BR ALIGN="LEFT"/>- NEW_CHAT_PROMPT_update_specs.md or NEW_CHAT_PROMPT_implement_in_codex.md patch text, if the protocol changes<BR ALIGN="LEFT"/>- CLI_EXTRACTION_NOTES.md entry if repeated/manual/public-tool behavior is detected<BR ALIGN="LEFT"/>- EXTRA_SOURCE_ROUTING.md-style note explaining classification and ownership<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Do not produce a Codex implementation pack unless the user explicitly moves to P2/P3. Do not run smoke. Do not rewrite historical evidence. Do not mutate /mnt/egress. Do not implement public-tool changes in 0B.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  ResponseFormat [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#E3F2FD"><B>REQUIRED RESPONSE FORMAT</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Current phase: 0B knowledge expansion lane<BR ALIGN="LEFT"/>Canonical source read: yes / no, with path<BR ALIGN="LEFT"/>Addressed role: ChatGPT / Codex / WSL operator / wrong-agent stop<BR ALIGN="LEFT"/>Variables received:<BR ALIGN="LEFT"/>Missing variables, if any:<BR ALIGN="LEFT"/>Source material read:<BR ALIGN="LEFT"/>Missing source files, if any:<BR ALIGN="LEFT"/>Existing related artifacts found:<BR ALIGN="LEFT"/>Idempotency decision: new artifact / append-only delta / already satisfied / needs approval / stop<BR ALIGN="LEFT"/>Classification: SPEC / ANX / creation hook / update hook / prompt update / CLI extraction / future context / no change<BR ALIGN="LEFT"/>Target files:<BR ALIGN="LEFT"/>Planned edits before confirmation:<BR ALIGN="LEFT"/>Files written or draft artifacts produced, if confirmed:<BR ALIGN="LEFT"/>CLI extraction note needed: yes / no, with reason<BR ALIGN="LEFT"/>Safety status: no code, smoke, evidence, public-tool, or live mutation performed<BR ALIGN="LEFT"/>Decision: PASS / STOP<BR ALIGN="LEFT"/>Next phase: P1 route, 0C, or P2/P3 only if user explicitly requests execution packaging</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  PassStop [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#FFEBEE"><B>PASS / STOP CONDITIONS</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8"><B>PASS:</B> source material is readable; target ownership is clear; idempotency check is complete; target files are identified; user confirms writing or only a draft/plan is requested; and no unsafe execution is needed.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>STOP:</B> required source files are missing; target ownership is unclear; variables required for routing are missing; existing artifacts would be overwritten without ALLOW_OVERWRITE=yes; prompt is addressed to Codex without a packaged execution bundle; user has not confirmed writing; or requested action jumps directly into implementation, evidence mutation, smoke, or live infrastructure.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/><B>After PASS:</B> return to P1 direction-gate with the correct WORKFLOW_DIRECTION, enter 0C if CLI extraction promotion is needed, or continue to P2/P3 only after the user explicitly selects packaging/execution.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Reentry [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#333333">
+      <TR><TD BGCOLOR="#F5F5F5"><B>RE-ENTER THE V7 END-TO-END PIPELINE</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">After the 0B private system update is accepted, re-enter the canonical v7 pipeline instead of continuing informally.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>If the new material prepares a future skeleton batch, continue to the appropriate request-create + skeleton route.<BR ALIGN="LEFT"/>If the new material updates an already-run skeleton batch, continue to request-update + skeleton and require evidence.<BR ALIGN="LEFT"/>If the new material belongs to organ transition work, continue to the matching organ route only when organ ownership is explicit.<BR ALIGN="LEFT"/>If the new material describes a repeated manual workflow, helper script, CLI command, or public-tool improvement, enter 0C before public helper or infractl.cli promotion.<BR ALIGN="LEFT"/>If execution packaging is required, continue P1 -&gt; P2 -&gt; P3 -&gt; P4 -&gt; P5 -&gt; G16 -&gt; G17 using the selected route-specific prompt-only DOT.</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  Meta -> BaseFormat [xlabel="apply baseline"];
+  BaseFormat -> PhaseIdentity [xlabel="identify phase"];
+  PhaseIdentity -> AddressingGate [xlabel="agent gate"];
+  AddressingGate -> VariableBlock [xlabel="collect variables"];
+  VariableBlock -> ExactPrompt [xlabel="operator prompt"];
+  ExactPrompt -> InputChecklist [xlabel="read context"];
+  InputChecklist -> IdempotencyGate [xlabel="check existing"];
+  IdempotencyGate -> RoutingChecklist [xlabel="classify"];
+  RoutingChecklist -> WorkflowDirection [xlabel="if route needed"];
+  WorkflowDirection -> ExpectedOutputs [xlabel="after confirmation"];
+  ExpectedOutputs -> ResponseFormat [xlabel="report"];
+  ResponseFormat -> PassStop [xlabel="decision"];
+  PassStop -> Reentry [xlabel="next phase"];
+}
