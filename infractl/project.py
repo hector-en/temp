@@ -46,8 +46,6 @@ def source_path(data, key, prefer_real=False, repo_root=None):
     if not ent:
         return None
     root = data['root']
-    if prefer_real and repo_root and ent.get('real_path'):
-        return Path(repo_root) / ent['real_path']
     return root / ent.get('bundle_path','')
 
 def source_status(data, key, repo_root=None):
@@ -55,5 +53,37 @@ def source_status(data, key, repo_root=None):
     if not ent:
         return {"key": key, "known": False, "bundle_exists": False, "real_exists": False}
     bp = data['root'] / ent.get('bundle_path','')
-    rp = Path(repo_root) / ent.get('real_path','') if repo_root and ent.get('real_path') else None
-    return {"key": key, "known": True, "required": bool(ent.get('required')), "bundle_path": str(bp), "bundle_exists": bp.exists(), "real_path": str(rp) if rp else ent.get('real_path'), "real_exists": rp.exists() if rp else None}
+    return {
+        "key": key,
+        "known": True,
+        "required": bool(ent.get('required')),
+        "bundle_path": str(bp),
+        "bundle_exists": bp.exists(),
+        "real_path": ent.get('real_path'),
+        "real_exists": None,
+    }
+
+def public_tool_status(public_tool_root):
+    root = Path(public_tool_root).resolve()
+    required = [
+        ("README.md", root / "README.md"),
+        ("infractl.md", root / "infractl.md"),
+        ("infractl package", root / "infractl"),
+        ("infractl/cli.py", root / "infractl" / "cli.py"),
+        ("infractl/project.py", root / "infractl" / "project.py"),
+        ("dots/", root / "dots"),
+        (
+            "dots/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot",
+            root / "dots" / "infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot",
+        ),
+    ]
+    return [
+        {
+            "kind": "public_tool_check",
+            "name": name,
+            "path": str(path),
+            "exists": path.exists(),
+            "required": True,
+        }
+        for name, path in required
+    ]

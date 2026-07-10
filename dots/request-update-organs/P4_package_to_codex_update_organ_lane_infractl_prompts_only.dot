@@ -71,7 +71,7 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         If you are <B>ChatGPT in webchat/sandbox</B>, inspect the pack, infer variables, ask for confirmation, and produce the exact Codex handoff prompt. You may run deterministic layout validation only when the required local paths and tools are available, and you must not mutate workspace/egress unless explicitly instructed.<BR ALIGN="LEFT"/>
         If you are <B>Codex</B>, do not proceed merely because this DOT was uploaded. First confirm that the operator addressed Codex, provided/extracted the pack, and explicitly authorized execution after G14 layout-gate. If not, report that this is a P4 gate/handoff instruction and stop.<BR ALIGN="LEFT"/>
-        If you are the <B>WSL/operator</B>, provide the pack path, public tool root, private project root, repo root, organ evidence root, and explicit approval before Codex execution. Do not treat a layout warning as permission to execute.
+        If you are the <B>WSL/operator</B>, provide the pack path, public tool root, private project root, organ evidence root, and explicit approval before Codex execution. Do not treat a layout warning as permission to execute.
       </FONT></TD></TR>
     </TABLE>
   >];
@@ -90,7 +90,7 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
       <TR><TD BGCOLOR="#E8F5E9"><B>Suggest variables first, then ask for confirmation</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         Do not present an empty form. Help the operator by suggesting likely values from the P3 pack path, manifest, filenames, v7 DOT, uploaded artifacts, private bundle root, public tool root, organ identifiers, and prior evidence paths.<BR ALIGN="LEFT"/>
-        Suggested variable block for this run should include: <B>CANONICAL_MAIN_DOT</B>, <B>CODEX_UPDATE_PACK</B>, <B>EXTRACTED_PACK_DIR</B>, <B>PUBLIC_TOOL_ROOT</B>, <B>PRIVATE_PROJECT_ROOT</B>, <B>REPO_ROOT</B>, <B>MODE=request-update</B>, <B>TRACK=organ</B>, <B>ORGAN_BATCH_ID</B>, <B>ORGAN_BATCH_SLUG</B>, <B>TOPIC</B>, <B>ORGAN_EVIDENCE_ROOT</B>, <B>PROFILE=webchat-sandbox</B>, <B>ALLOW_CODEX_EXECUTION</B>, <B>ALLOW_LAYOUT_WARN</B>, and <B>ALLOW_OVERWRITE=no</B>.<BR ALIGN="LEFT"/>
+        Suggested variable block for this run should include: <B>CANONICAL_MAIN_DOT</B>, <B>CODEX_UPDATE_PACK</B>, <B>EXTRACTED_PACK_DIR</B>, <B>PUBLIC_TOOL_ROOT</B>, <B>PRIVATE_PROJECT_ROOT</B>, <B>MODE=request-update</B>, <B>TRACK=organ</B>, <B>ORGAN_BATCH_ID</B>, <B>ORGAN_BATCH_SLUG</B>, <B>TOPIC</B>, <B>ORGAN_EVIDENCE_ROOT</B>, <B>PROFILE=webchat-sandbox</B>, <B>ALLOW_CODEX_EXECUTION</B>, <B>ALLOW_LAYOUT_WARN</B>, and <B>ALLOW_OVERWRITE=no</B>.<BR ALIGN="LEFT"/>
         Mark each value as <B>user-provided</B>, <B>inferred</B>, <B>default-safe</B>, or <B>unknown</B>. Ask only for values still unknown or unsafe to infer. Do not validate or execute until the operator confirms the block or explicitly says to proceed with the suggested values.
       </FONT></TD></TR>
     </TABLE>
@@ -110,7 +110,7 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
   OrganUpdateP4FolderContract [label=<
     <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="980" BGCOLOR="#FFF2CC">
       <TR><TD><B>Organ update P4 handoff folder contract</B></TD></TR>
-      <TR><TD ALIGN="LEFT">Use the standardized organ update handoff folder: <FONT FACE="Courier">/mnt/ingress/workspace/codex_packs/organ_&lt;RUN&gt;_update/</FONT>. For R01: <FONT FACE="Courier">/mnt/ingress/workspace/codex_packs/organ_R01_update/</FONT>. If multiple update topics must coexist, use <FONT FACE="Courier">/mnt/ingress/workspace/codex_packs/organ_R01_update/&lt;topic&gt;/</FONT>.</TD></TR>
+      <TR><TD ALIGN="LEFT">Use the standardized organ update handoff folder: <FONT FACE="Courier">/workspace/codex_packs/organ_&lt;RUN&gt;_update/</FONT>. For R01: <FONT FACE="Courier">/workspace/codex_packs/organ_R01_update/</FONT>. If multiple update topics must coexist, use <FONT FACE="Courier">/workspace/codex_packs/organ_R01_update/&lt;topic&gt;/</FONT>.</TD></TR>
       <TR><TD ALIGN="LEFT">Set explicit variables: <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>, <FONT FACE="Courier">CODEX_UPDATE_PACK=${CODEX_PACK_FOLDER}/codex_update_pack.zip</FONT>, <FONT FACE="Courier">P4_HANDOFF_PROMPT=${CODEX_PACK_FOLDER}/P4_CODEX_HANDOFF_PROMPT.md</FONT>, and <FONT FACE="Courier">PACK_EXTRACT_ROOT=${CODEX_PACK_FOLDER}</FONT>.</TD></TR>
       <TR><TD ALIGN="LEFT">The handoff folder must contain: <FONT FACE="Courier">P4_CODEX_HANDOFF_PROMPT.md</FONT>, <FONT FACE="Courier">codex_update_pack.zip</FONT>, <FONT FACE="Courier">CODEX_UPDATE_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_UPDATE_CACHE.md</FONT>, <FONT FACE="Courier">UPDATE_SPEC.md</FONT>, <FONT FACE="Courier">UPDATE_RUN_INSTRUCTIONS.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK_TEMPLATE.md</FONT>, <FONT FACE="Courier">manifest.json</FONT>, <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">POSTCHECK_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>.</TD></TR>
       <TR><TD ALIGN="LEFT">When available, also include or reference baseline <FONT FACE="Courier">evidence/POSTCHECK.md</FONT>, <FONT FACE="Courier">evidence/INTEGRATION_REQUEST.md</FONT>, <FONT FACE="Courier">evidence/SMOKE_REPORT.md</FONT> or <FONT FACE="Courier">SMOKE_REPORT_PATH.txt</FONT>, organ context, relevant skeleton context, and relevant Config-Infra private context.</TD></TR>
@@ -126,8 +126,8 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
       <TR><TD BGCOLOR="#E1F5FE"><B>G14 layout-gate</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         Validate the real public/private layout before Codex execution. Use the current public infractl command exposed by the tool; expected shape:<BR ALIGN="LEFT"/>
-        <FONT FACE="Courier">python3 -m infractl.cli validate-real-layout --project &lt;PRIVATE_PROJECT_ROOT&gt; --repo-root &lt;REPO_ROOT&gt;</FONT><BR ALIGN="LEFT"/>
-        Treat required missing paths as STOP. Treat optional missing paths as WARN only when they are not required by the current pack. For organ update, organ transition files, organ workflow files, prior organ evidence, and pack inputs are not optional if the update task depends on them.<BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">cd &lt;PUBLIC_TOOL_ROOT&gt;<BR ALIGN="LEFT"/>python3 -m infractl.cli validate-real-layout --project &lt;PRIVATE_PROJECT_ROOT&gt; --public-tool-root &lt;PUBLIC_TOOL_ROOT&gt;</FONT><BR ALIGN="LEFT"/>
+        Treat required public-tool files and required private bundle files as STOP conditions. Treat optional bundle paths as WARN only when they are not required by the current pack. For organ update, organ transition files, organ workflow files, prior organ evidence, and pack inputs are not optional if the update task depends on them. Treat files.yaml.real_path as legacy metadata only.<BR ALIGN="LEFT"/>
         If validate-real-layout does not yet understand organ-specific paths or evidence roots, stop or route that friction to <B>0C_cli_extraction_feedback_infractl_prompts_only.dot</B>; do not pretend skeleton-only validation proves organ readiness.
       </FONT></TD></TR>
     </TABLE>

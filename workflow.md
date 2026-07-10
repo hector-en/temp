@@ -67,32 +67,31 @@ A0, A1, A2, NEW_CREATE, NEW_UPDATE, SPEC_L1, SPEC_L2,
 WF_FINAL, WF_SKELETON, WF_SMOKE, CLI_NOTES
 ```
 
-Important real-path contract:
+Important two-root contract:
 
 ```text
-/mnt/ingress/infra = private planning/control tree
-/workspace         = implementation repos, experiments, runs, artifacts
+PUBLIC_TOOL_ROOT=/workspace/repos/infractl-public
+PRIVATE_PROJECT_ROOT=/workspace/private/agentfield-grn-private_real_v0
 ```
 
 Strict v0 preflight in Codex/real workspace:
 
 ```bash
-cd /workspace/repos/public_infra-skeleton-tools_v0
+cd /workspace/repos/infractl-public
 
 python3 -m infractl.cli validate-real-layout \
   --project /workspace/private/agentfield-grn-private_real_v0 \
-  --repo-root /mnt/ingress
+  --public-tool-root /workspace/repos/infractl-public
 ```
 
-This reads `files.yaml.real_path`. In strict v0, required missing real paths should stop with `MISSING_REQUIRED_REAL_PATHS` before Codex implementation proceeds.
+This validates the public tool root and the private project root together. Required private source keys resolve by `bundle_path` under `PRIVATE_PROJECT_ROOT`; `files.yaml.real_path` remains legacy metadata and is not expanded under a third contract root.
 
-Inside ChatGPT webchat only, where `/mnt/ingress/infra` is not mounted, use bundle fallback validation instead:
+Inside ChatGPT webchat only, validate the uploaded private bundle contents directly:
 
 ```bash
 python3 -m infractl.cli validate-real-layout \
   --project /mnt/data/agentfield-grn-private_real_v0 \
-  --repo-root /mnt/data/agentfield-grn-private_real_v0 \
-  --allow-bundle-fallback
+  --public-tool-root /mnt/data/infractl-public
 ```
 
 ---
@@ -330,11 +329,11 @@ Produces one Codex zip. This is the only artifact Codex should execute.
 Before implementation, Codex runs strict layout validation:
 
 ```bash
-cd /workspace/repos/public_infra-skeleton-tools_v0
+cd /workspace/repos/infractl-public
 
 python3 -m infractl.cli validate-real-layout \
   --project /workspace/private/agentfield-grn-private_real_v0 \
-  --repo-root /mnt/ingress
+  --public-tool-root /workspace/repos/infractl-public
 ```
 
 Codex follows only:

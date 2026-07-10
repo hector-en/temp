@@ -60,7 +60,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G11: create-pack]</B></FONT> package-codex-create emits a validated create pack zip plus manifest/log.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G12: update-pack]</B></FONT> package-codex-update emits a validated update pack zip plus manifest/log.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G13: pack-consumed]</B></FONT> Codex consumes the pack zip as its bounded implementation instruction source.</TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G14: layout-gate]</B></FONT> validate-real-layout checks real paths under /mnt/ingress before execution.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G14: layout-gate]</B></FONT> validate-real-layout checks the declared public/private two-root contract before execution.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G15: execution-evidence]</B></FONT> Codex execution produces POSTCHECK, INTEGRATION_REQUEST, smoke report, and update manifest when required.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G16: snapshot-copy/export]</B></FONT> Returned evidence is copied into sources/evidence_snapshots/ and the updated private bundle can be zipped to /mnt/egress/private-bundles.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G17: phase-decision]</B></FONT> Snapshot state determines whether the next batch/update can proceed or must ask for missing files.</TD></TR>
@@ -68,7 +68,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
         <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P7: expansion-choice]</B></FONT> Choose whether the new source is a batch update, SPEC/ANX update, hook update, prompt update, or future CLI extraction candidate.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P8: re-enter-cycle]</B></FONT> After private system files are updated, re-enter the normal direction gate for the next request pack or update pack.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G19: public-private-contract]</B></FONT> Public files provide reusable tooling; private bundle files provide project maps, context, evidence, and generated outputs.</TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G20: files-yaml-mapping]</B></FONT> files.yaml connects portable private-bundle source names to real paths under /mnt/ingress/infra.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G20: files-yaml-mapping]</B></FONT> files.yaml connects portable private-bundle source names to bundle paths under the private project root and may retain legacy real_path metadata.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G21: route-extra-source]</B></FONT> EXTRA_SOURCE_ROUTING.md classifies the uploaded source before any SPEC, ANX, hook, prompt, or CLI behavior changes.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G22: private-file-update]</B></FONT> The expansion lane produces private system files such as SPEC_Layer*, ANX files, BATCH_*_ANX hooks, and NEW_CHAT_PROMPT updates.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P9: cli-extraction-choice]</B></FONT> Human decides whether repeated manual behavior stays as notes, becomes a public helper script, or is promoted into an infractl subcommand.</TD></TR>
@@ -93,15 +93,15 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
         <TR><TD ALIGN="LEFT"><B>request-create/update</B>: request-factory. Use it to turn one WORKFLOW_DIRECTION into a bounded ChatGPT request pack. It selects context, records evidence state, and creates the safe writing surface. It does not implement anything.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>package-codex-create</B>: creation-pack validator. Use it after ChatGPT has written the five create files. It checks shape and bundles them for Codex.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>package-codex-update</B>: update-pack validator. Use it after ChatGPT has written the five update files. It keeps retroactive fixes separate from original batch evidence.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>validate-real-layout</B>: workspace gate. Use it in Codex/real workspace to prove the private infra tree is where files.yaml says it is before execution touches real paths.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>validate-real-layout</B>: workspace gate. Use it in Codex/real workspace to prove the public tool root and private project root are consistent before execution touches project files.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>Codex executes pack</B>: implementation phase. Codex consumes only the validated pack, applies the requested change, and returns evidence. This is not an infractl command.</TD></TR>
 
         <TR><TD ALIGN="LEFT"> </TD></TR>
         <TR><TD ALIGN="LEFT"><B>Public/private contract box (companion-dev reading)</B></TD></TR>
         <TR><TD ALIGN="LEFT"><B>Public tool</B>: reusable engine only. It contains infractl code, schemas, templates, examples, README, instructions, and update prompt. It may be pushed to GitHub.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>Private bundle</B>: portable project control plane. It contains YAML maps, selected private source copies, evidence snapshots, generated request packs, and source inventory. It is uploaded to ChatGPT but not pushed publicly.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>Real private filesystem</B>: authoritative planning/control tree at /mnt/ingress/infra. files.yaml maps portable bundle paths back to these real paths.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>Workspace</B>: execution and implementation surface. Keep /workspace for repos, experiments, runs, artifacts, models, and generated working code; do not treat it as the private planning source.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Private project root</B>: authoritative private bundle at /workspace/private/agentfield-grn-private_real_v0. files.yaml validates bundle_path entries from this root during strict v0 checks.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Workspace</B>: execution and implementation surface. Keep /workspace for repos, experiments, runs, artifacts, models, and generated working code; run the public CLI from /workspace/repos/infractl-public.</TD></TR>
 
         <TR><TD ALIGN="LEFT"> </TD></TR>
 
@@ -111,10 +111,10 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
         <TR><TD ALIGN="LEFT"><B>layers.yaml 0.9 KB</B>: five-layer orientation map. Layer 01 owns Batch 01; Layer 02 owns Batches 02-04 and future Batch 05; Layers 03-05 activate later. It keeps batch numbers tied to architecture layers.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>batches.yaml 6.6 KB</B>: active batch contract map. It defines skeleton 01-04 plus organ R01, with slug, layer, scope, required_sources, required_hooks, expected Codex pack shape, evidence_contract, smoke domains, and must_not rules.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>hooks.yaml 1.0 KB</B>: ANX registry. Current hooks: <I>workflow_smoke_automation</I> / ANX04 applies to skeleton 01-04 and organ R01; <I>workspace_boundaries</I> / ANX01 applies to skeleton 02.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>files.yaml 7.0 KB</B>: main bridge file. It has <B>28 source_keys</B>: <B>11 required</B> and <B>17 optional</B>. Each key has bundle_path, real_path, and required=true/false. It is what validate-real-layout uses against /mnt/ingress.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>files.yaml 7.0 KB</B>: main bridge file. It has <B>28 source_keys</B>: <B>11 required</B> and <B>17 optional</B>. Each key has bundle_path, real_path, and required=true/false. Strict v0 validation checks required bundle_path entries under the private project root.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>Required source keys</B>: A0, A1, A2, NEW_CREATE, NEW_UPDATE, SPEC_L1, SPEC_L2, WF_FINAL, WF_SKELETON, WF_SMOKE, CLI_NOTES.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>Real-path families covered by files.yaml</B>: infra/plans/implementation (13 keys), infra/plans/specifications (7 keys), infra/plans/workflow (7 keys), infra/skeleton/1_chatgpt_batch_creation (1 key).</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>sources/</B>: copied fallback context for ChatGPT webchat when /mnt/ingress/infra is not mounted. check-required-files validates these bundle copies.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>Bundle-path families covered by files.yaml</B>: implementation, specifications, workflow, and related copied source bundles under PRIVATE_PROJECT_ROOT/sources/.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>sources/</B>: copied private-bundle context validated directly under the private project root. check-required-files and validate-real-layout both read these bundle copies.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>evidence_snapshots/</B>: copied POSTCHECK, INTEGRATION_REQUEST, SMOKE_REPORT, and update evidence used by request-update/check-evidence.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>generated/</B>: request packs and generated outputs produced by infractl/ChatGPT. It is staging, not authoritative source.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>Expansion lane box (companion-dev reading)</B></TD></TR>
@@ -153,21 +153,21 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
     ActualYamlMap [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#FCE8E6">
         <TR><TD><B>Actual YAML map status</B></TD></TR>
-        <TR><TD ALIGN="LEFT">files.yaml: 28 source_keys<BR ALIGN="LEFT"/>CLI_NOTES required source key<BR ALIGN="LEFT"/>required: 11 / optional: 17<BR ALIGN="LEFT"/>batches.yaml: skeleton 01-04 + organ R01<BR ALIGN="LEFT"/>hooks.yaml: ANX04 smoke + ANX01 workspace<BR ALIGN="LEFT"/>validate-real-layout reads files.yaml.real_path<BR ALIGN="LEFT"/>strict v0 fails if required real_path missing</TD></TR>
+        <TR><TD ALIGN="LEFT">files.yaml: 28 source_keys<BR ALIGN="LEFT"/>CLI_NOTES required source key<BR ALIGN="LEFT"/>required: 11 / optional: 17<BR ALIGN="LEFT"/>batches.yaml: skeleton 01-04 + organ R01<BR ALIGN="LEFT"/>hooks.yaml: ANX04 smoke + ANX01 workspace<BR ALIGN="LEFT"/>validate-real-layout checks required bundle_path entries<BR ALIGN="LEFT"/>strict v0 fails if required private bundle files are missing</TD></TR>
       </TABLE>
     >];
 
     RealContract [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#FCE8E6">
         <TR><TD><B>Real private tree: authoritative source</B></TD></TR>
-        <TR><TD ALIGN="LEFT">/mnt/ingress/infra/<BR ALIGN="LEFT"/>plans/implementation/ = master plans/prompts<BR ALIGN="LEFT"/>plans/implementation/HOOKS/ = ANX hooks<BR ALIGN="LEFT"/>plans/specifications/ = layer specs<BR ALIGN="LEFT"/>plans/specifications/annex/ = SPEC annexes<BR ALIGN="LEFT"/>plans/workflow/ = workflow rules<BR ALIGN="LEFT"/>batches/skeleton/ + companions = execution evidence</TD></TR>
+        <TR><TD ALIGN="LEFT">/workspace/private/agentfield-grn-private_real_v0/<BR ALIGN="LEFT"/>project.yaml, layers.yaml, batches.yaml, hooks.yaml, files.yaml<BR ALIGN="LEFT"/>sources/ = copied planning/spec/workflow context<BR ALIGN="LEFT"/>evidence_snapshots/ = returned execution evidence<BR ALIGN="LEFT"/>generated/ = request/output staging</TD></TR>
       </TABLE>
     >];
 
     WorkspaceContract [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#F5F5F5">
         <TR><TD><B>Workspace: execution surface</B></TD></TR>
-        <TR><TD ALIGN="LEFT">/workspace/repos/public tool<BR ALIGN="LEFT"/>/workspace/private/private bundle<BR ALIGN="LEFT"/>/workspace/data runs artifacts models checkpoints<BR ALIGN="LEFT"/>validate-real-layout uses files.yaml<BR ALIGN="LEFT"/>--repo-root /mnt/ingress means check /mnt/ingress/infra/...</TD></TR>
+        <TR><TD ALIGN="LEFT">/workspace/repos/infractl-public = public tool root<BR ALIGN="LEFT"/>/workspace/private/agentfield-grn-private_real_v0 = private project root<BR ALIGN="LEFT"/>/workspace/data runs artifacts models checkpoints<BR ALIGN="LEFT"/>validate-real-layout checks both declared roots<BR ALIGN="LEFT"/>no third contract root is required</TD></TR>
       </TABLE>
     >];
 
@@ -229,7 +229,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
     CLIExtractionNotes [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="430" BGCOLOR="#FCE8E6">
         <TR><TD><B>Required extraction ledger</B></TD></TR>
-        <TR><TD ALIGN="LEFT">Real path:<BR ALIGN="LEFT"/>/mnt/ingress/infra/plans/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Private bundle snapshot:<BR ALIGN="LEFT"/>sources/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Purpose: record repeated, stable manual behavior before public-tool promotion.</TD></TR>
+        <TR><TD ALIGN="LEFT">Private project bundle path:<BR ALIGN="LEFT"/>sources/workflow/CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Legacy real_path metadata may also point to a planning tree copy, but strict two-root validation reads the private bundle path.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Purpose: record repeated, stable manual behavior before public-tool promotion.</TD></TR>
       </TABLE>
     >];
 
@@ -425,7 +425,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
 
     DetailValidateReal [label=<
       <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" WIDTH="360" BGCOLOR="#F5F5F5">
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Runs in Codex/real workspace:<BR ALIGN="LEFT"/>cd /workspace/repos/infra-skeleton-tools_real_v0<BR ALIGN="LEFT"/>python3 -m infractl.cli validate-real-layout \<BR ALIGN="LEFT"/>  --project /workspace/private/agentfield-grn-private_real_v0 \<BR ALIGN="LEFT"/>  --repo-root /mnt/ingress</FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">Runs in Codex/real workspace:<BR ALIGN="LEFT"/>cd /workspace/repos/infractl-public<BR ALIGN="LEFT"/>python3 -m infractl.cli validate-real-layout \<BR ALIGN="LEFT"/>  --project /workspace/private/agentfield-grn-private_real_v0 \<BR ALIGN="LEFT"/>  --public-tool-root /workspace/repos/infractl-public</FONT></TD></TR>
       </TABLE>
     >];
 

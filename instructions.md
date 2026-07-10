@@ -55,7 +55,7 @@ When starting a new chat, do this:
 1. Read the public tool repo:
 
 ```text
-https://github.com/hector-en/temp/tree/main/public_infra-skeleton-tools_v0
+https://github.com/hector-en/temp/tree/main/
 ```
 
 2. Confirm that the public CLI files are accessible, especially:

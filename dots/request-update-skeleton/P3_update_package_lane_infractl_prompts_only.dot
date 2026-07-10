@@ -38,6 +38,16 @@ digraph P3_update_package_lane_infractl_prompts_only {
 </TABLE>
 >];
 
+  UpdateEvidenceRequirementFiles [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Update-pack requirement files and manifest metadata</B></TD></TR>
+  <TR><TD ALIGN="LEFT">The update pack is still validated from the five ChatGPT-authored update files. In addition, the P3 output or later P4 handoff folder must carry these first-class requirement files beside the pack: <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Manifest metadata:</B> the package manifest must state <FONT FACE="Courier">MODE=request-update</FONT>, <FONT FACE="Courier">TRACK=skeleton</FONT>, <FONT FACE="Courier">BATCH_NUMBER</FONT>, <FONT FACE="Courier">BATCH_SLUG</FONT>, <FONT FACE="Courier">UPDATE_TOPIC</FONT>, prior evidence source, expected update evidence files, and the fact that <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT> is required for update runs.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Read-only context:</B> <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT> is copied or referenced as read-only context only. P3 must not modify the ledger.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Compatibility rule:</B> if the current pack format cannot embed the requirement files directly, P3 must record that P4 is responsible for colocating them in <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>. Do not silently drop the requirement files.</TD></TR>
+</TABLE>
+>];
+
   Cmd [label=<
 <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
   <TR><TD><B>Safe P3 command shape after confirmation</B></TD></TR>
@@ -63,7 +73,8 @@ digraph P3_update_package_lane_infractl_prompts_only {
   Agent -> Vars;
   Vars -> Prompt;
   Prompt -> Inputs;
-  Inputs -> Cmd;
+  Inputs -> UpdateEvidenceRequirementFiles;
+  UpdateEvidenceRequirementFiles -> Cmd;
   Cmd -> Idem;
   Idem -> Pass;
 }

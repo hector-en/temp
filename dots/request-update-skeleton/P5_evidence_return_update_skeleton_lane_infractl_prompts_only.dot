@@ -34,7 +34,17 @@ digraph P5_evidence_return_update_skeleton_lane_infractl_prompts_only {
   Evidence [label=<
 <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
   <TR><TD><B>G15 update evidence checklist</B></TD></TR>
-  <TR><TD ALIGN="LEFT">For update skeleton, verify returned update evidence such as UPDATE_POSTCHECK.md, UPDATE_INTEGRATION_REQUEST.md, CHANGESET_MANIFEST.md, plus referenced smoke report or accepted historical smoke report when the update did not rerun smoke. Confirm changed files, tests run, update evidence path, smoke report path, and remaining issues. Stop if Codex did not provide required evidence or if the update evidence contradicts the pack route.</TD></TR>
+  <TR><TD ALIGN="LEFT">For skeleton update lanes, expect UPDATE_POSTCHECK.md, UPDATE_INTEGRATION_REQUEST.md, and CHANGESET_MANIFEST.md. If smoke was explicitly run, reused, or required by the approved update pack, require SMOKE_REPORT.md or an exact accepted smoke-report path. Before G16 snapshot/export, verify that prior batch evidence was read as input and not overwritten; UPDATE_INTEGRATION_REQUEST.md includes ANX01-based suitability classification; ANX09 is only a deferred future config-integration pack-shape reference; CHANGESET_MANIFEST.md lists files read, modified, created, preserved, and explicitly not touched; CLI extraction candidates are recorded but CLI_EXTRACTION_NOTES.md was not edited. Missing normalized update evidence causes STOP unless the operator explicitly treats the run as a legacy reconciliation case.</TD></TR>
+</TABLE>
+>];
+
+  UpdateEvidenceNormalizationCheck [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Skeleton update evidence normalization check</B></TD></TR>
+  <TR><TD ALIGN="LEFT">Before G16 snapshot/export, verify update evidence contains <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>. Require <FONT FACE="Courier">SMOKE_REPORT.md</FONT> only if smoke was explicitly run, reused, or required.</TD></TR>
+  <TR><TD ALIGN="LEFT">Verify prior evidence was read as input and not overwritten. Verify <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT> includes ANX01-based suitability classification and does not treat ANX09 as permission to execute config integration.</TD></TR>
+  <TR><TD ALIGN="LEFT">Verify <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT> lists files read, modified, created, preserved, and explicitly not touched. Verify CLI extraction candidates are recorded without editing <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT>.</TD></TR>
+  <TR><TD ALIGN="LEFT">If any normalized update evidence file is missing, STOP unless the operator explicitly classifies the run as a legacy evidence-reconciliation case. Do not overwrite historical evidence when <FONT FACE="Courier">ALLOW_OVERWRITE</FONT> is not <FONT FACE="Courier">yes</FONT>.</TD></TR>
 </TABLE>
 >];
 
@@ -63,7 +73,8 @@ digraph P5_evidence_return_update_skeleton_lane_infractl_prompts_only {
   Agent -> Vars;
   Vars -> Prompt;
   Prompt -> Evidence;
-  Evidence -> G16;
+  Evidence -> UpdateEvidenceNormalizationCheck;
+  UpdateEvidenceNormalizationCheck -> G16;
   G16 -> Idem;
   Idem -> Pass;
 }

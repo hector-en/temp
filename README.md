@@ -14,55 +14,97 @@ dots/
 
 Use repo-local `dots/...` paths for Codex/WSL/local instructions. Keep `infractl.zip` upload wording for fresh webchat sessions, but do not point local operators at `infractl/<lane>/...`.
 
+
 ---
 
 ## Expected zip layout
 
-Your zip should use `infractl/` as the root folder:
+The current `infractl.zip` should have this shape at the zip root. Do **not** expect an extra nested `infractl/` directory around the DOT router tree. The `infractl/` folder inside the zip is the Python package, not the DOT root.
 
 ```text
 infractl.zip
-└── infractl/
-    ├── infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
-    ├── zero-abc/
-    │   ├── 0A_public_private_contract_infractl_prompts_only.dot
-    │   ├── 0B_expansion_lane_infractl_prompts_only.dot
-    │   └── 0C_cli_extraction_feedback_infractl_prompts_only.dot
-    ├── request-create-skeleton/
-    │   ├── P1_request_create_skeleton_infractl_prompts_only.dot
-    │   ├── P2_create_writing_lane_infractl_prompts_only.dot
-    │   ├── P3_create_package_lane_infractl_prompts_only.dot
-    │   ├── P4_package_to_codex_lane_infractl_prompts_only.dot
-    │   ├── P5_evidence_return_lane_infractl_prompts_only.dot
-    │   └── P6_next_cycle_lane_infractl_prompts_only.dot
-    ├── request-update-skeleton/
-    │   ├── P1_request_update_skeleton_infractl_prompts_only.dot
-    │   ├── P2_update_writing_lane_infractl_prompts_only.dot
-    │   ├── P3_update_package_lane_infractl_prompts_only.dot
-    │   ├── P4_package_to_codex_update_skeleton_lane_infractl_prompts_only.dot
-    │   ├── P5_evidence_return_update_skeleton_lane_infractl_prompts_only.dot
-    │   └── P6_next_cycle_update_skeleton_lane_infractl_prompts_only.dot
-    ├── request-create-organs/
-    │   ├── P1_request_create_organ_infractl_prompts_only.dot
-    │   ├── P2_create_writing_organ_lane_infractl_prompts_only.dot
-    │   ├── P3_create_package_organ_lane_infractl_prompts_only.dot
-    │   ├── P4_package_to_codex_organ_lane_infractl_prompts_only.dot
-    │   ├── P5_evidence_return_organ_lane_infractl_prompts_only.dot
-    │   └── P6_next_cycle_organ_lane_infractl_prompts_only.dot
-    ├── request-update-organs/
-    │   ├── P1_request_update_organ_infractl_prompts_only.dot
-    │   ├── P2_update_writing_organ_lane_infractl_prompts_only.dot
-    │   ├── P3_update_package_organ_lane_infractl_prompts_only.dot
-    │   ├── P4_package_to_codex_update_organ_lane_infractl_prompts_only.dot
-    │   ├── P5_evidence_return_update_organ_lane_infractl_prompts_only.dot
-    │   └── P6_next_cycle_update_organ_lane_infractl_prompts_only.dot
-    └── config-infra/
-        ├── CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
-        ├── CIP02_rich_integration_request_generation_infractl_prompts_only.dot
-        ├── CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
-        ├── CIP04_live_config_state_resolution_infractl_prompts_only.dot
-        ├── CIP05_config_implementation_planning_infractl_prompts_only.dot
-        └── CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
+├── README.md
+├── infractl.md
+├── prompt_guide.md
+├── workflow.md
+├── pyproject.toml
+├── infractl/              # Python package only
+│   ├── cli.py
+│   ├── project.py
+│   ├── pack.py
+│   ├── evidence.py
+│   ├── profiles.py
+│   └── render.py
+├── dots/                  # DOT router root
+│   ├── infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
+│   ├── zero-abc/
+│   │   ├── 0A_public_private_contract_infractl_prompts_only.dot
+│   │   ├── 0B_expansion_lane_infractl_prompts_only.dot
+│   │   └── 0C_cli_extraction_feedback_infractl_prompts_only.dot
+│   ├── request-create-skeleton/
+│   │   ├── P1_request_create_skeleton_infractl_prompts_only.dot
+│   │   ├── P2_create_writing_lane_infractl_prompts_only.dot
+│   │   ├── P3_create_package_lane_infractl_prompts_only.dot
+│   │   ├── P4_package_to_codex_lane_infractl_prompts_only.dot
+│   │   ├── P5_evidence_return_lane_infractl_prompts_only.dot
+│   │   └── P6_next_cycle_lane_infractl_prompts_only.dot
+│   ├── request-update-skeleton/
+│   │   ├── P1_request_update_skeleton_infractl_prompts_only.dot
+│   │   ├── P2_update_writing_lane_infractl_prompts_only.dot
+│   │   ├── P3_update_package_lane_infractl_prompts_only.dot
+│   │   ├── P4_package_to_codex_update_skeleton_lane_infractl_prompts_only.dot
+│   │   ├── P5_evidence_return_update_skeleton_lane_infractl_prompts_only.dot
+│   │   └── P6_next_cycle_update_skeleton_lane_infractl_prompts_only.dot
+│   ├── request-create-organs/
+│   │   ├── P1_request_create_organ_infractl_prompts_only.dot
+│   │   ├── P2_create_writing_organ_lane_infractl_prompts_only.dot
+│   │   ├── P3_create_package_organ_lane_infractl_prompts_only.dot
+│   │   ├── P4_package_to_codex_organ_lane_infractl_prompts_only.dot
+│   │   ├── P5_evidence_return_organ_lane_infractl_prompts_only.dot
+│   │   └── P6_next_cycle_organ_lane_infractl_prompts_only.dot
+│   ├── request-update-organs/
+│   │   ├── P1_request_update_organ_infractl_prompts_only.dot
+│   │   ├── P2_update_writing_organ_lane_infractl_prompts_only.dot
+│   │   ├── P3_update_package_organ_lane_infractl_prompts_only.dot
+│   │   ├── P4_package_to_codex_update_organ_lane_infractl_prompts_only.dot
+│   │   ├── P5_evidence_return_update_organ_lane_infractl_prompts_only.dot
+│   │   └── P6_next_cycle_update_organ_lane_infractl_prompts_only.dot
+│   └── config-infra/
+│       ├── CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
+│       ├── CIP02_rich_integration_request_generation_infractl_prompts_only.dot
+│       ├── CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
+│       ├── CIP04_live_config_state_resolution_infractl_prompts_only.dot
+│       ├── CIP05_config_implementation_planning_infractl_prompts_only.dot
+│       └── CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
+├── schemas/
+├── scripts/
+├── templates/
+└── examples/
+```
+
+The main DOT is:
+
+```text
+dots/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
+```
+
+Correct route DOT paths use `dots/...`, for example:
+
+```text
+dots/request-create-skeleton/P4_package_to_codex_lane_infractl_prompts_only.dot
+dots/zero-abc/0A_public_private_contract_infractl_prompts_only.dot
+dots/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
+```
+
+Do **not** use these stale nested forms with the current zip:
+
+```text
+infractl/request-create-skeleton/...
+infractl/request-update-skeleton/...
+infractl/request-create-organs/...
+infractl/request-update-organs/...
+infractl/zero-abc/...
+infractl/config-infra/...
 ```
 
 Keep `infractl.md` next to the zip when uploading to a new chat:
@@ -212,9 +254,9 @@ A workflow should be recorded in CLI_EXTRACTION_NOTES.md.
 
 ## Config-Infra CIP path
 
-The current real `infractl.zip` also includes a `config-infra/` path. Use this path when batch or organ work produces configuration, environment, Python/lv, package-stack, bootstrap, account, mount, or workflow-integration implications that need a structured handoff instead of an ad hoc note.
+The current real `infractl.zip` includes a `dots/config-infra/` path. Use this path when batch or organ work produces configuration, environment, Python/lv, package-stack, bootstrap, account, mount, or workflow-integration implications that need a structured handoff instead of an ad hoc note.
 
-The `config-infra/` path is separate from the normal P1-P6 create/update lanes. It is the Config-Infra lifecycle for turning integration needs into approved manifests, live-state resolution, implementation plans, and carefully gated closeout.
+The `dots/config-infra/` path is separate from the normal P1-P6 create/update lanes. It is the Config-Infra lifecycle for turning integration needs into approved manifests, live-state resolution, implementation plans, and carefully gated closeout.
 
 ### Config-Infra layout
 
@@ -268,105 +310,6 @@ CIP06 may apply changes only with:
   - exact file touch set
   - explicit confirmation
   - passing safety gates
-```
-
-### Config-Infra CIP output root rule
-
-Canonical rule:
-
-```text
-For every CIP run, use:
-/workspace/runs/cip/<slug-title>/<cip-phase>/
-```
-
-where:
-
-```text
-- <slug-title> is the CIP topic/run slug, for example batch01_config_infra_cip_alignment_manifest
-- <cip-phase> is lowercase cip01, cip02, cip03, cip04, cip05, or cip06
-```
-
-Examples:
-
-```text
-/workspace/runs/cip/batch01_config_infra_cip_alignment_manifest/cip03/INTEGRATION_MANIFEST.md
-/workspace/runs/cip/batch01_config_infra_cip_alignment_manifest/cip04/CONFIG_STATE_SNAPSHOT.md
-/workspace/runs/cip/batch01_config_infra_cip_alignment_manifest/cip05/CONFIG_INTEGRATION_PLAN.md
-/workspace/runs/cip/batch01_config_infra_cip_alignment_manifest/cip06/CONFIG_INTEGRATION_CLOSEOUT_REPORT.md
-```
-
-Variable convention:
-
-```text
-CIP_RUN_SLUG=<slug-title>
-CIP_PHASE_DIR=cip04
-CIP_RUN_ROOT=/workspace/runs/cip/${CIP_RUN_SLUG}
-OUTPUT_ROOT=${CIP_RUN_ROOT}/${CIP_PHASE_DIR}
-```
-
-Phase mapping:
-
-```text
-CIP01 -> /workspace/runs/cip/<slug-title>/cip01/
-CIP02 -> /workspace/runs/cip/<slug-title>/cip02/
-CIP03 -> /workspace/runs/cip/<slug-title>/cip03/
-CIP04 -> /workspace/runs/cip/<slug-title>/cip04/
-CIP05 -> /workspace/runs/cip/<slug-title>/cip05/
-CIP06 -> /workspace/runs/cip/<slug-title>/cip06/
-```
-
-Legacy rule:
-
-```text
-Legacy CIP artifacts may exist under /workspace/cipXX/<topic>/ or /workspace/runs/cip/cipXX/<topic>/. For new runs, addendums, and future phases, write to /workspace/runs/cip/<slug-title>/cipXX/. Existing legacy outputs should be read as inputs when needed and left in place unless an explicit migration task is approved.
-```
-
-### Config-Infra filename contract
-
-```text
-Do not infer CIP source-contract filenames from phase titles.
-Use the hardcoded CIP source-contract map and registry lookup.
-If a mapped file is missing, search hooks.yaml / files.yaml / candidate filenames before declaring it missing.
-Do not invent alternate filenames.
-```
-
-Compact canonical map:
-
-```text
-CIP01:
-  spec_annex: SPEC_config_infra_integration_pipeline-ANX01_config_infra_suitability_determiner.md
-  hook: HOOK_config_infra_suitability_assessment.md
-  outputs: CONFIG_INFRA_SUITABILITY_DECISION.md, CONFIG_INFRA_SUITABILITY_DECISION.json
-
-CIP02:
-  spec_annex: SPEC_config_infra_integration_pipeline-ANX02_integration_request_schema.md
-  hook: HOOK_config_infra_rich_integration_request.md
-  outputs: INTEGRATION_REQUEST.md, INTEGRATION_REQUEST.json
-
-CIP03:
-  spec_annex: SPEC_config_infra_integration_pipeline-ANX03_integration_manifest_schema.md
-  hook: HOOK_config_infra_manifest_gate.md
-  outputs: INTEGRATION_MANIFEST.md, INTEGRATION_MANIFEST.json
-
-CIP04:
-  spec_annex: SPEC_config_infra_integration_pipeline-ANX04_config_state_snapshot_schema.md
-  hook: HOOK_config_infra_live_resolution_gate.md
-  outputs: CONFIG_STATE_SNAPSHOT.md, CONFIG_STATE_SNAPSHOT.json, CIP04_POSTCHECK.md
-
-CIP05:
-  spec_annex: SPEC_config_infra_integration_pipeline-ANX05_config_integration_plan_schema.md
-  supporting_annex: SPEC_config_infra_integration_pipeline-ANX06_config_patch_classes.md
-  hook: HOOK_config_infra_implementation_plan_gate.md
-  outputs: CONFIG_INTEGRATION_PLAN.md, CONFIG_INTEGRATION_PLAN.json, CIP05_POSTCHECK.md
-
-CIP06:
-  spec_annex: SPEC_config_infra_integration_pipeline-ANX06_config_patch_classes.md
-  supporting_annex:
-    SPEC_config_infra_integration_pipeline-ANX07_config_integration_implementer_spec.md
-    SPEC_config_infra_integration_pipeline-ANX08_config_integration_implementer_runbook.md
-    SPEC_config_infra_integration_pipeline-ANX09_codex_pack_template_config_integration.md
-  hook: HOOK_config_infra_closeout_snapshot_companion.md
-  outputs: CONFIG_INTEGRATION_CLOSEOUT_REPORT.md, CONFIG_INTEGRATION_CLOSEOUT_REPORT.json, CIP06_POSTCHECK.md
 ```
 
 ### CIP router prompt
@@ -452,14 +395,6 @@ dots/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_only.
 ### CIP04 — live config-state resolution
 
 Use CIP04 after CIP03 to inspect the current real config/tooling state in read-only mode. CIP04 resolves what exists now; it does not apply changes.
-
-```text
-CIP04 naming guardrail:
-The phase title is "Live config-state resolution", but the canonical ANX file is SPEC_config_infra_integration_pipeline-ANX04_config_state_snapshot_schema.md.
-The canonical hook is HOOK_config_infra_live_resolution_gate.md.
-The canonical outputs are CONFIG_STATE_SNAPSHOT.md, CONFIG_STATE_SNAPSHOT.json, and CIP04_POSTCHECK.md.
-Do not use LIVE_CONFIG_STATE_SNAPSHOT.* or HOOK_config_infra_live_state_resolution.md unless a future registry explicitly changes the contract.
-```
 
 ```text
 Use infractl.md and infractl.zip.
@@ -701,7 +636,9 @@ For a real Infra-Skeleton run, the chat may also need:
 - required evidence files for request-update lanes
 - source docs/specs/annex files for 0B expansion lanes
 - `INTEGRATION_REQUEST.md`, `INTEGRATION_MANIFEST.md`, `CONFIG_STATE_SNAPSHOT.md`, or `CONFIG_INTEGRATION_PLAN.md` files for CIP routes
-- access to the expected /workspace, /mnt/ingress, or /mnt/egress paths if using Codex/WSL
+- access to the expected public/private workspace roots if using Codex/WSL:
+  `/workspace/repos/infractl-public` and `/workspace/private/agentfield-grn-private_real_v0` or `/workspace/private/agentfield-grn-private_real_v1`
+- `/mnt/egress` evidence paths only when the selected DOT and addressed agent explicitly require evidence return/export
 ```
 
 If those are missing, the model should stop and report exactly which inputs are missing.
@@ -756,3 +693,4 @@ Use the updated public export pair together:
 infractl.md
 infractl.zip
 ```
+

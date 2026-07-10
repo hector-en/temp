@@ -45,6 +45,18 @@ digraph P2_update_writing_lane_infractl_prompts_only {
 </TABLE>
 >];
 
+  UpdateNormalizedEvidenceContract [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Skeleton update normalized evidence contract — required in generated files</B></TD></TR>
+  <TR><TD ALIGN="LEFT">The P2 update lane still writes exactly five Codex update authoring files: <FONT FACE="Courier">CODEX_UPDATE_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_UPDATE_CACHE.md</FONT>, <FONT FACE="Courier">UPDATE_SPEC.md</FONT>, <FONT FACE="Courier">UPDATE_RUN_INSTRUCTIONS.md</FONT>, and <FONT FACE="Courier">UPDATE_POSTCHECK_TEMPLATE.md</FONT>. Those files must now require Codex to produce normalized update evidence after execution.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Required execution evidence for skeleton update:</B> <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>. If smoke is explicitly run, reused, or required by the approved update pack, also require <FONT FACE="Courier">SMOKE_REPORT.md</FONT> or an exact accepted smoke-report path.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Historical evidence preservation:</B> prior create/batch evidence is read-only input. The update run must not overwrite historical <FONT FACE="Courier">POSTCHECK.md</FONT>, <FONT FACE="Courier">INTEGRATION_REQUEST.md</FONT>, or prior update evidence unless <FONT FACE="Courier">ALLOW_OVERWRITE=yes</FONT> and the operator explicitly approves the touch set.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Rich update schemas:</B> generated <FONT FACE="Courier">UPDATE_RUN_INSTRUCTIONS.md</FONT> and <FONT FACE="Courier">UPDATE_POSTCHECK_TEMPLATE.md</FONT> must include the rich update integration request sections, rich update postcheck sections, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT> sections from the evidence-normalization addendum.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>ANX role split:</B> use Config-Infra ANX01 only for suitability classification in <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>. Use ANX09 only to describe a deferred future config-integration Codex pack shape after manifest/live-state/plan gates. Do not use ANX09 as permission to execute config integration.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>CLI extraction:</B> generated files may record CLI extraction candidates, but <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT> is read-only context in ordinary update execution and must not be edited by Codex.</TD></TR>
+</TABLE>
+>];
+
   Idem [label=<
 <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FCE8E6">
   <TR><TD><B>Idempotency and no-overwrite behavior</B></TD></TR>
@@ -64,6 +76,7 @@ digraph P2_update_writing_lane_infractl_prompts_only {
   Vars -> Prompt;
   Prompt -> Inputs;
   Inputs -> Files;
-  Files -> Idem;
+  Files -> UpdateNormalizedEvidenceContract;
+  UpdateNormalizedEvidenceContract -> Idem;
   Idem -> Pass;
 }

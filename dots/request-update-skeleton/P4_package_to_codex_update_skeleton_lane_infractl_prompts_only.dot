@@ -20,7 +20,7 @@ digraph P4_package_to_codex_update_skeleton_lane_infractl_prompts_only {
   Vars [label=<
 <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
   <TR><TD><B>Suggested run variables — infer first, then ask for confirmation</B></TD></TR>
-  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>CODEX_UPDATE_PACK_ZIP=&lt;zip produced by P3&gt;<BR ALIGN="LEFT"/>CODEX_WORK_DIR=&lt;target extracted folder, usually under /workspace or /mnt/ingress batch folder&gt;<BR ALIGN="LEFT"/>PUBLIC_TOOL_ROOT=&lt;real or sandbox infractl-public root&gt;<BR ALIGN="LEFT"/>PRIVATE_PROJECT_ROOT=&lt;real private project root&gt;<BR ALIGN="LEFT"/>REPO_ROOT=/mnt/ingress [default for validate-real-layout]<BR ALIGN="LEFT"/>MODE=request-update [route identity]<BR ALIGN="LEFT"/>TRACK=skeleton [route-fixed]<BR ALIGN="LEFT"/>BATCH_NUMBER=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>BATCH_SLUG=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>TOPIC=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
+  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>CODEX_UPDATE_PACK_ZIP=&lt;zip produced by P3&gt;<BR ALIGN="LEFT"/>CODEX_WORK_DIR=&lt;target extracted folder, usually under /workspace/codex_packs/&gt;<BR ALIGN="LEFT"/>PUBLIC_TOOL_ROOT=&lt;real or sandbox infractl-public root, typically /workspace/repos/infractl-public&gt;<BR ALIGN="LEFT"/>PRIVATE_PROJECT_ROOT=&lt;real private project root, typically /workspace/private/agentfield-grn-private_real_v0&gt;<BR ALIGN="LEFT"/>MODE=request-update [route identity]<BR ALIGN="LEFT"/>TRACK=skeleton [route-fixed]<BR ALIGN="LEFT"/>BATCH_NUMBER=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>BATCH_SLUG=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>TOPIC=&lt;infer from pack manifest&gt;<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
 </TABLE>
 >];
 
@@ -31,10 +31,22 @@ digraph P4_package_to_codex_update_skeleton_lane_infractl_prompts_only {
 </TABLE>
 >];
 
+  UpdateCodexPackFolderContract [label=<
+<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
+  <TR><TD><B>Skeleton update P4 Codex-pack folder contract</B></TD></TR>
+  <TR><TD ALIGN="LEFT">For skeleton update, the real-workspace handoff folder must be deterministic:</TD></TR>
+  <TR><TD ALIGN="LEFT"><FONT FACE="Courier">CODEX_PACK_FOLDER=/workspace/codex_packs/batch&lt;##&gt;_update_&lt;topic&gt;</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">CODEX_UPDATE_PACK=${CODEX_PACK_FOLDER}/codex_update_pack.zip</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">P4_UPDATE_HANDOFF_PROMPT=${CODEX_PACK_FOLDER}/P4_CODEX_UPDATE_HANDOFF_PROMPT.md</FONT><BR ALIGN="LEFT"/><FONT FACE="Courier">PACK_EXTRACT_ROOT=${CODEX_PACK_FOLDER}</FONT></TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Required handoff folder files:</B> <FONT FACE="Courier">P4_CODEX_UPDATE_HANDOFF_PROMPT.md</FONT>, <FONT FACE="Courier">codex_update_pack.zip</FONT>, <FONT FACE="Courier">CODEX_UPDATE_PROMPT.txt</FONT>, <FONT FACE="Courier">PROJECT_UPDATE_CACHE.md</FONT>, <FONT FACE="Courier">UPDATE_SPEC.md</FONT>, <FONT FACE="Courier">UPDATE_RUN_INSTRUCTIONS.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK_TEMPLATE.md</FONT>, <FONT FACE="Courier">manifest.json</FONT>, <FONT FACE="Courier">CLI_EXTRACTION_NOTES.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST_REQUIREMENTS.md</FONT>, <FONT FACE="Courier">UPDATE_POSTCHECK_REQUIREMENTS.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST_REQUIREMENTS.md</FONT>.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Do not consume router files during Codex execution:</B> Codex must not consume <FONT FACE="Courier">infractl.md</FONT> or <FONT FACE="Courier">infractl.zip</FONT>. For real-workspace validation, use <FONT FACE="Courier">/workspace/repos/infractl-public</FONT> and run <FONT FACE="Courier">python3 -m infractl.cli</FONT> from that directory. If it is missing, STOP with <FONT FACE="Courier">PUBLIC_CLI_MISSING=/workspace/repos/infractl-public</FONT>.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Extracted-pack rule:</B> if the pack zip is already extracted into <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>, use extracted files directly after validating the expected file list. If extracted files are missing, extract the zip into <FONT FACE="Courier">CODEX_PACK_FOLDER</FONT>. If neither extracted files nor zip exist, STOP with <FONT FACE="Courier">PACK_MISSING</FONT>.</TD></TR>
+  <TR><TD ALIGN="LEFT"><B>Evidence expectations to pass to Codex:</B> require <FONT FACE="Courier">UPDATE_POSTCHECK.md</FONT>, <FONT FACE="Courier">UPDATE_INTEGRATION_REQUEST.md</FONT>, and <FONT FACE="Courier">CHANGESET_MANIFEST.md</FONT>. Smoke remains skipped unless explicit.</TD></TR>
+</TABLE>
+>];
+
   Layout [label=<
 <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#E8F0FE">
   <TR><TD><B>G14 real-layout gate</B></TD></TR>
-  <TR><TD ALIGN="LEFT">Run or request the read-only layout validation before Codex execution. Command shape:<BR ALIGN="LEFT"/>python3 -m infractl.cli validate-real-layout \<BR ALIGN="LEFT"/>  --project ${PRIVATE_PROJECT_ROOT} \<BR ALIGN="LEFT"/>  --repo-root ${REPO_ROOT}<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Required real paths must pass. Optional paths may be reported as optional gaps. If a path is referenced by the update task, treat it as required for that task and stop if missing.</TD></TR>
+  <TR><TD ALIGN="LEFT">Run or request the read-only layout validation before Codex execution. Command shape:<BR ALIGN="LEFT"/>cd ${PUBLIC_TOOL_ROOT}<BR ALIGN="LEFT"/>python3 -m infractl.cli validate-real-layout \<BR ALIGN="LEFT"/>  --project ${PRIVATE_PROJECT_ROOT} \<BR ALIGN="LEFT"/>  --public-tool-root ${PUBLIC_TOOL_ROOT}<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Required public-tool files and required private bundle files must pass. Optional bundle paths may be reported as optional gaps. If a path is referenced by the update task, treat it as required for that task and stop if missing. Treat files.yaml.real_path as legacy metadata only.</TD></TR>
 </TABLE>
 >];
 
@@ -62,7 +74,8 @@ digraph P4_package_to_codex_update_skeleton_lane_infractl_prompts_only {
   Start -> Agent;
   Agent -> Vars;
   Vars -> Prompt;
-  Prompt -> Layout;
+  Prompt -> UpdateCodexPackFolderContract;
+  UpdateCodexPackFolderContract -> Layout;
   Layout -> CodexPrompt;
   CodexPrompt -> Idem;
   Idem -> Pass;
