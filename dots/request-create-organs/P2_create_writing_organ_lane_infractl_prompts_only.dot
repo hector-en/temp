@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P2_Create_Writing_Organ_Infractl_Prompts_Only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -23,7 +24,7 @@ digraph P2_Create_Writing_Organ_Infractl_Prompts_Only {
     <TR><TD ALIGN="LEFT"><B>SELF-EXECUTION CONTEXT</B></TD></TR>
     <TR><TD ALIGN="LEFT">You are a fresh ChatGPT or Codex session receiving this DOT as execution instruction. This DOT is not a drawing task. Read it as the executable prompt contract for the v7 Infra-Skeleton pipeline lane named <B>P2 create-writing</B>.</TD></TR>
     <TR><TD ALIGN="LEFT">Canonical source of truth: <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>, the version-tag-free copy of the selected v7 main DOT. Use that file to verify the lane order and node names before acting.</TD></TR>
-    <TR><TD ALIGN="LEFT">This DOT covers one route only: <B>mode=request-create</B>, <B>track=organ</B>. It begins after P1 has produced a request folder for the organ R01 scaffold and ends when the G7 create-writing files exist and are ready for P3 packaging.</TD></TR>
+    <TR><TD ALIGN="LEFT">This DOT covers one route only: <B>mode=request-create</B>, <B>track=organ</B>. It begins after P1 has produced a request folder for the registered organ run (R01 initial-scaffold example) and ends when the G7 create-writing files exist and are ready for P3 packaging.</TD></TR>
   </TABLE>
   >];
 
@@ -41,7 +42,7 @@ digraph P2_Create_Writing_Organ_Infractl_Prompts_Only {
   <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
     <TR><TD ALIGN="LEFT"><B>ROLE AND GOAL</B></TD></TR>
     <TR><TD ALIGN="LEFT">Your role is the ChatGPT writing operator for the organ create lane. Convert the bounded P1 request folder into the exact five Codex create files required by v7 G7.</TD></TR>
-    <TR><TD ALIGN="LEFT">The output is not implementation. It is a Codex-ready writing surface for the organ scaffold. The files must tell Codex how to create or prepare the organ R01 scaffold safely, without pretending that an organ batch has already been executed.</TD></TR>
+    <TR><TD ALIGN="LEFT">The output is not implementation. It is a Codex-ready writing surface for the organ scaffold. The files must tell Codex how to create or prepare the registered organ run (R01 initial-scaffold example) safely, without pretending that an organ batch has already been executed.</TD></TR>
     <TR><TD ALIGN="LEFT">Keep the organ route separate from skeleton batches. Organ starts at <B>R01</B>, not skeleton Batch 01. Do not reuse skeleton numbering, evidence paths, or smoke assumptions unless the request folder explicitly routes them as context.</TD></TR>
   </TABLE>
   >];
@@ -50,7 +51,7 @@ digraph P2_Create_Writing_Organ_Infractl_Prompts_Only {
   <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
     <TR><TD ALIGN="LEFT"><B>ORGAN-SPECIFIC CONTEXT THAT MUST NOT BE LOST</B></TD></TR>
     <TR><TD ALIGN="LEFT"><B>Why organ starts at R01:</B> the organ track is the real-organ transition lane. In real-v0 it begins with <B>R01 real-contract-audit-runtime-role-readiness</B>, not with skeleton Batch 01. R01 is a scaffold/audit readiness step that checks the real contract before deeper organ implementation.</TD></TR>
-    <TR><TD ALIGN="LEFT"><B>Skeleton vs organ:</B> skeleton batches 01-04 are dummy/skeleton infrastructure progression. Organ R01 belongs to the real-organ transition path and must preserve organ naming, organ track, organ evidence expectations, and organ day-to-day routing.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>Skeleton vs organ:</B> skeleton registered skeleton batches are dummy/skeleton infrastructure progression. Organ R01 belongs to the real-organ transition path and must preserve organ naming, organ track, organ evidence expectations, and organ day-to-day routing.</TD></TR>
     <TR><TD ALIGN="LEFT"><B>Required organ transition context:</B> use <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B> when they are present in the request folder or source manifest.</TD></TR>
     <TR><TD ALIGN="LEFT"><B>Workflow context:</B> use <B>final_workflow.md</B>, <B>day_to_day_skeleton_run.md</B>, and <B>smoke_module_update_workflow.md</B> only as route/context support. The organ runbook is <B>day_to_day_organs_run.md</B>.</TD></TR>
     <TR><TD ALIGN="LEFT"><B>Evidence expectations:</B> for request-create organ R01, prior evidence is normally not required unless the operator explicitly sets EVIDENCE_REQUIRED=yes or the request folder contains a blocking evidence check. Do not invent existing organ evidence.</TD></TR>
@@ -71,7 +72,7 @@ digraph P2_Create_Writing_Organ_Infractl_Prompts_Only {
   prompt [fillcolor="#DFF5E1", label=<
   <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
     <TR><TD ALIGN="LEFT"><B>EXACT OPERATOR PROMPT TO TYPE</B></TD></TR>
-    <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the canonical v7 main DOT and this P2 DOT. We are in P2 request-to-writing for mode=request-create, track=organ. Use the P1 request folder as the bounded input and produce the exact G7 create files for the organ R01 scaffold. Before writing anything, suggest the variable block from the request folder and prior context, label each value as user-provided, inferred, default-safe, or unknown, and ask me to confirm or correct it. Do not expose any base_format/template block. Follow only the v7 end-to-end lane and the organ-specific context in this DOT. Do not run Codex, do not run smoke, do not mutate /workspace or /mnt/egress, and do not overwrite existing outputs unless ALLOW_OVERWRITE=yes.</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the canonical v7 main DOT and this P2 DOT. We are in P2 request-to-writing for mode=request-create, track=organ. Use the P1 request folder as the bounded input and produce the exact G7 create files for the registered organ run (R01 initial-scaffold example). Before writing anything, suggest the variable block from the request folder and prior context, label each value as user-provided, inferred, default-safe, or unknown, and ask me to confirm or correct it. Do not expose any base_format/template block. Follow only the v7 end-to-end lane and the organ-specific context in this DOT. Do not run Codex, do not run smoke, do not mutate /workspace or /mnt/egress, and do not overwrite existing outputs unless ALLOW_OVERWRITE=yes.</FONT></TD></TR>
   </TABLE>
   >];
 
@@ -98,9 +99,9 @@ digraph P2_Create_Writing_Organ_Infractl_Prompts_Only {
   <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" WIDTH="900">
     <TR><TD ALIGN="LEFT"><B>G7 CREATE FILES TO PRODUCE</B></TD></TR>
     <TR><TD ALIGN="LEFT">Produce exactly the create-lane file set expected by v7 G7. Names should follow the public tool/template contract for create packs, normally:</TD></TR>
-    <TR><TD ALIGN="LEFT"><B>CODEX_PROMPT.txt</B> — the entrypoint Codex must read first. It must state this is request-create + organ R01 scaffold, not skeleton Batch 01.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>CODEX_PROMPT.txt</B> — the entrypoint Codex must read first. It must state this is request-create + registered organ run (R01 initial-scaffold example), not skeleton Batch 01.</TD></TR>
     <TR><TD ALIGN="LEFT"><B>PROJECT_CACHE.md</B> — bounded project context copied from the request folder, including organ transition sources and relevant v7 route notes.</TD></TR>
-    <TR><TD ALIGN="LEFT"><B>SPEC.md</B> — the concrete organ R01 scaffold specification. It must distinguish real-organ transition readiness from skeleton dummy work.</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>SPEC.md</B> — the concrete registered organ run (R01 initial-scaffold example) specification. It must distinguish real-organ transition readiness from skeleton dummy work.</TD></TR>
     <TR><TD ALIGN="LEFT"><B>RUN_INSTRUCTIONS.md</B> — exact Codex task sequence, safety boundaries, allowed file targets, prohibited actions, and expected evidence outputs.</TD></TR>
     <TR><TD ALIGN="LEFT"><B>POSTCHECK_TEMPLATE.md</B> — evidence template Codex must fill after execution. For organ R01, clarify expected proof, smoke behavior, and any WARN-acceptable conditions.</TD></TR>
   </TABLE>

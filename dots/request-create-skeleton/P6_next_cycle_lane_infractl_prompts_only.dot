@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P6_next_cycle_lane_infractl_prompts_only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -68,7 +69,7 @@ digraph P6_next_cycle_lane_infractl_prompts_only {
       <TR><TD><B>Next-cycle decision according to v7</B></TD></TR>
       <TR><TD ALIGN="LEFT">If the last G17 decision is PASS or accepted documented WARN, choose the next planned batch/update from the batch map and the operator goal.</TD></TR>
       <TR><TD ALIGN="LEFT">For skeleton create progression, use Skeleton 01 → 02 → 03 → 04. Do not skip forward unless the operator confirms that intermediate evidence exists or is intentionally out of scope.</TD></TR>
-      <TR><TD ALIGN="LEFT">After skeleton 04, route to organ R01 scaffold if the operator is transitioning to real organs and v7 prerequisites are satisfied.</TD></TR>
+      <TR><TD ALIGN="LEFT">After skeleton 04, route to registered organ run (R01 initial-scaffold example) if the operator is transitioning to real organs and v7 prerequisites are satisfied.</TD></TR>
       <TR><TD ALIGN="LEFT">If the operator supplies new source files, notes, papers, specs, or prompt/hook material, route to 0B/P7 before creating a normal request pack.</TD></TR>
       <TR><TD ALIGN="LEFT">If the last run exposed a reusable manual pattern, helper-script need, or infractl friction, route to 0C/P9 before changing public tooling.</TD></TR>
     </TABLE>

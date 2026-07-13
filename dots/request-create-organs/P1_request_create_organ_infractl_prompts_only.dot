@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P1_request_create_organ_infractl_prompts_only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -91,7 +92,7 @@ digraph P1_request_create_organ_infractl_prompts_only {
         DirectionOrgan → WebchatFilesIn: collect public tool, private project bundle, and optional extra source if explicitly provided.<BR ALIGN="LEFT"/>
         WebchatFilesIn → CmdProfiles: inspect profiles, batches, hooks, required files, and status before request generation.<BR ALIGN="LEFT"/>
         DirectionOrgan → CmdRequest through <B>G5 organ-flags</B>: convert the confirmed WORKFLOW_DIRECTION into request-create flags.<BR ALIGN="LEFT"/>
-        CmdRequest → RequestFolder through <B>G6 request-folder</B>: write a bounded ChatGPT request pack for the organ R01 scaffold.<BR ALIGN="LEFT"/>
+        CmdRequest → RequestFolder through <B>G6 request-folder</B>: write a bounded ChatGPT request pack for the registered organ run (R01 initial-scaffold example).<BR ALIGN="LEFT"/>
         Stop at RequestFolder. The next lane is P2 request-to-writing, not part of this DOT.
       </FONT></TD></TR>
     </TABLE>
@@ -148,9 +149,9 @@ digraph P1_request_create_organ_infractl_prompts_only {
       <TR><TD BGCOLOR="#E0F2F1"><B>Expected RequestFolder outputs</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         A request-create organ R01 folder or zip under OUTPUT_ROOT whose name clearly encodes request_create, organ, R01, and topic.<BR ALIGN="LEFT"/>
-        Expected request-pack files may include CHATGPT_REQUEST.md, REQUIRED_INPUTS.md, SELECTED_CONTEXT_MANIFEST.md, EXTRA_SOURCE_ROUTING.md, CLI_EXTRACTION_REMINDER.md, and any v7-compatible organ scaffold notes produced by the tool.<BR ALIGN="LEFT"/>
+        Expected request-pack files may include CHATGPT_REQUEST.md, REQUIRED_INPUTS.md, SELECTED_CONTEXT_MANIFEST.md, EXTRA_SOURCE_ROUTING.md, 0C_EXTRACTION_HANDOFF.md, and any v7-compatible organ scaffold notes produced by the tool.<BR ALIGN="LEFT"/>
         The pack must be bounded: it asks ChatGPT to write the next P2 create files; it does not ask Codex to execute implementation directly.<BR ALIGN="LEFT"/>
-        If the tool emits a CLI_EXTRACTION_REMINDER.md, report whether a 0C follow-up is needed, but do not perform 0C inside this lane unless the operator explicitly switches lanes.
+        If the tool emits a 0C_EXTRACTION_HANDOFF.md, report whether a 0C follow-up is needed, but do not perform 0C inside this lane unless the operator explicitly switches lanes.
       </FONT></TD></TR>
     </TABLE>
   >];

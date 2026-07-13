@@ -1,3 +1,6 @@
+<!-- G21/G22 registry-routing update -->
+Active routing is registry-driven: concrete skeleton and organ IDs are examples unless explicitly labeled historical. Ordinary lanes do not edit CLI_EXTRACTION_NOTES.md; reusable friction routes through 0C/public maintenance.
+
 # InfraCTL Prompt-Only Execution Library
 
 This folder is a prompt-only execution library for the Infra-Skeleton workflow. It is designed so you can upload `infractl.zip` and `infractl.md` into a fresh ChatGPT or Codex chat, then ask the model to run one specific workflow lane safely.
@@ -178,8 +181,8 @@ Use this table to pick the right folder and starting DOT.
 |---|---|---|---|---|
 | Create a new skeleton batch | `request-create` | `skeleton` | `dots/request-create-skeleton/` | `P1_request_create_skeleton_infractl_prompts_only.dot` |
 | Update an already-run skeleton batch | `request-update` | `skeleton` | `dots/request-update-skeleton/` | `P1_request_update_skeleton_infractl_prompts_only.dot` |
-| Create the organ/R01 scaffold | `request-create` | `organ` | `dots/request-create-organs/` | `P1_request_create_organ_infractl_prompts_only.dot` |
-| Update an already-run organ/R01 route | `request-update` | `organ` | `dots/request-update-organs/` | `P1_request_update_organ_infractl_prompts_only.dot` |
+| Create a selected registered organ run | `request-create` | `organ` | `dots/request-create-organs/` | `P1_request_create_organ_infractl_prompts_only.dot` |
+| Update a selected registered organ run with prior evidence | `request-update` | `organ` | `dots/request-update-organs/` | `P1_request_update_organ_infractl_prompts_only.dot` |
 | Validate public/private setup | n/a | n/a | `dots/zero-abc/` | `0A_public_private_contract_infractl_prompts_only.dot` |
 | Route new background/spec/annex material | n/a | n/a | `dots/zero-abc/` | `0B_expansion_lane_infractl_prompts_only.dot` |
 | Record helper/CLI extraction opportunities | n/a | n/a | `dots/zero-abc/` | `0C_cli_extraction_feedback_infractl_prompts_only.dot` |
@@ -249,7 +252,7 @@ Use 0C for things like:
 We wrote a reusable script.
 Codex got confused by a repeated instruction.
 A manual step should become an infractl command.
-A workflow should be recorded in CLI_EXTRACTION_NOTES.md.
+Reusable CLI friction is recorded only through the explicit 0C/public-maintenance lane.
 ```
 
 ---
@@ -567,13 +570,13 @@ Ask me to confirm or correct it.
 Do not execute until I confirm.
 ```
 
-### Create organ R01 scaffold
+### Create registered organ run (R01 initial-scaffold example)
 
 ```text
 Use infractl.md and infractl.zip.
 
 Task:
-Create the organ R01 scaffold.
+Create the registered organ run (R01 initial-scaffold example).
 
 Route:
 MODE=request-create
@@ -609,7 +612,7 @@ Read the root main v7 DOT next.
 Then select the matching prompt-only DOT from:
 dots/request-update-organs/
 
-Before continuing, verify that prior organ/R01 evidence exists.
+Before continuing, verify that prior selected-organ evidence exists.
 Suggest the full variable block first.
 Ask me to confirm or correct it.
 Do not execute until I confirm.

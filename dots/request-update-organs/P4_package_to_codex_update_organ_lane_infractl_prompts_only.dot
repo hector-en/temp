@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -29,7 +30,7 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         This DOT is a self-executable prompt instruction for a fresh ChatGPT/Codex-style session. It represents the fourth lane of the <B>mode=request-update, track=organ</B> route after P3 has already created a Codex-ready organ update pack.<BR ALIGN="LEFT"/>
         The job of this lane is to consume the P3 update pack, validate that it is route-correct and layout-safe, then hand it to Codex only after explicit operator confirmation. It is not a request-generation lane, not a writing lane, not a packaging lane, and not an evidence-return lane.<BR ALIGN="LEFT"/>
-        Because a fresh chat may receive only this DOT, keep all organ-update context explicit: this lane executes a bounded update against prior organ/R01 evidence, not a skeleton update, not an organ first scaffold, and not a historical evidence rewrite.
+        Because a fresh chat may receive only this DOT, keep all organ-update context explicit: this lane executes a bounded update against prior selected-organ evidence, not a skeleton update, not an organ first scaffold, and not a historical evidence rewrite.
       </FONT></TD></TR>
     </TABLE>
   >];
@@ -50,7 +51,7 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
       <TR><TD BGCOLOR="#E8EAF6"><B>Required prior lane state</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         P3 must already have produced a readable <B>Codex update pack</B> for <B>request-update + organ</B>. The pack should normally contain the five update files: <B>CODEX_UPDATE_PROMPT.txt</B>, <B>PROJECT_UPDATE_CACHE.md</B>, <B>UPDATE_SPEC.md</B>, <B>UPDATE_RUN_INSTRUCTIONS.md</B>, and <B>UPDATE_POSTCHECK_TEMPLATE.md</B>, plus a manifest if available.<BR ALIGN="LEFT"/>
-        The pack must identify the organ route, the update topic, prior organ/R01 evidence, and a bounded Codex task. If the pack is missing, unreadable, a create pack, a skeleton update pack, or a first-run organ scaffold pack, stop and return to the correct prior lane.<BR ALIGN="LEFT"/>
+        The pack must identify the organ route, the update topic, prior selected-organ evidence, and a bounded Codex task. If the pack is missing, unreadable, a create pack, a skeleton update pack, or a first-run organ scaffold pack, stop and return to the correct prior lane.<BR ALIGN="LEFT"/>
         If this lane is being run by ChatGPT only, it may validate and prepare a Codex handoff. If this lane is being run inside Codex, Codex may execute only after the operator explicitly states that the pack has passed P4 gating and should be consumed.
       </FONT></TD></TR>
     </TABLE>
@@ -61,7 +62,7 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
       <TR><TD BGCOLOR="#EDE7F6"><B>Organ-update context that must survive execution</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         Organ work starts at <B>R01</B> as the transition from skeleton/dummy workflow into the real-organ workflow. R01 is not skeleton Batch 01. P4 must prevent accidental skeleton numbering, skeleton evidence paths, or skeleton-only smoke assumptions from entering the organ Codex execution.<BR ALIGN="LEFT"/>
-        A request-update + organ execution is valid only after an organ/R01 scaffold already exists and has evidence. The Codex task must operate as a delta/update against that existing organ state. It must preserve historical scaffold evidence and produce new update evidence instead of rewriting previous evidence.<BR ALIGN="LEFT"/>
+        A request-update + organ execution is valid only after an selected organ run scaffold already exists and has evidence. The Codex task must operate as a delta/update against that existing organ state. It must preserve historical scaffold evidence and produce new update evidence instead of rewriting previous evidence.<BR ALIGN="LEFT"/>
         The pack should preserve the organ transition context from <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B>. If that context is absent, stop and route back to P2/P3 rather than asking Codex to infer it from hidden chat memory.
       </FONT></TD></TR>
     </TABLE>
@@ -103,7 +104,7 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
       <TR><TD BGCOLOR="#E1F5FE"><B>G13 pack-consumed precheck</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         Extract or inspect the pack without overwriting existing directories. Confirm that it contains the update file set, not create files. Confirm <B>CODEX_UPDATE_PROMPT.txt</B> is the entrypoint and that <B>UPDATE_RUN_INSTRUCTIONS.md</B> names exactly one bounded organ-update task.<BR ALIGN="LEFT"/>
-        Confirm the pack metadata and internal text identify <B>mode=request-update</B> and <B>track=organ</B>. Confirm the pack references prior organ/R01 evidence and does not tell Codex to regenerate the organ scaffold from scratch.<BR ALIGN="LEFT"/>
+        Confirm the pack metadata and internal text identify <B>mode=request-update</B> and <B>track=organ</B>. Confirm the pack references prior selected-organ evidence and does not tell Codex to regenerate the organ scaffold from scratch.<BR ALIGN="LEFT"/>
         Confirm the pack has no path that would write update evidence into a skeleton-only snapshot unless the operator has explicitly selected a compatible bridge/helper. If any pack file conflicts with this route, stop and return to P3 or P2.
       </FONT></TD></TR>
     </TABLE>
@@ -163,7 +164,7 @@ digraph P4_package_to_codex_update_organ_lane_infractl_prompts_only {
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         After the operator confirms the variable block and G14 result, prepare the exact Codex prompt. Do not bury the safety boundary in prose; put it directly in the prompt.<BR ALIGN="LEFT"/>
         Required Codex handoff shape:<BR ALIGN="LEFT"/>
-        <FONT FACE="Courier">Extract or use the provided organ update pack. Read CODEX_UPDATE_PROMPT.txt as the entrypoint. Then read UPDATE_RUN_INSTRUCTIONS.md and execute exactly one bounded organ update task. Preserve prior organ/R01 evidence. Do not regenerate the scaffold. Do not touch skeleton evidence. Do not run smoke or live infrastructure unless the pack explicitly authorizes a safe local check. End with Changed files, Tests run, Update evidence, Smoke report or reused evidence, Remaining issues.</FONT><BR ALIGN="LEFT"/>
+        <FONT FACE="Courier">Extract or use the provided organ update pack. Read CODEX_UPDATE_PROMPT.txt as the entrypoint. Then read UPDATE_RUN_INSTRUCTIONS.md and execute exactly one bounded organ update task. Preserve prior selected-organ evidence. Do not regenerate the scaffold. Do not touch skeleton evidence. Do not run smoke or live infrastructure unless the pack explicitly authorizes a safe local check. End with Changed files, Tests run, Update evidence, Smoke report or reused evidence, Remaining issues.</FONT><BR ALIGN="LEFT"/>
         If this environment cannot execute Codex, output the prompt and stop with PASS-to-operator rather than pretending execution happened.
       </FONT></TD></TR>
     </TABLE>

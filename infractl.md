@@ -1,3 +1,6 @@
+<!-- G21/G22 registry-routing update -->
+Active routing is registry-driven: concrete skeleton and organ IDs are examples unless explicitly labeled historical. Ordinary lanes do not edit CLI_EXTRACTION_NOTES.md; reusable friction routes through 0C/public maintenance.
+
 # infractl Prompt-Only Execution Router
 
 This file is the human-facing router for the prompt-only Infra-Skeleton workflow bundle.
@@ -315,7 +318,7 @@ P6_next_cycle_organ_lane_infractl_prompts_only.dot
 Route summary:
 
 ```text
-P1: Generate the organ/R01 scaffold request.
+P1: Generate the selected organ run scaffold request.
 P2: Convert the organ request folder into Codex create-writing files.
 P3: Package the organ create-writing files into a Codex-ready create pack.
 P4: Validate real layout and hand the organ create pack to Codex.
@@ -326,7 +329,7 @@ P6: Choose the next route after the organ scaffold cycle.
 Important organ-context rules:
 
 ```text
-- Organ creation starts at R01; do not treat it as skeleton Batch 01.
+- Organ creation resolves a registered ORGAN_RUN. R01 remains the initial-scaffold special case and is not skeleton Batch 01.
 - Do not substitute skeleton metadata for organ metadata.
 - Use organ transition context from 01_B0, 01_B1, and day_to_day_organs_run.md when available.
 ```
@@ -360,7 +363,7 @@ P6_next_cycle_update_organ_lane_infractl_prompts_only.dot
 Route summary:
 
 ```text
-P1: Generate an organ update request only after prior organ/R01 evidence exists.
+P1: Generate an organ update request only after prior selected-organ evidence exists.
 P2: Convert the organ update request folder into Codex update-writing files.
 P3: Package the organ update-writing files into a Codex-ready update pack.
 P4: Validate real layout and hand the organ update pack to Codex.
@@ -371,9 +374,9 @@ P6: Choose the next route after the organ update cycle.
 Blocking organ-update rules:
 
 ```text
-- STOP if no prior organ/R01 evidence exists.
+- STOP if no prior selected-organ evidence exists.
 - STOP if only skeleton evidence exists.
-- STOP if R01 scaffold has not been completed.
+- STOP if selected organ run has no prior evidence.
 - STOP if the operator is trying to update skeleton evidence through the organ lane.
 ```
 

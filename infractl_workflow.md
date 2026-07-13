@@ -1,3 +1,6 @@
+<!-- G21/G22 registry-routing update -->
+Active routing is registry-driven: concrete skeleton and organ IDs are examples unless explicitly labeled historical. Ordinary lanes do not edit CLI_EXTRACTION_NOTES.md; reusable friction routes through 0C/public maintenance.
+
 # Daily `infractl` Operator Workflow
 
 Use this when you want to operate the platform, not redesign it. One cycle is always:
@@ -39,7 +42,7 @@ Public files must not contain private SPECs, annexes, prompts, evidence, or proj
 Upload:
 
 ```text
-agentfield-grn-private_real_v0_bundle.zip
+<private-project-bundle-or-root>
 ```
 
 Current private mapping files:
@@ -130,7 +133,7 @@ Every direction must include:
 WORKFLOW_DIRECTION:
   mode: <request-create | request-update | package-codex-create | package-codex-update | check-evidence | status>
   track: <skeleton | organ>
-  batch: <01 | 02 | 03 | 04 | R01>
+  batch: <registered skeleton id | registered organ run>
   topic: <short-topic-slug>
   evidence_required: <yes | no>
   extra_sources: <none | list of uploaded paths>
@@ -146,11 +149,11 @@ mode=package-codex-update    package update outputs written by ChatGPT
 mode=check-evidence          inspect returned proof before next step
 mode=status                  inventory only, no new request
 
-track=skeleton               use for Batches 01-04, before real organs
-track=organ                  use for R01 and later organ phase
+track=skeleton               use for registered skeleton batches, before real organs
+track=organ                  use for registered organ runs; R01 is the initial scaffold special case
 
 batch=01..04                 skeleton batch number
-batch=R01                    first organ scaffold
+batch=<ORGAN_RUN>            registered organ run; R01 is the first scaffold special case
 
 evidence_required=no         creation/scaffold work with no prior evidence dependency
 evidence_required=yes        update/expansion work that must see prior evidence first
@@ -241,7 +244,7 @@ python3 -m infractl.cli request-update \
   --out /mnt/data/generated_real_v0
 ```
 
-### Create organ R01 scaffold
+### Create registered organ run (R01 initial-scaffold example)
 
 ```text
 Consumes: public tool + private bundle + stable skeleton contracts
@@ -266,7 +269,7 @@ CHATGPT_REQUEST.md
 REQUIRED_INPUTS.md
 SELECTED_CONTEXT_MANIFEST.md
 EXTRA_SOURCE_ROUTING.md
-CLI_EXTRACTION_REMINDER.md
+0C_EXTRACTION_HANDOFF.md
 manifest.json
 source_bundle.zip
 EXISTING_EVIDENCE_CHECK.md, for updates
@@ -383,6 +386,6 @@ Each cycle ends only when:
 
 ```text
 evidence copied back into evidence_snapshots/
-CLI_EXTRACTION_NOTES.md updated with reusable CLI lessons
+0C/public-maintenance captures reusable CLI lessons when explicitly triggered
 next WORKFLOW_DIRECTION chosen explicitly
 ```

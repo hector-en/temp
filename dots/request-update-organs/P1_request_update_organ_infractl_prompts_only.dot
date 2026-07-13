@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P1_request_update_organ_infractl_prompts_only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -41,7 +42,7 @@ digraph P1_request_update_organ_infractl_prompts_only {
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         Before acting, read the canonical main pipeline DOT: <B>infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot</B>, or the uploaded v7 file if that is the available name.<BR ALIGN="LEFT"/>
         In v7, organ creation is represented explicitly as <B>DirectionOrgan</B> with <B>request-create + organ + R01</B>. Organ updates are not a first-run scaffold lane; they are selected after <B>P6 next-cycle</B> once organ evidence exists.<BR ALIGN="LEFT"/>
-        Use the v7 mode semantics: request-update builds a request pack for an already-run batch or retroactive correction. Track=organ means the real-organ transition lane, not skeleton batches 01-04.<BR ALIGN="LEFT"/>
+        Use the v7 mode semantics: request-update builds a request pack for an already-run batch or retroactive correction. Track=organ means the real-organ transition lane, not skeleton registered skeleton batches.<BR ALIGN="LEFT"/>
         If the uploaded main DOT disagrees with this instruction DOT, stop and report the mismatch instead of guessing.
       </FONT></TD></TR>
     </TABLE>
@@ -52,7 +53,7 @@ digraph P1_request_update_organ_infractl_prompts_only {
       <TR><TD BGCOLOR="#EDE7F6"><B>Organ-update context that must not be lost</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         Organ R01 is the bridge from the skeleton/dummy implementation track into the real-organ transition track. It starts at R01 because organ work is not a continuation of skeleton Batch 01 numbering.<BR ALIGN="LEFT"/>
-        A request-update + organ run is only valid when there is already prior organ/R01 scaffold evidence to update. It is not the route for creating the first organ scaffold; that route is request-create + organ.<BR ALIGN="LEFT"/>
+        A request-update + organ run is only valid when there is already prior selected organ run scaffold evidence to update. It is not the route for creating the first organ scaffold; that route is request-create + organ.<BR ALIGN="LEFT"/>
         Required organ transition context normally includes <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, and <B>day_to_day_organs_run.md</B>. These explain how organ execution differs from skeleton execution and how the real-organ transition should be staged.<BR ALIGN="LEFT"/>
         Do not substitute skeleton batch evidence, skeleton numbering, skeleton-only smoke assumptions, or skeleton update topics for organ evidence. If the only evidence available is under evidence_snapshots/skeleton/, stop and ask for the real organ evidence location.
       </FONT></TD></TR>
@@ -103,7 +104,7 @@ digraph P1_request_update_organ_infractl_prompts_only {
       <TR><TD BGCOLOR="#FFF8E1"><B>Exact operator prompt for this lane</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         Read this DOT and the canonical v7 main pipeline DOT. Execute only P1 for <B>mode=request-update, track=organ</B>. First infer and show the suggested variable block, labeling every value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct the variables before execution.<BR ALIGN="LEFT"/>
-        After confirmation, validate the public tool and private bundle in webchat-sandbox mode only. Confirm that prior organ/R01 evidence exists and belongs to the organ lane, not the skeleton lane. Then generate a bounded request-update folder for the selected organ batch and update topic.<BR ALIGN="LEFT"/>
+        After confirmation, validate the public tool and private bundle in webchat-sandbox mode only. Confirm that prior selected-organ evidence exists and belongs to the organ lane, not the skeleton lane. Then generate a bounded request-update folder for the selected organ batch and update topic.<BR ALIGN="LEFT"/>
         Do not invoke Codex. Do not generate P2 writing files. Do not package a Codex pack. Do not run smoke. Do not mutate /workspace, /mnt/ingress, or /mnt/egress. Stop after the P1 RequestFolder and report the next expected lane.
       </FONT></TD></TR>
     </TABLE>
@@ -115,7 +116,7 @@ digraph P1_request_update_organ_infractl_prompts_only {
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         This is the strongest gate in the route. Because request-update depends on prior execution state, <B>evidence_required=yes</B> is the default and should remain yes.<BR ALIGN="LEFT"/>
         PASS only if prior organ evidence exists for the selected organ batch, for example under <B>sources/evidence_snapshots/organ/&lt;batch-slug&gt;/</B> or a supplied equivalent. The evidence should demonstrate that request-create + organ / R01 scaffold already ran.<BR ALIGN="LEFT"/>
-        STOP if no prior organ evidence exists. STOP if only skeleton evidence exists. STOP if R01 scaffold has not been completed. STOP if the operator is trying to update skeleton evidence through the organ lane. STOP if the organ batch id and batch slug cannot be resolved from batches.yaml or explicit operator input.<BR ALIGN="LEFT"/>
+        STOP if no prior organ evidence exists. STOP if only skeleton evidence exists. STOP if selected organ run has no prior evidence. STOP if the operator is trying to update skeleton evidence through the organ lane. STOP if the organ batch id and batch slug cannot be resolved from batches.yaml or explicit operator input.<BR ALIGN="LEFT"/>
         Do not synthesize evidence, do not copy skeleton evidence into organ evidence paths, and do not silently downgrade this route to request-create.
       </FONT></TD></TR>
     </TABLE>
@@ -167,7 +168,7 @@ digraph P1_request_update_organ_infractl_prompts_only {
     <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#0D47A1">
       <TR><TD BGCOLOR="#E3F2FD"><B>Expected P1 outputs</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
-        A successful P1 request-update + organ run should produce a bounded RequestFolder under OUTPUT_ROOT. Expected contents should mirror the v7 request-folder pattern and include files such as CHATGPT_REQUEST.md, REQUIRED_INPUTS.md, SELECTED_CONTEXT_MANIFEST.md, EXTRA_SOURCE_ROUTING.md, CLI_EXTRACTION_REMINDER.md, and an organ-aware evidence/precheck file if supported by the CLI.<BR ALIGN="LEFT"/>
+        A successful P1 request-update + organ run should produce a bounded RequestFolder under OUTPUT_ROOT. Expected contents should mirror the v7 request-folder pattern and include files such as CHATGPT_REQUEST.md, REQUIRED_INPUTS.md, SELECTED_CONTEXT_MANIFEST.md, EXTRA_SOURCE_ROUTING.md, 0C_EXTRACTION_HANDOFF.md, and an organ-aware evidence/precheck file if supported by the CLI.<BR ALIGN="LEFT"/>
         The request folder should clearly state mode=request-update, track=organ, selected organ batch, selected topic, evidence_required=yes, and the prior organ evidence location. It should not contain skeleton batch metadata except as negative context or cross-reference.
       </FONT></TD></TR>
     </TABLE>

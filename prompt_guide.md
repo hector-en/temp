@@ -1,3 +1,6 @@
+<!-- G21/G22 registry-routing update -->
+Active routing is registry-driven: concrete skeleton and organ IDs are examples unless explicitly labeled historical. Ordinary lanes do not edit CLI_EXTRACTION_NOTES.md; reusable friction routes through 0C/public maintenance.
+
 # InfraCTL Prompt-Only Flow README
 
 This README explains how to use `infractl.zip` as a prompt-instruction library in a fresh ChatGPT or Codex chat.
@@ -149,7 +152,7 @@ Upload:
 infractl.zip
 infractl.md
 public_infra-skeleton-tools_v0.zip OR public repo access
-agentfield-grn-private_real_v0_bundle.zip
+<private-project-bundle-or-root>
 ```
 
 Say:
@@ -1398,7 +1401,7 @@ Upload:
 infractl.zip
 infractl.md
 public_infra-skeleton-tools_v0.zip OR public repo access
-agentfield-grn-private_real_v0_bundle.zip
+<private-project-bundle-or-root>
 any extra source files needed for this batch
 ```
 
@@ -1634,7 +1637,7 @@ Upload:
 infractl.zip
 infractl.md
 public_infra-skeleton-tools_v0.zip OR public repo access
-agentfield-grn-private_real_v0_bundle.zip
+<private-project-bundle-or-root>
 existing skeleton evidence for the batch:
   POSTCHECK.md
   INTEGRATION_REQUEST.md
@@ -1880,7 +1883,7 @@ Upload:
 infractl.zip
 infractl.md
 public_infra-skeleton-tools_v0.zip OR public repo access
-agentfield-grn-private_real_v0_bundle.zip
+<private-project-bundle-or-root>
 organ transition files if not already in the bundle:
   01_B0_transition_to_real_organs_master_v2.md
   01_B1_transition_real_organs_codex_batch_plan_v2.md
@@ -1893,7 +1896,7 @@ Say:
 Use infractl.md and infractl.zip.
 
 Task:
-Create organ R01 scaffold.
+Create registered organ run (R01 initial-scaffold example).
 
 Route:
 MODE=request-create
@@ -1931,7 +1934,7 @@ Say:
 
 ```text
 Use infractl.md and infractl.zip.
-Continue organ R01 scaffold from P1 output.
+Continue registered organ run (R01 initial-scaffold example) from P1 output.
 
 Route:
 MODE=request-create
@@ -2081,7 +2084,7 @@ Say:
 
 ```text
 Use infractl.md and infractl.zip.
-Choose the next cycle after organ R01 scaffold.
+Choose the next cycle after registered organ run (R01 initial-scaffold example).
 
 Route:
 MODE=request-create
@@ -2118,8 +2121,8 @@ Upload:
 infractl.zip
 infractl.md
 public_infra-skeleton-tools_v0.zip OR public repo access
-agentfield-grn-private_real_v0_bundle.zip
-prior organ/R01 evidence
+<private-project-bundle-or-root>
+prior selected-organ evidence
 organ transition files if requested
 optional extra source files for the update topic
 ```
@@ -2379,7 +2382,7 @@ Route:
 MODE=<request-create | request-update>
 TRACK=<skeleton | organ>
 PHASE=<P1 | P2 | P3 | P4 | P5 | P6>
-BATCH_NUMBER=<01 | 02 | 03 | R01 | etc.>
+BATCH_NUMBER=<registered skeleton id> or ORGAN_RUN=<registered organ run>
 BATCH_SLUG=<batch-or-run-slug>
 TOPIC=<topic-or-run-purpose>
 PROFILE=<webchat-sandbox | real-workspace | codex-pack>

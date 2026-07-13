@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P3_update_package_organ_lane_infractl_prompts_only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -29,7 +30,7 @@ digraph P3_update_package_organ_lane_infractl_prompts_only {
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         This DOT is a self-executable prompt instruction for a fresh ChatGPT/Codex-style session. It represents the third lane of the <B>mode=request-update, track=organ</B> route after P2 has already produced the bounded G8 update-writing files.<BR ALIGN="LEFT"/>
         The job of this lane is to package the organ update-writing files into a Codex-ready update pack. It is not a request-generation lane, not a writing lane, not a create-pack lane, not a Codex execution lane, and not an evidence-return lane.<BR ALIGN="LEFT"/>
-        Because a fresh chat may receive only this DOT, keep all organ-update context explicit: this lane packages a delta/update against prior organ/R01 evidence and must preserve the separation between skeleton evidence, organ scaffold evidence, and organ update evidence.
+        Because a fresh chat may receive only this DOT, keep all organ-update context explicit: this lane packages a delta/update against prior selected-organ evidence and must preserve the separation between skeleton evidence, organ scaffold evidence, and organ update evidence.
       </FONT></TD></TR>
     </TABLE>
   >];
@@ -61,7 +62,7 @@ digraph P3_update_package_organ_lane_infractl_prompts_only {
       <TR><TD BGCOLOR="#EDE7F6"><B>Organ-update context that must survive packaging</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">
         Organ work starts at <B>R01</B> because it is the transition from skeleton/dummy workflow into the real-organ workflow. That does not make R01 equivalent to skeleton Batch 01. Packaging must not rename organ identifiers into skeleton batch identifiers or move evidence under skeleton-only paths.<BR ALIGN="LEFT"/>
-        A request-update + organ package is valid only when prior organ/R01 scaffold evidence exists. The packaged Codex instructions must operate as a bounded delta/update against that organ state, preserving historical evidence and producing new update evidence rather than rewriting prior scaffold evidence.<BR ALIGN="LEFT"/>
+        A request-update + organ package is valid only when prior selected organ run scaffold evidence exists. The packaged Codex instructions must operate as a bounded delta/update against that organ state, preserving historical evidence and producing new update evidence rather than rewriting prior scaffold evidence.<BR ALIGN="LEFT"/>
         Organ-specific context should remain visible inside the pack through the P2 files: <B>01_B0_transition_to_real_organs_master_v2.md</B>, <B>01_B1_transition_real_organs_codex_batch_plan_v2.md</B>, <B>day_to_day_organs_run.md</B>, the selected context manifest, and the existing organ evidence gate. If the P2 files lost that context, stop and send the lane back to P2.
       </FONT></TD></TR>
     </TABLE>

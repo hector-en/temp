@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P6_next_cycle_update_organ_lane_infractl_prompts_only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -99,7 +100,7 @@ digraph P6_next_cycle_update_organ_lane_infractl_prompts_only {
     label=<
       <B>Organ-update context to preserve</B><BR ALIGN="LEFT"/>
       <BR ALIGN="LEFT"/>
-      This route follows an already-created organ/R01 scaffold. It is not the initial organ scaffold creation lane.<BR ALIGN="LEFT"/>
+      This route follows an already-created selected organ run scaffold. It is not the initial organ scaffold creation lane.<BR ALIGN="LEFT"/>
       Keep the distinction between organ updates and skeleton batch updates explicit.<BR ALIGN="LEFT"/>
       <BR ALIGN="LEFT"/>
       Relevant organ context files remain part of the reasoning boundary:<BR ALIGN="LEFT"/>

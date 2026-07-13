@@ -1,3 +1,6 @@
+<!-- G21/G22 registry-routing update -->
+Active routing is registry-driven: concrete skeleton and organ IDs are examples unless explicitly labeled historical. Ordinary lanes do not edit CLI_EXTRACTION_NOTES.md; reusable friction routes through 0C/public maintenance.
+
 # Infra-Skeleton v0 Webchat / CLI / Codex Instructions
 
 Use this file as the starter instruction for a new ChatGPT workflow after the public `infractl` tool has been pushed to GitHub.
@@ -76,7 +79,7 @@ workflow.md
 3. Ask the user to upload the private bundle zip:
 
 ```text
-agentfield-grn-private_real_v0_bundle.zip
+<private-project-bundle-or-root>
 ```
 
 4. Unpack or stage the private bundle under:
@@ -311,7 +314,7 @@ CHATGPT_REQUEST.md
 REQUIRED_INPUTS.md
 SELECTED_CONTEXT_MANIFEST.md
 EXTRA_SOURCE_ROUTING.md
-CLI_EXTRACTION_REMINDER.md
+0C_EXTRACTION_HANDOFF.md
 manifest.json
 source_bundle.zip
 ```
@@ -342,7 +345,7 @@ REQUIRED_INPUTS.md
 SELECTED_CONTEXT_MANIFEST.md
 EXISTING_EVIDENCE_CHECK.md
 EXTRA_SOURCE_ROUTING.md
-CLI_EXTRACTION_REMINDER.md
+0C_EXTRACTION_HANDOFF.md
 manifest.json
 source_bundle.zip
 ```
@@ -515,7 +518,7 @@ The webchat bundle may carry copied fallback files under `sources/`, but the wor
 
 ## 13. CLI_EXTRACTION_NOTES.md rule
 
-Until after Skeleton Batch 04, every request pack should include a reminder to update:
+Until after Skeleton Batch 04, ordinary request packs must not include a ledger-edit reminder for:
 
 ```text
 CLI_EXTRACTION_NOTES.md
@@ -524,7 +527,7 @@ CLI_EXTRACTION_NOTES.md
 Use this one-liner:
 
 ```text
-At the end, update `CLI_EXTRACTION_NOTES.md` with only the reusable patterns from this batch/update run that should inform a future `infractl` CLI.
+Do not edit `CLI_EXTRACTION_NOTES.md` in ordinary lanes. Route reusable CLI friction through the explicit 0C/public-maintenance lane.
 ```
 
 After Batch 04, use those notes to design v1/v2 updates through `NEW_CHAT_PROMPT_update_infra.md`.
@@ -595,5 +598,5 @@ Follow `NEW_CHAT_PROMPT_update_infra.md`. Read the public infractl repo, then us
 Use this prompt in future chats:
 
 ```text
-Read the public `infractl` tool from https://github.com/hector-en/temp/tree/main/public_infra-skeleton-tools_v0. If GitHub access fails, ask me to upload `public_infra-skeleton-tools_v0.zip`. Then ask me for my private `agentfield-grn-private_real_v0_bundle.zip`. Validate both. Before running any request or packaging command, ask me for one `WORKFLOW_DIRECTION` block with mode, track, batch, topic, evidence_required, and extra_sources. Run only deterministic `infractl` commands in `webchat-sandbox` mode, do not treat extra sources as authoritative until routed through `EXTRA_SOURCE_ROUTING.md`, and keep `CLI_EXTRACTION_NOTES.md` active until Skeleton Batch 04.
+Read the public `infractl` tool from https://github.com/hector-en/temp/tree/main/public_infra-skeleton-tools_v0. If GitHub access fails, ask me to upload `public_infra-skeleton-tools_v0.zip`. Then ask me for the private project root or bundle when the real root is not available. Validate both. Before running any request or packaging command, ask me for one `WORKFLOW_DIRECTION` block with mode, track, batch, topic, evidence_required, and extra_sources. Run only deterministic `infractl` commands in `webchat-sandbox` mode, do not treat extra sources as authoritative until routed through `EXTRA_SOURCE_ROUTING.md`, and do not read or edit `CLI_EXTRACTION_NOTES.md` in ordinary lanes; route reusable friction through 0C/public maintenance.
 ```

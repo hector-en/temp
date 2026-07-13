@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P4_Package_To_Codex_Organ_Infractl_Prompts_Only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -57,7 +58,7 @@ digraph P4_Package_To_Codex_Organ_Infractl_Prompts_Only {
       <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Read the canonical v7 main DOT and the provided organ create pack metadata. We are in P4 package-to-Codex for mode=request-create, track=organ, covering G13 pack-consumed and G14 layout-gate.</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT FACE="Courier">First infer and show the suggested variable block for CANONICAL_MAIN_DOT, PUBLIC_TOOL_ROOT, PRIVATE_PROJECT_ROOT, CODEX_PACK_ZIP, PACK_EXTRACT_DIR, MODE, TRACK, ORGAN_UNIT, ORGAN_SLUG, TOPIC, ALLOW_PACK_EXECUTION, and ALLOW_OVERWRITE. Label each value as user-provided, inferred, default-safe, or unknown. Ask me to confirm or correct variables before doing anything.</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT FACE="Courier">After confirmation, verify that CODEX_PACK_ZIP is exactly the validated create pack produced by P3 for the organ route. Do not use loose P2 files. Do not use update packaging. Do not substitute skeleton batch numbering. Then perform the read-only real-layout gate before any Codex execution.</FONT></TD></TR>
-      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Only after layout-gate PASS and explicit operator confirmation of ALLOW_PACK_EXECUTION=yes may Codex execute exactly one bounded task from the pack. Preserve the organ R01 scaffold boundary and end with changed files, tests run, evidence, smoke/report status, and remaining issues.</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier">Only after layout-gate PASS and explicit operator confirmation of ALLOW_PACK_EXECUTION=yes may Codex execute exactly one bounded task from the pack. Preserve the registered organ run (R01 initial-scaffold example) boundary and end with changed files, tests run, evidence, smoke/report status, and remaining issues.</FONT></TD></TR>
     </TABLE>
   >];
 

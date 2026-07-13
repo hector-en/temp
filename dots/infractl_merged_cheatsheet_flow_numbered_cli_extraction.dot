@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph InfraCTL_Merged_Cheatsheet_Flow {
   compound=true;
   newrank=true;
@@ -51,7 +52,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G2: create-flags]</B></FONT> Skeleton create direction becomes request-create flags.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G3: update-flags]</B></FONT> Skeleton update direction becomes request-update flags and evidence checks.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G4: extra-source]</B></FONT> Knowledge-expansion direction passes uploaded notes/specs as candidate extra sources.</TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G5: organ-flags]</B></FONT> Organ R01 scaffold direction switches track/batch while preserving the same safe request pattern.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G5: organ-flags]</B></FONT> Registered organ run (R01 initial-scaffold example) direction switches track/batch while preserving the same safe request pattern.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G6: request-pack]</B></FONT> infractl emits CHATGPT_REQUEST, manifests, routing notes, evidence check, and source bundle.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G7: create-files]</B></FONT> Request pack produces CODEX_PROMPT, PROJECT_CACHE, SPEC, RUN_INSTRUCTIONS, and POSTCHECK_TEMPLATE.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G8: update-files]</B></FONT> Request pack produces CODEX_UPDATE_PROMPT, PROJECT_UPDATE_CACHE, UPDATE_SPEC, UPDATE_RUN_INSTRUCTIONS, and UPDATE_POSTCHECK_TEMPLATE.</TD></TR>
@@ -72,7 +73,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G21: route-extra-source]</B></FONT> EXTRA_SOURCE_ROUTING.md classifies the uploaded source before any SPEC, ANX, hook, prompt, or CLI behavior changes.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G22: private-file-update]</B></FONT> The expansion lane produces private system files such as SPEC_Layer*, ANX files, BATCH_*_ANX hooks, and NEW_CHAT_PROMPT updates.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#6A1B9A"><B>[P9: cli-extraction-choice]</B></FONT> Human decides whether repeated manual behavior stays as notes, becomes a public helper script, or is promoted into an infractl subcommand.</TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G23: extraction-reminder]</B></FONT> CLI_EXTRACTION_REMINDER.md, Codex notes, and repeated commands feed CLI_EXTRACTION_NOTES.md.</TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G23: extraction-reminder]</B></FONT> 0C-only extraction handoffs and repeated confirmed friction feed CLI_EXTRACTION_NOTES.md.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G24: extraction-ledger]</B></FONT> CLI_EXTRACTION_NOTES.md is the private ledger for stable manual patterns across create, update, organ, G16, and 0B expansion lanes.</TD></TR>
         <TR><TD ALIGN="LEFT"><FONT COLOR="#1B7F3A"><B>[G25: public-tool-promotion]</B></FONT> Only after the ledger proves a pattern stable should it become infractl-public/scripts/* or a formal infractl.cli command.</TD></TR>
 
@@ -81,8 +82,8 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
         <TR><TD ALIGN="LEFT"> </TD></TR>
         <TR><TD ALIGN="LEFT"><B>WORKFLOW_DIRECTION field guide</B></TD></TR>
         <TR><TD ALIGN="LEFT"><B>mode</B>: choose the operation family. <I>request-create</I> builds a ChatGPT request pack for a new not-yet-run batch. <I>request-update</I> builds a request pack for an already-run batch or retroactive correction. <I>package-codex-create</I> validates/bundles the five create files after ChatGPT writes them. <I>package-codex-update</I> validates/bundles the five update files after ChatGPT writes them. <I>check-evidence</I> checks expected evidence for one batch. <I>status</I> is read-only inventory/preflight.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>track</B>: choose the phase lane. <I>skeleton</I> is the current active lane for Batches 01-04. <I>organ</I> is the real-organ transition lane; in v0 it is scaffold-only, starting with R01.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>batch</B>: choose the exact batch id. Available v0 skeleton ids: <I>01 runtime-substrate</I>, <I>02 research-workspace</I>, <I>03 ai-engineer-workspaces</I>, <I>04 pkm-skeleton</I>. Available v0 organ id: <I>R01 real-contract-audit-runtime-role-readiness</I>.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>track</B>: choose the phase lane. <I>skeleton</I> is the current active lane for registered skeleton batches. <I>organ</I> is the real-organ transition lane; in v0 it is scaffold-only, starting with R01.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>batch</B>: choose the exact batch id. Available records are read from the private registry. Concrete IDs such as <I>05 publisher-latex</I> or <I>R01 real-contract-audit-runtime-role-readiness</I> are examples, not public-code limits.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>topic</B>: short slug for the concrete job, for example <I>workflow_smoke_automation</I>, <I>batch02_creation</I>, <I>workspace_boundary_update</I>, or <I>create_or_update_spec_annex</I>. It becomes part of generated folder/request identity.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>evidence_required</B>: choose <I>yes</I> for updates to already-run batches or anything that depends on prior execution state. Choose <I>no</I> for a brand-new create request or early organ scaffold where prior evidence is not expected yet.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>extra_sources</B>: choose <I>none</I> for ordinary batch create/update. Add uploaded files only when expanding knowledge or routing new material. Extra sources are candidate context only until EXTRA_SOURCE_ROUTING.md classifies them.</TD></TR>
@@ -109,8 +110,8 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
         <TR><TD ALIGN="LEFT"><B>Current private bundle mapping files (actual real-v0 bundle)</B></TD></TR>
         <TR><TD ALIGN="LEFT"><B>project.yaml 1.6 KB</B>: project id <I>agentfield-grn</I>, version <I>real-v0-batch04</I>, supported profiles, source/generated/evidence roots, safety flags, and workflow notes. It says what project this bundle controls.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>layers.yaml 0.9 KB</B>: five-layer orientation map. Layer 01 owns Batch 01; Layer 02 owns Batches 02-04 and future Batch 05; Layers 03-05 activate later. It keeps batch numbers tied to architecture layers.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>batches.yaml 6.6 KB</B>: active batch contract map. It defines skeleton 01-04 plus organ R01, with slug, layer, scope, required_sources, required_hooks, expected Codex pack shape, evidence_contract, smoke domains, and must_not rules.</TD></TR>
-        <TR><TD ALIGN="LEFT"><B>hooks.yaml 1.0 KB</B>: ANX registry. Current hooks: <I>workflow_smoke_automation</I> / ANX04 applies to skeleton 01-04 and organ R01; <I>workspace_boundaries</I> / ANX01 applies to skeleton 02.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>batches.yaml 6.6 KB</B>: active batch contract map. It defines registered skeleton records plus organ R01, with slug, layer, scope, required_sources, required_hooks, expected Codex pack shape, evidence_contract, smoke domains, and must_not rules.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>hooks.yaml 1.0 KB</B>: ANX registry. Current hooks: <I>workflow_smoke_automation</I> / ANX04 applies to registered skeleton records and organ R01; <I>workspace_boundaries</I> / ANX01 applies to skeleton 02.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>files.yaml 7.0 KB</B>: main bridge file. It has <B>28 source_keys</B>: <B>11 required</B> and <B>17 optional</B>. Each key has bundle_path, real_path, and required=true/false. Strict v0 validation checks required bundle_path entries under the private project root.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>Required source keys</B>: A0, A1, A2, NEW_CREATE, NEW_UPDATE, SPEC_L1, SPEC_L2, WF_FINAL, WF_SKELETON, WF_SMOKE, CLI_NOTES.</TD></TR>
         <TR><TD ALIGN="LEFT"><B>Bundle-path families covered by files.yaml</B>: implementation, specifications, workflow, and related copied source bundles under PRIVATE_PROJECT_ROOT/sources/.</TD></TR>
@@ -153,7 +154,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
     ActualYamlMap [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="410" BGCOLOR="#FCE8E6">
         <TR><TD><B>Actual YAML map status</B></TD></TR>
-        <TR><TD ALIGN="LEFT">files.yaml: 28 source_keys<BR ALIGN="LEFT"/>CLI_NOTES required source key<BR ALIGN="LEFT"/>required: 11 / optional: 17<BR ALIGN="LEFT"/>batches.yaml: skeleton 01-04 + organ R01<BR ALIGN="LEFT"/>hooks.yaml: ANX04 smoke + ANX01 workspace<BR ALIGN="LEFT"/>validate-real-layout checks required bundle_path entries<BR ALIGN="LEFT"/>strict v0 fails if required private bundle files are missing</TD></TR>
+        <TR><TD ALIGN="LEFT">files.yaml: 28 source_keys<BR ALIGN="LEFT"/>CLI_NOTES required source key<BR ALIGN="LEFT"/>required: 11 / optional: 17<BR ALIGN="LEFT"/>batches.yaml: registered skeleton records + organ R01<BR ALIGN="LEFT"/>hooks.yaml: ANX04 smoke + ANX01 workspace<BR ALIGN="LEFT"/>validate-real-layout checks required bundle_path entries<BR ALIGN="LEFT"/>strict v0 fails if required private bundle files are missing</TD></TR>
       </TABLE>
     >];
 
@@ -222,7 +223,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
     ExtractionSignal [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="430" BGCOLOR="#D9F2DF">
         <TR><TD><B>Extraction signal can come from any lane</B></TD></TR>
-        <TR><TD ALIGN="LEFT">CLI_EXTRACTION_REMINDER.md from request packs<BR ALIGN="LEFT"/>repeated ChatGPT/Codex manual commands<BR ALIGN="LEFT"/>new helper scripts such as scripts/g16_snapshot.sh<BR ALIGN="LEFT"/>create/update/organ execution friction<BR ALIGN="LEFT"/>0B extra-source routing that changes tool behavior</TD></TR>
+        <TR><TD ALIGN="LEFT">0C extraction handoff material when explicitly triggered<BR ALIGN="LEFT"/>repeated ChatGPT/Codex manual commands<BR ALIGN="LEFT"/>new helper scripts such as scripts/g16_snapshot.sh<BR ALIGN="LEFT"/>create/update/organ execution friction<BR ALIGN="LEFT"/>0B extra-source routing that changes tool behavior</TD></TR>
       </TABLE>
     >];
 
@@ -243,7 +244,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
     ExtractionOutputs [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="430" BGCOLOR="#FFF2CC">
         <TR><TD><B>Possible outputs</B></TD></TR>
-        <TR><TD ALIGN="LEFT">private: updated CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/>public helper: infractl-public/scripts/&lt;helper&gt;.sh<BR ALIGN="LEFT"/>public CLI: infractl/cli.py + tests/docs/schemas as needed<BR ALIGN="LEFT"/>request packs continue to emit CLI_EXTRACTION_REMINDER.md</TD></TR>
+        <TR><TD ALIGN="LEFT">private: updated CLI_EXTRACTION_NOTES.md<BR ALIGN="LEFT"/>public helper: infractl-public/scripts/&lt;helper&gt;.sh<BR ALIGN="LEFT"/>public CLI: infractl/cli.py + tests/docs/schemas as needed<BR ALIGN="LEFT"/>normal request packs do not emit 0C_EXTRACTION_HANDOFF.md; 0C handles extraction feedback</TD></TR>
       </TABLE>
     >];
 
@@ -281,7 +282,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
 
     DirectionOrgan [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="300" BGCOLOR="#EADCF8">
-        <TR><TD><B>1D. WORKFLOW_DIRECTION: organ R01 scaffold</B></TD></TR>
+        <TR><TD><B>1D. WORKFLOW_DIRECTION: registered organ run (R01 initial-scaffold example)</B></TD></TR>
         <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8">mode: request-create<BR ALIGN="LEFT"/>track: organ<BR ALIGN="LEFT"/>batch: R01<BR ALIGN="LEFT"/>topic: organ_r01_scaffold<BR ALIGN="LEFT"/>evidence_required: no<BR ALIGN="LEFT"/>extra_sources: none</FONT></TD></TR>
       </TABLE>
     >];
@@ -331,7 +332,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
     RequestFolder [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="330" BGCOLOR="#D9F2DF">
         <TR><TD><B>Produces [12]</B></TD></TR>
-        <TR><TD ALIGN="LEFT">CHATGPT_REQUEST.md<BR ALIGN="LEFT"/>REQUIRED_INPUTS.md<BR ALIGN="LEFT"/>SELECTED_CONTEXT_MANIFEST.md<BR ALIGN="LEFT"/>EXISTING_EVIDENCE_CHECK.md for updates<BR ALIGN="LEFT"/>EXTRA_SOURCE_ROUTING.md<BR ALIGN="LEFT"/>CLI_EXTRACTION_REMINDER.md<BR ALIGN="LEFT"/>manifest.json<BR ALIGN="LEFT"/>source_bundle.zip</TD></TR>
+        <TR><TD ALIGN="LEFT">CHATGPT_REQUEST.md<BR ALIGN="LEFT"/>REQUIRED_INPUTS.md<BR ALIGN="LEFT"/>SELECTED_CONTEXT_MANIFEST.md<BR ALIGN="LEFT"/>EXISTING_EVIDENCE_CHECK.md for updates<BR ALIGN="LEFT"/>EXTRA_SOURCE_ROUTING.md<BR ALIGN="LEFT"/>manifest.json<BR ALIGN="LEFT"/>source_bundle.zip</TD></TR>
       </TABLE>
     >];
 
@@ -479,7 +480,7 @@ digraph InfraCTL_Merged_Cheatsheet_Flow {
     NextPhase [label=<
       <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="360" BGCOLOR="#EADCF8">
         <TR><TD><B>Next phase</B></TD></TR>
-        <TR><TD ALIGN="LEFT">Skeleton 01 &rarr; 02 &rarr; 03 &rarr; 04<BR ALIGN="LEFT"/>then Organ R01 scaffold<BR ALIGN="LEFT"/>then organ updates when evidence exists<BR ALIGN="LEFT"/>new knowledge enters as extra_sources</TD></TR>
+        <TR><TD ALIGN="LEFT">Registered skeleton sequence from batches.yaml<BR ALIGN="LEFT"/>then Registered organ run (R01 initial-scaffold example)<BR ALIGN="LEFT"/>then organ updates when evidence exists<BR ALIGN="LEFT"/>new knowledge enters as extra_sources</TD></TR>
       </TABLE>
     >];
 

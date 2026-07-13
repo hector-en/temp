@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P1_request_create_skeleton_infractl_prompts_only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -27,7 +28,7 @@ digraph P1_request_create_skeleton_infractl_prompts_only {
         <B>mode: request-create</B><BR ALIGN="LEFT"/>
         <B>track: skeleton</B><BR ALIGN="LEFT"/>
         Use it when you want to create the ChatGPT request pack for a not-yet-run skeleton batch.<BR ALIGN="LEFT"/>
-        Do not use this DOT for updates to already-run batches, organ/R01 work, CLI extraction, or snapshot/export.
+        Do not use this DOT for updates to already-run batches, selected organ run work, CLI extraction, or snapshot/export.
       </TD></TR>
     </TABLE>
   >];
@@ -175,9 +176,9 @@ digraph P1_request_create_skeleton_infractl_prompts_only {
         REQUIRED_INPUTS.md<BR ALIGN="LEFT"/>
         SELECTED_CONTEXT_MANIFEST.md<BR ALIGN="LEFT"/>
         EXTRA_SOURCE_ROUTING.md<BR ALIGN="LEFT"/>
-        CLI_EXTRACTION_REMINDER.md
+        0C_EXTRACTION_HANDOFF.md
         </FONT><BR ALIGN="LEFT"/>
-        If CLI_EXTRACTION_REMINDER.md indicates a repeated manual step or helper candidate, record that as a 0C signal, but do not promote public tooling in this route.
+        If 0C_EXTRACTION_HANDOFF.md indicates a repeated manual step or helper candidate, record that as a 0C signal, but do not promote public tooling in this route.
       </TD></TR>
     </TABLE>
   >];

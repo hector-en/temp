@@ -1,3 +1,4 @@
+// G21/G22 registry-routing update: active IDs resolve from private registries; R01 is only the initial-scaffold special case; normal lanes do not edit CLI_EXTRACTION_NOTES.md.
 digraph P6_next_cycle_update_skeleton_lane_infractl_prompts_only {
 // Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
 // Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
@@ -22,21 +23,21 @@ digraph P6_next_cycle_update_skeleton_lane_infractl_prompts_only {
   Vars [label=<
 <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
   <TR><TD><B>Suggested next-cycle variables — infer first, then ask for confirmation</B></TD></TR>
-  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>PREVIOUS_MODE=request-update<BR ALIGN="LEFT"/>PREVIOUS_TRACK=skeleton<BR ALIGN="LEFT"/>PREVIOUS_BATCH_SLUG=&lt;from G17&gt;<BR ALIGN="LEFT"/>PREVIOUS_TOPIC=&lt;from G17&gt;<BR ALIGN="LEFT"/>UPDATED_PRIVATE_BUNDLE=&lt;G16 export zip or updated private root&gt;<BR ALIGN="LEFT"/>NEXT_MODE=&lt;suggest request-create, request-update, request-create organ/R01, 0B expansion, or 0C extraction&gt;<BR ALIGN="LEFT"/>NEXT_TRACK=&lt;suggest skeleton or organ&gt;<BR ALIGN="LEFT"/>NEXT_BATCH_NUMBER=&lt;infer from batches.yaml / mapping report&gt;<BR ALIGN="LEFT"/>NEXT_TOPIC=&lt;operator goal or inferred next planned task&gt;<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
+  <TR><TD ALIGN="LEFT">Before execution, infer and suggest the run variables instead of giving the operator a blank form. Label each value as user-provided, inferred, default-safe, or unknown. Ask only for variables that remain unknown or unsafe to infer. Do not execute until the operator confirms the suggested block or explicitly says to proceed with the suggested values.<BR ALIGN="LEFT"/><BR ALIGN="LEFT"/>Suggested variables:<BR ALIGN="LEFT"/>PREVIOUS_MODE=request-update<BR ALIGN="LEFT"/>PREVIOUS_TRACK=skeleton<BR ALIGN="LEFT"/>PREVIOUS_BATCH_SLUG=&lt;from G17&gt;<BR ALIGN="LEFT"/>PREVIOUS_TOPIC=&lt;from G17&gt;<BR ALIGN="LEFT"/>UPDATED_PRIVATE_BUNDLE=&lt;G16 export zip or updated private root&gt;<BR ALIGN="LEFT"/>NEXT_MODE=&lt;suggest request-create, request-update, request-create selected organ run, 0B expansion, or 0C extraction&gt;<BR ALIGN="LEFT"/>NEXT_TRACK=&lt;suggest skeleton or organ&gt;<BR ALIGN="LEFT"/>NEXT_BATCH_NUMBER=&lt;infer from batches.yaml / mapping report&gt;<BR ALIGN="LEFT"/>NEXT_TOPIC=&lt;operator goal or inferred next planned task&gt;<BR ALIGN="LEFT"/>ALLOW_OVERWRITE=no [default-safe]</TD></TR>
 </TABLE>
 >];
 
   Prompt [label=<
 <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#FFF2CC">
   <TR><TD><B>Exact prompt to type for this lane</B></TD></TR>
-  <TR><TD ALIGN="LEFT">Read the canonical main DOT and the G17 phase-decision from the completed request-update + skeleton cycle. We are in v7 at P6 next-cycle. First infer and show the suggested next-cycle variables, then ask me to confirm. Use the updated private bundle from G16 as the baseline. Decide whether the next route is another request-update skeleton, a request-create skeleton batch, a knowledge expansion 0B lane, a CLI extraction 0C lane, or an organ/R01 route. Do not execute the next route until I confirm it.</TD></TR>
+  <TR><TD ALIGN="LEFT">Read the canonical main DOT and the G17 phase-decision from the completed request-update + skeleton cycle. We are in v7 at P6 next-cycle. First infer and show the suggested next-cycle variables, then ask me to confirm. Use the updated private bundle from G16 as the baseline. Decide whether the next route is another request-update skeleton, a request-create skeleton batch, a knowledge expansion 0B lane, a CLI extraction 0C lane, or an selected organ run route. Do not execute the next route until I confirm it.</TD></TR>
 </TABLE>
 >];
 
   Decision [label=<
 <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" WIDTH="900" BGCOLOR="#D9F2DF">
   <TR><TD><B>Route selection from v7 NextPhase</B></TD></TR>
-  <TR><TD ALIGN="LEFT">If G17 says accepted and ready for next planned batch, suggest request-create + skeleton for the next not-yet-run batch. If G17 says accepted but new knowledge/spec/hook is needed first, suggest 0B expansion. If G17 identifies repeated helper/script/manual patterns, suggest 0C extraction. If organ transition prerequisites are satisfied, suggest organ/R01 scaffold route. If G17 is missing, ambiguous, or rejected, stop and ask for a clear phase decision.</TD></TR>
+  <TR><TD ALIGN="LEFT">If G17 says accepted and ready for next planned batch, suggest request-create + skeleton for the next not-yet-run batch. If G17 says accepted but new knowledge/spec/hook is needed first, suggest 0B expansion. If G17 identifies repeated helper/script/manual patterns, suggest 0C extraction. If organ transition prerequisites are satisfied, suggest selected organ run scaffold route. If G17 is missing, ambiguous, or rejected, stop and ask for a clear phase decision.</TD></TR>
 </TABLE>
 >];
 
