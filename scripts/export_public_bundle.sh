@@ -8,8 +8,7 @@ export_public_bundle.sh
 Export the current InfraCTL public prompt bundle for upload into a new chat.
 
 Default behavior:
-  /mnt/ingress/infra/cli_tools/infractl/infractl.md
-  /mnt/ingress/infra/cli_tools/infractl/infractl/
+  /workspace/repos/infractl-public
     -> /mnt/egress/public-bundle/infractl-public_v<N>/infractl.md
     -> /mnt/egress/public-bundle/infractl-public_v<N>/infractl.zip
     -> /mnt/egress/public-bundle/infractl-public_v<N>_bundle.zip
@@ -18,8 +17,8 @@ Usage:
   export_public_bundle.sh [INFRCTL_ROOT] [OUT_DIR] [--dry-run]
 
 Arguments:
-  INFRCTL_ROOT  Directory containing infractl.md and infractl/.
-                Default: /mnt/ingress/infra/cli_tools/infractl
+  INFRCTL_ROOT  Current public InfraCTL repository root.
+                Default: /workspace/repos/infractl-public
   OUT_DIR       Export directory.
                 Default: /mnt/egress/public-bundle
   --dry-run     Print planned output without creating files.
@@ -28,11 +27,12 @@ Rules:
   - Does not mutate INFRCTL_ROOT.
   - Does not overwrite existing exports.
   - Produces both separate upload files: infractl.md and infractl.zip.
+  - The zip uses the current flat public-bundle layout at the zip root.
   - Produces an optional bundle zip containing both files.
 USAGE
 }
 
-INFRCTL_ROOT="/mnt/ingress/infra/cli_tools/infractl"
+INFRCTL_ROOT="/workspace/repos/infractl-public"
 OUT_DIR="/mnt/egress/public-bundle"
 DRY_RUN="no"
 
@@ -67,18 +67,34 @@ if [ "${#args[@]}" -gt 2 ]; then
 fi
 
 INFRCTL_MD="$INFRCTL_ROOT/infractl.md"
-INFRCTL_DIR="$INFRCTL_ROOT/infractl"
 
 if [ ! -f "$INFRCTL_MD" ]; then
   echo "ERROR: infractl.md not found: $INFRCTL_MD" >&2
   exit 1
 fi
-if [ ! -d "$INFRCTL_DIR" ]; then
-  echo "ERROR: infractl folder not found: $INFRCTL_DIR" >&2
-  exit 1
-fi
 
-mkdir -p "$OUT_DIR"
+BUNDLE_ITEMS=(
+  "README.md"
+  "infractl.md"
+  "prompt_guide.md"
+  "workflow.md"
+  "pyproject.toml"
+  "dots"
+  "examples"
+  "infractl"
+  "infractl_workflow.md"
+  "instructions.md"
+  "schemas"
+  "scripts"
+  "templates"
+)
+
+for item in "${BUNDLE_ITEMS[@]}"; do
+  if [ ! -e "$INFRCTL_ROOT/$item" ]; then
+    echo "ERROR: required bundle item not found: $INFRCTL_ROOT/$item" >&2
+    exit 1
+  fi
+done
 
 max_ver=-1
 shopt -s nullglob
@@ -121,7 +137,7 @@ cat <<PLAN
 Public InfraCTL export plan:
   infractl root: $INFRCTL_ROOT
   input markdown: $INFRCTL_MD
-  input folder: $INFRCTL_DIR
+  bundle items: ${BUNDLE_ITEMS[*]}
   output dir: $OUT_DIR
   existing highest version: $max_ver
   release dir: $RELEASE_DIR
@@ -141,15 +157,17 @@ if ! command -v zip >/dev/null 2>&1; then
   exit 1
 fi
 
+mkdir -p "$OUT_DIR"
 mkdir -p "$RELEASE_DIR"
 cp "$INFRCTL_MD" "$OUT_MD"
 
 (
   cd "$INFRCTL_ROOT"
-  zip -r "$OUT_INFRCTL_ZIP" "infractl" \
+  zip -r "$OUT_INFRCTL_ZIP" "${BUNDLE_ITEMS[@]}" \
     -x "*/__pycache__/*" \
     -x "*.pyc" \
     -x "*/.DS_Store" \
+    -x "generated/*" \
     >/dev/null
 )
 

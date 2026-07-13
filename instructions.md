@@ -453,23 +453,24 @@ python -m infractl.cli check-required-files \
 Validate real layout:
 
 ```bash
-python -m infractl.cli validate-real-layout \
+python3 -m infractl.cli validate-real-layout \
   --project /workspace/private/agentfield-grn-private_real_v0 \
-  --repo-root /mnt/ingress
+  --public-tool-root /workspace/repos/infractl-public
 ```
 
-In strict v0, this command is the real workspace preflight gate. It reads `files.yaml`, expands each `real_path` against `--repo-root`, and must fail if any required real path is missing.
+In strict v0, this command is the real workspace preflight gate. It validates the public tool root and private project root together. Required private sources resolve by `files.yaml.bundle_path`; `files.yaml.real_path` remains legacy descriptive metadata and is not current authority.
 
-Inside ChatGPT webchat only, where `/mnt/ingress/infra` is not mounted, use bundle fallback validation instead:
+Inside ChatGPT webchat only, where the real workspace roots are not mounted, use bundle fallback validation instead:
 
 ```bash
-python -m infractl.cli validate-real-layout \
+python3 -m infractl.cli validate-real-layout \
   --project /mnt/data/agentfield-grn-private_real_v0 \
-  --repo-root /mnt/data/agentfield-grn-private_real_v0 \
+  --public-tool-root /mnt/data/infractl-public \
   --allow-bundle-fallback
 ```
 
-The `--repo-root` value must point to the parent folder that contains the real private `infra/` directory. For this project, use `/mnt/ingress`, because the private Infra-Skeleton planning/control tree lives at `/mnt/ingress/infra`. Keep `/workspace` free for implementation repos, experiments, runs, artifacts, and generated working code.
+Use the maintained two-root contract only:
+`/workspace/repos/infractl-public` for the public tool and `/workspace/private/agentfield-grn-private_real_v0` for the private project. Do not introduce or document a third active root.
 
 ## 12. Private bundle real-path mapping
 
@@ -482,7 +483,7 @@ project.yaml = project identity, profile defaults, safety boundaries, and roots
 layers.yaml  = 5-layer architecture map
 batches.yaml = skeleton/organ batch IDs, required context, expected outputs, evidence rules
 hooks.yaml   = ANX/hook routing for reusable update and creation lanes
-files.yaml   = source key -> bundle path -> real /mnt/ingress/infra path; used by validate-real-layout
+files.yaml   = source key -> bundle path + legacy real_path metadata; validate-real-layout uses bundle_path as current authority
 ```
 
 Current `files.yaml` mapping summary:
@@ -563,7 +564,7 @@ Inputs it should ask for:
 ```text
 - public infractl repo URL or current public tool zip
 - current private bundle zip
-- fresh private codebase analysis of /mnt/ingress/infra
+- fresh private codebase analysis of /workspace/private/agentfield-grn-private_real_v0
 - CLI_EXTRACTION_NOTES.md
 - current instructions.md
 - any newly created NEW_CHAT_PROMPT_*.md files

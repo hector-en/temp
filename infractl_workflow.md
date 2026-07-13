@@ -70,28 +70,29 @@ WF_FINAL, WF_SKELETON, WF_SMOKE, CLI_NOTES
 Important real-path contract:
 
 ```text
-/mnt/ingress/infra = private planning/control tree
+/workspace/repos/infractl-public = public tool root
+/workspace/private/agentfield-grn-private_real_v0 = private project root
 /workspace         = implementation repos, experiments, runs, artifacts
 ```
 
 Strict v0 preflight in Codex/real workspace:
 
 ```bash
-cd /workspace/repos/public_infra-skeleton-tools_v0
+cd /workspace/repos/infractl-public
 
 python3 -m infractl.cli validate-real-layout \
   --project /workspace/private/agentfield-grn-private_real_v0 \
-  --repo-root /mnt/ingress
+  --public-tool-root /workspace/repos/infractl-public
 ```
 
-This reads `files.yaml.real_path`. In strict v0, required missing real paths should stop with `MISSING_REQUIRED_REAL_PATHS` before Codex implementation proceeds.
+This validates the current two-root contract. Required private sources resolve by `files.yaml.bundle_path` under the private project root. `files.yaml.real_path` is legacy descriptive metadata only and must not be treated as a third active root.
 
-Inside ChatGPT webchat only, where `/mnt/ingress/infra` is not mounted, use bundle fallback validation instead:
+Inside ChatGPT webchat only, where the real workspace roots are not mounted, use bundle fallback validation instead:
 
 ```bash
 python3 -m infractl.cli validate-real-layout \
   --project /mnt/data/agentfield-grn-private_real_v0 \
-  --repo-root /mnt/data/agentfield-grn-private_real_v0 \
+  --public-tool-root /mnt/data/infractl-public \
   --allow-bundle-fallback
 ```
 

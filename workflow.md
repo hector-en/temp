@@ -116,6 +116,8 @@ Choose this lane when a new file should:
 - become future deterministic infractl behavior through CLI_EXTRACTION_NOTES.md
 ```
 
+For lane-wide public-bundle, `README.md`, `prompt_guide.md`, DOT-path, strict-prompt, guardrail, or two-root-contract maintenance, use `0B` first to classify/scope the update and trigger `HOOK_public_bundle_lane_update_method` before reading `CLI_EXTRACTION_NOTES.md`. Normal P1-P6 and CIP lanes do not read that file by default.
+
 Extra sources are candidate context only. They are not authoritative until routed.
 
 ---

@@ -14,6 +14,8 @@ dots/
 
 Use repo-local `dots/...` paths for Codex/WSL/local instructions. Keep `infractl.zip` upload wording for fresh webchat sessions, but do not point local operators at `infractl/<lane>/...`.
 
+For lane-wide public-bundle, `README.md`, `prompt_guide.md`, DOT-path, strict-prompt, guardrail, or two-root-contract maintenance, route through `0B` first to classify/scope the change. If that task matches `HOOK_public_bundle_lane_update_method`, then consult `CLI_EXTRACTION_NOTES.md` and use the `0B -> G21/G22` update pattern; normal lanes do not read that file by default.
+
 
 ---
 
@@ -693,4 +695,3 @@ Use the updated public export pair together:
 infractl.md
 infractl.zip
 ```
-

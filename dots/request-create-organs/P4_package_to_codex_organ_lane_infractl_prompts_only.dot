@@ -1,4 +1,6 @@
 digraph P4_Package_To_Codex_Organ_Infractl_Prompts_Only {
+// Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
+// Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
   graph [rankdir=TB, splines=ortho, compound=true, bgcolor="white", pad="0.25", nodesep="0.55", ranksep="0.75", fontname="Helvetica", fontsize=18, labelloc="t", label="P4 package-to-Codex lane: mode=request-create, track=organ — prompt-only execution DOT"];
   node [shape=plain, fontname="Helvetica", fontsize=10];
   edge [fontname="Helvetica", fontsize=9, arrowsize=0.75, penwidth=1.5, color="#6A1B9A", fontcolor="#6A1B9A"];

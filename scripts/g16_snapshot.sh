@@ -16,15 +16,17 @@ Example:
     --export-name agentfield-grn-private_real_v0_workflow_smoke_automation.zip
 
 Purpose:
-  G16 snapshot-copy for an already-run skeleton batch update.
+  G16 evidence snapshot for an already-run skeleton batch update.
   Copies canonical runtime evidence into the private bundle under:
     sources/evidence_snapshots/skeleton/<batch_slug>/...
-  copies update_workflow.md into:
-    sources/workflow/update_workflow.md
   and optionally exports the updated private bundle zip to /mnt/egress.
 
 Safety:
   - Does not modify historical evidence.
+  - Snapshots evidence only; never reads or copies workflow files.
+  - Never creates or overwrites PRIVATE_PROJECT_ROOT/sources/workflow/*.
+  - Reuses byte-identical destination evidence safely.
+  - Stops if an existing destination file differs.
   - Does not rerun smoke.
   - Does not run live or mutating infrastructure actions.
   - Writes to /mnt/egress only when --export-dir is explicitly provided.
@@ -82,9 +84,7 @@ done
 
 SRC_EGRESS_BATCH="/mnt/egress/dev-recordings/skeleton/${BATCH_SLUG}"
 SRC_UPDATE_DIR="${SRC_EGRESS_BATCH}/updates/${UPDATE_TOPIC}"
-SRC_UPDATE_WORKFLOW="/mnt/ingress/infra/plans/workflow/update_workflow.md"
 
-DST_WORKFLOW_DIR="${BUNDLE_ROOT}/sources/workflow"
 DST_EVIDENCE_BATCH="${BUNDLE_ROOT}/sources/evidence_snapshots/skeleton/${BATCH_SLUG}"
 DST_UPDATE_DIR="${DST_EVIDENCE_BATCH}/updates/${UPDATE_TOPIC}"
 
@@ -114,8 +114,28 @@ run_cmd() {
   fi
 }
 
+safe_install_file() {
+  local src="$1"
+  local dst="$2"
+
+  if [ -f "$dst" ]; then
+    if cmp -s "$src" "$dst"; then
+      if [ "$DRY_RUN" -eq 1 ]; then
+        echo "DRY_RUN: reuse identical destination $dst"
+      else
+        echo "Reused identical destination: $dst"
+      fi
+      return 0
+    fi
+
+    echo "ERROR: destination exists with different content, refusing overwrite: $dst" >&2
+    exit 1
+  fi
+
+  run_cmd cp "$src" "$dst"
+}
+
 require_dir "$BUNDLE_ROOT"
-require_file "$SRC_UPDATE_WORKFLOW"
 require_file "${SRC_EGRESS_BATCH}/POSTCHECK.md"
 require_file "${SRC_EGRESS_BATCH}/INTEGRATION_REQUEST.md"
 require_file "${SRC_UPDATE_DIR}/UPDATE_POSTCHECK.md"
@@ -132,15 +152,14 @@ if [ -z "$SMOKE_REPORT_PATH" ]; then
 fi
 require_file "$SMOKE_REPORT_PATH"
 
-run_cmd mkdir -p "$DST_WORKFLOW_DIR" "$DST_EVIDENCE_BATCH" "$DST_UPDATE_DIR"
+run_cmd mkdir -p "$DST_EVIDENCE_BATCH" "$DST_UPDATE_DIR"
 
-run_cmd cp "$SRC_UPDATE_WORKFLOW" "${DST_WORKFLOW_DIR}/update_workflow.md"
-run_cmd cp "${SRC_EGRESS_BATCH}/POSTCHECK.md" "${DST_EVIDENCE_BATCH}/POSTCHECK.md"
-run_cmd cp "${SRC_EGRESS_BATCH}/INTEGRATION_REQUEST.md" "${DST_EVIDENCE_BATCH}/INTEGRATION_REQUEST.md"
-run_cmd cp "$SMOKE_REPORT_PATH" "${DST_EVIDENCE_BATCH}/SMOKE_REPORT.md"
-run_cmd cp "${SRC_UPDATE_DIR}/UPDATE_POSTCHECK.md" "${DST_UPDATE_DIR}/UPDATE_POSTCHECK.md"
-run_cmd cp "${SRC_UPDATE_DIR}/UPDATE_INTEGRATION_REQUEST.md" "${DST_UPDATE_DIR}/UPDATE_INTEGRATION_REQUEST.md"
-run_cmd cp "${SRC_UPDATE_DIR}/CHANGESET_MANIFEST.md" "${DST_UPDATE_DIR}/CHANGESET_MANIFEST.md"
+safe_install_file "${SRC_EGRESS_BATCH}/POSTCHECK.md" "${DST_EVIDENCE_BATCH}/POSTCHECK.md"
+safe_install_file "${SRC_EGRESS_BATCH}/INTEGRATION_REQUEST.md" "${DST_EVIDENCE_BATCH}/INTEGRATION_REQUEST.md"
+safe_install_file "$SMOKE_REPORT_PATH" "${DST_EVIDENCE_BATCH}/SMOKE_REPORT.md"
+safe_install_file "${SRC_UPDATE_DIR}/UPDATE_POSTCHECK.md" "${DST_UPDATE_DIR}/UPDATE_POSTCHECK.md"
+safe_install_file "${SRC_UPDATE_DIR}/UPDATE_INTEGRATION_REQUEST.md" "${DST_UPDATE_DIR}/UPDATE_INTEGRATION_REQUEST.md"
+safe_install_file "${SRC_UPDATE_DIR}/CHANGESET_MANIFEST.md" "${DST_UPDATE_DIR}/CHANGESET_MANIFEST.md"
 
 EXPORT_PATH=""
 if [ -n "$EXPORT_DIR" ]; then
@@ -177,20 +196,17 @@ PYZIP
 fi
 
 cat <<REPORT
-G16 snapshot-copy complete.
+G16 evidence snapshot complete.
 
 Bundle root:
 - $BUNDLE_ROOT
 
-Copied workflow:
-- ${DST_WORKFLOW_DIR}/update_workflow.md
-
-Copied original evidence snapshot:
+Original evidence snapshot:
 - ${DST_EVIDENCE_BATCH}/POSTCHECK.md
 - ${DST_EVIDENCE_BATCH}/INTEGRATION_REQUEST.md
 - ${DST_EVIDENCE_BATCH}/SMOKE_REPORT.md
 
-Copied update evidence snapshot:
+Update evidence snapshot:
 - ${DST_UPDATE_DIR}/UPDATE_POSTCHECK.md
 - ${DST_UPDATE_DIR}/UPDATE_INTEGRATION_REQUEST.md
 - ${DST_UPDATE_DIR}/CHANGESET_MANIFEST.md

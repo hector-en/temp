@@ -1,4 +1,6 @@
 digraph P6_next_cycle_update_skeleton_lane_infractl_prompts_only {
+// Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
+// Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
   graph [rankdir=TB, splines=ortho, compound=true, newrank=true, bgcolor="white", pad="0.25", nodesep="0.65", ranksep="0.85", fontname="Helvetica", fontsize=12, labelloc="t", label="P6 next-cycle lane — after request-update + skeleton"];
   node [shape=plain, fontname="Helvetica", fontsize=10];
   edge [fontname="Helvetica", fontsize=9, arrowsize=0.8, penwidth=1.4, color="#1B7F3A"];

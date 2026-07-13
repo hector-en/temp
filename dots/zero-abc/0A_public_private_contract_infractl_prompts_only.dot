@@ -1,4 +1,6 @@
 digraph "0A_public_private_contract_infractl_prompts_only_v2" {
+// Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
+// Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
   rankdir=TB;
   compound=true;
   splines=ortho;

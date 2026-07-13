@@ -1,4 +1,6 @@
 digraph P6_next_cycle_lane_infractl_prompts_only {
+// Hook note: lane-wide public-bundle/README/prompt_guide/DOT-path/guardrail/two-root maintenance routes through 0B + HOOK_public_bundle_lane_update_method.
+// Normal lane runs do not read CLI_EXTRACTION_NOTES.md by default.
   graph [
     label="P6 next-cycle lane — infractl prompts only — canonical v7 route",
     labelloc=t,

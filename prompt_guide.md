@@ -71,6 +71,8 @@ Incorrect for the current zip: infractl/config-infra/CIP03_manifest_aggregation_
 
 The current `infractl.zip` contains Zero and Config-Infra DOTs directly under `dots/`, not under the Python package folder. Use these exact paths when prompting ChatGPT, Codex, or a WSL/operator session.
 
+For lane-wide public-bundle, `README.md`, `prompt_guide.md`, DOT-path, strict-prompt, guardrail, or two-root-contract maintenance, route through `0B` first. If `HOOK_public_bundle_lane_update_method` matches the task, then consult `CLI_EXTRACTION_NOTES.md` and use the `0B -> G21/G22` maintenance pattern; ordinary lanes do not read that file by default.
+
 Zero lanes:
 
 ```text
@@ -135,7 +137,7 @@ The model should read:
 
 # 0A / 0B / 0C setup routes
 
-Use these before or beside the normal P1-P6 routes.
+Use these before or beside the normal P1-P6 routes. For 0B, the dedicated canonical master template below overrides every older or mixed zero-lane template in this guide.
 
 ## 0A — public/private contract preflight
 
@@ -171,38 +173,809 @@ Use DOT:
 dots/zero-abc/0A_public_private_contract_infractl_prompts_only.dot
 ```
 
-## 0B — expansion lane
+## 0B — expansion lane (canonical master template)
 
-Use this when you have new background files, specs, annexes, workflow notes, or source material that should be routed into the system before creating/updating a batch.
+Use this lane when new background material, specifications, annexes, papers, workflow notes, source packages, legacy implementations, or design changes must be reconciled with the current private system before a create, update, Config-Infra, public-bundle maintenance, or implementation route.
 
-Upload:
+**Canonical-template rule:** every request to create a 0B prompt must use the master template below. Fill its placeholders from the current task; do not fall back to the shorter mixed zero-lane templates later in this guide. The master template deliberately separates current-system truth, the primary synthesized change source, original-design verification evidence, and conditional supporting evidence.
+
+Recommended uploads:
 
 ```text
-infractl.zip
 infractl.md
-new source files / notes / specs / annex material
+infractl.zip or current public InfraCTL repository/bundle
+latest private project bundle or workspace snapshot
+primary synthesized change packet, when available
+original or legacy sources needed for verification
+conditional local or external primary sources needed only for targeted verification
 ```
 
-Say:
+When no synthesized change packet exists, use the same template with:
 
 ```text
-Use infractl.md and infractl.zip.
-Run 0B expansion lane for the uploaded source files.
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then use the 0B DOT from dots/zero-abc/.
-
-Suggest the routing and variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
+PRIMARY_CHANGE_SOURCE_MODE=raw-source-set-requiring-synthesis
 ```
+
+The 0B run must then create `PRIMARY_CHANGE_SYNTHESIS.md` in the sandbox before performing the design-delta and routing analysis.
 
 Use DOT:
 
 ```text
 dots/zero-abc/0B_expansion_lane_infractl_prompts_only.dot
 ```
+
+### Canonical generic 0B prompt
+
+````text
+Use the latest uploaded public InfraCTL files, the latest current private project bundle, the primary synthesized change source, and the verification materials named below.
+
+# Task
+
+Run InfraCTL zero lane **0B expansion-routing** for `<ZERO_TOPIC>` before beginning any create, update, Config-Infra, public-bundle maintenance, or implementation lane.
+
+This run must maximize routing quality by separating:
+
+```text
+current private-system truth
+proposed design change
+original-design verification evidence
+conditional technical verification evidence
+```
+
+Do not redesign the target scope from scratch when a synthesized change packet already exists. Use 0B to validate, normalize, classify, and route that synthesis against the current private contract.
+
+If no synthesized change packet exists, do not treat a loose collection of raw sources as already normalized. First create a compact `PRIMARY_CHANGE_SYNTHESIS.md` in the sandbox, then use that synthesis as the Tier 2 source for the remaining 0B analysis.
+
+The purpose of this run is to determine the **smallest coherent canonical change set** without starting implementation or silently mutating current contracts.
+
+# Route
+
+```text
+MODE=zero
+TRACK=0B-expansion
+ZERO_LANE=0B
+PHASE=expansion-routing
+TARGET_SCOPE_KIND=<layer | batch | organ | spec | hook | workflow | public-bundle | config-infra | cross-cutting>
+TARGET_LAYER=<layer-id | n/a>
+TARGET_TRACK=<skeleton | organ | cip | zero | public-tool | n/a>
+TARGET_BATCH_NUMBER=<batch-number | n/a>
+TARGET_BATCH_SLUG=<batch-slug | n/a>
+TARGET_ORGAN_RUN=<organ-run-id | n/a>
+TARGET_SCOPE_ID=<stable target identifier>
+TARGET_TOPIC=<stable topic slug>
+INTENDED_ROUTE=<expected canonical destinations and ownership>
+EXPECTED_FOLLOW_ON_ROUTE=<request-create | request-update | config-infra | 0C | public-bundle-maintenance | stop | unknown>
+EVIDENCE_REQUIRED=<yes | no | conditional>
+PROFILE=webchat-sandbox
+OUTPUT_ROOT=/mnt/data/generated_real_v0
+ALLOW_OVERWRITE=no
+ALLOW_CODE_OR_EVIDENCE_MUTATION=no
+CLI_EXTRACTION_ALLOWED=yes-for-ledger-drafting-only
+```
+
+# Input hierarchy
+
+Use the most current available versions of the following inputs, but do not treat every input as an equal source.
+
+## Tier 1 — execution and current-system truth
+
+These are mandatory and authoritative for routing, ownership, filenames, current state, and safety:
+
+```text
+infractl.md
+infractl.zip or the latest current public InfraCTL bundle
+<latest private project bundle or private workspace snapshot>
+```
+
+## Tier 2 — primary synthesized change source
+
+Read this source completely. It is the primary source of the proposed design or workflow delta:
+
+```text
+<PRIMARY_CHANGE_SOURCE>
+```
+
+Set:
+
+```text
+PRIMARY_CHANGE_SOURCE_MODE=<synthesized-packet | raw-source-set-requiring-synthesis>
+```
+
+When the mode is `synthesized-packet`, treat its internal filenames as candidate source names, not automatically approved canonical private filenames.
+
+When the mode is `raw-source-set-requiring-synthesis`, first produce:
+
+```text
+PRIMARY_CHANGE_SYNTHESIS.md
+```
+
+The synthesis must normalize the proposal, identify its assumptions, separate settled decisions from open questions, and cite the raw inputs used. After that, use the synthesis—not the raw repetition—as the Tier 2 change source.
+
+## Tier 3 — original-design verification sources
+
+Use these only to verify preservation of current or original intentions and to test whether the Tier 2 synthesis mischaracterized legacy behavior:
+
+```text
+<ORIGINAL_VERIFICATION_SOURCE_1>
+<ORIGINAL_VERIFICATION_SOURCE_2>
+<additional original or legacy sources, if any>
+```
+
+Do not independently re-derive the full architecture from Tier 3 when Tier 2 already contains a supported synthesis.
+
+## Tier 4 — conditional supporting sources
+
+Read these only when needed to resolve a specific uncertainty, contradiction, missing technical detail, capability claim, or ownership question:
+
+```text
+<CONDITIONAL_LOCAL_SOURCE_1>
+<CONDITIONAL_LOCAL_SOURCE_2>
+<PRIMARY_EXTERNAL_SOURCE_URL_1>
+<PRIMARY_EXTERNAL_SOURCE_URL_2>
+```
+
+Prefer original repositories, specifications, documentation, papers, official product pages, and supplied source bundles over secondary summaries.
+
+If web access is unavailable, do not fail automatically. Use Tier 2 and available local verification sources, record the limitation, and stop only when an unresolved external claim materially affects ownership, acceptance criteria, safety, or routing.
+
+# Source-use rules
+
+Apply all of these rules:
+
+```text
+1. Read the primary synthesized change source completely.
+2. Use the private bundle to determine current truth and canonical ownership.
+3. Use original or legacy sources only to test preservation and migration claims.
+4. Use conditional sources only for targeted verification.
+5. Do not count repeated statements across multiple sources as independent evidence.
+6. Do not reopen a settled design decision unless private-system truth contradicts it or verification evidence exposes a material error.
+7. Do not reward verbosity or repetition with higher confidence.
+8. Prefer direct evidence over summaries when resolving a conflict.
+9. Preserve uncertainty explicitly when a claim cannot be verified.
+10. Route only the accepted delta, not every note, example, or idea found in the sources.
+11. Do not include raw verification sources in a later lane merely because they were uploaded.
+12. Keep current-state description and proposed-delta description separate in every artifact.
+```
+
+# Deduplication and normalization rule
+
+When the same proposition appears in multiple inputs, normalize it into one claim.
+
+For every normalized claim, record:
+
+```text
+claim ID
+claim summary
+primary supporting source
+secondary verification source, if used
+current private-system conflict, if any
+confidence: confirmed | supported | tentative | rejected
+routing consequence
+```
+
+Do not create duplicate requirements, annexes, hooks, or route entries from duplicated prose.
+
+# Required read order
+
+1. Read `infractl.md`.
+
+2. Inspect the current public InfraCTL bundle.
+
+   Use `dots/` as the DOT root. Do not use stale nested DOT paths.
+
+3. Read the canonical main DOT:
+
+   ```text
+   dots/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
+   ```
+
+4. Read exactly this zero-lane DOT:
+
+   ```text
+   dots/zero-abc/0B_expansion_lane_infractl_prompts_only.dot
+   ```
+
+5. Read the current private project contracts, where present:
+
+   ```text
+   project.yaml
+   batches.yaml
+   files.yaml
+   hooks.yaml
+   layers.yaml
+   <additional registries named by the private contract>
+   ```
+
+6. Resolve and read the current canonical artifacts relevant to the target scope:
+
+   ```text
+   <CURRENT_ARTIFACT_SEARCH_SCOPE>
+   ```
+
+   Resolve canonical paths through registries, directory inspection, and content search before declaring a file missing. Do not infer filenames solely from titles or prior chat summaries.
+
+7. Read Tier 2 completely. If Tier 2 is raw, produce `PRIMARY_CHANGE_SYNTHESIS.md` before continuing.
+
+8. Build a preliminary delta inventory from Tier 2 before reading Tier 3 or Tier 4.
+
+9. Read Tier 3 only to test preservation, omissions, distortions, and legacy-migration claims.
+
+10. Read Tier 4 only when a specific delta remains materially uncertain.
+
+11. Inspect existing generated outputs for the same target scope, topic, and candidate artifacts before drafting anything.
+
+# Source-of-truth order
+
+Use this precedence:
+
+1. Selected 0B DOT as the lane-specific execution contract.
+2. Canonical main DOT as the overall routing frame only.
+3. Current private registries and existing canonical private artifacts.
+4. Tier 2 synthesized change source.
+5. Tier 3 original-design verification evidence.
+6. Tier 4 targeted supporting evidence.
+7. Prior chat summaries only as advisory context.
+
+Tier 2 does not override current private-system truth. Tier 3 and Tier 4 do not override Tier 2 merely because they are older, longer, or more numerous.
+
+If sources conflict, classify the conflict as one of:
+
+```text
+private-contract conflict
+synthesis error
+original-intent preservation gap
+legacy-migration conflict
+external capability conflict
+naming or ownership conflict
+security or safety conflict
+non-material wording difference
+```
+
+For every material conflict, identify:
+
+```text
+the current invariant
+the proposed additive or replacement delta
+the conflicting claim
+the strongest supporting evidence
+the correct owning artifact
+the correct owning layer, batch, organ, CIP phase, or public-tool area
+the safe resolution or STOP reason
+```
+
+# Quality protocol
+
+Follow this sequence after reading the required sources.
+
+## Q1 — reconstruct current canonical state
+
+From the private bundle, summarize only the currently registered contracts relevant to this task.
+
+Do not mix proposed Tier 2 content into the current-state summary.
+
+## Q2 — extract the proposed delta
+
+From Tier 2, extract normalized proposed changes under task-appropriate headings.
+
+At minimum include:
+
+```text
+architecture or workflow change
+schema or metadata change
+source or evidence change
+hook or automation change
+prompt or operator-flow change
+acceptance criteria and validation fixtures
+cross-layer, cross-batch, cross-organ, CIP, or public-tool ownership
+safety, mutation, and rollback implications
+```
+
+## Q3 — verify only high-value or high-risk claims
+
+Use Tier 3 and Tier 4 only where verification can change one of:
+
+```text
+acceptance or rejection of a design element
+canonical ownership
+required filename, schema, or registry entry
+external tool or dependency capability assumption
+migration feasibility
+security, privacy, or mutation boundary
+cross-route ownership
+acceptance criteria
+```
+
+Do not verify low-impact restatements that cannot affect routing.
+
+## Q4 — create a design-delta matrix
+
+For every normalized delta, classify:
+
+```text
+KEEP — already correctly represented in the private system
+EXTEND — existing artifact needs an additive update
+REPLACE — existing contract is materially superseded and replacement is justified
+NEW — no current canonical owner exists
+DEFER — valid but belongs to a later route or owner
+REJECT — conflicts with project invariants or adds unjustified complexity
+VERIFY-LATER — non-blocking uncertainty remains
+STOP — ownership, safety, or evidence cannot be resolved
+```
+
+Each row must include:
+
+```text
+delta ID
+current owner
+current-state evidence
+proposed change
+verification evidence used
+classification
+recommended target artifact
+reason
+```
+
+## Q5 — select the smallest coherent change set
+
+Do not create one canonical artifact for every Tier 2 file.
+
+Choose the smallest registry-consistent set that:
+
+```text
+preserves accepted current invariants
+captures all accepted additions or justified replacements
+minimizes duplicated contracts
+keeps implementation ownership in the correct routes
+reduces future execution friction
+supports deterministic generation of the next workflow prompt
+```
+
+## Q6 — route only accepted deltas
+
+Produce exact target ownership, candidate filenames, registry changes, hook changes, downstream context, and accepted `EXTRA_SOURCES` for the next lane.
+
+# Task-specific interpretation block
+
+Treat the following as design intentions to test against current private truth, not as permission to create canonical files blindly.
+
+## Current invariants to preserve
+
+```text
+<CURRENT_INVARIANT_1>
+<CURRENT_INVARIANT_2>
+<CURRENT_INVARIANT_3>
+```
+
+## Proposed additive deltas
+
+```text
+<PROPOSED_ADDITIVE_DELTA_1>
+<PROPOSED_ADDITIVE_DELTA_2>
+<PROPOSED_ADDITIVE_DELTA_3>
+```
+
+## Candidate replacements requiring explicit justification
+
+```text
+<CANDIDATE_REPLACEMENT_1>
+<CANDIDATE_REPLACEMENT_2>
+```
+
+## Downstream ownership expectations
+
+```text
+<DOWNSTREAM_OWNER_OR_ROUTE_1>
+<DOWNSTREAM_OWNER_OR_ROUTE_2>
+```
+
+## Forbidden scope expansions
+
+```text
+<FORBIDDEN_SCOPE_EXPANSION_1>
+<FORBIDDEN_SCOPE_EXPANSION_2>
+```
+
+## Optimization priorities
+
+Use this default priority order unless the private contract or operator explicitly changes it:
+
+```text
+correctness and safety
+canonical ownership clarity
+speed of execution
+effectiveness for the intended workflow
+minimal operator friction
+minimal duplicated artifacts
+future maintainability
+```
+
+# First response required
+
+Before writing files, creating patches, or changing private sources, return only:
+
+1. Selected route
+2. Selected main DOT
+3. Selected zero DOT
+4. Addressed agent
+5. Proposed variable block, with every value labeled:
+   - user-provided
+   - inferred
+   - default-safe
+   - unknown
+6. Source-tier availability table
+7. Planned source-use strategy: complete-read, verification-only, conditional, or unavailable
+8. Missing or unreadable prerequisites
+9. Current related SPEC, ANX, hook, prompt, companion, registry, evidence, and generated artifacts
+10. Preliminary Tier 2-to-current-state delta inventory
+11. Proposed high-value verification questions, if any
+12. Proposed canonical target ownership
+13. Idempotency decision
+14. Whether 0C is needed, with reason
+15. Confirmation question
+
+End the first response with:
+
+```text
+Confirm these variables, source-use strategy, and proposed routing, or provide corrections. I will not write or overwrite private-system artifacts until confirmed.
+```
+
+Do not execute until I explicitly confirm or say:
+
+```text
+go with the suggested values
+```
+
+# Required variable block
+
+Propose and label at least:
+
+```text
+CANONICAL_DOT_PATH=dots/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
+
+PRIMARY_CHANGE_SOURCE=<resolved Tier 2 path or raw source set>
+
+PRIMARY_CHANGE_SOURCE_MODE=<synthesized-packet | raw-source-set-requiring-synthesis>
+
+ORIGINAL_VERIFICATION_SOURCES=<resolved Tier 3 paths or none>
+
+CONDITIONAL_SUPPORTING_SOURCES=<resolved Tier 4 paths and URLs or none>
+
+SOURCE_USE_POLICY=tier2-complete; tier3-verification-only; tier4-targeted-only
+
+SOURCE_SUMMARY=<one-sentence normalized summary of the proposed change>
+
+CURRENT_ARTIFACT_SEARCH_SCOPE=<registries, directories, and canonical artifacts to inspect>
+
+PUBLIC_TOOL_ROOT=<resolved sandbox public-tool root>
+
+PRIVATE_PROJECT_ROOT=<resolved sandbox private-project root>
+
+PRIVATE_BUNDLE_SOURCE=<most current private bundle>
+
+TARGET_SCOPE_KIND=<confirmed scope kind>
+
+TARGET_LAYER=<confirmed layer or n/a>
+
+TARGET_TRACK=<confirmed track or n/a>
+
+TARGET_BATCH_NUMBER=<confirmed batch number or n/a>
+
+TARGET_BATCH_SLUG=<confirmed batch slug or n/a>
+
+TARGET_ORGAN_RUN=<confirmed organ run or n/a>
+
+TARGET_SCOPE_ID=<confirmed stable identifier>
+
+TARGET_TOPIC=<confirmed topic slug>
+
+INTENDED_ROUTE=<confirmed canonical destinations and ownership>
+
+EXPECTED_FOLLOW_ON_ROUTE=<confirmed next route or unknown>
+
+EVIDENCE_REQUIRED=<yes | no | conditional>
+
+EXTRA_SOURCES=<accepted normalized artifacts that should travel into the next lane>
+
+PROFILE=webchat-sandbox
+
+OUTPUT_ROOT=/mnt/data/generated_real_v0
+
+ALLOW_OVERWRITE=no
+
+ALLOW_CODE_OR_EVIDENCE_MUTATION=no
+
+CLI_EXTRACTION_ALLOWED=yes-for-ledger-drafting-only
+```
+
+Do not silently infer values that determine:
+
+```text
+canonical ownership
+canonical filenames
+overwrite permission
+evidence state
+public-tool changes
+whether raw verification sources must be read
+whether external browsing is necessary
+whether a proposed replacement is allowed
+whether 0C is required
+```
+
+# Execution after confirmation
+
+After confirmation, execute only 0B expansion routing.
+
+## Validate route identity
+
+Confirm the full route block exactly as approved.
+
+Stop if the current private contract assigns the work elsewhere and the conflict cannot be reconciled safely.
+
+## Perform idempotency and registry checks
+
+Before drafting final files:
+
+- inspect existing target SPEC, ANX, hook, prompt, companion, manifest, registry, evidence, and generated artifacts;
+- inspect matching entries in `files.yaml`, `hooks.yaml`, and other applicable registries;
+- inspect existing topic-specific create or update hooks;
+- inspect generated artifacts for the same target and topic;
+- compare content and responsibility, not only filenames.
+
+Classify proposed outputs as:
+
+```text
+new artifact
+append-only delta
+update to an existing canonical artifact
+already satisfied
+superseded candidate source
+future-context only
+needs explicit replacement approval
+ambiguous ownership -> STOP
+```
+
+Do not overwrite historical or canonical files when `ALLOW_OVERWRITE=no`.
+
+## Classify every normalized source contribution
+
+For every Tier 2 artifact and every material Tier 3 or Tier 4 contribution, choose one primary classification:
+
+```text
+SPEC update
+SPEC annex
+creation-hook delta
+update hook
+reusable prompt or workflow update
+companion or downstream context
+Config-Infra input or follow-on
+public-tool or CLI extraction candidate
+reference-only source
+no change or superseded
+```
+
+Explain why and name the owning scope.
+
+Do not classify duplicate restatements as separate contributions.
+
+## Resolve the smallest coherent change set
+
+Do not create multiple canonical artifacts merely because the source packet contains multiple files.
+
+Determine whether the most effective result is:
+
+```text
+one existing SPEC update plus focused annexes
+one umbrella annex plus narrower downstream companions
+updates to existing annexes instead of new files
+a create/update hook plus accepted source attachments
+a Config-Infra handoff
+a public-bundle maintenance route
+or another registry-consistent arrangement
+```
+
+Prefer the smallest coherent change set that fully captures the accepted delta and reduces future execution friction.
+
+# Required draft outputs
+
+Create draft or downloadable artifacts only under the sandbox output root.
+
+Do not mutate the real private workspace, public workspace, live configuration, or historical evidence.
+
+Produce, as applicable:
+
+```text
+PRIMARY_CHANGE_SYNTHESIS.md                 # only when Tier 2 began as raw sources
+SOURCE_USE_LEDGER.md
+NORMALIZED_CLAIM_LEDGER.md
+CURRENT_STATE_SUMMARY.md
+DESIGN_DELTA_MATRIX.md
+EXTRA_SOURCE_ROUTING.md
+ROUTING_DECISION.md
+proposed canonical artifact patch or replacement draft
+proposed focused annex drafts
+proposed create/update-hook draft or patch
+proposed downstream companion or context drafts
+registry patch proposals
+CLI_EXTRACTION_NOTES.md entry only when 0C-worthy behavior exists
+NEXT_WORKFLOW_DIRECTION.md
+```
+
+Every draft must state:
+
+```text
+status: proposed / not applied
+source files used
+source tiers used
+canonical owner
+relationship to existing artifacts
+whether it keeps, extends, replaces, defers, rejects, or leaves unchanged the proposed delta
+next lane required
+```
+
+# Exact next workflow direction
+
+If 0B passes, produce the next route using only accepted and normalized source paths:
+
+```yaml
+WORKFLOW_DIRECTION:
+  mode: <request-create | request-update | config-infra | zero | public-bundle-maintenance | stop>
+  track: <skeleton | organ | cip | zero | public-tool | n/a>
+  phase: <P1 | CIP01 | CIP02 | CIP03 | CIP04 | CIP05 | CIP06 | 0C | maintenance-phase | n/a>
+  target_scope_kind: <scope kind>
+  target_scope_id: <stable identifier>
+  layer: <layer or n/a>
+  batch: <batch number or n/a>
+  batch_slug: <batch slug or n/a>
+  organ_run: <organ run or n/a>
+  topic: <topic slug>
+  evidence_required: <yes | no | conditional>
+  extra_sources:
+    - <accepted canonical or normalized source artifact 1>
+    - <accepted canonical or normalized source artifact 2>
+```
+
+Do not include Tier 3 or Tier 4 sources in `extra_sources` merely because they were uploaded. Include them only when the next lane genuinely needs them to resolve or implement an accepted requirement.
+
+Do not execute the follow-on route in this session.
+
+Also report separately any additional later routes required after the immediate next route.
+
+# Safety boundaries
+
+Allowed:
+
+```text
+inspect uploaded files
+extract uploaded archives in the sandbox
+read Markdown, YAML, JSON, code inventories, templates, and registries
+compare existing and proposed contracts
+browse primary sources only when targeted verification is necessary
+produce routing analysis
+produce draft Markdown files and patch proposals in /mnt/data
+produce the next WORKFLOW_DIRECTION
+```
+
+Forbidden:
+
+```text
+mutating the real private workspace
+mutating the public repository
+mutating /mnt/egress
+rewriting historical evidence
+executing the follow-on P, CIP, organ, public-tool, or maintenance lane
+running Codex or pretending to run Codex
+applying implementation or configuration changes
+installing dependencies or plugins
+running live infrastructure or model APIs
+performing broad smoke or live tests
+silently changing canonical filenames or registries
+re-deriving the full design from raw sources without a specific unresolved question
+treating repeated source text as independent evidence
+including every uploaded source in the next lane without routing justification
+```
+
+Ordinary 0B routing must not read `CLI_EXTRACTION_NOTES.md` by default.
+
+Read or draft it only when the task actually matches a public-tool, helper, repeated-command, or CLI-extraction pattern.
+
+# Main-DOT appreciation
+
+For each major action after confirmation, report:
+
+```text
+Main-DOT node or section: P7 / G21 / G22 where applicable
+Zero lane: 0B
+Plain-English purpose
+Selected 0B DOT instruction followed
+Supporting source or file check
+Source tier used
+Result: PASS / WARN / STOP
+```
+
+Explicitly confirm:
+
+- the main DOT was used only as the routing frame;
+- the selected 0B DOT was used as the lane-specific contract;
+- no P1-P6, organ, CIP, 0A, 0C, or public-tool maintenance lane was executed unless explicitly routed;
+- Tier 2 was the primary synthesized change source;
+- Tier 3 and Tier 4 were used only for targeted verification;
+- duplicate claims were normalized rather than counted repeatedly;
+- current state and proposed delta remained separate;
+- no implementation, configuration, or evidence mutation occurred.
+
+# Required final response order
+
+After confirmed execution, return:
+
+1. Selected route
+2. Selected main DOT
+3. Selected zero DOT
+4. Addressed agent
+5. Confirmed variable block
+6. Source-tier availability and actual use
+7. Source-use ledger
+8. Source-of-truth files read
+9. Current canonical state
+10. Normalized proposed delta
+11. Targeted verification performed and why
+12. Material conflicts and resolutions
+13. Existing related artifacts and registry entries
+14. Main-DOT position: P7 / G21 / G22
+15. Idempotency decision
+16. Design-delta matrix
+17. Accepted reconciliation
+18. Smallest coherent canonical change set
+19. Canonical target files and owners
+20. Draft artifacts and sandbox paths
+21. Missing, rejected, superseded, deferred, or verify-later items
+22. 0C decision
+23. Exact `WORKFLOW_DIRECTION`
+24. Additional downstream-route decisions
+25. Recommended next action
+26. PASS / WARN / STOP
+
+# Decision rules
+
+Return `PASS` only when:
+
+- required Tier 1 inputs are readable;
+- Tier 2 is readable or a normalized synthesis was successfully created from the confirmed raw source set;
+- Tier 3 and Tier 4 were used only as needed;
+- target ownership is clear;
+- current state and proposed delta were kept separate;
+- duplicate claims were normalized;
+- material claims were verified where necessary;
+- existing artifacts and registries were checked;
+- the smallest coherent change set was identified;
+- idempotency was satisfied;
+- drafts are marked as proposed and not applied;
+- an exact next workflow direction was produced;
+- no forbidden action occurred.
+
+Return `WARN` only when:
+
+- ownership and routing remain safe and unambiguous;
+- required drafts can still be produced;
+- a non-blocking verification limitation is documented;
+- unresolved items are explicitly classified as `VERIFY-LATER` or downstream context.
+
+Return `STOP` when:
+
+- a required Tier 1 input is missing or unreadable;
+- Tier 2 cannot be read or safely synthesized;
+- target identity is contradicted;
+- target ownership is ambiguous;
+- a material claim conflicts with private-system truth and cannot be safely resolved;
+- an existing artifact would be overwritten without permission;
+- the request jumps into implementation, mutation, live testing, or another lane;
+- the wrong agent is addressed;
+- the main DOT and selected 0B DOT conflict materially;
+- the variable block, source-use policy, and routing have not been confirmed.
+
+After `PASS`, recommend only the confirmed immediate next route from `WORKFLOW_DIRECTION`.
+
+Stop after 0B. Do not begin the follow-on route.
+````
 
 ## 0C — CLI extraction feedback
 
@@ -2184,19 +2957,21 @@ Do not execute until I confirm.
 
 ---
 
-## Generic precise prompt template for zero-abc lanes 0A/0B/0C
+## Generic precise prompt template for zero-abc lanes 0A/0C
 
-Use this template for setup, expansion, and tooling-feedback lanes. Fill only the zero lane, selected DOT path, input artifacts, and expected files.
+This legacy general template is retained only for 0A setup and 0C tooling-feedback lanes. **Do not use it for 0B.** Every 0B prompt must use the canonical master template in `## 0B — expansion lane (canonical master template)` above.
 
 ```text
 Use the uploaded public InfraCTL files, uploaded private project bundle, and any zero-lane-specific input artifacts.
+
+0B exclusion: this template is invalid for `ZERO_LANE=0B`; use the canonical 0B master template above.
 
 Task:
 Run InfraCTL zero lane <ZERO_LANE> for <ZERO_TOPIC>.
 
 Route:
-ZERO_LANE=<0A | 0B | 0C>
-PHASE=<public-private-contract-preflight | expansion-routing | cli-extraction-feedback>
+ZERO_LANE=<0A | 0C>
+PHASE=<public-private-contract-preflight | cli-extraction-feedback>
 ZERO_TOPIC=<topic-or-issue>
 PROFILE=<webchat-sandbox | real-workspace | codex-pack>
 ALLOW_OVERWRITE=<yes | no>
@@ -2231,8 +3006,6 @@ Examples:
 0A:
 dots/zero-abc/0A_public_private_contract_infractl_prompts_only.dot
 
-0B:
-dots/zero-abc/0B_expansion_lane_infractl_prompts_only.dot
 
 0C:
 dots/zero-abc/0C_cli_extraction_feedback_infractl_prompts_only.dot
@@ -2277,7 +3050,7 @@ While executing this zero lane, explicitly show where we are in the overall main
 For each major step, report:
 
 * Main phase / graph node, for example G.. if present in the main DOT
-* Zero lane: <0A | 0B | 0C>
+* Zero lane: <0A | 0C>
 * What that zero lane does in plain English
 * Which specific selected zero DOT instruction you are following
 * What input artifact, evidence, or file check supports the action
@@ -2300,11 +3073,6 @@ For 0A:
 * Validate whether a normal P-lane or CIP route may proceed.
 * Do not patch unless the selected 0A DOT explicitly permits a patch route and I confirm.
 
-For 0B:
-* Intake new background material, specs, annexes, papers, notes, or source files.
-* Classify where the material belongs.
-* Recommend whether to create/update specs, hooks, private sources, prompts, P-lane inputs, or CIP artifacts.
-* Do not mutate canonical files unless the selected 0B DOT and addressed agent permit it after confirmation.
 
 For 0C:
 * Record reusable CLI/helper/workflow extraction opportunities.
@@ -2314,8 +3082,8 @@ For 0C:
 
 Route identity to validate:
 
-ZERO_LANE=<0A | 0B | 0C>
-PHASE=<public-private-contract-preflight | expansion-routing | cli-extraction-feedback>
+ZERO_LANE=<0A | 0C>
+PHASE=<public-private-contract-preflight | cli-extraction-feedback>
 ZERO_TOPIC=<topic-or-issue>
 PROFILE=<webchat-sandbox | real-workspace | codex-pack>
 ALLOW_OVERWRITE=<yes | no>
@@ -2400,7 +3168,9 @@ Do not execute until I confirm.
 
 ---
 
-## Generic precise zero-lane prompt template — 0A / 0B / 0C
+## Generic precise zero-lane prompt template — 0A / 0C
+
+This template is retained only for 0A and 0C. **Do not use it for 0B.** Every 0B request must use the canonical master template in the dedicated 0B section above.
 
 Use the uploaded public InfraCTL files, uploaded private project bundle, and any zero-lane-specific input artifacts.
 
@@ -2409,8 +3179,8 @@ Run InfraCTL zero lane <ZERO_LANE> for <ZERO_TASK>.
 
 Route:
 MODE=zero
-TRACK=<0A-public-private-contract | 0B-expansion | 0C-cli-extraction>
-ZERO_LANE=<0A | 0B | 0C>
+TRACK=<0A-public-private-contract | 0C-cli-extraction>
+ZERO_LANE=<0A | 0C>
 PHASE=<zero-lane phase label>
 TOPIC=<topic-or-run-purpose>
 PROFILE=<webchat-sandbox | real-workspace | codex-pack>
@@ -2453,8 +3223,6 @@ Examples:
 0A public/private contract:
 dots/zero-abc/0A_public_private_contract_infractl_prompts_only.dot
 
-0B expansion lane:
-dots/zero-abc/0B_expansion_lane_infractl_prompts_only.dot
 
 0C CLI extraction feedback:
 dots/zero-abc/0C_cli_extraction_feedback_infractl_prompts_only.dot
@@ -2500,7 +3268,7 @@ While executing this zero lane, explicitly show where we are in the overall main
 For each major step, report:
 
 * Main phase / graph node, for example G.. if present in the main DOT
-* Zero lane: <0A | 0B | 0C>
+* Zero lane: <0A | 0C>
 * What that zero lane does in plain English
 * Which specific selected zero DOT instruction you are following
 * What input artifact, evidence, or file check supports the action
@@ -2524,11 +3292,6 @@ For 0A:
 * Produce a public/private contract preflight report.
 * Stop after 0A unless I confirm a follow-up lane.
 
-For 0B:
-* Route new background material, notes, specs, annexes, papers, workflow text, or source files.
-* Decide whether material belongs in private sources, specs, hooks, workflow docs, companions, batch inputs, CIP, or no-op/defer.
-* Produce a routing decision and, if allowed, draft/update artifacts.
-* Stop after 0B unless I confirm the next lane.
 
 For 0C:
 * Record reusable tooling, helper, CLI extraction, workflow friction, repeated manual steps, or router issues.
@@ -2539,8 +3302,8 @@ For 0C:
 Route identity to validate:
 
 MODE=zero
-TRACK=<0A-public-private-contract | 0B-expansion | 0C-cli-extraction>
-ZERO_LANE=<0A | 0B | 0C>
+TRACK=<0A-public-private-contract | 0C-cli-extraction>
+ZERO_LANE=<0A | 0C>
 PHASE=<zero-lane phase label>
 TOPIC=<topic>
 PROFILE=<webchat-sandbox | real-workspace | codex-pack>

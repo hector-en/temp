@@ -89,6 +89,8 @@ The model must obey these rules:
 10. Use webchat-sandbox boundaries unless the selected DOT and the operator explicitly authorize another mode.
 ```
 
+For lane-wide public-bundle, `README.md`, `prompt_guide.md`, DOT-path, strict-prompt, guardrail, or two-root-contract maintenance, first use `0B` to classify and scope the update. If `HOOK_public_bundle_lane_update_method` triggers, consult `CLI_EXTRACTION_NOTES.md` and use the reusable `0B -> G21/G22` pattern; otherwise normal lanes should not read that file by default.
+
 ## Variable-block behavior
 
 The model must help the operator. It must not give the operator an empty form when values can be inferred.
