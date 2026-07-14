@@ -1,5 +1,6 @@
 <!-- G21/G22 registry-routing update -->
 Active routing is registry-driven: concrete skeleton and organ IDs are examples unless explicitly labeled historical. Ordinary lanes do not edit CLI_EXTRACTION_NOTES.md; reusable friction routes through 0C/public maintenance.
+Selected private source is authoritative for active two-root work. Verify `PRIVATE_BUNDLE_VERSION` from the chosen ZIP or direct root, use `PRIVATE_PROJECT_ROOT` and `OUTPUT_ROOT=/mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION}` in active commands, and stop on zero candidates, multiple candidates, or filename/root/metadata mismatches before layout PASS.
 
 # Infra-Skeleton v0 Webchat / CLI / Codex Instructions
 
@@ -32,7 +33,7 @@ public_infra-skeleton-tools_v0/
 Private project bundle:
 
 ```text
-agentfield-grn-private_real_v0/
+agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION}/
   project.yaml
   layers.yaml
   batches.yaml
@@ -85,8 +86,10 @@ workflow.md
 4. Unpack or stage the private bundle under:
 
 ```text
-/mnt/data/agentfield-grn-private_real_v0
+${PRIVATE_PROJECT_ROOT}
 ```
+
+Resolve `PRIVATE_BUNDLE_VERSION` from the explicitly selected ZIP or direct root before using active examples or choosing an output directory.
 
 5. Validate that the private bundle contains:
 
@@ -106,7 +109,7 @@ generated/
 7. Write generated artifacts under:
 
 ```text
-/mnt/data/generated_real_v0
+${OUTPUT_ROOT}
 ```
 
 8. Do not treat extra uploaded sources as authoritative until routed through:
@@ -299,12 +302,12 @@ Example:
 cd /mnt/data/public_infra-skeleton-tools_v0
 
 python -m infractl.cli request-create \
-  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --track skeleton \
   --batch 02 \
   --topic manual_workflow_batch02 \
   --profile webchat-sandbox \
-  --out /mnt/data/generated_real_v0
+  --out ${OUTPUT_ROOT}
 ```
 
 Expected request folder outputs:
@@ -329,12 +332,12 @@ Example:
 cd /mnt/data/public_infra-skeleton-tools_v0
 
 python -m infractl.cli request-update \
-  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --track skeleton \
   --batch 01 \
   --topic workflow_smoke_automation \
   --profile webchat-sandbox \
-  --out /mnt/data/generated_real_v0
+  --out ${OUTPUT_ROOT}
 ```
 
 Expected request folder outputs:
@@ -435,7 +438,7 @@ Recommended real workspace placement:
 
 ```text
 /workspace/repos/public_infra-skeleton-tools_v0
-/workspace/private/agentfield-grn-private_real_v0
+/workspace/private/agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION}
 ```
 
 Run from the public tool folder:
@@ -444,36 +447,36 @@ Run from the public tool folder:
 cd /workspace/repos/public_infra-skeleton-tools_v0
 
 python -m infractl.cli list-batches \
-  --project /workspace/private/agentfield-grn-private_real_v0
+  --project ${PRIVATE_PROJECT_ROOT}
 
 python -m infractl.cli list-hooks \
-  --project /workspace/private/agentfield-grn-private_real_v0
+  --project ${PRIVATE_PROJECT_ROOT}
 
 python -m infractl.cli check-required-files \
-  --project /workspace/private/agentfield-grn-private_real_v0
+  --project ${PRIVATE_PROJECT_ROOT}
 ```
 
 Validate real layout:
 
 ```bash
 python3 -m infractl.cli validate-real-layout \
-  --project /workspace/private/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --public-tool-root /workspace/repos/infractl-public
 ```
 
-In strict v0, this command is the real workspace preflight gate. It validates the public tool root and private project root together. Required private sources resolve by `files.yaml.bundle_path`; `files.yaml.real_path` remains legacy descriptive metadata and is not current authority.
+In the version-aware contract, this command is the real workspace preflight gate. It validates the public tool root and private project root together after private identity PASS. Required private sources resolve by `files.yaml.bundle_path`; `files.yaml.real_path` remains legacy descriptive metadata and is not current authority.
 
 Inside ChatGPT webchat only, where the real workspace roots are not mounted, use bundle fallback validation instead:
 
 ```bash
 python3 -m infractl.cli validate-real-layout \
-  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --public-tool-root /mnt/data/infractl-public \
   --allow-bundle-fallback
 ```
 
 Use the maintained two-root contract only:
-`/workspace/repos/infractl-public` for the public tool and `/workspace/private/agentfield-grn-private_real_v0` for the private project. Do not introduce or document a third active root.
+`/workspace/repos/infractl-public` for the public tool and `/workspace/private/agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION}` for the private project. Do not introduce or document a third active root.
 
 ## 12. Private bundle real-path mapping
 
@@ -567,7 +570,7 @@ Inputs it should ask for:
 ```text
 - public infractl repo URL or current public tool zip
 - current private bundle zip
-- fresh private codebase analysis of /workspace/private/agentfield-grn-private_real_v0
+- fresh private codebase analysis of ${PRIVATE_PROJECT_ROOT}
 - CLI_EXTRACTION_NOTES.md
 - current instructions.md
 - any newly created NEW_CHAT_PROMPT_*.md files

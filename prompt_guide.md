@@ -249,8 +249,9 @@ TARGET_TOPIC=<stable topic slug>
 INTENDED_ROUTE=<expected canonical destinations and ownership>
 EXPECTED_FOLLOW_ON_ROUTE=<request-create | request-update | config-infra | 0C | public-bundle-maintenance | stop | unknown>
 EVIDENCE_REQUIRED=<yes | no | conditional>
+PRIVATE_BUNDLE_VERSION=<verified selected-source identity, such as v1 or v2>
 PROFILE=webchat-sandbox
-OUTPUT_ROOT=/mnt/data/generated_real_v0
+OUTPUT_ROOT=/mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION}
 ALLOW_OVERWRITE=no
 ALLOW_CODE_OR_EVIDENCE_MUTATION=no
 CLI_EXTRACTION_ALLOWED=yes-for-ledger-drafting-only
@@ -269,6 +270,8 @@ infractl.md
 infractl.zip or the latest current public InfraCTL bundle
 <latest private project bundle or private workspace snapshot>
 ```
+
+Treat the explicitly selected private ZIP or direct root as authoritative. Zero candidates, multiple candidates, or filename/root/metadata mismatches stop before layout PASS.
 
 ## Tier 2 — primary synthesized change source
 
@@ -679,9 +682,11 @@ EVIDENCE_REQUIRED=<yes | no | conditional>
 
 EXTRA_SOURCES=<accepted normalized artifacts that should travel into the next lane>
 
+PRIVATE_BUNDLE_VERSION=<verified selected-source identity, such as v1 or v2>
+
 PROFILE=webchat-sandbox
 
-OUTPUT_ROOT=/mnt/data/generated_real_v0
+OUTPUT_ROOT=/mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION}
 
 ALLOW_OVERWRITE=no
 

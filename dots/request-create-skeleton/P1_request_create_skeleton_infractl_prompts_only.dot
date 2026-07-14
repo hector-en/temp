@@ -93,7 +93,8 @@ digraph P1_request_create_skeleton_infractl_prompts_only {
         PUBLIC_TOOL_SOURCE=&lt;GitHub URL, uploaded zip, or existing extracted public tool root&gt;<BR ALIGN="LEFT"/>
         PUBLIC_TOOL_ROOT=&lt;suggest extracted root, usually /mnt/data/public_infra-skeleton-tools_v0&gt;<BR ALIGN="LEFT"/>
         PRIVATE_BUNDLE_SOURCE=&lt;uploaded private bundle zip or existing extracted private root&gt;<BR ALIGN="LEFT"/>
-        PRIVATE_PROJECT_ROOT=&lt;suggest extracted root, usually /mnt/data/agentfield-grn-private_real_v0&gt;<BR ALIGN="LEFT"/>
+        PRIVATE_PROJECT_ROOT=&lt;suggest extracted root, usually /mnt/data/agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION}&gt;<BR ALIGN="LEFT"/>
+        PRIVATE_BUNDLE_VERSION=&lt;verified selected-source identity, such as v1 or v2&gt;<BR ALIGN="LEFT"/>
         MODE=request-create [route-fixed]<BR ALIGN="LEFT"/>
         TRACK=skeleton [route-fixed]<BR ALIGN="LEFT"/>
         BATCH_NUMBER=&lt;operator target, one of 01, 02, 03, 04 unless v7 changes&gt;<BR ALIGN="LEFT"/>
@@ -102,7 +103,7 @@ digraph P1_request_create_skeleton_infractl_prompts_only {
         EVIDENCE_REQUIRED=no [route default for not-yet-run create]<BR ALIGN="LEFT"/>
         EXTRA_SOURCES=&lt;none, or uploaded note/spec/hook files if the route needs them&gt;<BR ALIGN="LEFT"/>
         PROFILE=webchat-sandbox [route default]<BR ALIGN="LEFT"/>
-        OUTPUT_ROOT=/mnt/data/generated_real_v0 [default-safe]<BR ALIGN="LEFT"/>
+        OUTPUT_ROOT=/mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION} [default-safe after identity PASS]<BR ALIGN="LEFT"/>
         ALLOW_OVERWRITE=no [default-safe]
         </FONT><BR ALIGN="LEFT"/>
         After suggesting values, ask: <B>Confirm these variables, or provide corrections.</B>

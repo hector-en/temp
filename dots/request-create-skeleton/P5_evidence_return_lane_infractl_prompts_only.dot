@@ -51,7 +51,8 @@ digraph P5_evidence_return_lane_infractl_prompts_only {
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">BATCH_NUMBER=&lt;batch number, inferred if possible&gt;</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">BATCH_SLUG=&lt;batch slug, inferred from evidence path or batch mapping&gt;</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">TOPIC=&lt;update topic or create topic; use none for plain create if not applicable&gt;</FONT></TD></TR>
-      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">PRIVATE_PROJECT_ROOT=/workspace/private/agentfield-grn-private_real_v0</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">PRIVATE_PROJECT_ROOT=/workspace/private/agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION}</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">PRIVATE_BUNDLE_VERSION=&lt;verified selected-source identity, such as v1 or v2&gt;</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">EVIDENCE_SOURCE_ROOT=&lt;Codex produced evidence folder or /mnt/egress/dev-recordings/...&gt;</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">SMOKE_REPORT_PATH=&lt;actual SMOKE_REPORT.md path, or none if not required&gt;</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">G16_SCRIPT=/workspace/repos/infractl-public/scripts/g16_snapshot.sh</FONT></TD></TR>
@@ -84,7 +85,7 @@ digraph P5_evidence_return_lane_infractl_prompts_only {
     <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" WIDTH="600">
       <TR><TD><B>G16 snapshot/export command after confirmation</B></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">/workspace/repos/infractl-public/scripts/g16_snapshot.sh \</FONT></TD></TR>
-      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  /workspace/private/agentfield-grn-private_real_v0 \</FONT></TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  ${PRIVATE_PROJECT_ROOT} \</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  &lt;batch-slug&gt; \</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  &lt;update-topic-or-none&gt; \</FONT></TD></TR>
       <TR><TD ALIGN="LEFT"><FONT FACE="Courier" POINT-SIZE="9">  &lt;smoke-report-path&gt; \</FONT></TD></TR>

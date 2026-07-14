@@ -82,7 +82,8 @@ digraph P1_request_update_organ_infractl_prompts_only {
         PUBLIC_TOOL_SOURCE=&lt;GitHub URL, uploaded public zip, or existing public tool root&gt;<BR ALIGN="LEFT"/>
         PUBLIC_TOOL_ROOT=&lt;extracted infractl-public root&gt;<BR ALIGN="LEFT"/>
         PRIVATE_BUNDLE_SOURCE=&lt;uploaded private bundle zip or existing private root&gt;<BR ALIGN="LEFT"/>
-        PRIVATE_PROJECT_ROOT=&lt;extracted agentfield-grn-private_real_v0 root&gt;<BR ALIGN="LEFT"/>
+        PRIVATE_PROJECT_ROOT=&lt;extracted agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION} root&gt;<BR ALIGN="LEFT"/>
+        PRIVATE_BUNDLE_VERSION=&lt;verified selected-source identity, such as v1 or v2&gt;<BR ALIGN="LEFT"/>
         MODE=request-update [route-fixed]<BR ALIGN="LEFT"/>
         TRACK=organ [route-fixed]<BR ALIGN="LEFT"/>
         BATCH_NUMBER=&lt;organ id, normally R01 unless v7/private bundle defines another organ batch&gt;<BR ALIGN="LEFT"/>
@@ -92,7 +93,7 @@ digraph P1_request_update_organ_infractl_prompts_only {
         ORGAN_EVIDENCE_ROOT=&lt;prior organ evidence snapshot or exported organ evidence path&gt;<BR ALIGN="LEFT"/>
         EXTRA_SOURCES=&lt;none or bounded uploaded organ notes/specs/hooks&gt;<BR ALIGN="LEFT"/>
         PROFILE=webchat-sandbox [route default]<BR ALIGN="LEFT"/>
-        OUTPUT_ROOT=/mnt/data/generated_real_v0 [default-safe]<BR ALIGN="LEFT"/>
+        OUTPUT_ROOT=/mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION} [default-safe after identity PASS]<BR ALIGN="LEFT"/>
         ALLOW_OVERWRITE=no [default-safe]<BR ALIGN="LEFT"/>
         Ask the operator to confirm or correct the suggested values. Only ask about values that remain unknown or unsafe. Do not execute until the variable block is confirmed or the operator explicitly says to proceed with the suggested values.
       </FONT></TD></TR>

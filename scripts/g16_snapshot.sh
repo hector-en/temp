@@ -8,12 +8,12 @@ Usage:
 
 Example:
   g16_snapshot.sh \
-    /workspace/private/agentfield-grn-private_real_v0 \
+    /workspace/private/agentfield-grn-private_real_<verified-version> \
     01-runtime-substrate \
     workflow_smoke_automation \
     /workspace/runs/smoke/20260627T161903Z-skeleton-progress/SMOKE_REPORT.md \
     --export-dir /mnt/egress/private-bundles \
-    --export-name agentfield-grn-private_real_v0_workflow_smoke_automation.zip
+    --export-name agentfield-grn-private_real_<verified-version>_workflow_smoke_automation.zip
 
 Purpose:
   G16 evidence snapshot for an already-run skeleton batch update.
@@ -22,6 +22,7 @@ Purpose:
   and optionally exports the updated private bundle zip to /mnt/egress.
 
 Safety:
+  - Keeps the supplied private bundle root authoritative; never discovers or switches to a different root.
   - Does not modify historical evidence.
   - Snapshots evidence only; never reads or copies workflow files.
   - Never creates or overwrites PRIVATE_PROJECT_ROOT/sources/workflow/*.

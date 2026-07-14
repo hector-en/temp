@@ -633,6 +633,8 @@ Do not execute yet. First return the recommended phase, required files, missing 
 
 `infractl.zip` and `infractl.md` are only the instruction/router layer.
 
+For active two-root work, treat the explicitly selected private ZIP or direct root as authoritative. Verify `PRIVATE_BUNDLE_VERSION` from the selected-source identity, parameterize active paths with `PRIVATE_PROJECT_ROOT` and `OUTPUT_ROOT=/mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION}`, and stop on zero candidates, multiple candidates, or filename/root/metadata mismatches.
+
 For a real Infra-Skeleton run, the chat may also need:
 
 ```text
@@ -642,7 +644,7 @@ For a real Infra-Skeleton run, the chat may also need:
 - source docs/specs/annex files for 0B expansion lanes
 - `INTEGRATION_REQUEST.md`, `INTEGRATION_MANIFEST.md`, `CONFIG_STATE_SNAPSHOT.md`, or `CONFIG_INTEGRATION_PLAN.md` files for CIP routes
 - access to the expected public/private workspace roots if using Codex/WSL:
-  `/workspace/repos/infractl-public` and `/workspace/private/agentfield-grn-private_real_v0` or `/workspace/private/agentfield-grn-private_real_v1`
+  `/workspace/repos/infractl-public` and `/workspace/private/agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION}`
 - `/mnt/egress` evidence paths only when the selected DOT and addressed agent explicitly require evidence return/export
 ```
 

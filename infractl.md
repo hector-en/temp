@@ -94,6 +94,8 @@ The model must obey these rules:
 
 For lane-wide public-bundle, `README.md`, `prompt_guide.md`, DOT-path, strict-prompt, guardrail, or two-root-contract maintenance, first use `0B` to classify and scope the update. If `HOOK_public_bundle_lane_update_method` triggers, consult `CLI_EXTRACTION_NOTES.md` and use the reusable `0B -> G21/G22` pattern; otherwise normal lanes should not read that file by default.
 
+For any lane that uses a private bundle or workspace root, the explicitly selected private source is authoritative. Verify `PRIVATE_BUNDLE_VERSION` from that selected-source identity, use `PRIVATE_PROJECT_ROOT` plus `OUTPUT_ROOT=/mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION}` for active examples, and stop on zero candidates, multiple candidates, or filename/root/metadata mismatches before layout PASS.
+
 ## Variable-block behavior
 
 The model must help the operator. It must not give the operator an empty form when values can be inferred.

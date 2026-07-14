@@ -1,5 +1,6 @@
 <!-- G21/G22 registry-routing update -->
 Active routing is registry-driven: concrete skeleton and organ IDs are examples unless explicitly labeled historical. Ordinary lanes do not edit CLI_EXTRACTION_NOTES.md; reusable friction routes through 0C/public maintenance.
+Selected private source is authoritative for active two-root work. Verify `PRIVATE_BUNDLE_VERSION` from the chosen ZIP or direct root, use `PRIVATE_PROJECT_ROOT` and `OUTPUT_ROOT=/mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION}` in active commands, and stop on zero candidates, multiple candidates, or filename/root/metadata mismatches before layout PASS.
 
 # Daily `infractl` Operator Workflow
 
@@ -74,26 +75,27 @@ Important two-root contract:
 
 ```text
 PUBLIC_TOOL_ROOT=/workspace/repos/infractl-public
-PRIVATE_PROJECT_ROOT=/workspace/private/agentfield-grn-private_real_v0
+PRIVATE_PROJECT_ROOT=/workspace/private/agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION}
+PRIVATE_BUNDLE_VERSION=<verified selected-source identity, such as v1 or v2>
 ```
 
-Strict v0 preflight in Codex/real workspace:
+Version-aware preflight in Codex/real workspace:
 
 ```bash
 cd /workspace/repos/infractl-public
 
 python3 -m infractl.cli validate-real-layout \
-  --project /workspace/private/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --public-tool-root /workspace/repos/infractl-public
 ```
 
 This validates the public tool root and the private project root together. Required private source keys resolve by `bundle_path` under `PRIVATE_PROJECT_ROOT`; `files.yaml.real_path` remains legacy metadata and is not expanded under a third contract root.
 
-Inside ChatGPT webchat only, validate the uploaded private bundle contents directly:
+Inside ChatGPT webchat only, validate the uploaded private bundle contents directly after resolving `PRIVATE_BUNDLE_VERSION` from the selected source:
 
 ```bash
 python3 -m infractl.cli validate-real-layout \
-  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --public-tool-root /mnt/data/infractl-public
 ```
 
@@ -183,10 +185,10 @@ Safe checks before choosing a request command:
 cd /mnt/data/public_infra-skeleton-tools_v0
 
 python3 -m infractl.cli profiles
-python3 -m infractl.cli list-batches --project /mnt/data/agentfield-grn-private_real_v0 --track skeleton
-python3 -m infractl.cli list-hooks --project /mnt/data/agentfield-grn-private_real_v0
-python3 -m infractl.cli check-required-files --project /mnt/data/agentfield-grn-private_real_v0 --track skeleton
-python3 -m infractl.cli status --project /mnt/data/agentfield-grn-private_real_v0
+python3 -m infractl.cli list-batches --project ${PRIVATE_PROJECT_ROOT} --track skeleton
+python3 -m infractl.cli list-hooks --project ${PRIVATE_PROJECT_ROOT}
+python3 -m infractl.cli check-required-files --project ${PRIVATE_PROJECT_ROOT} --track skeleton
+python3 -m infractl.cli status --project ${PRIVATE_PROJECT_ROOT}
 ```
 
 ### Create skeleton batch
@@ -199,12 +201,12 @@ Produces: request folder
 
 ```bash
 python3 -m infractl.cli request-create \
-  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --track skeleton \
   --batch 02 \
   --topic batch02_creation \
   --profile webchat-sandbox \
-  --out /mnt/data/generated_real_v0
+  --out ${OUTPUT_ROOT}
 ```
 
 ### Update skeleton batch
@@ -217,12 +219,12 @@ Produces: request folder with EXISTING_EVIDENCE_CHECK.md
 
 ```bash
 python3 -m infractl.cli request-update \
-  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --track skeleton \
   --batch 01 \
   --topic workflow_smoke_automation \
   --profile webchat-sandbox \
-  --out /mnt/data/generated_real_v0
+  --out ${OUTPUT_ROOT}
 ```
 
 ### Expand knowledge with an extra source
@@ -235,13 +237,13 @@ Produces: request folder with EXTRA_SOURCE_ROUTING.md
 
 ```bash
 python3 -m infractl.cli request-update \
-  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --track skeleton \
   --batch 02 \
   --topic workspace_boundary_update \
   --profile webchat-sandbox \
   --extra-source /mnt/data/new_note_or_spec.md \
-  --out /mnt/data/generated_real_v0
+  --out ${OUTPUT_ROOT}
 ```
 
 ### Create registered organ run (R01 initial-scaffold example)
@@ -254,12 +256,12 @@ Produces: organ scaffold request folder
 
 ```bash
 python3 -m infractl.cli request-create \
-  --project /mnt/data/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --track organ \
   --batch R01 \
   --topic organ_r01_scaffold \
   --profile webchat-sandbox \
-  --out /mnt/data/generated_real_v0
+  --out ${OUTPUT_ROOT}
 ```
 
 Request folders contain:
@@ -314,7 +316,7 @@ cd ~/repos/public_infra-skeleton-tools_v0
 
 python3 -m infractl.cli package-codex-create \
   --input ~/chatgpt_outputs/batch02_create \
-  --out ~/generated_real_v0
+  --out ~/generated_real_${PRIVATE_BUNDLE_VERSION}
 ```
 
 Package update files:
@@ -322,7 +324,7 @@ Package update files:
 ```bash
 python3 -m infractl.cli package-codex-update \
   --input ~/chatgpt_outputs/batch01_update \
-  --out ~/generated_real_v0
+  --out ~/generated_real_${PRIVATE_BUNDLE_VERSION}
 ```
 
 Produces one Codex zip. This is the only artifact Codex should execute.
@@ -337,7 +339,7 @@ Before implementation, Codex runs strict layout validation:
 cd /workspace/repos/infractl-public
 
 python3 -m infractl.cli validate-real-layout \
-  --project /workspace/private/agentfield-grn-private_real_v0 \
+  --project ${PRIVATE_PROJECT_ROOT} \
   --public-tool-root /workspace/repos/infractl-public
 ```
 

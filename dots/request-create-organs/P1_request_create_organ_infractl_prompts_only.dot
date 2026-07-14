@@ -69,7 +69,8 @@ digraph P1_request_create_organ_infractl_prompts_only {
         PUBLIC_TOOL_SOURCE = uploaded public zip or GitHub URL, status user-provided/inferred/unknown<BR ALIGN="LEFT"/>
         PUBLIC_TOOL_ROOT = extracted public tool root, status inferred/unknown<BR ALIGN="LEFT"/>
         PRIVATE_BUNDLE_SOURCE = uploaded private bundle zip or existing private project root, status user-provided/inferred/unknown<BR ALIGN="LEFT"/>
-        PRIVATE_PROJECT_ROOT = extracted agentfield-grn-private_real_v0 root, status inferred/unknown<BR ALIGN="LEFT"/>
+        PRIVATE_PROJECT_ROOT = extracted agentfield-grn-private_real_${PRIVATE_BUNDLE_VERSION} root, status inferred/unknown<BR ALIGN="LEFT"/>
+        PRIVATE_BUNDLE_VERSION = verified selected-source identity, such as v1 or v2<BR ALIGN="LEFT"/>
         MODE = request-create, status fixed-by-route<BR ALIGN="LEFT"/>
         TRACK = organ, status fixed-by-route<BR ALIGN="LEFT"/>
         BATCH_NUMBER = R01, status fixed-by-route<BR ALIGN="LEFT"/>
@@ -78,7 +79,7 @@ digraph P1_request_create_organ_infractl_prompts_only {
         EVIDENCE_REQUIRED = no, status fixed-by-route<BR ALIGN="LEFT"/>
         EXTRA_SOURCES = none unless operator provides organ transition notes<BR ALIGN="LEFT"/>
         PROFILE = webchat-sandbox, status default-safe<BR ALIGN="LEFT"/>
-        OUTPUT_ROOT = /mnt/data/generated_real_v0 or operator-provided safe output directory<BR ALIGN="LEFT"/>
+        OUTPUT_ROOT = /mnt/data/generated_real_${PRIVATE_BUNDLE_VERSION} or operator-provided safe output directory after identity PASS<BR ALIGN="LEFT"/>
         ALLOW_OVERWRITE = no, status default-safe
       </FONT></TD></TR>
     </TABLE>
