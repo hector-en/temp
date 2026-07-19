@@ -19,18 +19,20 @@ It is intended to be uploaded together with:
 infractl.zip
 ```
 
-where the zip root is:
+The ZIP root is the archive top level. The DOT router tree is located under:
 
 ```text
-infractl/
+dots/
 ```
 
-and the canonical main pipeline DOT is saved at the root level of that folder.
+The canonical main pipeline DOT is:
 
-Expected root-level layout:
+dots/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
+
+Expected DOT-router layout:
 
 ```text
-infractl/
+dots/
   infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
   zero-abc/
   request-create-skeleton/
@@ -39,6 +41,7 @@ infractl/
   request-update-organs/
   config-infra/
 ```
+The root-level infractl/ directory is the Python package only. It is not the DOT-router root.
 
 ## Purpose
 
