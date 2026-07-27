@@ -1,697 +1,134 @@
-# InfraCTL Prompt-Only Execution Library
+# InfraCTL
 
-This folder is a prompt-only execution library for the Infra-Skeleton workflow. It is designed so you can upload `infractl.zip` and `infractl.md` into a fresh ChatGPT or Codex chat, then ask the model to run one specific workflow lane safely.
+**Portable change control for AI-assisted private projects.**
 
-The library does **not** replace the real public `infractl` tool, the private project bundle, or required evidence files. It tells the model which prompt-only DOT file to read, how to route the task, what variables to suggest, when to ask for confirmation, and when to stop.
+Coding agents such as Codex, Claude Code, and OpenCode can plan, edit files, and run commands. InfraCTL controls the process around that work: which private project is authoritative, what may change, who approves it, how it is validated, and what evidence is returned.
 
-## Repo-local DOT rule
+> **The agent performs the work. InfraCTL keeps the delivery controlled, portable, and auditable.**
 
-When operating inside `/workspace/repos/infractl-public`, read DOT files from:
+## The problem
 
-```text
-dots/
-```
+Using one coding agent for one contained task is straightforward. The risk appears when a private project spans multiple sessions, agents, repositories, or execution environments.
 
-Use repo-local `dots/...` paths for Codex/WSL/local instructions. Keep `infractl.zip` upload wording for fresh webchat sessions, but do not point local operators at `infractl/<lane>/...`.
+Without a shared delivery contract:
 
-For lane-wide public-bundle, `README.md`, `prompt_guide.md`, DOT-path, strict-prompt, guardrail, or two-root-contract maintenance, route through `0B` first to classify/scope the change. If that task matches `HOOK_public_bundle_lane_update_method`, then consult `CLI_EXTRACTION_NOTES.md` and use the `0B -> G21/G22` update pattern; normal lanes do not read that file by default.
+- private context must be reconstructed repeatedly;
+- approvals and change boundaries become informal;
+- agents can act from stale or incomplete inputs;
+- implementation becomes separated from validation evidence;
+- the project becomes tied to one agent's memory or configuration.
 
-
----
-
-## Expected zip layout
-
-The current `infractl.zip` should have this shape at the zip root. Do **not** expect an extra nested `infractl/` directory around the DOT router tree. The `infractl/` folder inside the zip is the Python package, not the DOT root.
+InfraCTL provides a reusable public control layer while the project's proprietary context remains private.
 
 ```text
-infractl.zip
-├── README.md
-├── infractl.md
-├── prompt_guide.md
-├── workflow.md
-├── pyproject.toml
-├── infractl/              # Python package only
-│   ├── cli.py
-│   ├── project.py
-│   ├── pack.py
-│   ├── evidence.py
-│   ├── profiles.py
-│   └── render.py
-├── dots/                  # DOT router root
-│   ├── infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
-│   ├── zero-abc/
-│   │   ├── 0A_public_private_contract_infractl_prompts_only.dot
-│   │   ├── 0B_expansion_lane_infractl_prompts_only.dot
-│   │   └── 0C_cli_extraction_feedback_infractl_prompts_only.dot
-│   ├── request-create-skeleton/
-│   │   ├── P1_request_create_skeleton_infractl_prompts_only.dot
-│   │   ├── P2_create_writing_lane_infractl_prompts_only.dot
-│   │   ├── P3_create_package_lane_infractl_prompts_only.dot
-│   │   ├── P4_package_to_codex_lane_infractl_prompts_only.dot
-│   │   ├── P5_evidence_return_lane_infractl_prompts_only.dot
-│   │   └── P6_next_cycle_lane_infractl_prompts_only.dot
-│   ├── request-update-skeleton/
-│   │   ├── P1_request_update_skeleton_infractl_prompts_only.dot
-│   │   ├── P2_update_writing_lane_infractl_prompts_only.dot
-│   │   ├── P3_update_package_lane_infractl_prompts_only.dot
-│   │   ├── P4_package_to_codex_update_skeleton_lane_infractl_prompts_only.dot
-│   │   ├── P5_evidence_return_update_skeleton_lane_infractl_prompts_only.dot
-│   │   └── P6_next_cycle_update_skeleton_lane_infractl_prompts_only.dot
-│   ├── request-create-organs/
-│   │   ├── P1_request_create_organ_infractl_prompts_only.dot
-│   │   ├── P2_create_writing_organ_lane_infractl_prompts_only.dot
-│   │   ├── P3_create_package_organ_lane_infractl_prompts_only.dot
-│   │   ├── P4_package_to_codex_organ_lane_infractl_prompts_only.dot
-│   │   ├── P5_evidence_return_organ_lane_infractl_prompts_only.dot
-│   │   └── P6_next_cycle_organ_lane_infractl_prompts_only.dot
-│   ├── request-update-organs/
-│   │   ├── P1_request_update_organ_infractl_prompts_only.dot
-│   │   ├── P2_update_writing_organ_lane_infractl_prompts_only.dot
-│   │   ├── P3_update_package_organ_lane_infractl_prompts_only.dot
-│   │   ├── P4_package_to_codex_update_organ_lane_infractl_prompts_only.dot
-│   │   ├── P5_evidence_return_update_organ_lane_infractl_prompts_only.dot
-│   │   └── P6_next_cycle_update_organ_lane_infractl_prompts_only.dot
-│   └── config-infra/
-│       ├── CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
-│       ├── CIP02_rich_integration_request_generation_infractl_prompts_only.dot
-│       ├── CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
-│       ├── CIP04_live_config_state_resolution_infractl_prompts_only.dot
-│       ├── CIP05_config_implementation_planning_infractl_prompts_only.dot
-│       └── CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
-├── schemas/
-├── scripts/
-├── templates/
-└── examples/
+public InfraCTL contract + private project bundle + chosen agent
+                         ↓
+request → confirm → implement → validate → return evidence
 ```
 
-The main DOT is:
+## What it changes
+
+InfraCTL verifies the authoritative private project, defines the permitted change boundary, requires approval before execution, validates the result, and preserves evidence for the next session or agent.
+
+The organisation can change agents without rebuilding its delivery process or publishing proprietary project knowledge.
+
+## Example
+
+A private scientific platform needs a containerised API, cloud deployment, CI/CD, and a rollback procedure.
+
+InfraCTL guides the work through a controlled sequence:
+
+1. **Define** the outcome and select the authoritative private project.
+2. **Plan** the architecture, affected files, tests, acceptance criteria, and rollback path.
+3. **Approve** the scope before any mutation.
+4. **Implement** with the selected coding agent or operator.
+5. **Validate and close out** with results, risks, and evidence for the next cycle.
+
+**So what:** the project moves from an informal AI conversation to a controlled and repeatable delivery process.
+
+## Install
+
+Requires Python 3.10+.
+
+```bash
+git clone <repository-url>
+cd infractl
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+python -m pip install .
+infractl --help
+```
+
+## Quick start
+
+### 1. Keep public and private roots separate
 
 ```text
-dots/infractl_merged_cheatsheet_flow_numbered_cli_extraction.dot
+workspace/
+├── infractl/              # public control layer
+└── my-project-private/    # private context, rules, and evidence
 ```
 
-Correct route DOT paths use `dots/...`, for example:
+### 2. Validate the selected private project
+
+Run from the InfraCTL repository:
+
+```bash
+infractl validate-real-layout \
+  --project ../my-project-private \
+  --public-tool-root . \
+  --private-bundle-source ../my-project-private
+```
+
+InfraCTL stops when project identity, required files, or source selection are missing or ambiguous.
+
+### 3. Start a controlled request
+
+For web chat, provide `infractl.zip`, `infractl.md`, and the selected private bundle. Then use:
 
 ```text
-dots/request-create-skeleton/P4_package_to_codex_lane_infractl_prompts_only.dot
-dots/zero-abc/0A_public_private_contract_infractl_prompts_only.dot
-dots/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
+Use the public InfraCTL workflow with the selected private project.
+Resolve the appropriate route and propose the complete scope,
+variables, affected systems, acceptance criteria, and execution boundary.
+Do not modify or overwrite anything until I approve the request.
 ```
 
-Do **not** use these stale nested forms with the current zip:
+For a local coding agent, provide access to this repository and the selected private project root. The same approval, validation, and evidence contract applies.
 
-```text
-infractl/request-create-skeleton/...
-infractl/request-update-skeleton/...
-infractl/request-create-organs/...
-infractl/request-update-organs/...
-infractl/zero-abc/...
-infractl/config-infra/...
-```
+## Repository contents
 
-Keep `infractl.md` next to the zip when uploading to a new chat:
+The repository separates deterministic controls from human- and agent-readable workflow instructions.
 
-```text
-infractl.md
-infractl.zip
-```
+- [`infractl/`](infractl/) — Python CLI for project resolution, validation, request generation, packaging, and evidence checks.
+- [`infractl.md`](infractl.md) — compact entry point for selecting and running one controlled workflow.
+- [`dots/`](dots/) — visual workflow contracts defining routes, roles, approvals, and stop conditions.
+- [`schemas/`](schemas/) — public definitions for private-project manifests.
+- [`examples/`](examples/) — non-proprietary examples of the expected private-project structure.
+- [`scripts/`](scripts/) — export, reporting, snapshot, and safety utilities.
+- [`tests/`](tests/) — automated checks for project identity, version consistency, and safe source resolution.
+- [`workflow.md`](workflow.md) — operating sequence from request to evidence return.
+- [`prompt_guide.md`](prompt_guide.md) — detailed prompts and route examples.
 
----
+**Why Python and Markdown?** Python enforces rules that must be deterministic. Markdown and DOT keep decisions, responsibilities, approvals, and handoffs readable by people and portable across agents.
 
-## The safest way to start a new chat
+## When to use it
 
-Upload:
+Use a coding agent directly for a contained task in one repository.
 
-```text
-infractl.md
-infractl.zip
-```
+Use InfraCTL when work spans private projects, multiple agents or environments, separate approval and implementation responsibilities, or changes requiring validation, rollback, and retained evidence.
 
-Then give one clear route command.
+## Agent model
 
-Example for a new skeleton batch:
+Current workflow contracts explicitly define ChatGPT, Codex, and operator-shell handoffs. Other coding agents can be connected by mapping them to the same contract: what they may read, what they may change, when approval is required, which checks must pass, and what evidence they return.
 
-```text
-Use infractl.md and infractl.zip.
+InfraCTL does not replace an agent runtime. It provides a portable control layer around one.
 
-Task:
-Create skeleton batch 02.
+## Project requests
 
-Route:
-MODE=request-create
-TRACK=skeleton
-PHASE=P1
+A new private-project structure, unsupported agent integration, or custom delivery workflow is handled as a **Project Request**.
 
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then select the matching prompt-only DOT from:
-dots/request-create-skeleton/
+A Project Request defines the intended outcome, private project identity, permitted environments, change boundaries, acceptance criteria, and evidence expectations.
 
-Suggest the full variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
+Do not publish proprietary project content in public GitHub issues.
 
-Short version that should also work:
-
-```text
-Use infractl.md and infractl.zip to create skeleton batch 02.
-Start at P1.
-Suggest variables first and wait for confirmation.
-```
-
-Avoid saying only:
-
-```text
-create batch 2
-```
-
-That is ambiguous because it could mean skeleton batch 02, organ R02, an update to batch 02, or a next-cycle continuation.
-
----
-
-## Route map
-
-Use this table to pick the right folder and starting DOT.
-
-| What you want | MODE | TRACK | Start folder | Start DOT |
-|---|---|---|---|---|
-| Create a new skeleton batch | `request-create` | `skeleton` | `dots/request-create-skeleton/` | `P1_request_create_skeleton_infractl_prompts_only.dot` |
-| Update an already-run skeleton batch | `request-update` | `skeleton` | `dots/request-update-skeleton/` | `P1_request_update_skeleton_infractl_prompts_only.dot` |
-| Create the organ/R01 scaffold | `request-create` | `organ` | `dots/request-create-organs/` | `P1_request_create_organ_infractl_prompts_only.dot` |
-| Update an already-run organ/R01 route | `request-update` | `organ` | `dots/request-update-organs/` | `P1_request_update_organ_infractl_prompts_only.dot` |
-| Validate public/private setup | n/a | n/a | `dots/zero-abc/` | `0A_public_private_contract_infractl_prompts_only.dot` |
-| Route new background/spec/annex material | n/a | n/a | `dots/zero-abc/` | `0B_expansion_lane_infractl_prompts_only.dot` |
-| Record helper/CLI extraction opportunities | n/a | n/a | `dots/zero-abc/` | `0C_cli_extraction_feedback_infractl_prompts_only.dot` |
-| Decide whether raw source/config material belongs in Config-Infra | `config-infra` | `CIP01` | `dots/config-infra/` | `CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot` |
-| Generate or retrofit a rich integration request | `config-infra` | `CIP02` | `dots/config-infra/` | `CIP02_rich_integration_request_generation_infractl_prompts_only.dot` |
-| Aggregate and approve integration requests | `config-infra` | `CIP03` | `dots/config-infra/` | `CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot` |
-| Resolve current live config/tooling state read-only | `config-infra` | `CIP04` | `dots/config-infra/` | `CIP04_live_config_state_resolution_infractl_prompts_only.dot` |
-| Plan config implementation without applying changes | `config-infra` | `CIP05` | `dots/config-infra/` | `CIP05_config_implementation_planning_infractl_prompts_only.dot` |
-| Apply/close out manifest-approved config changes | `config-infra` | `CIP06` | `dots/config-infra/` | `CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot` |
-
----
-
-## When to use the zero path
-
-The `zero-abc/` path is for setup, expansion, and tooling feedback. It is not a normal P1-P6 batch lane.
-
-### Use 0A when validating setup
-
-Use 0A before a normal run when the chat has not yet validated the public tool and private bundle layout.
-
-```text
-Use infractl.md and infractl.zip.
-Run 0A public/private contract preflight.
-Suggest variables first and wait for confirmation.
-```
-
-Use 0A for questions like:
-
-```text
-Do I have the right public/private files?
-Can this environment run the Infra-Skeleton workflow safely?
-Are required paths present?
-```
-
-### Use 0B when adding new knowledge
-
-Use 0B when you have new notes, specs, annex files, papers, workflow text, or background material that must be routed before a batch/create/update run.
-
-```text
-Use infractl.md and infractl.zip.
-Run 0B expansion lane for these uploaded source files.
-Suggest routing first and wait for confirmation.
-```
-
-Use 0B for things like:
-
-```text
-Add a new annex.
-Update a SPEC from new source material.
-Create a new hook.
-Route background information before a batch.
-```
-
-### Use 0C when extracting reusable tooling
-
-Use 0C when a manual pattern, helper script, CLI friction, or repeated workflow should become a reusable public helper or `infractl` CLI candidate.
-
-```text
-Use infractl.md and infractl.zip.
-Run 0C CLI extraction feedback for this helper/script/workflow issue.
-Suggest the extraction note first and wait for confirmation.
-```
-
-Use 0C for things like:
-
-```text
-We wrote a reusable script.
-Codex got confused by a repeated instruction.
-A manual step should become an infractl command.
-A workflow should be recorded in CLI_EXTRACTION_NOTES.md.
-```
-
----
-
-## Config-Infra CIP path
-
-The current real `infractl.zip` includes a `dots/config-infra/` path. Use this path when batch or organ work produces configuration, environment, Python/lv, package-stack, bootstrap, account, mount, or workflow-integration implications that need a structured handoff instead of an ad hoc note.
-
-The `dots/config-infra/` path is separate from the normal P1-P6 create/update lanes. It is the Config-Infra lifecycle for turning integration needs into approved manifests, live-state resolution, implementation plans, and carefully gated closeout.
-
-### Config-Infra layout
-
-```text
-dots/config-infra/
-  CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
-  CIP02_rich_integration_request_generation_infractl_prompts_only.dot
-  CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
-  CIP04_live_config_state_resolution_infractl_prompts_only.dot
-  CIP05_config_implementation_planning_infractl_prompts_only.dot
-  CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
-```
-
-### When to use CIP
-
-Normal skeleton/organ create/update lanes may produce a rich `INTEGRATION_REQUEST.md`. The CIP path is the follow-on route family for deciding what to do with those requests.
-
-```text
-CIP01 = source intake and suitability determination
-CIP02 = rich integration request generation or retrofit
-CIP03 = manifest aggregation and approval
-CIP04 = live config-state resolution
-CIP05 = config implementation planning
-CIP06 = idempotent application and closeout
-```
-
-Typical workflow alignment:
-
-```text
-Normal batch create/update
-  -> rich INTEGRATION_REQUEST.md
-
-S-T8 / O-T8
-  -> CIP03 manifest aggregation and approval
-
-S-T9 / O-T9
-  -> CIP04 live config-state resolution
-  -> CIP05 config implementation planning
-  -> CIP06 manifest-approved application and closeout
-```
-
-### Safety model
-
-```text
-CIP01-CIP05 are read-only / planning-only.
-CIP06 defaults to no mutation.
-CIP06 may apply changes only with:
-  - manifest approval
-  - live config-state snapshot
-  - implementation plan
-  - exact file touch set
-  - explicit confirmation
-  - passing safety gates
-```
-
-### CIP router prompt
-
-Use this when you are not sure which Config-Infra phase to run next:
-
-```text
-Use infractl.md and infractl.zip.
-I need help deciding which Config-Infra CIP phase to use for this request.
-Given my current artifacts, tell me whether I should run CIP01, CIP02, CIP03, CIP04, CIP05, or CIP06 next.
-Do not execute yet. First return the recommended phase, required files, missing prerequisites, and variable block.
-```
-
-### CIP01 — source intake and suitability determination
-
-Use CIP01 for raw source material, new environment/config ideas, or unclear requests where you first need to decide whether the work belongs in Config-Infra.
-
-```text
-Use infractl.md and infractl.zip.
-Run Config-Infra CIP01 source intake and suitability determination.
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then use the CIP01 DOT from dots/config-infra/.
-
-Suggest the variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-Use DOT:
-
-```text
-dots/config-infra/CIP01_source_intake_and_suitability_determination_infractl_prompts_only.dot
-```
-
-### CIP02 — rich integration request generation
-
-Use CIP02 to generate or retrofit a rich `INTEGRATION_REQUEST.md` after suitability has been determined.
-
-```text
-Use infractl.md and infractl.zip.
-Run Config-Infra CIP02 rich integration request generation.
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then use the CIP02 DOT from dots/config-infra/.
-
-Suggest the variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-Use DOT:
-
-```text
-dots/config-infra/CIP02_rich_integration_request_generation_infractl_prompts_only.dot
-```
-
-### CIP03 — manifest aggregation and approval
-
-Use CIP03 at S-T8 or O-T8 to aggregate one or more integration requests into a manifest and decide what is approved, deferred, blocked, duplicate, or already covered.
-
-```text
-Use infractl.md and infractl.zip.
-Run Config-Infra CIP03 manifest aggregation and approval.
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then use the CIP03 DOT from dots/config-infra/.
-
-Suggest the variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-Use DOT:
-
-```text
-dots/config-infra/CIP03_manifest_aggregation_and_approval_infractl_prompts_only.dot
-```
-
-### CIP04 — live config-state resolution
-
-Use CIP04 after CIP03 to inspect the current real config/tooling state in read-only mode. CIP04 resolves what exists now; it does not apply changes.
-
-```text
-Use infractl.md and infractl.zip.
-Run Config-Infra CIP04 live config-state resolution.
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then use the CIP04 DOT from dots/config-infra/.
-
-Suggest the variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-Use DOT:
-
-```text
-dots/config-infra/CIP04_live_config_state_resolution_infractl_prompts_only.dot
-```
-
-### CIP05 — config implementation planning
-
-Use CIP05 after CIP04 to produce the implementation plan and select patch/application classes. CIP05 plans only; it does not apply changes.
-
-```text
-Use infractl.md and infractl.zip.
-Run Config-Infra CIP05 config implementation planning.
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then use the CIP05 DOT from dots/config-infra/.
-
-Suggest the variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-Use DOT:
-
-```text
-dots/config-infra/CIP05_config_implementation_planning_infractl_prompts_only.dot
-```
-
-### CIP06 — idempotent application and closeout
-
-Use CIP06 only after CIP03, CIP04, and CIP05 have passed and the operator explicitly confirms the approved touch set. CIP06 is mutation-default-no and must stop if approval or evidence is missing.
-
-```text
-Use infractl.md and infractl.zip.
-Run Config-Infra CIP06 idempotent application and closeout.
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then use the CIP06 DOT from dots/config-infra/.
-
-Suggest the variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-Use DOT:
-
-```text
-dots/config-infra/CIP06_idempotent_application_and_closeout_infractl_prompts_only.dot
-```
-
----
-
-## P1-P6 phase meanings
-
-Each mode + track route follows the same broad phase shape, but each DOT contains route-specific details.
-
-| Phase | Meaning | Typical output |
-|---|---|---|
-| P1 | Direction/request generation | Request folder |
-| P2 | Request-to-writing | Create/update instruction files |
-| P3 | Writing-to-package | Codex package zip |
-| P4 | Package-to-Codex / layout gate | Validated pack and Codex execution handoff |
-| P5 | Evidence return | Execution evidence, snapshot/export, G17 decision |
-| P6 | Next-cycle routing | Choice of next route |
-
-Do not skip phases unless the DOT says the required previous output already exists and the operator confirms re-entry at a later phase.
-
----
-
-## Required operator behavior
-
-Every prompt-only DOT is designed to be idempotent and confirmation-driven.
-
-The model should always:
-
-```text
-1. Read infractl.md.
-2. Read the root main v7 DOT.
-3. Select exactly one matching prompt-only DOT.
-4. Suggest the variable block first.
-5. Label variables as user-provided, inferred, default-safe, or unknown.
-6. Ask the operator to confirm or correct variables.
-7. Stop until confirmation.
-8. Execute only the addressed phase/lane.
-9. Refuse to overwrite existing outputs unless ALLOW_OVERWRITE=yes.
-10. Stop if evidence, bundle, route, or phase prerequisites are missing.
-```
-
-The model should not:
-
-```text
-- guess between skeleton and organ routes
-- guess between create and update routes
-- overwrite existing artifacts silently
-- run Codex when the lane is ChatGPT-only
-- mutate /workspace or /mnt/egress from a webchat-sandbox phase
-- treat skeleton evidence as organ evidence
-- treat organ R01 as skeleton Batch 01
-- continue to the next phase without confirmation when the DOT requires a gate
-```
-
----
-
-## Common commands
-
-### Create skeleton batch 02
-
-```text
-Use infractl.md and infractl.zip.
-
-Task:
-Create skeleton batch 02.
-
-Route:
-MODE=request-create
-TRACK=skeleton
-PHASE=P1
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then select the matching prompt-only DOT from:
-dots/request-create-skeleton/
-
-Suggest the full variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-### Update skeleton batch 01 for workflow smoke automation
-
-```text
-Use infractl.md and infractl.zip.
-
-Task:
-Update already-run skeleton batch 01 for workflow_smoke_automation.
-
-Route:
-MODE=request-update
-TRACK=skeleton
-PHASE=P1
-BATCH_NUMBER=01
-TOPIC=workflow_smoke_automation
-EVIDENCE_REQUIRED=yes
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then select the matching prompt-only DOT from:
-dots/request-update-skeleton/
-
-Suggest the full variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-### Create organ R01 scaffold
-
-```text
-Use infractl.md and infractl.zip.
-
-Task:
-Create the organ R01 scaffold.
-
-Route:
-MODE=request-create
-TRACK=organ
-PHASE=P1
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then select the matching prompt-only DOT from:
-dots/request-create-organs/
-
-Suggest the full variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-### Update an existing organ route
-
-```text
-Use infractl.md and infractl.zip.
-
-Task:
-Update an already-run organ route.
-
-Route:
-MODE=request-update
-TRACK=organ
-PHASE=P1
-EVIDENCE_REQUIRED=yes
-
-Read infractl.md first.
-Read the root main v7 DOT next.
-Then select the matching prompt-only DOT from:
-dots/request-update-organs/
-
-Before continuing, verify that prior organ/R01 evidence exists.
-Suggest the full variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-### Decide the next Config-Infra CIP phase
-
-```text
-Use infractl.md and infractl.zip.
-I need help deciding which Config-Infra CIP phase to use for this request.
-Given my current artifacts, tell me whether I should run CIP01, CIP02, CIP03, CIP04, CIP05, or CIP06 next.
-Do not execute yet. First return the recommended phase, required files, missing prerequisites, and variable block.
-```
-
----
-
-## What else you may need for a real run
-
-`infractl.zip` and `infractl.md` are only the instruction/router layer.
-
-For a real Infra-Skeleton run, the chat may also need:
-
-```text
-- public infractl tool repo or zip
-- private agentfield-grn bundle zip
-- required evidence files for request-update lanes
-- source docs/specs/annex files for 0B expansion lanes
-- `INTEGRATION_REQUEST.md`, `INTEGRATION_MANIFEST.md`, `CONFIG_STATE_SNAPSHOT.md`, or `CONFIG_INTEGRATION_PLAN.md` files for CIP routes
-- access to the expected public/private workspace roots if using Codex/WSL:
-  `/workspace/repos/infractl-public` and `/workspace/private/agentfield-grn-private_real_v0` or `/workspace/private/agentfield-grn-private_real_v1`
-- `/mnt/egress` evidence paths only when the selected DOT and addressed agent explicitly require evidence return/export
-```
-
-If those are missing, the model should stop and report exactly which inputs are missing.
-
----
-
-## Recommended minimal habit
-
-For normal work, use this pattern:
-
-```text
-Use infractl.md and infractl.zip.
-
-Task:
-<plain English task>
-
-Route:
-MODE=<request-create or request-update>
-TRACK=<skeleton or organ>
-PHASE=P1
-
-Suggest the full variable block first.
-Ask me to confirm or correct it.
-Do not execute until I confirm.
-```
-
-For setup/tooling/background tasks, use:
-
-```text
-Use infractl.md and infractl.zip.
-Run 0A / 0B / 0C.
-Suggest variables first and wait for confirmation.
-```
-
-For config-infra work, use:
-
-```text
-Use infractl.md and infractl.zip.
-I need help deciding which Config-Infra CIP phase to use for this request.
-Do not execute yet. First return the recommended phase, required files, missing prerequisites, and variable block.
-```
-
----
-
-## Current real-zip note
-
-This README preserves the original 0A/0B/0C and P1-P6 route instructions and adds the `config-infra/` CIP route family found in the current real `infractl.zip`.
-
-Use the updated public export pair together:
-
-```text
-infractl.md
-infractl.zip
-```
+> Early public release: review generated plans and changes, test in an isolated environment, and keep a recoverable copy of every private project.
